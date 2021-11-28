@@ -1,0 +1,12 @@
+.account{
+	display:inline-block;
+	
+}
+
+
+
+
+.navbar-nav>li{
+	float: none;
+	display: inline-block;
+}
