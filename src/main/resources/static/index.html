@@ -51,7 +51,7 @@
 	    <textarea class="form-control" id="descrizioneRichista" rows="3"  placeholder ="Ad es. Ho bisogno di ridipingere 4 pareti da X mt quadrati l'una usando un colore accesso"></textarea>
 	  	<small class="form-text text-muted">Descrivi accuratamente la tua richiesta di aiuto, quantità del lavoro, vincoli particolari su di esso ecc...</small>
 	  </div>
-		<div id="uploadedImage" class="carousel carousel-dark slide" data-bs-ride="carousel">
+		<div id="uploadedImage" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
 		  <div class="carousel-indicators">
 		    <button type="button" data-bs-target="#uploadedImage" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
 		    <button type="button" data-bs-target="#uploadedImage" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -59,9 +59,9 @@
 		    <!-- Se voglio aggiungere una foto basta creare un nuovo button -->
 		    <button type="button" data-bs-target="#uploadedImage" data-bs-slide-to="3" aria-label="Slide 4"></button>
 		  </div>
+		  <label >Carica alcune immagini</label>
 		  <div class="carousel-inner">
-		  	<div class="container carousel-item active" data-bs-interval="false" >
-			  <label >Carica alcune immagini</label>
+		  	<div class="container carousel-item active">
 			  <div class="drag-area">
 			    <div class="icon">
 			      <img src="../images/upload.svg" alt="upload">
@@ -72,13 +72,13 @@
 			    <span class="support">Supports: JPEG, JPG, PNG</span>
 			  </div>
 			</div>
-		    <div class="carousel-item" data-bs-interval="false">
+		    <div class="carousel-item">
 		      <img src="../images/immagine1.jpg" class="d-block w-100" alt="...">
 		    </div>
-		    <div class="carousel-item" data-bs-interval="false">
+		    <div class="carousel-item">
 		      <img src="../images/immagine2.jpg" class="d-block w-100" alt="...">
 		    </div>
-		    <div class="carousel-item" data-bs-interval="false">
+		    <div class="carousel-item">
 		      <img id = "TEST" src="../images/immagine3.jpeg" class="d-block w-100" alt="...">
 		    </div>
 		  </div>
@@ -90,6 +90,8 @@
 		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 		    <span class="visually-hidden">Next</span>
 		  </button>
+		  <!-- Bottone per eliminare una foto -->
+		  <img class = "carousel-control-delete" alt="delete" src="/images/x-lg.svg">
 		</div>
 	  <div class="form-check">
 

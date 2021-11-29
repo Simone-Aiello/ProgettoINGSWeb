@@ -1,7 +1,16 @@
 var acceptedExtensions = ["image/png","image/jpg","image/jpeg"];
 window.addEventListener("load",() =>{
 	addDragAndDropListener();
+	addDeleteImageListener();
 });
+function addDeleteImageListener(){
+	let button = document.querySelector(".carousel-control-delete");
+	button.addEventListener("click",()=>{
+		let current = document.querySelector(".active img");
+		console.log(current.getAttribute("src"));		
+	});
+
+}
 function addDragAndDropListener(){
 	let area = document.querySelector(".drag-area");
 	//Prevent default sul dragover altrimenti l'evento drop sulle div non si attiva
