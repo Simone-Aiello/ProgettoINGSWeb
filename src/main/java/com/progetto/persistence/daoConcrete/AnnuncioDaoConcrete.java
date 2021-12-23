@@ -1,5 +1,6 @@
 package com.progetto.persistence.daoConcrete;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import com.progetto.model.Advertise;
 import com.progetto.persistence.Database;
@@ -27,7 +29,6 @@ public class AnnuncioDaoConcrete implements AnnuncioDao{
 				ann.setDescription(result.getString("descrizione"));
 				ann.setTitle(result.getString("titolo"));
 				//DA PASSARE IN YODA TIME ann.setExpiryDate(result.getDate("data_scadenza"));
-				//Perché abbiamo id utente se la chiave è username?
 				/*Per visualizzare la pagina dell'annuncio mi servono username e foto profilo dell'utente
 				 Mi conviene ricostruire tutto l'oggetto Cliente perché tanto è una sola query e poi potrebbe essere usata 
 				 direttamente per ricavare la pagina del profilo dell'utente passandola dal client al server senza dover fare dopo la query*/
@@ -41,7 +42,7 @@ public class AnnuncioDaoConcrete implements AnnuncioDao{
 		//Dobbiamo portare avanti l'idBroker
 		statement.setString(1, a.getDescription());
 		statement.setString(2, a.getTitle());
-		statement.setDate(3, a.getExpiryDate());
+		statement.setDate(3, new Date(a.getExpiryDate().getMillis()));
 		statement.setString(4, a.getUser().getUsername());
 	}
 	@Override
@@ -70,12 +71,6 @@ public class AnnuncioDaoConcrete implements AnnuncioDao{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public List<Advertise> findAll() {
-		// Secondo me non serve tanto non la useremo mai
-		return null;
 	}
 
 	@Override
@@ -133,7 +128,7 @@ public class AnnuncioDaoConcrete implements AnnuncioDao{
 				a.setId(result.getLong("id"));
 				a.setDescription(result.getString("descrizione"));
 				a.setTitle(result.getString("titolo"));
-				a.setExpiryDate(result.getDate("data_scadenza"));
+				a.setExpiryDate(new DateTime(result.getDate("data_scadenza")));
 				a.setUser(null/*Proxy user*/);
 				ann.add(a);
 			}
