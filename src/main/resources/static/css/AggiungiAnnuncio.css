@@ -12,7 +12,14 @@
 .carousel-inner{
   width:100%;
   max-height: 200px !important;
-}*/
+}
+*/
+.resized-image{
+	object-fit: cover;
+	object-position: center;
+	height: 50vh;
+	overflow: hidden;
+}
 .carousel-control-delete{
 	position: absolute;
 	top: 50px;
