@@ -5,8 +5,7 @@ public class Review {
 	private String description;
 	private String title;
 	private int rating;
-	private Offer offer;
-	
+	private Account client;
 	public long getId() {
 		return id;
 	}
@@ -31,12 +30,11 @@ public class Review {
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-	public Offer getProposta() {
-		return offer;
+	public Account getClient() {
+		return client;
 	}
-	public void setProposta(Offer proposta) {
-		this.offer = proposta;
+	public void setClient(Account client) {
+		this.client = client;
 	}
-	
 	
 }

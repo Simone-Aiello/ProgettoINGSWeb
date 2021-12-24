@@ -12,7 +12,16 @@ public class Advertise {
 	private Account user;
 	private List<Area> interestedAreas;
 	private List<Image> images;
-	private Offer acceptedOffer = null;
+	private Offer acceptedOffer;
+	private Review reviewReceived;
+	private String province;
+	
+	public Review getReviewReceived() {
+		return reviewReceived;
+	}
+	public void setReviewReceived(Review reviewReceived) {
+		this.reviewReceived = reviewReceived;
+	}
 	private List<Offer> offers;
 	
 	public Offer getAcceptedOffer() {
@@ -68,6 +77,12 @@ public class Advertise {
 	}
 	public void setUser(Account user) {
 		this.user = user;
+	}
+	public String getProvince() {
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
 	}
 	
 	
