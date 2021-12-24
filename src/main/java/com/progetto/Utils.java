@@ -4,8 +4,7 @@ import java.util.regex.Pattern;
 
 public class Utils {
 	
-	public static final String PATTERN= "[^\\w #&;]";
-
+	public static final String PATTERN= "[^\\w #&;]" ;
 	
 	public static String sanitizeXSS(String string) {
 		

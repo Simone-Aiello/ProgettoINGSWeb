@@ -26,22 +26,16 @@ public class Advertise {
 	private final List<Image> images;
 	private Offer acceptedOffer = null;
 	private final List<Offer> offers;
+	private String prova ;
 	
-	
-	@GetMapping("/prova")
-	public Advertise.Builder getRequest(Advertise.Builder adBuilder) {
-		
-		System.out.println(adBuilder.build().title);
-		return adBuilder ;
-		
-	}
+
 	
 	public static void main(String[] args) {
 		
 		Advertise.Builder builder = new Advertise.Builder();
 	}
 
-	public static final class Builder{
+	public  final class Builder{
 		
 		private Advertise advertise ;
 		private boolean built = false ;
@@ -55,11 +49,14 @@ public class Advertise {
 		private  List<Image> images;
 		private  Offer acceptedOffer = null;
 		private  List<Offer> offers;
+		public   String prova ;
 		
+	
 		
 		public Builder setId(Long id) {
 			notNull(id);
 			this.id = id;
+			this.prova = "ciao";
 			return this;
 		}
 		

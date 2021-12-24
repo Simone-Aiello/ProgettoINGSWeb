@@ -5,11 +5,13 @@ import java.util.List;
 import com.progetto.model.Advertise;
 
 public interface AnnuncioDao {
-	public Advertise findByPrimaryKey(long id);
-	public void insertOrUpdate(Advertise a);
-	public List<Advertise> findAll();
-	public void delete(Advertise a);
-	public List<Advertise> findGroup(String keyword,List<String> areas,List<String> provinces,Integer quantity,Integer offset);
+	Advertise findByPrimaryKey(long id);
+	void insertOrUpdate(Advertise a);
+	List<Advertise> findAll();
+	void delete(Advertise a);
+	List<Advertise> findGroup(String keyword,List<String> areas,List<String> provinces,Integer quantity,Integer offset);
+
+	// Aggiungere un metodo per prendere un annuncio data una proposta 
 }
 /*
 Find by primary key
