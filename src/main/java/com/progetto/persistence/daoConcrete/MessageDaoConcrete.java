@@ -1,4 +1,4 @@
-package com.progetto.dao;
+package com.progetto.persistence.daoConcrete;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
