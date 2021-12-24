@@ -12,11 +12,12 @@ import java.util.List;
 
 import com.progetto.model.Chat;
 import com.progetto.model.Message;
+import com.progetto.persistence.daoInterfaces.MessageDao;
 
-public class MessageDaoJDBC implements MessageDao{
+public class MessageDaoConcrete implements MessageDao{
 	private Connection conn;
 	
-	public MessageDaoJDBC (Connection conn) {
+	public MessageDaoConcrete (Connection conn) {
 		this.conn = conn;
 	}
 	

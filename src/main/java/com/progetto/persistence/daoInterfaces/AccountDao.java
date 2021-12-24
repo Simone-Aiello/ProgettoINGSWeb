@@ -1,4 +1,4 @@
-package com.progetto.dao;
+package com.progetto.persistence.daoInterfaces;
 
 import java.util.List;
 
