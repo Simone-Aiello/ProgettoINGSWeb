@@ -3,7 +3,6 @@ package com.progetto.model;
 public class Image {
 	private long id;
 	private String url;
-	
 	public long getId() {
 		return id;
 	}

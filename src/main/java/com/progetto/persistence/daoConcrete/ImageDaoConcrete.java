@@ -53,7 +53,13 @@ public class ImageDaoConcrete implements ImageDao{
 		}
 		return images;
 	}
-
+	@Override
+	public void deleteByAdvertise(Advertise a) throws SQLException {
+		String query = "delete from immagini where id_annuncio = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setLong(1, a.getId());
+		st.execute();
+	}
 	@Override
 	public Image findByPrimaryKey(long id) {
 		Image m = null;
@@ -67,10 +73,28 @@ public class ImageDaoConcrete implements ImageDao{
 				m.setUrl(rs.getString("url"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return m;
+	}
+
+	@Override
+	public void save(Image img) throws SQLException {
+		if(alreadyExists(img)) {
+			String insert = "insert into immagini(url) values(?)";
+			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(insert);
+			st.setString(1, img.getUrl());
+			st.execute();
+		}
+	}
+
+	@Override
+	public boolean alreadyExists(Image img) throws SQLException {
+		String query = "select * from immagini where id = ?";
+		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
+		statement.setLong(1, img.getId());
+		ResultSet rs = statement.executeQuery();
+		return rs.next();
 	}
 
 }
