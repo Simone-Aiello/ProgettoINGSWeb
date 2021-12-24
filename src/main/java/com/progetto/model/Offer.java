@@ -1,6 +1,7 @@
 package com.progetto.model;
 
 public class Offer {
+	
 	private long id;
 	private String description;
 	private String title;
@@ -8,6 +9,9 @@ public class Offer {
 	private boolean done;
 	private Account worker;
 	private int hoursOfWork;
+	
+	// AGGIUNGERE IL CAMPO ANNUNCIO 
+	
 	public long getId() {
 		return id;
 	}
