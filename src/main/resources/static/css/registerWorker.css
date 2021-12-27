@@ -1,0 +1,25 @@
+#form {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+.header{
+    text-align: center;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number]{
+  -moz-appearance: textfield;
+}
+i{
+    cursor: pointer;
+}
+.button-div{
+    display: flex;
+    justify-content: space-between;
+}

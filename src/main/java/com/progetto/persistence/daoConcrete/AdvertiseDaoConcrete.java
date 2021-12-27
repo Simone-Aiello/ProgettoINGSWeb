@@ -28,12 +28,12 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		return st.executeQuery().next();
 	}
 	@Override
-	public Advertise findByPrimaryKey(long id) throws SQLException {
+	public Advertise findByPrimaryKey(Advertise a) throws SQLException {
 		//Voglio il singolo annuncio, lo ricostruisco completamente
 		Advertise ann = null;
 		String query = "select * from annunci where id = ?;";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
-		statement.setLong(1, id);
+		statement.setLong(1, a.getId());
 		ResultSet result = statement.executeQuery();
 		if (result.next()) {
 			ann.setId(result.getLong("id"));
@@ -140,7 +140,6 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		for (int i = 0; i < parameters.size(); i++) {
 			query.setObject(i + 1, parameters.get(i));
 		}
-		System.out.println(query.toString()); //FOR TESTS ONLY
 		ResultSet result = query.executeQuery();
 		while (result.next()) {
 			Advertise a = new Advertise();

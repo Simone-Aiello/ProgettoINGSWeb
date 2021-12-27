@@ -11,7 +11,6 @@ import com.progetto.model.Image;
 
 @RestController
 public class TestController {
-	
 	@GetMapping("/test")
 	public Advertise tester() {
 		Advertise v = new Advertise();

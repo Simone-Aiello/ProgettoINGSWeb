@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+    <script src="/js/registerWorker.js"></script>
+    <link rel="stylesheet" href="/css/registerWorker.css">
+  </head>
+<body>
+  <div id="form">
+    <section id="personal-information">
+      <h1 class="header">Inserisci le tue informazioni personali</h1>
+        <form>
+          <div class="row">
+            <div class="mb-3 col">
+              <label class="form-label">Username*</label>
+              <input type="text" class="form-control" placeholder="Username">
+            </div>
+            <div class="mb-3 col">
+              <label class="form-label">Email*</label>
+              <input type="text" class="form-control" placeholder="esempio@dominio">
+            </div>
+        </div>
+          <div class="row">
+            <div class="mb-3 col">
+              <label class="form-label" >Password*</label>
+              <div class="input-group mb-3">
+                <input type="password" class="form-control" id ="insert-password">
+                <span class="input-group-text" id="basic-addon2"><i class="far fa-eye-slash insert"></i></span>
+                <!--  <span class="input-group-text" id="basic-addon2"><i class="far fa-eye"></i></span>-->
+              </div>
+              <div class="form-text">La password deve essere lunga almeno 9 caratteri e deve contenere almeno una lettera maiuscola e una minuscola</div>
+            </div>
+            <div class="mb-3 col">
+              <label class="form-label">Conferma password*</label>
+              <div class="input-group mb-3">
+                <input type="password" class="form-control" id="confirm-password">
+                <span class="input-group-text" id="basic-addon2"><i class="far fa-eye-slash confirm"></i></span>
+                <!--  <span class="input-group-text" id="basic-addon2"><i class="far fa-eye"></i></span>-->
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="row">          
+            <div class="mb-3 col">
+              <label class="form-label">Nome*</label>
+              <input type="text" class="form-control" placeholder="Mario">
+            </div>
+            <div class="mb-3 col">
+              <label class="form-label">Cognome*</label>
+              <input type="text" class="form-control" placeholder="Rossi">
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col">
+              <label class="form-label">Numero di telefono</label>
+              <input class="form-control" type="number" placeholder="3004166729">
+            </div>
+            <div class = "mb-3 col">
+                <label class="form-label">Data di nascita*</label>
+                <input class="form-control" type="date" placeholder="01/01/2020">
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="mb-3 col">
+              <label class="form-label">Provincia di residenza*</label>
+              <select class="form-select" id = "provincia-residenza">
+                <option selected disabled value="">Scegli...</option>
+              </select>
+            </div>
+            <div class="mb-3 col">
+              <label class="form-label">Comune di residenza*</label>
+              <select class="form-select" id = "comuni">
+                <option selected disabled value="">Scegli...</option>
+              </select>
+            </div>
+            <div class="mb-3 col">
+              <label class="form-label">Sede di lavoro</label>
+              <select class="form-select" id = "sede-lavoro">
+                <option selected disabled value="">Scegli...</option>
+              </select>
+              <div class="form-text">La provincia per la quale si intende ricevere notifiche in merito ai nuovi annunci</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col">
+              <label class="form-label">Via*</label>
+              <input type="text" class="form-control" placeholder="Cosenza">
+            </div>
+            <div class="mb-3 col">
+              <label class="form-label">Numero civico*</label>
+              <input class="form-control" type="number" placeholder="32">
+            </div>
+            <div class="mb-3 col">
+              <label class="form-label">CAP*</label>
+              <input type="text" class="form-control" placeholder="87032">
+            </div>
+          </div>
+        </form>
+        <div class="button-div">
+          <button class="btn btn-secondary">Precedente</button>
+          <button class="btn btn-primary">Successivo</button>
+        </div>
+    </section>
+    <footer class="mt-4 form-text">* : I campi contrassegnati sono obbligatori</footer>
+  </div>
+</body>
