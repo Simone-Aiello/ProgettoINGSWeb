@@ -80,7 +80,7 @@ public class ImageDaoConcrete implements ImageDao{
 
 	@Override
 	public void save(Image img) throws SQLException {
-		if(alreadyExists(img)) {
+		if(alreadyExists(img)) {	
 			String insert = "insert into immagini(url) values(?)";
 			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(insert);
 			st.setString(1, img.getUrl());

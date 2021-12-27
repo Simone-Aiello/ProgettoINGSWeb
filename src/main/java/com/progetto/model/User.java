@@ -1,6 +1,6 @@
 package com.progetto.model;
 
-import org.apache.tomcat.jni.Address;
+
 import org.joda.time.DateTime;
 
 public class User {
