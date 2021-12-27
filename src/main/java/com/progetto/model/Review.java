@@ -1,11 +1,16 @@
 package com.progetto.model;
 
+import java.util.List;
+
 public class Review {
 	private long id;
 	private String description;
 	private String title;
 	private int rating;
 	private Account client;
+	private Account worker;
+	private Offer offer;
+	private List<Image> images;
 	public long getId() {
 		return id;
 	}
@@ -35,6 +40,24 @@ public class Review {
 	}
 	public void setClient(Account client) {
 		this.client = client;
+	}
+	public Account getWorker() {
+		return worker;
+	}
+	public void setWorker(Account worker) {
+		this.worker = worker;
+	}
+	public Offer getOffer() {
+		return offer;
+	}
+	public void setOffer(Offer offer) {
+		this.offer = offer;
+	}
+	public List<Image> getImages() {
+		return images;
+	}
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 	
 }
