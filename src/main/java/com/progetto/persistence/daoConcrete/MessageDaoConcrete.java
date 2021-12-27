@@ -68,7 +68,7 @@ public class MessageDaoConcrete implements MessageDao{
 	}
 
 	@Override
-	public boolean saveOrUpdate(Message m) {
+	public boolean save(Message m) {
 		// TODO Auto-generated method stub
 		return false;
 	}
