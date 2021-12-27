@@ -4,10 +4,28 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.progetto.persistence.daoConcrete.AccountDaoConcrete;
+import com.progetto.persistence.daoConcrete.AddressDaoConcrete;
 import com.progetto.persistence.daoConcrete.AdvertiseDaoConcrete;
+import com.progetto.persistence.daoConcrete.AreaDaoConcrete;
+import com.progetto.persistence.daoConcrete.ChatDaoConcrete;
 import com.progetto.persistence.daoConcrete.ImageDaoConcrete;
+import com.progetto.persistence.daoConcrete.MessageDaoConcrete;
+import com.progetto.persistence.daoConcrete.NotificationDaoConcrete;
+import com.progetto.persistence.daoConcrete.OfferDaoConcrete;
+import com.progetto.persistence.daoConcrete.ReviewDaoConcrete;
+import com.progetto.persistence.daoConcrete.UserDaoConcrete;
+import com.progetto.persistence.daoInterfaces.AccountDao;
+import com.progetto.persistence.daoInterfaces.AddressDao;
 import com.progetto.persistence.daoInterfaces.AdvertiseDao;
+import com.progetto.persistence.daoInterfaces.AreaDao;
+import com.progetto.persistence.daoInterfaces.ChatDao;
 import com.progetto.persistence.daoInterfaces.ImageDao;
+import com.progetto.persistence.daoInterfaces.MessageDao;
+import com.progetto.persistence.daoInterfaces.NotificationDao;
+import com.progetto.persistence.daoInterfaces.OfferDao;
+import com.progetto.persistence.daoInterfaces.ReviewDao;
+import com.progetto.persistence.daoInterfaces.UserDao;
 
 public class Database {
 	private Connection connection;
@@ -17,6 +35,15 @@ public class Database {
 	private static Database instance = null;
 	private ImageDao imageDao = null;
 	private AdvertiseDao advertiseDao = null;
+	private AccountDao accountDao = null;
+	private AddressDao addressDao = null;
+	private AreaDao areaDao = null;
+	private ChatDao chatDao = null;
+	private MessageDao messageDao = null;
+	private NotificationDao notificationDao = null;
+	private OfferDao offerDao = null;
+	private ReviewDao reviewDao = null;
+	private UserDao userDao = null;
 	private Database() {
 		try {
 			connection = DriverManager.getConnection(url,username,password);
@@ -32,6 +59,60 @@ public class Database {
 	}
 	public Connection getConnection() {
 		return connection;
+	}
+	public AccountDao getAccountDao() {
+		if(accountDao == null) {
+			accountDao = new AccountDaoConcrete();
+		}
+		return accountDao;
+	}
+	public AddressDao getAddressDao() {
+		if(addressDao == null) {
+			addressDao = new AddressDaoConcrete();
+		}
+		return addressDao;
+	}
+	public AreaDao getAreaDao() {
+		if(areaDao == null) {
+			areaDao = new AreaDaoConcrete();
+		}
+		return areaDao;
+	}
+	public ChatDao getChatDao() {
+		if(chatDao == null) {
+			chatDao = new ChatDaoConcrete();
+		}
+		return chatDao;
+	}
+	public MessageDao getMessageDao() {
+		if(messageDao == null) {
+			messageDao = new MessageDaoConcrete();
+		}
+		return messageDao;
+	}
+	public NotificationDao getNotificationDao() {
+		if(notificationDao == null) {
+			notificationDao = new NotificationDaoConcrete();
+		}
+		return notificationDao;
+	}
+	public OfferDao getOfferDao() {
+		if(offerDao == null) {
+			offerDao = new OfferDaoConcrete();
+		}
+		return offerDao;
+	}
+	public ReviewDao getReviewDao() {
+		if(reviewDao == null) {
+			reviewDao = new ReviewDaoConcrete();
+		}
+		return reviewDao;
+	}
+	public UserDao getUserDao() {
+		if(userDao == null) {
+			userDao = new UserDaoConcrete();
+		}
+		return userDao;
 	}
 	public ImageDao getImageDao() {
 		if(imageDao == null) {

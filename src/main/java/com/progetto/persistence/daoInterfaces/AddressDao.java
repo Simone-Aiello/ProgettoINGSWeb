@@ -7,7 +7,7 @@ import com.progetto.model.Address;
 
 
 
-public interface AddressDAO {
+public interface AddressDao {
 	public Address findByPrimarykey(long id) throws SQLException;
 	public void save(Address u) throws SQLException;
 	public void delete(Address u) throws SQLException;

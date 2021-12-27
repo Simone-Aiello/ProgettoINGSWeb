@@ -12,7 +12,7 @@ public interface OfferDao {
 	
 	
 	boolean exists(Offer offer) throws SQLException;		
-	Offer findByPrimaryKey(long id_offer) throws SQLException;
+	Offer findByPrimaryKey(long id_offer,int mode) throws SQLException;
 	void save(Offer offer) throws SQLException;	
 	void delete(Offer offer) throws SQLException;
 	List<Offer> findOffersByAccount(Account worker) throws SQLException;

@@ -3,7 +3,10 @@ package com.progetto.persistence.daoConcrete;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.progetto.model.Advertise;
 import com.progetto.model.Area;
 import com.progetto.persistence.Database;
 import com.progetto.persistence.daoInterfaces.AreaDao;
@@ -99,6 +102,23 @@ public class AreaDaoConcrete implements AreaDao{
 		preparedStatement.setLong(1, area.getId());
 	
 		preparedStatement.execute();
+	}
+
+
+	@Override
+	public List<Area> findByAdvertise(Advertise ann) throws SQLException{
+		List<Area> areas = new ArrayList<Area>();
+		String query = "select id_ambito from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
+		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
+		statement.setLong(1, ann.getId());
+		ResultSet set = statement.executeQuery();
+		while(set.next()) {
+			Area a = new Area();
+			a.setId(set.getLong("id"));
+			a.setName(set.getString("nome"));
+			areas.add(a);
+		}
+		return areas;
 	}
 
 }
