@@ -7,7 +7,7 @@ public class Offer {
 	private String title;
 	private double quote;
 	private boolean done;
-	private Account worker;
+	private Account worker; 
 	private int hoursOfWork;
 	
 	// AGGIUNGERE IL CAMPO ANNUNCIO 
