@@ -11,4 +11,5 @@ public interface ChatDao {
 	public void save(Chat c)throws SQLException;
 	public void delete(Chat c)throws SQLException;
 	public boolean exists(Chat c)throws SQLException;
+
 }
