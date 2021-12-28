@@ -3,6 +3,7 @@ package com.progetto.model;
 import java.util.List;
 
 public class Account {
+	
 	public static final String WORKER = "w";
 	public static final String ADMIN = "a";
 	public static final String USER = "u";
@@ -10,18 +11,20 @@ public class Account {
 	private String password;
 	private String email;
 	private String number;
-	private Image profilePic;
 	private String provinceOfWork;
 	private String accountType;
+	private Image profilePic;
 	private List<Area> areasOfWork;
 	private List<Review> reviews;
+	private User personalInfo;
+	
 	public List<Review> getReviews() {
 		return reviews;
 	}
 	public void setReviews(List<Review> reviews) {
 		this.reviews = reviews;
 	}
-	private User personalInfo;
+	
 	
 	public User getPersonalInfo() {
 		return personalInfo;
