@@ -9,6 +9,7 @@ public class Notification {
 	public static final String SYSTEM = "s";
 	public static final String MESSAGE = "m";
 	public static final String REVIEW = "r";
+	private static final String PATTERN_TYPE_NOTIFICATION = "[smr]";
 	private long id;
 	private String text;
 	private String type;
@@ -33,7 +34,7 @@ public class Notification {
 	}
 	public void setType(String type) {
 		notNull(type);
-		isTrue(Utils.isValidTypeNotification(type));
+		matchesPattern(type, PATTERN_TYPE_NOTIFICATION);
 		this.type = type;
 	}
 	

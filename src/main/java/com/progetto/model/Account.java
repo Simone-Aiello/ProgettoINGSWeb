@@ -10,9 +10,16 @@ import com.progetto.Utils;
 
 public class Account {
 	
+	//PATTERNS
+	private static final String USERNAME_PATTERN = "\\w+" ;
+	private static final String EMAIL_PATTERN = "\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+" ;
+	private static final String NUMBER_PATTERN = "([0-9]{10}|0[0-9]{8})";
+	private static final String PATTERN_TYPEACCOUNT = "[awu]";
+	
 	public static final String WORKER = "w";
 	public static final String ADMIN = "a";
 	public static final String USER = "u";
+	
 	private String username;
 	private String password;
 	private String email;
@@ -23,6 +30,7 @@ public class Account {
 	private List<Area> areasOfWork;
 	private List<Review> reviews;
 	private User personalInfo;
+	
 	
 	public List<Review> getReviews() {
 		return reviews;
@@ -51,15 +59,16 @@ public class Account {
 	}
 	public void setUsername(String username) {
 		notNull(username);
+		matchesPattern(username, USERNAME_PATTERN);
 		Utils.sanitizeXSS(username);
 		this.username = username;
 	}
+	
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		notNull(password);
-		Utils.sanitizeXSS(password);
 		this.password = password;
 	}
 	public String getEmail() {
@@ -67,6 +76,7 @@ public class Account {
 	}
 	public void setEmail(String email) {
 		notNull(email);
+		matchesPattern(email, EMAIL_PATTERN);
 		Utils.sanitizeXSS(email);
 		this.email = email;
 	}
@@ -75,6 +85,7 @@ public class Account {
 	}
 	public void setNumber(String number) {
 		notNull(number);
+		matchesPattern(number, NUMBER_PATTERN);
 		Utils.sanitizeXSS(number);
 		this.number = number;
 	}
@@ -99,7 +110,7 @@ public class Account {
 	}
 	public void setAccountType(String accountType) {
 		notNull(accountType);
-		isTrue(Utils.isValidTypeAccount(accountType));
+		matchesPattern(accountType, PATTERN_TYPEACCOUNT);
 		this.accountType = accountType;
 	}
 }

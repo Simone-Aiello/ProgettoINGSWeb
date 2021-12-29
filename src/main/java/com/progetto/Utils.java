@@ -47,17 +47,5 @@ public class Utils {
 		
 	}
 	
-	public static boolean isValidTypeAccount(String typeAccount) {
-		
-		return typeAccount == Account.ADMIN || typeAccount == Account.USER || typeAccount == Account.WORKER ;
-		
-	}
-	
-	public static boolean isValidTypeNotification(String typeNotification) {
-		
-		return typeNotification == Notification.MESSAGE || typeNotification == Notification.REVIEW || typeNotification == Notification.SYSTEM ;
-		
-	}
-	
 	
 }
