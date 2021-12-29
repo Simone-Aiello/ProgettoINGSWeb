@@ -50,4 +50,20 @@ try{
 }
 
 
+$.ajax({
+        type : "POST",
+        url : "/testPost",
+		data : JSON.stringify({
+			description : "ciao",
+			//title : null ,
+		}),
+        contentType: "application/json",
+        success : function(risposta){
+            console.log(risposta);
+        },
+        error : function(xhr){
+            console.log("Non sono riuscito a fare la call");
+        }
+      });
+
 

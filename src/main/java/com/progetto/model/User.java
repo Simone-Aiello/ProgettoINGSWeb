@@ -1,7 +1,10 @@
 package com.progetto.model;
 
 
+import static org.apache.commons.lang3.Validate.*;
 import org.joda.time.DateTime;
+
+import com.progetto.Utils;
 
 public class User {
 	private long id;
@@ -13,30 +16,38 @@ public class User {
 		return id;
 	}
 	public void setId(long id) {
+		isTrue(id > 0);
 		this.id = id;
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
+		notNull(name);
+		Utils.sanitizeXSS(name);
 		this.name = name;
 	}
 	public String getSurname() {
 		return surname;
 	}
 	public void setSurname(String surname) {
+		notNull(surname);
+		Utils.sanitizeXSS(surname);
 		this.surname = surname;
 	}
 	public DateTime getDateOfBirth() {
 		return dateOfBirth;
 	}
 	public void setDateOfBirth(DateTime dateOfBirth) {
+		notNull(dateOfBirth);
+		isTrue(Utils.canWork(dateOfBirth));
 		this.dateOfBirth = dateOfBirth;
 	}
 	public Address getAddress() {
 		return address;
 	}
 	public void setAddress(Address address) {
+		notNull(address);
 		this.address = address;
 	}
 	

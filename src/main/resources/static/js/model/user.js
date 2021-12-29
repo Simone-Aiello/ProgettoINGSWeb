@@ -1,4 +1,4 @@
-
+	
 class JustLetters{
 	
     constructor(justLetters) {

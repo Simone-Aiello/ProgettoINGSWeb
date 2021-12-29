@@ -80,11 +80,15 @@ class AccountType{
 export class Account{
 	
 	static #key  =  Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) ;
+	
+	
 
 	constructor(key){
 		if(key != Account.#key)
 			throw new Error("This constructor is private");	
 	}
+	
+	
 	
 	static build_json = function(account){
 		
@@ -155,7 +159,6 @@ export class Account{
 		build = function(){
 			if(this.built) 
 				throw new Error("This builder has already been used");
-			// controlli
 			this.built = true ;
 			return this.#product ;
 		}
