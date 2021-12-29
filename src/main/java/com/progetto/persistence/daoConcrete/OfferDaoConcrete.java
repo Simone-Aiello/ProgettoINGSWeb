@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration;
 
+import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Offer;
@@ -32,30 +33,27 @@ public class OfferDaoConcrete implements OfferDao {
 		return resultSet.first();
 	}
 	
-	private Offer loadOffer(ResultSet resultSet) throws SQLException {
-
+	private Offer loadOffer(ResultSet resultSet,int mode) throws SQLException {
+		int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 		Offer offer = new Offer() ;
-		
 		offer.setId(resultSet.getLong("id"));
 		offer.setDescription(resultSet.getString("descrizione"));
 		offer.setTitle(resultSet.getString("titolo"));
-		offer.setDone(resultSet.getBoolean("lavoro_effettuato"));
-		offer.setHoursOfWork(resultSet.getInt("ore_di_lavoro"));
-		// USARE DAO ACCOUNT
-		Account account = null ;
-		offer.setWorker(account);
-		offer.setQuote(resultSet.getDouble("preventivo"));
-		// Introdurre annuncio
-		Advertise advertise = null ;
-		
-		
-
+		if(mode != Utils.BASIC_INFO) {
+			offer.setDone(resultSet.getBoolean("lavoro_effettuato"));
+			offer.setHoursOfWork(resultSet.getInt("ore_di_lavoro"));
+			Account account = Database.getInstance().getAccountDao().findByPrimaryKey(resultSet.getString("username_lavoratore"), next);
+			offer.setWorker(account);
+			offer.setQuote(resultSet.getDouble("preventivo"));
+			Advertise advertise = Database.getInstance().getAdvertiseDao().findByPrimaryKey(resultSet.getLong("id_annuncio"), next);
+			offer.setAdvertise(advertise);
+		}
 		return offer;
 		
 	}
 
 	@Override
-	public Offer findByPrimaryKey(long id_offer)  throws SQLException{
+	public Offer findByPrimaryKey(long id_offer,int mode)  throws SQLException{
 
 		String FIND_BY_PRYMARY_KEY = "" + "select *" + "from proposte" + "where id = ?";
 		Offer offer = null;
@@ -68,7 +66,7 @@ public class OfferDaoConcrete implements OfferDao {
 		ResultSet resultSet = preparedStatement.executeQuery() ;
 		
 		if(resultSet.next())
-			offer = loadOffer(resultSet);
+			offer = loadOffer(resultSet,mode);
 		
 		return offer;
 	}
@@ -147,10 +145,8 @@ public class OfferDaoConcrete implements OfferDao {
 		
 
 		while(resultSet.next()) {
-		
-			Offer offer = loadOffer(resultSet) ;
+			Offer offer = loadOffer(resultSet,Utils.BASIC_INFO) ;
 			offers.add(offer);
-		
 		}
 		
 		return offers ;

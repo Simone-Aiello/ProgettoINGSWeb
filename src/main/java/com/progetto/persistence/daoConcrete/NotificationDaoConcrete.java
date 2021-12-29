@@ -14,6 +14,7 @@ import com.progetto.persistence.daoInterfaces.NotificationDao;
 
 public class NotificationDaoConcrete implements NotificationDao{
 
+	
 	private Notification loadNotification(ResultSet resultSet) throws SQLException {
 		
 		Notification notification = null ;

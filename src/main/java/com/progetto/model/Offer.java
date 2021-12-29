@@ -9,7 +9,7 @@ public class Offer {
 	private boolean done;
 	private Account worker; 
 	private int hoursOfWork;
-	
+	private Advertise advertise;
 	// AGGIUNGERE IL CAMPO ANNUNCIO 
 	
 	public long getId() {
@@ -53,6 +53,12 @@ public class Offer {
 	}
 	public void setHoursOfWork(int hoursOfWork) {
 		this.hoursOfWork = hoursOfWork;
+	}
+	public Advertise getAdvertise() {
+		return advertise;
+	}
+	public void setAdvertise(Advertise advertise) {
+		this.advertise = advertise;
 	}
 	
 }

@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Area;
 import com.progetto.model.Review;
@@ -37,7 +38,7 @@ public class AccountDaoConcrete implements AccountDao{
 	}
 
 	@Override
-	public Account findByPrimaryKey(String username) throws SQLException {
+	public Account findByPrimaryKey(String username,int mode) throws SQLException {
 		String query = "SELECT * FROM account WHERE username = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setString(1, username);
@@ -45,13 +46,18 @@ public class AccountDaoConcrete implements AccountDao{
 		Account a = new Account();
 		if(rs.next()) {
 			a.setUsername(rs.getString("username"));
-			a.setPassword(rs.getString("password"));
 			a.setEmail(rs.getString("email"));
-			a.setNumber(query);
-			a.setProfilePic(null); //proxy
-			a.setProvinceOfWork(rs.getString("provincia_lavoro"));
-			a.setPersonalInfo(null); //proxy
-			a.setAccountType(rs.getString("tipo_account")); // FUNZIONA CON GLI ENUM?
+			if(mode != Utils.BASIC_INFO) {
+				int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
+				a.setNumber(rs.getString("telefono"));
+				a.setProvinceOfWork(rs.getString("provincia_lavoro"));
+				a.setPersonalInfo(Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next)); 
+				if(mode != Utils.LIGHT) {
+					a.setPassword(rs.getString("password"));
+					a.setProfilePic(Database.getInstance().getImageDao().findByPrimaryKey(rs.getLong("immagine_profilo")));					
+					a.setAccountType(rs.getString("tipo_account"));		
+				}
+			}
 		}
 		return a;
 	}

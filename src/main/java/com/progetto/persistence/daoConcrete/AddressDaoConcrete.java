@@ -8,9 +8,9 @@ import java.util.List;
 
 import com.progetto.model.Address;
 import com.progetto.persistence.Database;
-import com.progetto.persistence.daoInterfaces.AddressDAO;
+import com.progetto.persistence.daoInterfaces.AddressDao;
 
-public class AddressDaoConcrete implements AddressDAO {
+public class AddressDaoConcrete implements AddressDao {
 
 	@Override
 	public Address findByPrimarykey(long id) throws SQLException {

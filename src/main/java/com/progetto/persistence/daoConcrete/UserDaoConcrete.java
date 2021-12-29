@@ -9,18 +9,19 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.progetto.Utils;
 import com.progetto.model.User;
 import com.progetto.persistence.Database;
 import com.progetto.persistence.daoInterfaces.UserDao;
 public class UserDaoConcrete implements UserDao{
 
 	@Override
-	public User findByPrimarykey(long id) throws SQLException {
+	public User findByPrimarykey(long id,int mode) throws SQLException {
 		String FIND_BY_PRIMARY_KEY = "select * from utenti where id = ?";
 		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(FIND_BY_PRIMARY_KEY);
 		ps.setLong(1, id);
 		ResultSet set = ps.executeQuery();
-		User user = (set.next()) ? loadUser(set) : null;
+		User user = (set.next()) ? loadUser(set,mode) : null;
 		return user;
 	}
 
@@ -84,15 +85,17 @@ public class UserDaoConcrete implements UserDao{
 		return ps.executeQuery().next();
 	}
 	
-	private User loadUser(ResultSet set) throws SQLException {
+	private User loadUser(ResultSet set,int mode) throws SQLException {
 		User user = null;
 		if(set.next()) {
 			user = new User();
 			user.setId(set.getLong("id"));
 			user.setSurname(set.getString("cognome"));
 			user.setName(set.getString("nome"));
-			user.setDateOfBirth(new DateTime(set.getDate("data_nascita")));
-			user.setAddress(new AddressDaoConcrete().findByPrimarykey(set.getLong("indirizzo_utente")));
+			if(mode != Utils.BASIC_INFO) {
+				user.setDateOfBirth(new DateTime(set.getDate("data_nascita")));
+				user.setAddress(new AddressDaoConcrete().findByPrimarykey(set.getLong("indirizzo_utente")));				
+			}
 		}
 		return user;
 	}

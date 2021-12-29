@@ -1,11 +1,14 @@
 package com.progetto.persistence.daoConcrete;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.progetto.Utils;
+import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Image;
 import com.progetto.model.Review;
@@ -31,9 +34,12 @@ public class ImageDaoConcrete implements ImageDao {
 	}
 
 	@Override
-	public List<Image> findByAdvertise(Advertise advertise) throws SQLException {
+	public List<Image> findByAdvertise(Advertise advertise,int mode) throws SQLException {
 		List<Image> images = new LinkedList<Image>();
 		String query = "select * from immagini where id_annuncio = ?";
+		if(mode == Utils.BASIC_INFO) {
+			query += " limit 1";
+		}
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setLong(1, advertise.getId());
 		ResultSet rs = statement.executeQuery();

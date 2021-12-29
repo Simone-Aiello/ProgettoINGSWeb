@@ -9,7 +9,7 @@ public class Advertise {
 	private String description;
 	private String title;
 	private DateTime expiryDate;
-	private Account user;
+	private Account account;
 	private List<Area> interestedAreas;
 	private List<Image> images;
 	private Offer acceptedOffer;
@@ -72,11 +72,11 @@ public class Advertise {
 	public void setExpiryDate(DateTime expiryDate) {
 		this.expiryDate = expiryDate;
 	}
-	public Account getUser() {
-		return user;
+	public Account getAccount() {
+		return account;
 	}
-	public void setUser(Account user) {
-		this.user = user;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	public String getProvince() {
 		return province;
