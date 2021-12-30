@@ -97,6 +97,7 @@ public class Account {
 		notNull(profilePic);
 		this.profilePic = profilePic;
 	}
+
 	public String getProvinceOfWork() {
 		return provinceOfWork;
 	}

@@ -12,4 +12,6 @@ public interface AccountDao {
 	public void save(Account a)throws SQLException;
 	public void delete(Account a)throws SQLException;
 	public boolean exists(Account a)throws SQLException;
+	public boolean emailAlreadyUsed(String email) throws SQLException;
+	public boolean usernameAlreadyUsed(String username) throws SQLException;
 }
