@@ -16,11 +16,11 @@ public class AreaDaoConcrete implements AreaDao{
 
 	private Area loadArea(ResultSet resultSet) throws SQLException {
 		
-		Area area = null ;
+		Area area = new Area();
 		
 		area.setId(resultSet.getLong("id"));
 		area.setName(resultSet.getString("nome"));
-		
+		area.setIcon(resultSet.getString("icona"));
 		return area ;
 		
 	}
@@ -74,20 +74,22 @@ public class AreaDaoConcrete implements AreaDao{
 		
 		if(exists(area)) {
 			
-			query = "update ambiti set name = ?  where id = ? " ;
+			query = "update ambiti set name = ?, icona = ?  where id = ? " ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
 			
 			preparedStatement.setString(1, area.getName());
-			preparedStatement.setLong(2, area.getId());
+			preparedStatement.setString(2, area.getIcon());
+			preparedStatement.setLong(3, area.getId());
+			
 			
 		}else {
 			
-			query = "insert into ambiti(name) values(?) " ;
+			query = "insert into ambiti(nome, icona) values(?, ?) " ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
-			
 			preparedStatement.setString(1, area.getName());
+			preparedStatement.setString(2, area.getIcon());
 			
 		}
 		
@@ -109,7 +111,7 @@ public class AreaDaoConcrete implements AreaDao{
 	@Override
 	public List<Area> findByAdvertise(Advertise ann) throws SQLException{
 		List<Area> areas = new ArrayList<Area>();
-		String query = "select id_ambito, nome from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
+		String query = "select id_ambito, nome, icona from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setLong(1, ann.getId());
 		ResultSet set = statement.executeQuery();
@@ -117,6 +119,7 @@ public class AreaDaoConcrete implements AreaDao{
 			Area a = new Area();
 			a.setId(set.getLong("id"));
 			a.setName(set.getString("nome"));
+			a.setIcon(set.getString("icona"));
 			areas.add(a);
 		}
 		return areas;
@@ -126,7 +129,7 @@ public class AreaDaoConcrete implements AreaDao{
 	@Override
 	public List<Area> findByWorker(Account acc) throws SQLException {
 		List<Area> areas = new ArrayList<Area>();
-		String query = "select id_ambito, nome from account_ambiti inner join ambiti on  id = id_ambito where username_account = ?";
+		String query = "select id_ambito, nome, icona from account_ambiti inner join ambiti on  id = id_ambito where username_account = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setString(1, acc.getUsername());
 		ResultSet set = statement.executeQuery();
@@ -134,6 +137,8 @@ public class AreaDaoConcrete implements AreaDao{
 			Area a = new Area();
 			a.setId(set.getLong("id"));
 			a.setName(set.getString("nome"));
+			a.setIcon(set.getString("icona"));
+			
 			areas.add(a);
 		}
 		return areas;
