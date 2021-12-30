@@ -142,6 +142,21 @@ public class AccountDaoConcrete implements AccountDao{
 	@Override
 	public void validate() throws SQLException {
 		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public boolean emailAlreadyUsed(String email) throws SQLException {
+		String query = "select * from account where email = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, email);
+		return st.executeQuery().next();
+	}
+
+	@Override
+	public boolean usernameAlreadyUsed(String username) throws SQLException {
+		String query = "select * from account where username = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, username);
+		return st.executeQuery().next();
 	}
 }
