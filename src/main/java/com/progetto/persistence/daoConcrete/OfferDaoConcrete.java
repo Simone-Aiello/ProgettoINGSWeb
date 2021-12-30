@@ -160,5 +160,16 @@ public class OfferDaoConcrete implements OfferDao {
 		stmt.execute();
 	}
 
-
+	@Override
+	public List<Offer> offersByAdvertise(Advertise a) throws SQLException{
+		List<Offer> offers = new ArrayList<>();
+		String query = "SELECT * FROM proposte WHERE id_annuncio = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setLong(1, a.getId());
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			offers.add(loadOffer(rs, Utils.BASIC_INFO));
+		}
+		return offers;
+	}
 }
