@@ -30,19 +30,19 @@
 				</div>
 			</div>
 			<div class = "col-sm-12 col-md-6">
-				<div class = "text-center">
+				<div class = "text-center" id = "alert">
 					<h2 class = "h2 mt-4 mb-2">Inserisci le tue credenziali</h2>
 				</div>
-				<form action="#" class = "d-flex flex-column p-4 m-4">
-					<label class = "small">Username or password</label>
-					<input type = "text" class = "form-control" id = "emailField">
+				<form action = "/login" method = "post" class = "d-flex flex-column p-4 m-4">
+					<label class = "small">Username or email</label>
+					<input type = "text" class = "form-control" id = "emailField" name = "username">
 					<label class = "small mt-4">Password</label>
 					<div class = "input-group">
-						<input type = "password" class = "form-control" id = "passwordField"> 
+						<input type = "password" class = "form-control" id = "passwordField" name = "password"> 
 						<span class="input-group-text" id="basic-addon2"><i class="far fa-eye-slash insert"></i></span>
 					</div>
 					<label><a href ="#" class = "small">Password dimenticata?</a></label>
-					<input type = "submit" class = "btn btn-primary mt-4" value = "Accedi" style = "width : 40%;" id = "accessButton">
+					<input type = "submit" class = "btn btn-primary mt-4" value = "Accedi" style = "width : 40%;" id = "accessButton" >
 				</form>
 			</div>
 		</div>
