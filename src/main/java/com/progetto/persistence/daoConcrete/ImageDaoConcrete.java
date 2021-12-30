@@ -1,6 +1,5 @@
 package com.progetto.persistence.daoConcrete;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.progetto.Utils;
-import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Image;
 import com.progetto.model.Review;
@@ -27,7 +25,7 @@ public class ImageDaoConcrete implements ImageDao {
 		while (rs.next()) {
 			Image m = new Image();
 			m.setId(rs.getInt("id"));
-			m.setUrl(rs.getString("url"));
+			m.setValue(rs.getString("value"));
 			images.add(m);
 		}
 		return images;
@@ -46,7 +44,7 @@ public class ImageDaoConcrete implements ImageDao {
 		while (rs.next()) {
 			Image m = new Image();
 			m.setId(rs.getInt("id"));
-			m.setUrl(rs.getString("url"));
+			m.setValue(rs.getString("value"));
 			images.add(m);
 		}
 		return images;
@@ -69,19 +67,31 @@ public class ImageDaoConcrete implements ImageDao {
 		ResultSet rs = statement.executeQuery();
 		if (rs.next()) {
 			m.setId(id);
-			m.setUrl(rs.getString("url"));
+			m.setValue(rs.getString("value"));
 		}
 		return m;
 	}
 
 	@Override
-	public void save(Image img) throws SQLException {
-		if (alreadyExists(img)) {
-			String insert = "insert into immagini(url) values(?)";
-			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(insert);
-			st.setString(1, img.getUrl());
-			st.execute();
+	public long save(Image img) throws SQLException {
+		if(alreadyExists(img)) {
+			String update = "UPDATE immagini SET value = ?, where id = ?;";
+			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(update);
+			stmt.setString(1, img.getValue());
+			stmt.setLong(2, img.getId());
+			stmt.execute();
 		}
+		else 
+		{
+			String insert = "insert into immagini(value) values(?) RETURNING id";
+			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(insert);
+			st.setString(1, img.getValue());
+			ResultSet rs = st.executeQuery();
+			rs.next();
+			img.setId(rs.getLong("id"));
+			
+		}
+		return img.getId();
 	}
 
 	@Override

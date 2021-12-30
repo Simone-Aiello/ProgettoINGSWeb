@@ -16,7 +16,7 @@ public class TestController {
 		Advertise v = new Advertise();
 		Image m = new Image();
 		m.setId(1);
-		m.setUrl("fakeURL");
+		m.setValue("fakeURL");
 		List<Image> img = new LinkedList<Image>();
 		img.add(m);
 		v.setId(3);

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Area;
 import com.progetto.persistence.Database;
@@ -108,9 +109,26 @@ public class AreaDaoConcrete implements AreaDao{
 	@Override
 	public List<Area> findByAdvertise(Advertise ann) throws SQLException{
 		List<Area> areas = new ArrayList<Area>();
-		String query = "select id_ambito from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
+		String query = "select id_ambito, nome from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setLong(1, ann.getId());
+		ResultSet set = statement.executeQuery();
+		while(set.next()) {
+			Area a = new Area();
+			a.setId(set.getLong("id"));
+			a.setName(set.getString("nome"));
+			areas.add(a);
+		}
+		return areas;
+	}
+
+
+	@Override
+	public List<Area> findByWorker(Account acc) throws SQLException {
+		List<Area> areas = new ArrayList<Area>();
+		String query = "select id_ambito, nome from account_ambiti inner join ambiti on  id = id_ambito where username_account = ?";
+		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
+		statement.setString(1, acc.getUsername());
 		ResultSet set = statement.executeQuery();
 		while(set.next()) {
 			Area a = new Area();

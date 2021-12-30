@@ -55,25 +55,23 @@ public class MessageDaoConcrete implements MessageDao{
 	}
 
 	@Override
-	public void save(Message m) throws SQLException{
+	public void save(Message m, Chat c) throws SQLException{
 		
 		if(exists(m)) {
 			String query = "UPDATE messaggi SET timestamp = ?, contenuto = ? id_chat = ? WHERE id = ?";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setTimestamp(1, new Timestamp(m.getMessageTime().getMillis()));
 			stmt.setString(2, m.getText());
-			//COME FACCIO A SAPERE A QUALE CHAT è RIFERITA SE NON HO LA CHAT ASSOCIATA NEL DTO?
-			//stmt.setLong(3, m.get);
+			stmt.setLong(3, c.getId());
 			stmt.setLong(4, m.getId());
 			stmt.execute();
 		}
-		else {	
-			//MANCA IDBROKER
-			String query = "INSERT INTO messaggi(id, timestamp, contenuto, id_chat) VALUES (?, ?, ?, ?);";
+		else {
+			String query = "INSERT INTO messaggi(id, timestamp, contenuto, id_chat) VALUES (null, ?, ?, ?);";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
-			stmt.setTimestamp(1, new Timestamp(m.getMessageTime().getMillis()));
-			stmt.setString(2, m.getText());
-			stmt.setLong(4, m.getId());
+			stmt.setTimestamp(2, new Timestamp(m.getMessageTime().getMillis()));
+			stmt.setString(3, m.getText());			
+			stmt.setLong(4, c.getId());
 			stmt.execute();
 		}
 	}

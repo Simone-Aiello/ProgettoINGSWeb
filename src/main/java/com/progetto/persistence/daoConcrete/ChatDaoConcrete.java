@@ -24,10 +24,10 @@ public class ChatDaoConcrete implements ChatDao{
 		while(rs.next()) {
 			Chat c = new Chat();
 			c.setId(rs.getInt("id"));
-			//Use proxy for all chats
-			//c.setMessages(Database.getInstance().getMessageDao().findMessagesByChat(c));
+			c.setMessages(Database.getInstance().getMessageDao().findMessagesByChat(c));
+			chats.add(c);
 		}
-		return null;
+		return chats;
 	}
 
 	@Override
@@ -39,8 +39,7 @@ public class ChatDaoConcrete implements ChatDao{
 		rs.next();
 		Chat c = new Chat();
 		c.setId(rs.getInt("id"));
-		//do not use proxy for a single chat?
-		//c.setMessages(Database.getInstance().getMessageDao().findMessagesByChat(c));
+		c.setMessages(Database.getInstance().getMessageDao().findMessagesByChat(c));
 		
 		return null;
 	}
@@ -53,10 +52,6 @@ public class ChatDaoConcrete implements ChatDao{
 			stmt.setString(1, c.getA1().getUsername());
 			stmt.setString(2, c.getA2().getUsername());
 			stmt.execute();
-			//c is a new chat and messages do not have an id
-			for(Message m: c.getMessages()) {
-				//m.setId(id);
-			}
 		}
 		else {
 			String query = "INSERT INTO chat(id, account_1, account_2) values(?, ?, ?)";
@@ -68,7 +63,7 @@ public class ChatDaoConcrete implements ChatDao{
 
 		}
 		for(Message m: c.getMessages()) {
-			//Database.getInstance().getMessageDao().save(m);
+			Database.getInstance().getMessageDao().save(m, c);
 		}
 	}
 
@@ -77,7 +72,7 @@ public class ChatDaoConcrete implements ChatDao{
 		String query = "DELETE FROM chat WHERE id = ?";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setLong(1, c.getId());
-		//Database.getInstance().getMessageDao().deleteMessagesByChat(c);
+		Database.getInstance().getMessageDao().deleteMessagesByChat(c);
 		stmt.execute();
 	}
 

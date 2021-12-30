@@ -15,13 +15,15 @@ public class Account {
 	private String accountType;
 	private List<Area> areasOfWork;
 	private List<Review> reviews;
+	private User personalInfo;
+	
+	
 	public List<Review> getReviews() {
 		return reviews;
 	}
 	public void setReviews(List<Review> reviews) {
 		this.reviews = reviews;
 	}
-	private User personalInfo;
 	
 	public User getPersonalInfo() {
 		return personalInfo;
@@ -75,6 +77,14 @@ public class Account {
 		return accountType;
 	}
 	public void setAccountType(String accountType) {
-		this.accountType = accountType;
+		if(accountType.equals("worker")) {
+			this.accountType = Account.WORKER;
+		}
+		else if(accountType.equals("user")) {
+			this.accountType = Account.USER;
+		}
+		else if(accountType.equals("administrator")) {
+			this.accountType = Account.ADMIN;
+		}
 	}
 }
