@@ -9,33 +9,33 @@ class User {
 	
 	
 	#getAge = function (match) {
-	let day_user = parseInt(match[1]);
-	let month_user = parseInt(match[2]);
-	let year_user = parseInt(match[3]);
+		let day_user = parseInt(match[1]);
+		let month_user = parseInt(match[2]);
+		let year_user = parseInt(match[3]);
 
-	let today = new Date();
+		let today = new Date();
 
-	let today_day = today.getDate();
-	let today_month = today.getMonth() + 1;
-	let today_year = today.getFullYear();
+		let today_day = today.getDate();
+		let today_month = today.getMonth() + 1;
+		let today_year = today.getFullYear();
 
 
-	let age = today_year - year_user;
+		let age = today_year - year_user;
 
-	if (age != 16)
-		return age;
+		if (age != 16)
+			return age;
 
-	if (today_month < month_user)
-		return age - 1;
-
-	else if (today_month == month_user) {
-		if (today_day < day_user)
+		if (today_month < month_user)
 			return age - 1;
 
-	}
+		else if (today_month == month_user) {
+			if (today_day < day_user)
+				return age - 1;
 
-	return age;
-}
+		}
+
+		return age;
+	}
 
 	static Builder = class {
 
