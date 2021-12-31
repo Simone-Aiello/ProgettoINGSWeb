@@ -51,7 +51,13 @@ class User {
 			/*if (_regex.test(name)) {
 				this.#product.name = name;
 			}*/
-			this.#product.name = name;
+			let _regex = /^.+$/;
+			if(_regex.test(name)){			
+				this.#product.name = name;
+			}
+			else{
+				throw new Error("Il campo è obbligatorio");
+			}
 		}
 
 
@@ -60,20 +66,26 @@ class User {
 			/*if (_regex.test(surname)) {
 				this.#product.surname = surname;
 			}*/
-			this.#product.surname = surname;
+			let _regex = /^.+$/;
+			if(_regex.test(surname)){			
+				this.#product.surname = surname;
+			}
+			else{
+				throw new Error("Il campo è obbligatorio");
+			}
 		}
 
 		withDateOfBirth = function(dateOfBirth) {
 			var _regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
 			if (_regex.test(dateOfBirth)) {
 				var match = dateOfBirth.match(_regex);
-				let age = this.#getAge(match);
+				let age = this.#product.#getAge(match);
 				if (age < 0) throw new Error("La data inserita è successiva a quella odierna");
 				if (age < 16) throw new Error("Devi aver almeno compiuto 16 anni d'età");
 				this.#product.dateOfBirth = dateOfBirth;
 			}
 			else
-				throw new Error("La data inserita non è valida'");
+				throw new Error("La data inserita non è valida");
 		}
 		
 		withAddress = function(address){

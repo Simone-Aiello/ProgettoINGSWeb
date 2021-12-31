@@ -1,21 +1,13 @@
-.areas{
-	max-width: 800px;
-	max-height: 800px;
-}
 .icon{
 	float: left;
 	position: relative;
-	top: 28px;
-}
-.icon-title{
-  position: relative;
-  top: 37%;
-  left: 4px;
+	top: 18px;
+	width: 80px;
+	height: 80px;
 }
 .icon-div{
-	max-width: 220px;
-	height: 90px;
-	border: 2px solid #6c757d;
+	width: 80px;
+	height: 80px;
 	border-radius: 15px;
 	display: flex;
 	justify-content: center;
@@ -23,4 +15,7 @@
 }
 .icon-div:hover {
   transform: scale(1.1);
+}
+i{
+	color: #FF9400;
 }
