@@ -13,7 +13,7 @@ public interface ImageDao {
 	List<Image> findByReview(Review review) throws SQLException;
 	List<Image> findByAdvertise(Advertise advertise,int mode) throws SQLException;
 	Image findByPrimaryKey(long id) throws SQLException;
-	void save(Image img) throws SQLException;
+	long save(Image img) throws SQLException;
 	boolean alreadyExists(Image img) throws SQLException;
 	void deleteByAdvertise(Advertise a) throws SQLException;
 }

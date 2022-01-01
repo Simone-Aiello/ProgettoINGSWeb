@@ -20,7 +20,6 @@ public class Advertise {
 	private String province;
 	private List<Offer> offers;
 	
-	
 	public Review getReviewReceived() {
 		return reviewReceived;
 	}
@@ -28,7 +27,6 @@ public class Advertise {
 		notNull(reviewReceived);
 		this.reviewReceived = reviewReceived;
 	}
-	
 	
 	public Offer getAcceptedOffer() {
 		return acceptedOffer;

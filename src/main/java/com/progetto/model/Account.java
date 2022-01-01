@@ -39,7 +39,6 @@ public class Account {
 		notNull(reviews);
 		this.reviews = reviews;
 	}
-
 	public User getPersonalInfo() {
 		return personalInfo;
 	}
@@ -109,6 +108,7 @@ public class Account {
 	public String getAccountType() {
 		return accountType;
 	}
+	
 	public void setAccountType(String accountType) {
 		notNull(accountType);
 		matchesPattern(accountType, PATTERN_TYPEACCOUNT);

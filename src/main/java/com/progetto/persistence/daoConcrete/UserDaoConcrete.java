@@ -10,6 +10,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.progetto.Utils;
+import com.progetto.model.Account;
 import com.progetto.model.User;
 import com.progetto.persistence.Database;
 import com.progetto.persistence.daoInterfaces.UserDao;
@@ -26,34 +27,37 @@ public class UserDaoConcrete implements UserDao{
 	}
 
 	@Override
-	public void save(User u) throws SQLException {
+	public long save(User u) throws SQLException {
 		 if(exists(u)) {
-			 String UPDATE_USER = "update utenti set id = ?, cognome = ?, nome = ?, data_nascita = ?, indirizzo_utente = ? where id = ?";
+			 String UPDATE_USER = "update utenti cognome = ?, nome = ?, data_nascita = ?, indirizzo_utente = ? where id = ?";
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(UPDATE_USER);
-			 ps.setLong(1, u.getId());
-			 ps.setString(2, u.getSurname());
-			 ps.setString(3, u.getName());
-			 ps.setDate(4, (Date) u.getDateOfBirth().toDate());
-			 ps.setLong(5, u.getAddress().getId());
-			 ps.setLong(6, u.getId());
+			 ps.setString(1, u.getSurname());
+			 ps.setString(2, u.getName());
+			 ps.setDate(3, (Date) u.getDateOfBirth().toDate());
+			 ps.setLong(4, u.getAddress().getId());
+			 ps.setLong(5, u.getId());
 			 ps.executeUpdate();
 		 }else {
-			 String SAVE_USER = "insert into utenti(id,cognome,nome,data_nascita,indirizzo_utente) values(?,?,?,?,?)";
+			 String SAVE_USER = "insert into utenti(id,cognome,nome,data_nascita,indirizzo_utente) values(null,?,?,?,?) RETURNING id";
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(SAVE_USER);
-			 ps.setLong(1, u.getId());
 			 ps.setString(2, u.getSurname());
 			 ps.setString(3, u.getName());
 			 ps.setDate(4, (Date) u.getDateOfBirth().toDate());
 			 ps.setLong(5, u.getAddress().getId());
-			 ps.execute();
+			 ResultSet rs = ps.executeQuery();
+			 rs.next();
+			 u.setId(rs.getLong("id"));
 		 }
+		 return u.getId();
 	}
-
+	
+	//TODO
 	@Override
 	public void delete(User u) throws SQLException {
 		if(exists(u) && u != null) {
 			String DELETE_USER = "delete from utenti where id = ?";
 			PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(DELETE_USER);
+			//Database.getInstance().getAccountDao().deleteAccountByUser(u);
 			ps.setLong(1, u.getId());
 			ps.execute();
 		}
@@ -98,6 +102,19 @@ public class UserDaoConcrete implements UserDao{
 			}
 		}
 		return user;
+	}
+
+	@Override
+	public void deleteByAccount(Account a) throws SQLException {
+		String query = "SELECT id FROM utenti INNER JOIN account ON id = id_utente where username = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, a.getUsername());
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			User u = new User();
+			u.setId(rs.getLong("id"));
+			delete(u);
+		}
 	}
 	
 	

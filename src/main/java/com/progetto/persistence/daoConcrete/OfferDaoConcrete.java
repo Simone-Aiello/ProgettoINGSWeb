@@ -92,7 +92,7 @@ public class OfferDaoConcrete implements OfferDao {
 			preparedStatement.setString(5, offer.getWorker().getUsername());
 			preparedStatement.setInt(6, offer.getHoursOfWork());
 			// QUA COME FACCIO A SAPERE CHE ANNUNCIO È ? 
-			//preparedStatement.setInt(7,);
+			preparedStatement.setLong(7,offer.getAdvertise().getId());
 			
 		}else {
 			
@@ -113,7 +113,7 @@ public class OfferDaoConcrete implements OfferDao {
 			preparedStatement.setString(5, offer.getWorker().getUsername());
 			preparedStatement.setInt(6, offer.getHoursOfWork());
 			// QUA COME FACCIO A SAPERE CHE ANNUNCIO È ? 
-			// preparedStatement.setInt(8,);
+			preparedStatement.setLong(8,offer.getAdvertise().getId());
 		}
 		
 		preparedStatement.execute();
@@ -152,5 +152,24 @@ public class OfferDaoConcrete implements OfferDao {
 		return offers ;
 	}
 
+	@Override
+	public void deleteByAdvertise(Advertise a) throws SQLException {
+		String query = "DELETE  FROM proposte WHERE id_annuncio = ?;";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setLong(1, a.getId());
+		stmt.execute();
+	}
 
+	@Override
+	public List<Offer> offersByAdvertise(Advertise a) throws SQLException{
+		List<Offer> offers = new ArrayList<>();
+		String query = "SELECT * FROM proposte WHERE id_annuncio = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setLong(1, a.getId());
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			offers.add(loadOffer(rs, Utils.BASIC_INFO));
+		}
+		return offers;
+	}
 }

@@ -9,7 +9,7 @@ import com.progetto.model.Address;
 
 public interface AddressDao {
 	public Address findByPrimarykey(long id) throws SQLException;
-	public void save(Address u) throws SQLException;
+	public long save(Address u) throws SQLException;
 	public void delete(Address u) throws SQLException;
 	public List<Address> findAll() throws SQLException;
 	public boolean exists(Address u) throws SQLException;

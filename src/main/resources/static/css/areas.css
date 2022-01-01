@@ -1,0 +1,21 @@
+.icon{
+	float: left;
+	position: relative;
+	top: 18px;
+	width: 80px;
+	height: 80px;
+}
+.icon-div{
+	width: 80px;
+	height: 80px;
+	border-radius: 15px;
+	display: flex;
+	justify-content: center;
+	transition: transform .2s;
+}
+.icon-div:hover {
+  transform: scale(1.1);
+}
+i{
+	color: #FF9400;
+}

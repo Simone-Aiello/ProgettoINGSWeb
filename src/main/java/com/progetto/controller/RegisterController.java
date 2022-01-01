@@ -13,16 +13,22 @@ import com.progetto.persistence.Database;
 @RestController
 public class RegisterController {
 	
-	@PostMapping("/usernameAndEmailUnique")
-	public boolean[] usernameAndEmailUnique(@RequestBody String[] data,HttpServletResponse resp) {
+	@PostMapping("/usernameUnique")
+	public boolean usernameUnique(@RequestBody String data,HttpServletResponse resp) {
 		try {
-			boolean[] r = new boolean[2]; 
-			r[0] = Database.getInstance().getAccountDao().usernameAlreadyUsed(data[0]);
-			r[1] = Database.getInstance().getAccountDao().emailAlreadyUsed(data[1]);
-			return r; 
+			return !Database.getInstance().getAccountDao().usernameAlreadyUsed(data); 
 		} catch (SQLException e) {
 			resp.setStatus(500);
 		}
-		return null;
+		return false;
+	}
+	@PostMapping("/emailUnique")
+	public boolean emailUnique(@RequestBody String email,HttpServletResponse resp) {
+		try {
+			return !Database.getInstance().getAccountDao().emailAlreadyUsed(email);
+		} catch (SQLException e) {
+			resp.setStatus(500);
+		}
+		return false;
 	}
 }

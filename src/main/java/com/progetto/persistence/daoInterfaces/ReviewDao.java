@@ -9,5 +9,6 @@ import com.progetto.model.Review;
 public interface ReviewDao {
 	public List<Review> findByWorker(Account account) throws SQLException;
 	public void delete(Review review) throws SQLException;
+	public void deleteByWorker(Account a) throws SQLException;
 	public void save(Review review) throws SQLException;
 }
