@@ -24,8 +24,9 @@ class Account {
 		}
 
 		withPassword = function(password) {
-			var _regex = /^[a-zA-Z0-9!@#$%^_&*]{6,16}.(?=[!@#$%^_&?-\\\/*]).$/g
-			if (_regex.test(password)) {
+			let _regex1 = /^[a-zA-Z0-9!@#$%^_&*]{6,16}$/
+			let _regex2 = /^.*(?=[!@#$%^_&?-\\\/*]).*$/
+			if (_regex1.test(password) && _regex2.test(password)) {
 				this.#product.password = password;
 			}
 			else
