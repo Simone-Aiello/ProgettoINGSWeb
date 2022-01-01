@@ -31,6 +31,4 @@ public class Area {
 		this.icon = icon;
 	}
 	
-	
-	
 }

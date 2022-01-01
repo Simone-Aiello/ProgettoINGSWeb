@@ -61,7 +61,7 @@ class Account {
 		}
 
 		withUser = function(user) {
-			this.#product.user = user;
+			this.#product.personalInfo = user;
 			return this;
 		}
 		withAddress = function(address){

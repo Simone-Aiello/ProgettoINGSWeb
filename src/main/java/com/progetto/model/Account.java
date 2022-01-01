@@ -114,4 +114,5 @@ public class Account {
 		matchesPattern(accountType, PATTERN_TYPEACCOUNT);
 		this.accountType = accountType;
 	}
+	
 }

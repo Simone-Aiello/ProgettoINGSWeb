@@ -58,5 +58,4 @@ public class Address {
 		Utils.sanitizeXSS(province);
 		this.province = province;
 	}
-	
 }

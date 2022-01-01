@@ -4,6 +4,26 @@ var user_builder = new User.Builder();
 var address_builder = new Address.Builder();
 var currentSection = 0;
 var steps = ["personal-information","picture-and-areas"];
+function sendAccount(){
+	account_builder.withUser(user_builder.build());
+	account_builder.withAddress(address_builder.build());
+	account_builder.withProfilePic(imageBuilder.build());
+	account_builder.withAccountType("w");
+	let account = account_builder.build();
+	console.log(JSON.stringify(account));
+	$.ajax({
+			type: "POST",
+			url: "/registerWorker",
+			contentType: "application/json",
+			data: JSON.stringify(account),
+			success: (response) => {
+				console.log("CIAO");
+			},
+			error: (xhr) => {
+				console.log(xhr);
+			}
+		});
+}
 function removePreviousError(idElement) {
 	let errorId = "#" + idElement + "-error";
 	$(errorId).remove();
@@ -116,10 +136,12 @@ function switchToNextSection() {
 			}
 			break;
 		case 1:
-			account_builder.withUser(user_builder.build());
-			account_builder.withAddress(address_builder.build());
-			account_builder.withProfilePic(imageBuilder.build());
-			console.log(JSON.stringify(account_builder.build()));
+			if(atLeastOneArea()){
+				sendAccount();			
+			}
+			else{
+				appendError("last","Selezionare almeno un ambito");
+			}
 			break;
 		case 2:
 			break;
@@ -238,7 +260,7 @@ function addNameListeners() {
 			appendCorrect("name");
 		}
 		catch (error) {
-			appendError("name", "Il campo è obbligatorio");
+			appendError("name", error.message);
 		}
 	});
 }
@@ -249,7 +271,7 @@ function addSurnameListeners() {
 			appendCorrect("surname");
 		}
 		catch (error) {
-			appendError("surname", "Il campo è obbligatorio");
+			appendError("surname", error.message);
 		}
 	});
 }
@@ -273,7 +295,7 @@ function addDateOfBirthListeners() {
 		try {
 			let datePart = dateValue.split("-");
 			let date = datePart[2] + "/" + datePart[1] + "/" + datePart[0];
-			user_builder.withDateOfBirth(date);
+			user_builder.withDateOfBirth(dateValue);
 			appendCorrect("date-of-birth");
 		}
 		catch (error) {
@@ -343,6 +365,7 @@ function addProvinceAndCityListeners() {
 		try {
 			let selected = $("#province").val();
 			address_builder.withProvince(selected);
+			account_builder.withProvinceOfWork(selected);
 			$("#province-of-work").val(selected);
 			appendCorrect("province");
 			appendCorrect("city");

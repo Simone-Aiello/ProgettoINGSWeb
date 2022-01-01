@@ -3,6 +3,12 @@ var acceptedExtensions = ["image/png", "image/jpg", "image/jpeg"];
 var selectedAreas = {};
 var imageBuilder = new Image.Builder();
 var areaBuilder = null;
+function atLeastOneArea(){
+	for(const [key,value] of Object.entries(selectedAreas)){
+		if(value) return true;
+	}
+	return false;
+}
 function addFileReaderListener() {
 	fileReader.onload = (e) => {
 		$("#profile-pic").attr("src", e.target.result);
