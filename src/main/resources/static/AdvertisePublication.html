@@ -6,6 +6,9 @@
 		<link href = "css/AdvertisePublicationCSS.css" rel = "stylesheet" type = "text/css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src = "js/AdvertisePublication.js"></script>
+		<link href = "css/aggiungiAnnuncio.css" rel  = "stylesheet" type = "text/css">
+		<script src = "js/DragAndDrop.js"></script>
+		
 	</head>
 	<body>
 		<div id = "form">
@@ -23,13 +26,43 @@
 						<input id = "advertiseExpiryDate" class = "form-control" type ="date">
 						<div  id = "advertiseExpiryDateFeedback"></div>
 					</div>
-					
+				</div>
 					<hr class = "solid" id = "firstSeparator">
 					
 					<div class = "mb-3">
-					<label class="form-label">Aggiungi delle foto</label>
-					<input class="form-control form-control-sm" id="formPhotos" type="file" />
-					</div>	
+						<label class="form-label">Aggiungi delle foto</label>
+						<div id="uploadedImage" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
+		<div id="uploaded-image" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
+		  <div class="carousel-indicators">
+		    <button id = "sliderTo0" type="button" data-bs-target="#uploadedImage" data-bs-slide-to="0" class="active" aria-current="true" ></button>
+		  </div>
+		  <label >Carica alcune immagini</label>
+		  <div class="carousel-inner">
+		  	<div class="container carousel-item active">
+			  <div class="drag-area">
+			    <div class="icon">
+			      <img src="../images/upload.svg" alt="upload">
+			    </div>
+			    <span class="header">Drag & Drop</span>
+			    <span class="header">or 
+			    <label for = "fileChooser" class="button">browse</label></span>
+			    <input id = "fileChooser" type="file"/>
+			    <span class="support">Supports: JPEG, JPG, PNG</span>
+			  </div>
+			</div>
+		  <button id = "prevButton" class="carousel-control-prev" type="button" data-bs-target="#uploaded-image" data-bs-slide="prev">
+		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		    <span class="visually-hidden">Previous</span>
+		  </button>
+
+		  <button id = "nextButton" class="carousel-control-next" type="button" data-bs-target="#uploaded-image" data-bs-slide="next">
+		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		    <span class="visually-hidden">Next</span>
+		  </button>
+		</div>
+		
+	</div>
+</div>	
 								
 					<hr class = "solid">	
 					
