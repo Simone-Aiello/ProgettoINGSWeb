@@ -12,11 +12,13 @@ function createAdvertiseCardDetail(data){
     modal_bg.style.backgroundColor = "rgba(43, 45, 66,0.4)";
     modal_bg.style.top = "0" ;
     modal_bg.style.left = "0" ;
+	
     
     let card = document.createElement("div");
     card.className = "card shadow rounded ";
-   
-    let card_body = document.createElement("div");
+   	card.style.maxHeight = "100vh";
+    
+	let card_body = document.createElement("div");
     card_body.className = "card-body" ;
 
     let card_header = document.createElement("div");
@@ -44,7 +46,6 @@ function createAdvertiseCardDetail(data){
     let card_province = document.createElement("p");
     card_province.className = "col-3 card-text" ;
     card_province.innerHTML = data.province ;
-    // card_province.style.border = "1px solid black";
     card_province.style.alignSelf = "center" ;
 
 
@@ -122,7 +123,8 @@ function createAdvertiseCardDetail(data){
 
     let card_description = document.createElement("p");
     card_description.className = "card-text col-lg-6 col-md-6 col-xs-12" ;
-    card_description.style = "height : 250px; overflow-y: scroll;";
+	card_description.style.maxHeight = "250px"
+	card_description.style.overflowY = "auto" ;
     card_description.innerHTML = data.description ;
 
     card_center.appendChild(outer_carousel);
@@ -162,6 +164,8 @@ function createAdvertiseCardDetail(data){
                 card_province.style.fontSize = "6px" ;
             card.classList.add("col-12");
             card.classList.remove("col-6");
+            modal_bg.style.padding = "0 10px";
+			
         }else{
             card_description.classList.remove("mt-3");
             card_province.style.marginLeft = "28%";
@@ -175,6 +179,7 @@ function createAdvertiseCardDetail(data){
                 card_province.style.fontSize = "10px" ;
             card.classList.add("col-6");
             card.classList.remove("col-12");
+			modal_bg.style.padding = "0";
         } 
     }
 
@@ -294,7 +299,8 @@ function createCard(data){
 
     let card_description = document.createElement("p"); 
     card_description.className = "card-text" ; 
-    card_description.style = "height : 150px; overflow-y: scroll;";
+	card_description.style.height = "150px" ;
+	card_description.style.overflowY = "auto";
     card_description.innerHTML = data.description ;
 
     let card_information = document.createElement("div");
@@ -304,13 +310,13 @@ function createCard(data){
     card_province.className = "col-6 card-text" ;
     card_province.innerHTML = data.province ;
     if(data.province.length > 10 )
-        card_province.style.fontSize = "12px" ;
+        card_province.style.fontSize = "13px" ;
     if(data.province.length > 15 )
-        card_province.style.fontSize = "10px" ;
+        card_province.style.fontSize = "11px" ;
     if(data.province.length > 25 )
-        card_province.style.fontSize = "8px" ;
+        card_province.style.fontSize = "9px" ;
     if(data.province.length > 35 )
-        card_province.style.fontSize = "6px" ;
+        card_province.style.fontSize = "7px" ;
 
     let card_date = document.createElement("p");
     card_date.className = "col-6 card-text" ;
