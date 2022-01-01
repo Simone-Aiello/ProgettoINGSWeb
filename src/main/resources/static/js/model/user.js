@@ -9,33 +9,33 @@ class User {
 	
 	
 	#getAge = function (match) {
-	let day_user = parseInt(match[1]);
-	let month_user = parseInt(match[2]);
-	let year_user = parseInt(match[3]);
+		let day_user = parseInt(match[1]);
+		let month_user = parseInt(match[2]);
+		let year_user = parseInt(match[3]);
 
-	let today = new Date();
+		let today = new Date();
 
-	let today_day = today.getDate();
-	let today_month = today.getMonth() + 1;
-	let today_year = today.getFullYear();
+		let today_day = today.getDate();
+		let today_month = today.getMonth() + 1;
+		let today_year = today.getFullYear();
 
 
-	let age = today_year - year_user;
+		let age = today_year - year_user;
 
-	if (age != 16)
-		return age;
+		if (age != 16)
+			return age;
 
-	if (today_month < month_user)
-		return age - 1;
-
-	else if (today_month == month_user) {
-		if (today_day < day_user)
+		if (today_month < month_user)
 			return age - 1;
 
-	}
+		else if (today_month == month_user) {
+			if (today_day < day_user)
+				return age - 1;
 
-	return age;
-}
+		}
+
+		return age;
+	}
 
 	static Builder = class {
 
@@ -51,7 +51,13 @@ class User {
 			/*if (_regex.test(name)) {
 				this.#product.name = name;
 			}*/
-			this.#product.name = name;
+			let _regex = /^.+$/;
+			if(_regex.test(name)){			
+				this.#product.name = name;
+			}
+			else{
+				throw new Error("Il campo è obbligatorio");
+			}
 		}
 
 
@@ -60,20 +66,26 @@ class User {
 			/*if (_regex.test(surname)) {
 				this.#product.surname = surname;
 			}*/
-			this.#product.surname = surname;
+			let _regex = /^.+$/;
+			if(_regex.test(surname)){			
+				this.#product.surname = surname;
+			}
+			else{
+				throw new Error("Il campo è obbligatorio");
+			}
 		}
 
 		withDateOfBirth = function(dateOfBirth) {
 			var _regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
 			if (_regex.test(dateOfBirth)) {
 				var match = dateOfBirth.match(_regex);
-				let age = this.#getAge(match);
+				let age = this.#product.#getAge(match);
 				if (age < 0) throw new Error("La data inserita è successiva a quella odierna");
 				if (age < 16) throw new Error("Devi aver almeno compiuto 16 anni d'età");
 				this.#product.dateOfBirth = dateOfBirth;
 			}
 			else
-				throw new Error("La data inserita non è valida'");
+				throw new Error("La data inserita non è valida");
 		}
 		
 		withAddress = function(address){
