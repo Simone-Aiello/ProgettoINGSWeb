@@ -1,3 +1,10 @@
+
+function resizeFont(element,sizes){
+	for(let size of size){
+						
+	}
+}
+
 function createAdvertiseCardDetail(data){
 
     let body = document.body;
@@ -155,6 +162,12 @@ function createAdvertiseCardDetail(data){
         if ($(window).width() <= 425) {  
             card_description.classList.add("mt-3");
             card_province.style = "margin-left: 0;" ;
+			if(data.title.length > 15 )
+			    card_title.style.fontSize = "16px" ;
+			if(data.title.length > 25 )
+			    card_title.style.fontSize = "14px" ;
+			if(data.title.length > 35 )
+			    card_title.style.fontSize = "12px" ;
             card_information.style.fontSize = "13px";
             if(data.province.length > 15 )
                 card_province.style.fontSize = "10px" ;
@@ -167,6 +180,12 @@ function createAdvertiseCardDetail(data){
             modal_bg.style.padding = "0 10px";
 			
         }else{
+			if(data.title.length > 15 )
+			    card_title.style.fontSize = "20px" ;
+			if(data.title.length > 25 )
+			    card_title.style.fontSize = "18px" ;
+			if(data.title.length > 35 )
+			    card_title.style.fontSize = "16px" ;
             card_description.classList.remove("mt-3");
             card_province.style.marginLeft = "28%";
             card_province.style.marginRight = "5px";
@@ -258,6 +277,7 @@ function createCard(data){
     card.className = "card shadow rounded";
     card.style = "width: 18rem;";
     card.style.visibility = "hidden" ;
+	card.style.margin = "10px";
     
     let card_body = document.createElement("div");
     card_body.className = "card-body" ;
@@ -272,7 +292,7 @@ function createCard(data){
         card_title.style.fontSize = "14px" ;
     if(data.title.length > 25 )
         card_title.style.fontSize = "12px" ;
-        if(data.title.length > 35 )
+    if(data.title.length > 35 )
         card_title.style.fontSize = "10px" ;
     card_title.innerHTML = data.title ;
 
@@ -347,7 +367,7 @@ function createCard(data){
        
         if(card_details == null ){
             console.log(data.title);
-            card.addImages([ "./images/immagine2.jpg", "./images/immagine2.jpg", "./images/immagine3.jpeg"]);
+            card.addImages([ "../images/immagine2.jpg", "../images/immagine2.jpg", "../images/immagine3.jpeg"]);
     	    data.imgs_url = imgs_url ;    
             console.log(data.imgs_url);
 			card_details = createAdvertiseCardDetail(data);

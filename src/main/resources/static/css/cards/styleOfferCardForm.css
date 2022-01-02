@@ -1,0 +1,38 @@
+.icon-button{ padding: 0; font-size: 20px; width: 34px;}
+.space-between{ display: flex; justify-content: space-between; }
+.color-card-offer-form{color: #f4a261;}
+.background-color-card-offer-form{background-color: #f4a261;}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.card-offer-form{
+    width: 32rem;
+    margin: 10px;
+    padding: 10px;
+}
+
+.close-button-offer-form{
+    height: 45px;
+    font-size: 32px !important;
+}
+
+
+.date-offer-form{
+    margin-left: 10px;
+    width: 40%;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(244, 162, 97, 0.7);
+}
+
+.description-offer-form{
+    height: 150px;
+    max-height: 150px;
+    min-height: 150px;
+    overflow-y: auto;
+    width: 100%;
+}
+    
