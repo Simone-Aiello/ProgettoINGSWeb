@@ -7,7 +7,7 @@ import com.progetto.Utils;
 public class Address {
 	
 	// COME SCRIVERLA QUA
-	private static final String PATTERN_ONLY_LETTERS = "((\\p{L}+-)*(\\p{L}+')*(\\p{L}+\\s)*)*\\p{L}+" ;
+	private static final String PATTERN_ONLY_LETTERS = "((\\p{L}+\\/)*(\\p{L}+-)*(\\p{L}+')*(\\p{L}+\\s)*)*\\p{L}+" ;
 	
 	private static final String PATTERN_ONLY_NUMBERS = "[0-9]+" ;
 	

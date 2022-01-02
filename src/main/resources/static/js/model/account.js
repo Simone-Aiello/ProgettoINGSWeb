@@ -24,8 +24,9 @@ class Account {
 		}
 
 		withPassword = function(password) {
-			var _regex = /^[a-zA-Z0-9!@#$%^_&*]{6,16}.(?=[!@#$%^_&?-\\\/*]).$/g
-			if (_regex.test(password)) {
+			var _regex = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,16}$/
+			//let _regex2 = /.*(?=[!@#$%^_&?-\\\/*]).$/g
+			if (_regex.test(password) /*&& _regex2.text(password)*/) {
 				this.#product.password = password;
 			}
 			else
@@ -64,9 +65,6 @@ class Account {
 			this.#product.personalInfo = user;
 			return this;
 		}
-		withAddress = function(address){
-			this.#product.address = address;
-		}
 		withProfilePic = function(profilePic){
 			this.#product.profilePic = profilePic;
 		}
@@ -74,7 +72,6 @@ class Account {
 			this.areasList.push(area);
 		}
 		removeArea = function(area){
-			console.log(area);
 			this.areasList = this.areasList.filter((elem) =>{
 				return elem["id"] != area;
 			});

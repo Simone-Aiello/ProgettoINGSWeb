@@ -31,12 +31,12 @@ i{
     	width: 85%;
 	}
 }
-#test{
+.centered-div{
 	display: flex;
 	justify-content: center;
 }
-#profile-pic{
-	widows: 300px;
+.rounded-photo{
+	
 	height: 300px;
 	clip-path: circle(40%);
 }
@@ -82,4 +82,10 @@ i{
 }
 #picture-and-areas{
 	display: none;
+}
+.bold {
+	font-weight:bold;
+}
+#summary{
+	display:none;
 }

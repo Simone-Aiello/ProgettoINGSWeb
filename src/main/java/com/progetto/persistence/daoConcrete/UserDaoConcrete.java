@@ -28,6 +28,7 @@ public class UserDaoConcrete implements UserDao{
 
 	@Override
 	public long save(User u) throws SQLException {
+		 long id = -1;
 		 if(exists(u)) {
 			 String UPDATE_USER = "update utenti cognome = ?, nome = ?, data_nascita = ?, indirizzo_utente = ? where id = ?";
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(UPDATE_USER);
@@ -37,18 +38,22 @@ public class UserDaoConcrete implements UserDao{
 			 ps.setLong(4, u.getAddress().getId());
 			 ps.setLong(5, u.getId());
 			 ps.executeUpdate();
+			 id = u.getId();
 		 }else {
-			 String SAVE_USER = "insert into utenti(id,cognome,nome,data_nascita,indirizzo_utente) values(null,?,?,?,?) RETURNING id";
+			 //Salvo l'indirizzo dell'utente e mi faccio ritornare l'id
+			 long addressId = Database.getInstance().getAddressDao().save(u.getAddress());
+			 
+			 String SAVE_USER = "insert into utenti(cognome,nome,data_nascita,indirizzo_utente) values(?,?,?,?) RETURNING id";
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(SAVE_USER);
-			 ps.setString(2, u.getSurname());
-			 ps.setString(3, u.getName());
-			 ps.setDate(4, (Date) u.getDateOfBirth().toDate());
-			 ps.setLong(5, u.getAddress().getId());
+			 ps.setString(1, u.getSurname());
+			 ps.setString(2, u.getName());
+			 ps.setDate(3, new Date(u.getDateOfBirth().toDate().getTime()));
+			 ps.setLong(4, addressId);
 			 ResultSet rs = ps.executeQuery();
 			 rs.next();
-			 u.setId(rs.getLong("id"));
+			 id = rs.getLong("id");
 		 }
-		 return u.getId();
+		 return id;
 	}
 	
 	//TODO

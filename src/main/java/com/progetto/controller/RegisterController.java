@@ -1,14 +1,16 @@
 package com.progetto.controller;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.progetto.EmailSender;
 import com.progetto.model.Account;
 import com.progetto.persistence.Database;
 
@@ -16,17 +18,13 @@ import com.progetto.persistence.Database;
 public class RegisterController {
 	@PostMapping("/registerWorker")
 	public void registerWorker(@RequestBody Account account,HttpServletResponse resp) {
-		if(account.getAccountType() != Account.WORKER) {
-			try {
-				resp.sendError(400);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			account.setAccountType("w");
+			Database.getInstance().getAccountDao().save(account);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else {
-			//Fare qui la registrazione
-		}
-		System.out.println(account.getProfilePic().getValue().charAt(0));
 	}
 	@PostMapping("/usernameUnique")
 	public boolean usernameUnique(@RequestBody String data,HttpServletResponse resp) {
@@ -45,5 +43,14 @@ public class RegisterController {
 			resp.setStatus(500);
 		}
 		return false;
+	}
+	@GetMapping("/activateAccount")
+	public void activateAccount(@RequestParam("code") String code) {
+		try {
+			Database.getInstance().getAccountDao().validate(code);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
