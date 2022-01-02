@@ -1,9 +1,13 @@
+
+
+/*
 .centeredDiv {
   max-height: 100px !important;
 }
 #header{
 	white-space: nowrap;
 }
+
 .tales {
   width: 100%;
 }
@@ -12,7 +16,7 @@
   height:150px !important;
   max-height: 150px !important;
 }
-
+*/
 .resized-image{
 	object-fit: cover;
 	object-position: center;

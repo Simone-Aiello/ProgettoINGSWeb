@@ -81,11 +81,11 @@ var handleFile = function(file){
 			deleteButton.setAttribute("src", "/images/x-lg.svg");
 			deleteButton.addEventListener("click", function(){
 				document.getElementById("nextButton").click();
-				alert("delete clicked");
+				//alert("delete clicked");
 				var carouselItemId = this.parentElement.getAttribute("id");
-				alert(carouselItemId);
+				//alert(carouselItemId);
 				var carouselIndicator = document.querySelector("#sliderTo" + carouselItemId);
-				alert(carouselIndicator.getAttribute("id"));
+				//alert(carouselIndicator.getAttribute("id"));
 				carouselIndicator.remove();
 				this.parentNode.remove();
 				numberOfImages = numberOfImages-1;
