@@ -1,15 +1,15 @@
 package com.progetto.controller;
 
+
+
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.progetto.Utils;
@@ -22,39 +22,26 @@ public class loginServlet{
 	String dbPassword = BCrypt.hashpw("giovanni123!", BCrypt.gensalt(6));
 	
 	@PostMapping("/login")
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		if(username.isEmpty() || password.isEmpty()) {
-			//username or password empty
-		    response.sendRedirect("/Login.html?error=empty_username_or_password_field");
-			System.out.println("error password and username required");
-		}else{
-			//try {
-				
-				//Account account = Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.COMPLETE);
-				//Aggiornare con criptazione a chiave asimmetrica
-				//if(account != null && BCrypt.checkpw(password,account.getPassword())) {
-				if(BCrypt.checkpw(password,dbPassword)){ //commentare questa e decommentare le altre per usare il dao
-					//Redirect user to dashboard page ALL GOOD
-					response.sendRedirect("/Dashboard.html");
-				}else {
-					//invalid username or password
-					response.sendRedirect("/Login.html?error=invalid_password_or_username");
-				}
-				
-			//} catch (SQLException e) {
-				 //TODO Auto-generated catch block
-			// 	 e.printStackTrace();
-			//}
+	public Account test(@RequestBody Account a, HttpServletResponse resp) {
+		Account account = null;
+		if(a.getEmail() == null) {
+			try {
+				account = Database.getInstance().getAccountDao().findByPrimaryKey(a.getUsername(), Utils.COMPLETE);	
+			} catch (SQLException e) {
+				resp.setStatus(204); // 204 : The server successfully processed the request, and is not returning any content.[
+			}
+		}else {
+			try {
+				account = Database.getInstance().getAccountDao().findByEmail(a.getUsername());
+			} catch (SQLException e) {
+				resp.setStatus(204);
+			}
 		}
 		
-		
-		
-		
-		
+		if(account == null || !BCrypt.checkpw(a.getPassword(), account.getPassword())) {
+			resp.setStatus(204);
+		}
+		return account;
 	}
 	
 	

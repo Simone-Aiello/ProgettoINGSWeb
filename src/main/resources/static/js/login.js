@@ -1,6 +1,7 @@
 import { Account } from "./model/account.js";
 
 var loginCredentials = new Account.Builder();
+var account;
 
 function createAlert(message){
 	var div = document.createElement('div');
@@ -16,39 +17,34 @@ function pageListener(){
 	$( window ).load(function() {
  		var path = window.location.href;
 		var splitted = path.split("?error=");
-		if(splitted[1] === "empty_username_or_password_field"){
-			var div = createAlert('empty username or password field');
-			console.log(div);
-			document.getElementById('alert').appendChild(div);
-		}else if(splitted[1] === "invalid_password_or_username"){
-			var div = createAlert('invalid password or username');
+		if(splitted[1] === "invalid_password_or_username"){
+			var div = createAlert('Invalid password or username');
 			document.getElementById('alert').appendChild(div);
 		}
 	});
 }
 
 function doLogin(){
-	let usernameOrEmail = document.getElementById('emailField').value;
-	let password = document.getElementById('passwordField').value;
-	try{
-		loginCredentials.withEmail(usernameOrEmail);
-	}catch{
-		try{
-			loginCredentials.withUsername(usernameOrEmail);
-		}
-		catch(e){
-			console.log(e.message);
-			return;
-		}
-	}
-	try{
-		loginCredentials.withPassword(password);
-	}catch(e){
-		console.log(e.message);
-		return;
-	}
+	//comprendere se la build è avvenuta con successo
 	loginCredentials = loginCredentials.build();
-	console.log("finshed");
+	console.log(loginCredentials);
+	$.ajax({
+		type : "POST",
+		url : "/login",
+		contentType: "application/json",
+		data : JSON.stringify(loginCredentials),
+		success : (response) =>{
+			account = response;
+			if(account == null)
+				window.location.replace("Login.html?error=invalid_password_or_username");
+			else
+				window.location.replace("Dashboard.html");
+		}, 
+		error : (xhr) =>{
+			console.log("error sending json");
+			//alert(xhr)
+		}		
+	});
 }
 
 
