@@ -15,6 +15,7 @@ public class Offer {
 	private int hoursOfWork;
 	private Advertise advertise;
 
+	
 	public long getId() {
 		return id;
 	}
