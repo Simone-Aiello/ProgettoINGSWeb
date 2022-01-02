@@ -49,10 +49,14 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			st.execute();
 		}
 	}
-
+	private void saveAreas(Advertise a) throws SQLException {
+		for (Area area : a.getInterestedAreas()) {
+			Database.getInstance().getAreaDao().save(area);
+		}
+	}
+	
 	@Override
 	public void save(Advertise a) throws SQLException {
-		// Da gestire ambiti
 		PreparedStatement statement = null;
 		if (exists(a)) {
 			String update = "update annunci set descrizione = ?, titolo = ?, data_scadenza = ?,provincia_annuncio = ? where id = ?;";
@@ -75,10 +79,19 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			statement.execute();
 		}
 		saveImages(a);
+		saveAreas(a);
 	}
-
 	@Override
 	public void delete(Advertise a) throws SQLException {
+		Database.getInstance().getImageDao().deleteByAdvertise(a);
+		Database.getInstance().getOfferDao().deleteByAdvertise(a);
+		
+		//delete associations with areas
+		String deleteAssociatedAreas = "DELETE FROM annunci_ambiti WHERE id_annuncio = ?;";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(deleteAssociatedAreas);
+		stmt.execute();
+		
+		
 		String delete = "delete from annunci where id = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(delete);
 		statement.setLong(1, a.getId());

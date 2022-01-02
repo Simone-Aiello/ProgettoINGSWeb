@@ -41,8 +41,7 @@ function doLogin(){
 				window.location.replace("Dashboard.html");
 		}, 
 		error : (xhr) =>{
-			console.log("error sending json");
-			//alert(xhr)
+			alert(xhr)
 		}		
 	});
 }
@@ -65,6 +64,7 @@ function setUsernameListener(){
 			usernameField.addClass("is-valid");
 		}
 		catch (error) {
+			//loginCredentials.withUsername(null);
 			try{
 				loginCredentials.withEmail(username);
 				accessButton.classList.remove("disabled");

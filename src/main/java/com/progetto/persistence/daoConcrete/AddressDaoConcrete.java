@@ -22,20 +22,19 @@ public class AddressDaoConcrete implements AddressDao {
 	}
 
 	@Override
-	public void save(Address a) throws SQLException {
+	public long save(Address a) throws SQLException {
 		 if(exists(a)) {
-			 String UPDATE_USER = "update indirizzi set id = ?, via = ?, numero_civico = ?, cap = ?, citta = ?, provincia = ? where id = ?";
+			 String UPDATE_USER = "update indirizzi set via = ?, numero_civico = ?, cap = ?, citta = ?, provincia = ? where id = ?";
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(UPDATE_USER);
-			 ps.setLong(1, a.getId());
-			 ps.setString(2, a.getVia());
-			 ps.setString(3, a.getHouseNumber());
-			 ps.setString(4, a.getZipCode());
-			 ps.setString(5, a.getTown());
-			 ps.setString(6, a.getProvince());
-			 ps.setLong(7, a.getId());
+			 ps.setString(1, a.getVia());
+			 ps.setString(2, a.getHouseNumber());
+			 ps.setString(3, a.getZipCode());
+			 ps.setString(4, a.getTown());
+			 ps.setString(5, a.getProvince());
+			 ps.setLong(6, a.getId());
 			 ps.executeUpdate();
 		 }else {
-			 String SAVE_USER = "insert into indirizzi(id,via,numero_civico,cap,citta,provincia) values(?,?,?,?,?,?)";
+			 String SAVE_USER = "insert into indirizzi(id,via,numero_civico,cap,citta,provincia) values(null,?,?,?,?,?) RETURNING id";
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(SAVE_USER);
 			 ps.setLong(1, a.getId());
 			 ps.setString(2, a.getVia());
@@ -43,11 +42,12 @@ public class AddressDaoConcrete implements AddressDao {
 			 ps.setString(4, a.getZipCode());
 			 ps.setString(5, a.getTown());
 			 ps.setString(6, a.getProvince());
-			 ps.execute();
+			 ResultSet rs = ps.executeQuery();
+			 a.setId(rs.getLong("id"));
 		 }
-		
+		return a.getId();
 	}
-
+	//TODO CHECK THAT THERE ARE NO USERS WITH THIS ADDRESS BEFORE DELETE
 	@Override
 	public void delete(Address a) throws SQLException {
 		if(exists(a) && a != null) {

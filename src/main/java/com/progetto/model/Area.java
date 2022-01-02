@@ -7,11 +7,13 @@ import com.progetto.Utils;
 public class Area {
 	private long id;
 	private String name;
+	private String icon;
+	
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
-		isTrue(id >0);
+		isTrue(id > 0);
 		this.id = id;
 	}
 	public String getName() {
@@ -21,6 +23,12 @@ public class Area {
 		notNull(name);
 		Utils.sanitizeXSS(name);
 		this.name = name;
+	}
+	public String getIcon() {
+		return icon;
+	}
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 	
 	

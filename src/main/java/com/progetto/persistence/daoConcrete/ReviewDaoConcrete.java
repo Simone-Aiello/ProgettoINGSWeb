@@ -65,4 +65,12 @@ public class ReviewDaoConcrete implements ReviewDao {
 		statement.execute();
 		saveImages(review);
 	}
+
+	@Override
+	public void deleteByWorker(Account a) throws SQLException {
+		String query = "DELETE FROM recensioni WHERE username_lavoratore = ?;";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, a.getUsername());
+		stmt.execute();
+	}
 }

@@ -4,7 +4,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 
 public class Image {
 	private long id;
-	private String url;
+	private String value;
 	public long getId() {
 		return id;
 	}
@@ -12,10 +12,10 @@ public class Image {
 		isTrue(id >0);
 		this.id = id;
 	}
-	public String getUrl() {
-		return url;
+	public String getValue() {
+		return value;
 	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setValue(String value) {
+		this.value = value;
 	}
 }

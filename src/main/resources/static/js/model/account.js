@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 export class Account {
 
+=======
+class Account {
+>>>>>>> 0db4651846f5f677aae57c3d963aad9d430b7ee6
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
 	constructor(key) {
@@ -13,6 +17,7 @@ export class Account {
 
 		constructor() {
 			this.built = false;
+			this.areasList = [];
 		}
 
 		withUsername = function(username) {
@@ -64,11 +69,25 @@ export class Account {
 			this.#product.user = user;
 			return this;
 		}
-
-
+		withAddress = function(address){
+			this.#product.address = address;
+		}
+		withProfilePic = function(profilePic){
+			this.#product.profilePic = profilePic;
+		}
+		withArea = function(area){
+			this.areasList.push(area);
+		}
+		removeArea = function(area){
+			console.log(area);
+			this.areasList = this.areasList.filter((elem) =>{
+				return elem["id"] != area;
+			});
+		}
 		build = function() {
 			if (this.built) throw new Error("This builder has already been used");
 			this.built = true;
+			this.#product.areasOfWork = this.areasList; 
 			return this.#product;
 
 		}
