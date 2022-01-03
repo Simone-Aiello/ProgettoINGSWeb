@@ -25,7 +25,32 @@ function pageListener(){
 }
 
 function doLogin(){
-	//comprendere se la build è avvenuta con successo
+	let passwordField = $("#passwordField");
+	let password = passwordField.val();
+	let usernameField = $("#emailField");
+	let username = usernameField.val();
+	
+	
+	try{
+		loginCredentials.withUsername(username);
+	}catch(e){
+		try{
+			loginCredentials.withEmail(username);
+		}catch(e1){
+			var div = createAlert('Invalid username or email');
+			document.getElementById('alert').appendChild(div);
+			return;
+		}
+	}
+	try{
+		loginCredentials.withPassword(password);
+	}catch(e){
+		var div = createAlert('Invalid password');
+		document.getElementById('alert').appendChild(div);
+		return;
+	}
+	
+	
 	loginCredentials = loginCredentials.build();
 	console.log(loginCredentials);
 	$.ajax({
@@ -35,8 +60,10 @@ function doLogin(){
 		data : JSON.stringify(loginCredentials),
 		success : (response) =>{
 			account = response;
-			if(account == null)
+			if(account == null){
 				window.location.replace("Login.html?error=invalid_password_or_username");
+				alert(account);
+				}
 			else
 				window.location.replace("Dashboard.html");
 		}, 
@@ -53,8 +80,9 @@ function setLoginListener(){
 }
 
 
-function setUsernameListener(){
+/*function setUsernameListener(){
 	let accessButton = document.getElementById('accessButton');
+	
 	$("#emailField").on("input", () => {
 		let usernameField = $("#emailField");
 		let username = usernameField.val();
@@ -63,8 +91,9 @@ function setUsernameListener(){
 			accessButton.classList.remove("disabled");
 			usernameField.removeClass("is-invalid");
 			usernameField.addClass("is-valid");
+
 		}
-		catch (error) {
+		catch (error){
 			try{
 				loginCredentials.withEmail(username);
 				accessButton.classList.remove("disabled");
@@ -97,11 +126,11 @@ function setPasswordLister(){
 			passwordField.addClass("is-invalid");
 		}
 	});
-}
+}*/
 
 $(document).ready(() => {
 	setLoginListener();
-	setUsernameListener();
-	setPasswordLister();
+	//setUsernameListener();
+	//setPasswordLister();
 	pageListener();
 });

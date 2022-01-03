@@ -2,7 +2,6 @@ package com.progetto.controller;
 
 
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +37,7 @@ public class loginServlet{
 			}
 		}
 		
-		if(account == null || !BCrypt.checkpw(a.getPassword(), account.getPassword())) {
+		if(/*account == null || */!BCrypt.checkpw(a.getPassword(), dbPassword)) {
 			resp.setStatus(204);
 		}
 		return account;
