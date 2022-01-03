@@ -17,7 +17,6 @@ public class AreaDaoConcrete implements AreaDao{
 	private Area loadArea(ResultSet resultSet) throws SQLException {
 		
 		Area area = new Area();
-		
 		area.setId(resultSet.getLong("id"));
 		area.setName(resultSet.getString("nome"));
 		area.setIcon(resultSet.getString("icona"));
@@ -140,6 +139,29 @@ public class AreaDaoConcrete implements AreaDao{
 			a.setIcon(set.getString("icona"));
 			
 			areas.add(a);
+		}
+		return areas;
+	}
+
+
+	@Override
+	public void linkToAccount(Area area, Account account) throws SQLException {
+		String query = "insert into account_ambiti values(?,?)";
+		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
+		statement.setString(1, account.getUsername());
+		statement.setLong(2, area.getId());
+		statement.execute();
+	}
+
+
+	@Override
+	public List<Area> findAll() throws SQLException {
+		List<Area> areas = new ArrayList<Area>();
+		String query = "select * from ambiti";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		ResultSet set = st.executeQuery();
+		while(set.next()) {
+			areas.add(loadArea(set));
 		}
 		return areas;
 	}

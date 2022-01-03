@@ -3,7 +3,30 @@ var account_builder = new Account.Builder();
 var user_builder = new User.Builder();
 var address_builder = new Address.Builder();
 var currentSection = 0;
-var steps = ["personal-information","picture-and-areas"];
+var steps = ["personal-information", "picture-and-areas","summary"];
+function sendAccount() {
+	user_builder.withAddress(address_builder.build());
+	account_builder.withUser(user_builder.build());
+	account_builder.withProfilePic(imageBuilder.build());
+	var account = account_builder.build();
+	console.log(account);
+	$.ajax({
+		type: "POST",
+		url: "/registerWorker",
+		contentType: "application/json",
+		data: JSON.stringify(account),
+		success: (response) => {
+			console.log("Fare redirect a profilo personale");
+		},
+		error: (xhr) => {
+			console.log(xhr);
+		}
+	});
+}
+function updateSummary(idElement,currentText){
+	let idSummary = "#summary-" + idElement;
+	$(idSummary).text(currentText);
+}
 function removePreviousError(idElement) {
 	let errorId = "#" + idElement + "-error";
 	$(errorId).remove();
@@ -36,38 +59,38 @@ function appendCorrect(idElement) {
 function checkFormError(sectionId) {
 	let ok = true;
 	$("#" + sectionId).find('input').each(function() {
-		if($(this).prop('required') && $(this).val() === "") {
+		if ($(this).prop('required') && $(this).val() === "") {
 			ok = false;
 			appendError($(this).attr("id"), "Il campo è obbligatorio");
 		}
-		else if($(this).hasClass("is-invalid")){
+		/*else if ($(this).hasClass("is-invalid")) {
 			ok = false;
-		}
+		}*/
 	});
 	$("#" + sectionId).find('select').each(function() {
 		if ($(this).prop('required') && $(this).val() === null) {
 			ok = false;
 			appendError($(this).attr("id"), "Il campo è obbligatorio");
 		}
-		else if($(this).hasClass("is-invalid")){
+		else if ($(this).hasClass("is-invalid")) {
 			ok = false;
 		}
 	});
 	return ok;
 }
-function animateFormTransition(sectionToHide,sectionToShow){
+function animateFormTransition(sectionToHide, sectionToShow) {
 	let idHide = "#" + sectionToHide;
 	let idShow = "#" + sectionToShow;
 	$(idHide).hide("slow");
 	$(idShow).show("slow");
 }
-function checkUsernameUnique(username){
-		return new Promise((resolve, reject) => {
+function checkUsernameUnique(username) {
+	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "POST",
 			url: "/usernameUnique",
 			contentType: "application/json",
-			data: JSON.stringify(username),
+			data: username,
 			success: (response) => {
 				resolve(response);
 			},
@@ -77,13 +100,13 @@ function checkUsernameUnique(username){
 		});
 	});
 }
-function checkEmailUnique(email){
+function checkEmailUnique(email) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "POST",
 			url: "/emailUnique",
 			contentType: "application/json",
-			data: JSON.stringify(email),
+			data: email,
 			success: (response) => {
 				resolve(response);
 			},
@@ -96,32 +119,36 @@ function checkEmailUnique(email){
 function switchToNextSection() {
 	switch (currentSection) {
 		case 0:
-			if(checkFormError("personal-information")){
+			if (checkFormError("personal-information")) {
 				let username = $("#username").val();
 				let email = $("#email").val();
-				Promise.all([checkUsernameUnique(username),checkEmailUnique(email)]).then((data) =>{
-					if(!data[0]){
-						appendError("username","Username già in uso sul sito");	
+				Promise.all([checkUsernameUnique(username), checkEmailUnique(email)]).then((data) => {
+					if (!data[0]) {
+						appendError("username", "Username già in uso sul sito");
 					}
-					else if(!data[1]){
-						appendError("email","Email già in uso sul sito");	
+					else if (!data[1]) {
+						appendError("email", "Email già in uso sul sito");
 					}
-					else{
-						animateFormTransition(steps[currentSection],steps[currentSection+ 1]);
+					else {
+						animateFormTransition(steps[currentSection], steps[currentSection + 1]);
 						currentSection++;
 					}
-				}).catch((error) =>{
+				}).catch((error) => {
 					showSystemError();
-				});				
+				});
 			}
 			break;
 		case 1:
-			account_builder.withUser(user_builder.build());
-			account_builder.withAddress(address_builder.build());
-			account_builder.withProfilePic(imageBuilder.build());
-			console.log(JSON.stringify(account_builder.build()));
+			if (atLeastOneArea()) {
+				animateFormTransition(steps[currentSection], steps[currentSection + 1]);
+				currentSection++;
+			}
+			else {
+				appendError("last", "Selezionare almeno un ambito");
+			}
 			break;
 		case 2:
+				sendAccount();
 			break;
 	}
 }
@@ -194,11 +221,20 @@ function getProvince() {
 		success: function(risposta) {
 			let work = $("#province-of-work");
 			let province = $("#province");
-			for (let p of risposta) {
-				let provinceName = capitalizeFirstLetter(p["nome"]);
+			let arrayProvince = [];
+			for(let p of risposta){
+				arrayProvince.push(capitalizeFirstLetter(p["nome"]));
+			}
+			arrayProvince.sort();
+			for(let provinceName of arrayProvince){
 				work.append("<option>" + provinceName + "</option>");
 				province.append("<option>" + provinceName + "</option>");
 			}
+			/*for (let p of risposta) {
+				let provinceName = capitalizeFirstLetter(p["nome"]);
+				work.append("<option>" + provinceName + "</option>");
+				province.append("<option>" + provinceName + "</option>");
+			}*/
 		},
 		error: function(xhr) {
 			showSystemError();
@@ -216,6 +252,7 @@ function addUsernameListeners() {
 		catch (error) {
 			appendError("username", error.message);
 		}
+		updateSummary("username",usernameField.val());
 	});
 }
 function addEmailListeners() {
@@ -229,6 +266,7 @@ function addEmailListeners() {
 		catch (error) {
 			appendError("email", error.message);
 		}
+		updateSummary("email",email);
 	});
 }
 function addNameListeners() {
@@ -238,8 +276,9 @@ function addNameListeners() {
 			appendCorrect("name");
 		}
 		catch (error) {
-			appendError("name", "Il campo è obbligatorio");
+			appendError("name", error.message);
 		}
+		updateSummary("name",$("#name").val());
 	});
 }
 function addSurnameListeners() {
@@ -249,8 +288,9 @@ function addSurnameListeners() {
 			appendCorrect("surname");
 		}
 		catch (error) {
-			appendError("surname", "Il campo è obbligatorio");
+			appendError("surname", error.message);
 		}
+		updateSummary("surname",$("#surname").val());
 	});
 }
 function addTelephoneListeners() {
@@ -264,6 +304,7 @@ function addTelephoneListeners() {
 		catch (error) {
 			appendError("telephone", error.message);
 		}
+		updateSummary("telephone",telephoneValue);
 	})
 }
 function addDateOfBirthListeners() {
@@ -273,12 +314,13 @@ function addDateOfBirthListeners() {
 		try {
 			let datePart = dateValue.split("-");
 			let date = datePart[2] + "/" + datePart[1] + "/" + datePart[0];
-			user_builder.withDateOfBirth(date);
+			user_builder.withDateOfBirth(dateValue);
 			appendCorrect("date-of-birth");
 		}
 		catch (error) {
 			appendError("date-of-birth", error.message);
 		}
+		updateSummary("date-of-birth",dateValue);
 	});
 }
 function loadZipCode() {
@@ -288,6 +330,7 @@ function loadZipCode() {
 		if (c["nome"] === currentCity) {
 			$("#zip-code").val(c["cap"]);
 			address_builder.withZipCode(c["cap"]);
+			updateSummary("zip-code",$("#zip-code").val());
 			return;
 		}
 	}
@@ -311,7 +354,10 @@ function loadCity(selectedProvince) {
 			for (c of city[selectedProvince]) {
 				currentCity.append("<option>" + c["nome"] + "</option>");
 			}
+			address_builder.withTown($("#city").val());
+			appendCorrect("city");
 			loadZipCode();
+			updateSummary("city",$("#city").val());
 		},
 		error: function(xhr) {
 			showSystemError();
@@ -338,21 +384,50 @@ function addProvinceAndCityListeners() {
 		catch (error) {
 			appendError("city", error.message);
 		}
+		updateSummary("city",townVal);
 	});
-	$("#province").on("input", () => {
+	$("#province").change((event) => {
+			var selectedProvince = (event.target.value);
+		try{
+			address_builder.withProvince(selectedProvince);
+			account_builder.withProvinceOfWork(selectedProvince);
+			let lowerCaseSelected = selectedProvince.toLowerCase();
+			let currentCity = $("#city");
+			currentCity.html("");
+			if (city.hasOwnProperty(lowerCaseSelected)) {
+				for (c of city[lowerCaseSelected]) {
+					currentCity.append("<option>" + c + "</option>");
+				}
+				address_builder.withTown(currentCity.val());
+				loadZipCode();
+			}
+			else {
+				loadCity(lowerCaseSelected);
+			}
+			appendCorrect("province");
+			$("#province-of-work").val(selectedProvince);
+			appendCorrect("province-of-work");
+		}
+		catch(error){
+			appendError("province");
+		}
+		updateSummary("province",selectedProvince);
+		updateSummary("province-of-work",selectedProvince);
+	});
+	/*$("#province").on("input", () => {
+		console.log("input");
 		try {
 			let selected = $("#province").val();
-			address_builder.withProvince(selected);
-			$("#province-of-work").val(selected);
-			appendCorrect("province");
+			
 			appendCorrect("city");
-			appendCorrect("province-of-work");
+			
 		}
 		catch (error) {
 			appendError("province");
 		}
 	});
 	$("#province").change((event) => {
+		console.log("change");
 		let selectedProvince = (event.target.value).toLowerCase();
 		let currentCity = $("#city");
 		currentCity.html("");
@@ -365,7 +440,9 @@ function addProvinceAndCityListeners() {
 		else {
 			loadCity(selectedProvince);
 		}
-	});
+		console.log($("#city").val());
+		address_builder.withTown($("#city").val());
+	});*/
 }
 function addAddressListeners() {
 	$("#via").on("input", () => {
@@ -378,6 +455,7 @@ function addAddressListeners() {
 		catch (error) {
 			appendError("via", error.message);
 		}
+		updateSummary("via",viaField.val());
 	});
 	$("#house-number").on("input", () => {
 		let houseNumberField = $("#house-number");
@@ -388,6 +466,7 @@ function addAddressListeners() {
 		catch (error) {
 			appendError("house-number-error", error.message);
 		}
+		updateSummary("house-number",$("#house-number").val());
 	});
 }
 function addNextListeners() {
@@ -395,11 +474,11 @@ function addNextListeners() {
 		switchToNextSection();
 	});
 }
-function addPreviousListeners(){
+function addPreviousListeners() {
 	$("#previous").click(() => {
-		if(currentSection != 0){
-			animateFormTransition(steps[currentSection],steps[currentSection - 1]);
-			currentSection--;			
+		if (currentSection != 0) {
+			animateFormTransition(steps[currentSection], steps[currentSection - 1]);
+			currentSection--;
 		}
 	});
 }

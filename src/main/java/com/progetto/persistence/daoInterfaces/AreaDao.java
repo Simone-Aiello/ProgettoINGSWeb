@@ -15,4 +15,6 @@ public interface AreaDao {
 	void delete(Area area) throws SQLException;
 	List<Area> findByAdvertise(Advertise ann) throws SQLException;
 	List<Area> findByWorker(Account a)throws SQLException;
+	void linkToAccount(Area area,Account account) throws SQLException;
+	List<Area> findAll() throws SQLException;
 }
