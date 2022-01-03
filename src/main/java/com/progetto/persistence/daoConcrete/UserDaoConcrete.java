@@ -22,6 +22,7 @@ public class UserDaoConcrete implements UserDao{
 		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(FIND_BY_PRIMARY_KEY);
 		ps.setLong(1, id);
 		ResultSet set = ps.executeQuery();
+		//if(set.next()) System.out.println("Ha il next");
 		User user = (set.next()) ? loadUser(set,mode) : null;
 		return user;
 	}
@@ -96,15 +97,13 @@ public class UserDaoConcrete implements UserDao{
 	
 	private User loadUser(ResultSet set,int mode) throws SQLException {
 		User user = null;
-		if(set.next()) {
-			user = new User();
-			user.setId(set.getLong("id"));
-			user.setSurname(set.getString("cognome"));
-			user.setName(set.getString("nome"));
-			if(mode != Utils.BASIC_INFO) {
-				user.setDateOfBirth(new DateTime(set.getDate("data_nascita")));
-				user.setAddress(new AddressDaoConcrete().findByPrimarykey(set.getLong("indirizzo_utente")));				
-			}
+		user = new User();
+		user.setId(set.getLong("id"));
+		user.setSurname(set.getString("cognome"));
+		user.setName(set.getString("nome"));
+		if(mode != Utils.BASIC_INFO) {
+			user.setDateOfBirth(new DateTime(set.getDate("data_nascita")));
+			user.setAddress(new AddressDaoConcrete().findByPrimarykey(set.getLong("indirizzo_utente")));				
 		}
 		return user;
 	}

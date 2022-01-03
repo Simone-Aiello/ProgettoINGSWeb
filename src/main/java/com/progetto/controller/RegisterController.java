@@ -9,23 +9,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.progetto.EmailSender;
 import com.progetto.model.Account;
 import com.progetto.persistence.Database;
 
 @RestController
 public class RegisterController {
+	
 	@PostMapping("/registerWorker")
-	public void registerWorker(@RequestBody Account account,HttpServletResponse resp) {
+	public String registerWorker(@RequestBody Account account) {
 		try {
 			account.setAccountType("w");
 			Database.getInstance().getAccountDao().save(account);
+			return "/profilePage?username=" + account.getUsername();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
+	
 	@PostMapping("/usernameUnique")
 	public boolean usernameUnique(@RequestBody String data,HttpServletResponse resp) {
 		try {

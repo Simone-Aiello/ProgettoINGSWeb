@@ -84,6 +84,8 @@ function addAreasIconListener() {
 				addToAreaSummary(areaName);
 			}
 			else{
+				$(this).css("background-color", "#FFFFFF");
+				$(id + " .icon").css("color", "#FF9400");
 				account_builder.removeArea($(id+ " i").attr("id"));
 				removeFromAreaSummary(areaName);
 			}

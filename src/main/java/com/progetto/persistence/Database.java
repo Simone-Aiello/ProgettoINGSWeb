@@ -13,6 +13,7 @@ import com.progetto.persistence.daoConcrete.ImageDaoConcrete;
 import com.progetto.persistence.daoConcrete.MessageDaoConcrete;
 import com.progetto.persistence.daoConcrete.NotificationDaoConcrete;
 import com.progetto.persistence.daoConcrete.OfferDaoConcrete;
+import com.progetto.persistence.daoConcrete.PasswordRecoveryDaoConcrete;
 import com.progetto.persistence.daoConcrete.ReviewDaoConcrete;
 import com.progetto.persistence.daoConcrete.UserDaoConcrete;
 import com.progetto.persistence.daoInterfaces.AccountDao;
@@ -24,6 +25,7 @@ import com.progetto.persistence.daoInterfaces.ImageDao;
 import com.progetto.persistence.daoInterfaces.MessageDao;
 import com.progetto.persistence.daoInterfaces.NotificationDao;
 import com.progetto.persistence.daoInterfaces.OfferDao;
+import com.progetto.persistence.daoInterfaces.PasswordRecoveryDao;
 import com.progetto.persistence.daoInterfaces.ReviewDao;
 import com.progetto.persistence.daoInterfaces.UserDao;
 
@@ -44,6 +46,7 @@ public class Database {
 	private OfferDao offerDao = null;
 	private ReviewDao reviewDao = null;
 	private UserDao userDao = null;
+	private PasswordRecoveryDao passwordRecoveryDao = null;
 	private Database() {
 		try {
 			connection = DriverManager.getConnection(url,username,password);
@@ -125,5 +128,11 @@ public class Database {
 			advertiseDao = new AdvertiseDaoConcrete();
 		}
 		return advertiseDao;
+	}
+	public PasswordRecoveryDao getPasswordRecoveryDao() {
+		if(passwordRecoveryDao == null) {
+			passwordRecoveryDao = new PasswordRecoveryDaoConcrete();			
+		}
+		return passwordRecoveryDao;
 	}
 }

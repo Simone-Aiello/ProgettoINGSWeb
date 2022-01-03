@@ -40,15 +40,12 @@ public class EmailSender implements Runnable{
 		return instance;
 	}
 	
-	public void sendActivationCode(String userMail, String subject, String body) {
+	public void sendEmail(String userMail, String subject, String body) {
 		lastUserMail = userMail;
 		lastSubject = subject;
 		lastBody = body;
 		new Thread(this).start();
-		//sendFromGMail(USER_NAME, PASSWORD, userMail, subject, body);
 	}
-	
-	
 	private void sendFromGMail(String from, String pass, String to, String subject, String body) {
 		Session session = Session.getDefaultInstance(props);
 		MimeMessage message = new MimeMessage(session);
