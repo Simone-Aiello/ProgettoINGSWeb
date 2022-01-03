@@ -1,4 +1,4 @@
-var selectedAreas = {};
+var listOfAreas = new Map();
 var areaBuilder = null;
 $(document).ready(() => {
 	addAreasIconListener();
@@ -8,28 +8,29 @@ $(document).ready(() => {
 function addAreasIconListener() {
 	$(".icon-figure").each(function (key,value){
 		let id = "#area-" + (key + 1);
-		selectedAreas[id] = false;
+		//selectedAreas[id] = false;
 		$(this).mouseenter(() => {
 			$(id).css("background-color", "#FF9400");
 			$(id + " .icon").css("color", "#FFFFFF");
 		});
 		
 		$(this).mouseleave(() => {
-			if (selectedAreas["#"+$(this).attr("id")]) return;
+			if (listOfAreas.has(id)) return;
 			$(this).css("background-color", "#FFFFFF");
 			$(id + " .icon").css("color", "#FF9400");
 		});
 		
 		$(this).click(() => {
 			let id = "#"+$(this).attr("id");
-			selectedAreas[id] = !selectedAreas[id];
-			if(selectedAreas[id]){
+			//alert(id);
+			if(!listOfAreas.has(id)){
 				areaBuilder = new Area.Builder();
-				areaBuilder.withId($(id+ " i").attr("id"));
-				//account_builder.withArea(areaBuilder.build());
+				areaBuilder.withId($(id));
+				var area = areaBuilder.build();
+				listOfAreas.set(id, area);
 			}
 			else{
-				//account_builder.removeArea($(id+ " i").attr("id"));
+				listOfAreas.delete(id);
 			}
 		});
 	});
