@@ -81,7 +81,6 @@ class Account {
 			this.built = true;
 			this.#product.areasOfWork = this.areasList; 
 			return this.#product;
-
 		}
 
 	}

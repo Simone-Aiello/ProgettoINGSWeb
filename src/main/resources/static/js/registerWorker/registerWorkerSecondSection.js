@@ -45,7 +45,7 @@ function addUploadAndDeleteListeners() {
 		$("#remove-photo").css("color", "#FF9400");
 	});
 	$("#remove-photo").click(() => {
-		$("#profile-pic").attr("src", "/images/defaultIcon.png");
+		$("#profile-pic").attr("src", "/usersImages/profilePictures/defaultIcon.png");
 		imageBuilder.withValue(null);
 	});
 }
