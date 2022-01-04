@@ -18,11 +18,10 @@ import com.progetto.persistence.Database;
 @RestController
 public class loginServlet{
 	
-	String dbPassword = BCrypt.hashpw("giovanni123!", BCrypt.gensalt(6));
-	
 	@PostMapping("/login")
 	public Account test(@RequestBody Account a, HttpServletResponse resp) {
 		Account account = null;
+		
 		if(a.getEmail() == null) {
 			try {
 				account = Database.getInstance().getAccountDao().findByPrimaryKey(a.getUsername(), Utils.COMPLETE);	
@@ -31,13 +30,15 @@ public class loginServlet{
 			}
 		}else {
 			try {
-				account = Database.getInstance().getAccountDao().findByEmail(a.getUsername());
+				account = Database.getInstance().getAccountDao().findByEmail(a.getEmail());
+				//System.out.println(account);
 			} catch (SQLException e) {
 				resp.setStatus(204);
 			}
 		}
+		//System.out.println(BCrypt.hashpw(a.getPassword(), BCrypt.gensalt(12)));
 		
-		if(account == null || !BCrypt.checkpw(a.getPassword(), dbPassword)) {
+		if(account == null || !BCrypt.checkpw(a.getPassword(), account.getPassword())) {
 			resp.setStatus(204);
 		}
 		return account;

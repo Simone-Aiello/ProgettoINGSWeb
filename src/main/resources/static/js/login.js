@@ -62,7 +62,7 @@ function doLogin(){
 			account = response;
 			if(account == null){
 				window.location.replace("Login.html?error=invalid_password_or_username");
-				alert(account);
+				//alert(account);
 				}
 			else
 				window.location.replace("Dashboard.html");
