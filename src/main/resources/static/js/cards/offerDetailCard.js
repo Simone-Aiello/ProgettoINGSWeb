@@ -1,8 +1,8 @@
 function createOfferDetailCard(data){
 	//card
 	let card = document.createElement('div');
-	card.className = 'card shadow rounded';
-	card.style = 'width : 32rem';
+	card.className = 'card shadow rounded mt-4';
+	card.style = 'width : 32rem; margin-left : 20px; margin-right : 20px';
 	
 	//card body
 	let card_body = document.createElement('div');
@@ -188,8 +188,7 @@ function createOfferDetailCard(data){
 	
 }
 
-
-$(document).ready(() => {
+/*$(document).ready(() => {
 	body = document.getElementById('body') ;
 
 	card = createOfferDetailCard({
@@ -204,4 +203,4 @@ $(document).ready(() => {
 					description : "Lorem ipsum dolor sit amet. Sit esse maxime id tempora repellendus non odit velit. Id architecto iure aut consequatur totam sed aperiam mollitia ut minus possimus. Nam laudantium perferendis sit velit maiores aut odio laudantium. Qui officia illo qui eveniet officiis et tempora internos 33 tenetur modi quo porro doloribus qui iure odio."
                     }) ;
 	body.append(card);
-});
+});*/
