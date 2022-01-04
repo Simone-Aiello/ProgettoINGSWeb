@@ -53,86 +53,41 @@
 					<hr class = "solid" id = "firstSeparator">
 					
 		<div class = "row mb-3">
-						<label id = ""class="form-label  h4">Aggiungi delle foto</label>
-						<div id="uploadedImage" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
+			<label id = ""class="form-label  h4">Aggiungi delle foto</label>
+			<div id="uploadedImage" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
 		<div id="uploaded-image" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
 		  <div class="carousel-indicators">
 		    <button id = "sliderTo0" type="button" data-bs-target="#uploadedImage" data-bs-slide-to="0" class="active" aria-current="true" ></button>
 		  </div>
 		  <label >Carica alcune immagini</label>
 		  <div class="carousel-inner">
-		  	<div class="container carousel-item active">
-			  <div class="drag-area">
-			    <div class="icon">
-			      <img src="../images/upload.svg" alt="upload">
-			    </div>
-			    <span class="header">Drag & Drop</span>
-			    <span class="header">or 
-			    <label for = "fileChooser" class="button">browse</label></span>
-			    <input id = "fileChooser" type="file"/>
-			    <span class="support">Supports: JPEG, JPG, PNG</span>
-			  </div>
+			  	<div class="container carousel-item active">
+				  <div class="drag-area">
+				    <div class="icon">
+				      <img src="../images/upload.svg" alt="upload">
+				    </div>
+				    <span class="header">Drag & Drop</span>
+				    <span class="header">or 
+				    <label for = "fileChooser" class="button">browse</label></span>
+				    <input id = "fileChooser" type="file"/>
+				    <span class="support">Supports: JPEG, JPG, PNG</span>
+				  </div>
+				</div>
+			  <button id = "prevButton" class="carousel-control-prev" type="button" data-bs-target="#uploaded-image" data-bs-slide="prev">
+			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Previous</span>
+			  </button>
+	
+			  <button id = "nextButton" class="carousel-control-next" type="button" data-bs-target="#uploaded-image" data-bs-slide="next">
+			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Next</span>
+			  </button>
 			</div>
-		  <button id = "prevButton" class="carousel-control-prev" type="button" data-bs-target="#uploaded-image" data-bs-slide="prev">
-		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		    <span class="visually-hidden">Previous</span>
-		  </button>
-
-		  <button id = "nextButton" class="carousel-control-next" type="button" data-bs-target="#uploaded-image" data-bs-slide="next">
-		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		    <span class="visually-hidden">Next</span>
-		  </button>
-		</div>
 		
-	</div>
-</div>	
-								
+		</div>
+	
+		</div>							
 			<hr class = "solid">
-			<!-- 
-			<div id="area-div">
-				<div class="row">
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-1">
-							<i class="fas fa-paint-roller fa-3x icon" id="1"></i>
-						</figure>
-					</div>
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-2">
-							<i class="fas fa-wrench fa-3x icon" id="2"></i>
-						</figure>
-					</div>
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-3">
-							<i class="fas fa-plug fa-3x icon" id="3"></i>
-						</figure>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-4">
-							<i class="fas fa-desktop fa-3x icon" id="4"></i>
-						</figure>
-					</div>
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-5">
-							<i class="fas fa-dog fa-3x icon" id="5"></i>
-						</figure>
-					</div>
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-6">
-							<i class="fas fa-baby-carriage fa-3x icon" id="6"></i>
-						</figure>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-7">
-							<i class="fas fa-faucet fa-3x icon" id="7"></i>
-						</figure>
-					</div>
-				</div>
-			</div>
-			-->
 			<div id = "areaSelector" class = "row">
 							<c:forEach items = "${areas}" var = "area" varStatus = "loop">
 								<div class="col icon-div">
