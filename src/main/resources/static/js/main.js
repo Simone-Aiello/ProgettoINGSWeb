@@ -34,7 +34,7 @@ try{
 var builder = new Account.Builder();
 try{
 	
-	builder.withUsername("salvatore_fiorentino");
+	builder.withUsername("salvatore fiorentino");
 	builder.withPassword("password12345!");
 	builder.withEmail("frnsvt00p13i872s@studenti.unical.it");
 	builder.withNumber("3505978018");

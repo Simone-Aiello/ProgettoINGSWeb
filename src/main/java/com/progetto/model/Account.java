@@ -11,7 +11,7 @@ import com.progetto.Utils;
 public class Account {
 	
 	//PATTERNS
-	private static final String USERNAME_PATTERN = "\\w+" ;
+	private static final String USERNAME_PATTERN = "[\\w-]+" ;
 	private static final String EMAIL_PATTERN = "\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+" ;
 	private static final String NUMBER_PATTERN = "([0-9]{10}|0[0-9]{8})";
 	private static final String PATTERN_TYPEACCOUNT = "[awu]";

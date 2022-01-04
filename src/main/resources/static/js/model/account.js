@@ -1,4 +1,5 @@
 class Account {
+
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
 	constructor(key) {
@@ -16,7 +17,7 @@ class Account {
 		}
 
 		withUsername = function(username) {
-			var _regex = /^\w+(\s\w+)*$/g;
+			var _regex = /^[\w-]+$/g;
 			if (_regex.test(username)) {
 				this.#product.username = username;
 			}
@@ -25,9 +26,8 @@ class Account {
 
 		withPassword = function(password) {
 
-			var _regex = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,16}$/
-			//let _regex2 = /.*(?=[!@#$%^_&?-\\\/*]).$/g
-			if (_regex.test(password) /*&& _regex2.text(password)*/) {
+			var _regex = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,16}$/;
+			if (_regex.test(password)) {
 				this.#product.password = password;
 			}
 			else

@@ -1,4 +1,4 @@
-class User {
+export class User {
 
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 

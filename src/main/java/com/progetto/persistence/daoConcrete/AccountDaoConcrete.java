@@ -35,6 +35,8 @@ public class AccountDaoConcrete implements AccountDao {
 		}
 		return accounts;
 	}
+	
+	
 
 	@Override
 	public Account findByPrimaryKey(String username, int mode) throws SQLException {
@@ -42,8 +44,10 @@ public class AccountDaoConcrete implements AccountDao {
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setString(1, username);
 		ResultSet rs = stmt.executeQuery();
-		Account a = new Account();
-		if (rs.next()) {
+
+		Account a = null;
+		if(rs.next()) {
+			a = new Account();
 			a.setUsername(rs.getString("username"));
 			a.setEmail(rs.getString("email"));
 			a.setValid(rs.getBoolean("account_valido"));
@@ -68,6 +72,26 @@ public class AccountDaoConcrete implements AccountDao {
 					}
 				}
 			}
+		}
+		return a;
+	}
+	
+	public Account findByEmail(String email) throws SQLException{
+		Account a = null;
+		String FIND_BY_EMAIL = "select * from account where username = ?";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(FIND_BY_EMAIL);
+		ps.setString(1, email);
+		ResultSet set = ps.executeQuery();
+		if(set.next()) {
+			a = new Account();
+			a.setUsername(set.getString("username"));
+			a.setEmail(set.getString("email"));
+			a.setNumber(set.getString("telefono"));
+			a.setProvinceOfWork(set.getString("provincia_lavoro"));
+			a.setPersonalInfo(Database.getInstance().getUserDao().findByPrimarykey(set.getLong("id_utente"), Utils.COMPLETE)); 
+			a.setPassword(set.getString("password"));
+			a.setProfilePic(Database.getInstance().getImageDao().findByPrimaryKey(set.getLong("immagine_profilo")));					
+			a.setAccountType(set.getString("tipo_account"));		
 		}
 		return a;
 	}

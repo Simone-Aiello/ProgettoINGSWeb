@@ -108,6 +108,9 @@ public class UserDaoConcrete implements UserDao{
 		return user;
 	}
 
+//<<<<<<< HEAD
+	
+//=======
 	@Override
 	public void deleteByAccount(Account a) throws SQLException {
 		String query = "SELECT id FROM utenti INNER JOIN account ON id = id_utente where username = ?";
@@ -120,6 +123,7 @@ public class UserDaoConcrete implements UserDao{
 			delete(u);
 		}
 	}
+//>>>>>>> 0db4651846f5f677aae57c3d963aad9d430b7ee6
 	
 	
 }
