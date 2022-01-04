@@ -24,6 +24,7 @@ class Account {
 		}
 
 		withPassword = function(password) {
+
 			var _regex = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,16}$/
 			//let _regex2 = /.*(?=[!@#$%^_&?-\\\/*]).$/g
 			if (_regex.test(password) /*&& _regex2.text(password)*/) {
