@@ -30,7 +30,7 @@ public class Account {
 	private List<Area> areasOfWork;
 	private List<Review> reviews;
 	private User personalInfo;
-	
+	private boolean valid;
 	
 	public List<Review> getReviews() {
 		return reviews;
@@ -114,4 +114,11 @@ public class Account {
 		matchesPattern(accountType, PATTERN_TYPEACCOUNT);
 		this.accountType = accountType;
 	}
+	public boolean isValid() {
+		return valid;
+	}
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
+	
 }

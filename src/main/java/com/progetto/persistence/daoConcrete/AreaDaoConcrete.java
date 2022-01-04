@@ -17,7 +17,6 @@ public class AreaDaoConcrete implements AreaDao{
 	private Area loadArea(ResultSet resultSet) throws SQLException {
 		
 		Area area = new Area();
-		
 		area.setId(resultSet.getLong("id"));
 		area.setName(resultSet.getString("nome"));
 		area.setIcon(resultSet.getString("icona"));
@@ -129,17 +128,40 @@ public class AreaDaoConcrete implements AreaDao{
 	@Override
 	public List<Area> findByWorker(Account acc) throws SQLException {
 		List<Area> areas = new ArrayList<Area>();
-		String query = "select id_ambito, nome, icona from account_ambiti inner join ambiti on  id = id_ambito where username_account = ?";
+		String query = "select id_ambito, nome, icona from account_ambiti inner join ambiti on  ambiti.id = account_ambiti.id_ambito where username_account = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setString(1, acc.getUsername());
 		ResultSet set = statement.executeQuery();
 		while(set.next()) {
 			Area a = new Area();
-			a.setId(set.getLong("id"));
+			a.setId(set.getLong("id_ambito"));
 			a.setName(set.getString("nome"));
 			a.setIcon(set.getString("icona"));
 			
 			areas.add(a);
+		}
+		return areas;
+	}
+
+
+	@Override
+	public void linkToAccount(Area area, Account account) throws SQLException {
+		String query = "insert into account_ambiti values(?,?)";
+		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
+		statement.setString(1, account.getUsername());
+		statement.setLong(2, area.getId());
+		statement.execute();
+	}
+
+
+	@Override
+	public List<Area> findAll() throws SQLException {
+		List<Area> areas = new ArrayList<Area>();
+		String query = "select * from ambiti";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		ResultSet set = st.executeQuery();
+		while(set.next()) {
+			areas.add(loadArea(set));
 		}
 		return areas;
 	}

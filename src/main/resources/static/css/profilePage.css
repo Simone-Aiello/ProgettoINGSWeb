@@ -1,0 +1,43 @@
+.fa-star{
+	color : #FF9400;
+}
+.rounded-photo{
+	
+	height: 210px;
+	clip-path: circle(40%);
+}
+.card-title{
+	float: left;
+	padding-right: 7px;
+}
+.review-description{
+	clear: left;
+	max-height: 50px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.review-header{
+	float: left;
+}
+.card{
+	clear: left;
+}
+.star-container{
+	position: relative;
+	left: 20px;
+	top: 3px;
+}
+@media(max-width:1200px){
+	.card-title{
+		float: none;
+		padding-right: 7px;
+	}
+}
+/*@media(max-width:995px){
+	.review-header{
+		float: none;
+	}
+	.star-container{
+		position: static;
+	}
+}*/

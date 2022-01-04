@@ -3,6 +3,19 @@ var acceptedExtensions = ["image/png", "image/jpg", "image/jpeg"];
 var selectedAreas = {};
 var imageBuilder = new Image.Builder();
 var areaBuilder = null;
+function addToAreaSummary(areaName){
+	$("#area-list").append("<li id ="+ areaName + ">"+ capitalizeFirstLetter(areaName) + "</li>");
+}
+function removeFromAreaSummary(areaName){
+	console.log("tolgo");
+	$("#" + areaName).remove();
+}
+function atLeastOneArea(){
+	for(const [key,value] of Object.entries(selectedAreas)){
+		if(value) return true;
+	}
+	return false;
+}
 function addFileReaderListener() {
 	fileReader.onload = (e) => {
 		$("#profile-pic").attr("src", e.target.result);
@@ -32,7 +45,7 @@ function addUploadAndDeleteListeners() {
 		$("#remove-photo").css("color", "#FF9400");
 	});
 	$("#remove-photo").click(() => {
-		$("#profile-pic").attr("src", "/images/defaultIcon.png");
+		$("#profile-pic").attr("src", "/usersImages/profilePictures/defaultIcon.png");
 		imageBuilder.withValue(null);
 	});
 }
@@ -61,14 +74,20 @@ function addAreasIconListener() {
 		
 		$(this).click(() => {
 			let id = "#"+$(this).attr("id");
+			let allClasses = $(id+ " i").attr("class").split(/\s+/);
+			let areaName = allClasses[allClasses.length - 1];
 			selectedAreas[id] = !selectedAreas[id];
 			if(selectedAreas[id]){
 				areaBuilder = new Area.Builder();
 				areaBuilder.withId($(id+ " i").attr("id"));
 				account_builder.withArea(areaBuilder.build());
+				addToAreaSummary(areaName);
 			}
 			else{
+				$(this).css("background-color", "#FFFFFF");
+				$(id + " .icon").css("color", "#FF9400");
 				account_builder.removeArea($(id+ " i").attr("id"));
+				removeFromAreaSummary(areaName);
 			}
 		});
 	});

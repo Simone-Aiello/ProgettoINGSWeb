@@ -9,9 +9,9 @@ class User {
 	
 	
 	#getAge = function (match) {
-		let day_user = parseInt(match[1]);
+		let day_user = parseInt(match[3]);
 		let month_user = parseInt(match[2]);
-		let year_user = parseInt(match[3]);
+		let year_user = parseInt(match[1]);
 
 		let today = new Date();
 
@@ -47,40 +47,32 @@ class User {
 
 
 		withName = function(name) {
-			//var _regex = /^[a-z ]+$/i serve? alla fine non mi importa molto del nome/cognome;
-			/*if (_regex.test(name)) {
-				this.#product.name = name;
-			}*/
-			let _regex = /^.+$/;
+			let _regex = /^[a-zA-Z'-\s]+$/;
 			if(_regex.test(name)){			
 				this.#product.name = name;
 			}
 			else{
-				throw new Error("Il campo è obbligatorio");
+				throw new Error("Il campo presenta caratteri non validi");
 			}
 		}
 
 
 		withSurname = function(surname) {
-			//var _regex = /^[a-z ]+$/i;
-			/*if (_regex.test(surname)) {
-				this.#product.surname = surname;
-			}*/
-			let _regex = /^.+$/;
+			let _regex = /^[a-zA-Z'-\s]+$/;
 			if(_regex.test(surname)){			
 				this.#product.surname = surname;
 			}
 			else{
-				throw new Error("Il campo è obbligatorio");
+				throw new Error("Il campo presenta caratteri non validi");
 			}
 		}
 
 		withDateOfBirth = function(dateOfBirth) {
-			var _regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+			var _regex = /^(\d{4})-(\d{2})-(\d{2})$/;
 			if (_regex.test(dateOfBirth)) {
 				var match = dateOfBirth.match(_regex);
 				let age = this.#product.#getAge(match);
-				if (age < 0) throw new Error("La data inserita è successiva a quella odierna");
+				if (age <= 0) throw new Error("La data inserita è successiva a quella odierna");
 				if (age < 16) throw new Error("Devi aver almeno compiuto 16 anni d'età");
 				this.#product.dateOfBirth = dateOfBirth;
 			}
@@ -95,7 +87,6 @@ class User {
 		build = function() {
 			if (this.built)
 				throw new Error("This builder has already been used");
-
 			this.built = true;
 			return this.#product;
 		}
