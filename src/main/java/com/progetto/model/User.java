@@ -7,8 +7,7 @@ import org.joda.time.DateTime;
 import com.progetto.Utils;
 
 public class User {
-	
-	private static final String PATTERN_JUST_LETTER = "[a-zA-Z ]+";
+	private static final String NAME_SURNAME_PATTERN = "[a-zA-Z'\\-\s]+";
 	
 	private long id;
 	private String name;
@@ -27,7 +26,7 @@ public class User {
 	}
 	public void setName(String name) {
 		notNull(name);
-		matchesPattern(name, PATTERN_JUST_LETTER);
+		matchesPattern(name, NAME_SURNAME_PATTERN);
 		Utils.sanitizeXSS(name);
 		this.name = name;
 	}
@@ -36,7 +35,7 @@ public class User {
 	}
 	public void setSurname(String surname) {
 		notNull(surname);
-		matchesPattern(surname, PATTERN_JUST_LETTER);
+		matchesPattern(surname, NAME_SURNAME_PATTERN);
 		Utils.sanitizeXSS(surname);
 		this.surname = surname;
 	}
@@ -54,6 +53,5 @@ public class User {
 	public void setAddress(Address address) {
 		notNull(address);
 		this.address = address;
-	}
-	
+	}	
 }

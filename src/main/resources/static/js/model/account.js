@@ -62,11 +62,8 @@ class Account {
 		}
 
 		withUser = function(user) {
-			this.#product.user = user;
+			this.#product.personalInfo = user;
 			return this;
-		}
-		withAddress = function(address){
-			this.#product.address = address;
 		}
 		withProfilePic = function(profilePic){
 			this.#product.profilePic = profilePic;
@@ -75,7 +72,6 @@ class Account {
 			this.areasList.push(area);
 		}
 		removeArea = function(area){
-			console.log(area);
 			this.areasList = this.areasList.filter((elem) =>{
 				return elem["id"] != area;
 			});
@@ -85,7 +81,6 @@ class Account {
 			this.built = true;
 			this.#product.areasOfWork = this.areasList; 
 			return this.#product;
-
 		}
 
 	}

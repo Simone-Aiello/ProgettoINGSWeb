@@ -9,13 +9,14 @@ body{
 .header{
     text-align: center;
 }
+/*Toglie lo scroll dall'input field dei numeri*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Firefox */
+/* Firefox  Toglie lo scroll dall'input field dei numeri*/
 input[type=number]{
   -moz-appearance: textfield;
 }
@@ -31,13 +32,13 @@ i{
     	width: 85%;
 	}
 }
-#test{
+.centered-div{
 	display: flex;
 	justify-content: center;
 }
-#profile-pic{
-	widows: 300px;
-	height: 300px;
+.rounded-photo{
+	
+	height: 210px;
 	clip-path: circle(40%);
 }
 /*	border: 2px solid black;*/
@@ -82,4 +83,10 @@ i{
 }
 #picture-and-areas{
 	display: none;
+}
+.bold {
+	font-weight:bold;
+}
+#summary{
+	display:none;
 }

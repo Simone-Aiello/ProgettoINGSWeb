@@ -3,6 +3,7 @@ package com.progetto.persistence.daoConcrete;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import com.progetto.persistence.daoInterfaces.ReviewDao;
 public class ReviewDaoConcrete implements ReviewDao {
 	@Override
 	public List<Review> findByWorker(Account account) throws SQLException {
-		List<Review> reviews = new LinkedList<Review>();
+		List<Review> reviews = new ArrayList<Review>();
 		String query = "select * from recensioni where username_lavoratore = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setString(1, account.getUsername());
@@ -72,5 +73,15 @@ public class ReviewDaoConcrete implements ReviewDao {
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setString(1, a.getUsername());
 		stmt.execute();
+	}
+
+	@Override
+	public int averageRatingWorker(Account account) throws SQLException {
+		String query = "select avg(valutazione) as rating from recensioni where username_lavoratore = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, account.getUsername());
+		ResultSet set = st.executeQuery();
+		int rating = set.next() ? set.getInt("rating") : 0;
+		return rating;
 	}
 }

@@ -15,7 +15,7 @@ export class Address {
 		}
 		
 		checkOnlyLetters = function (value) {
-			var _regex = /^((\p{L}+-)*(\p{L}+')*(\p{L}+\s)*)*\p{L}+$/uig;
+			var _regex = /^((\p{L}+\/)*(\p{L}+-)*(\p{L}+')*(\p{L}+\s)*)*\p{L}+$/uig;
 			return _regex.test(value);
 		}
 		

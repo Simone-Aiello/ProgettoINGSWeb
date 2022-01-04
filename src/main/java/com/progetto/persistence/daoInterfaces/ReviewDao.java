@@ -11,4 +11,5 @@ public interface ReviewDao {
 	public void delete(Review review) throws SQLException;
 	public void deleteByWorker(Account a) throws SQLException;
 	public void save(Review review) throws SQLException;
+	public int averageRatingWorker(Account account) throws SQLException;
 }
