@@ -72,7 +72,8 @@ class Offer{
 		
 		withAvailabilities = (availabilities) => {
 			checkType(availabilities,"Array");
-			this.#product.#addProperty("availabilities",availabilities);
+			for(let availability of availabilities)
+				this.withAvailability(availability);
 		}
 
 		withAvailability = (availability) => {

@@ -6,6 +6,21 @@
 *{
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
+    outline : none ;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif ;
+}
+
+.modal-bg-offer-form{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh ;
+    background-color: rgba(43, 45, 66,0.4);
+    top : 0 ;
+    left: 0 ;
 }
 
 .card-offer-form{
@@ -15,8 +30,17 @@
 }
 
 .close-button-offer-form{
-    height: 45px;
+    width: 45px;
+    align-self: center;
     font-size: 32px !important;
+    text-decoration: none;
+    color: #f4a261 ;
+    padding: 0;
+    
+}
+
+.close-button-offer-form:hover{
+    color: #f4a261 ;
 }
 
 
@@ -35,4 +59,91 @@
     overflow-y: auto;
     width: 100%;
 }
+
+.container-dropdown-dates{
+    position: absolute;
+    top: 110%;
+    left: 10%;
+    width: 40%;
+    z-index: 1;
+    border-radius: 5px;
+    padding: 10px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #f4a361ea;
+    visibility: hidden;
+}
+
+
+.job-duration-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    flex-direction: column;
+    /* border: 1px solid black; */
+}
+
+.input_job_duration{
+    width: 30px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: transparent;   
+    -moz-appearance: textfield; 
+}
+
+.input_job_duration::-webkit-inner-spin-button,
+.input_job_duration::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.inner_container_job_duration{
+    border-radius: 5px;
+    background-color: #f4a261;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    padding: 2px;
+}
+
+.combobox-unit{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    border: 0 !important;
+    background-color: #b87a4848;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.combobox-unit option{
+    background-color: #f4a261;
+}
+
+.combobox-unit::-ms-expand{
+    display: none;
+}
+
+.submit-offer-button:hover{
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
+
+
+
     

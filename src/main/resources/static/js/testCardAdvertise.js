@@ -3,6 +3,7 @@
 // ESEMPIO UTILIZZO CARD_PREVIEW e CARD_DETAILS
 
 
+
 var card_preview1 = createCard({
     id_advertise : 132132 , 
     title : "ma dai è reale",
@@ -13,7 +14,7 @@ var card_preview1 = createCard({
     url_img : "../images/testImage.png" ,
     }) ; 
 
-body.appendChild(card_preview1);
+document.body.appendChild(card_preview1);
 
 var card_preview2 = createCard({
     id_advertise : 132132 , 
@@ -26,7 +27,7 @@ var card_preview2 = createCard({
     }) ; 
 
     
-body.appendChild(card_preview2);
+document.body.appendChild(card_preview2);
 
 var card_preview3 = createCard({
     id_advertise : 132132 , 
@@ -38,7 +39,7 @@ var card_preview3 = createCard({
     url_img : "../images/testImage.png" ,
     }) ; 
 
-body.appendChild(card_preview3);
+document.body.appendChild(card_preview3);
 
 var card_preview4 = createCard({
     id_advertise : 132132 , 
