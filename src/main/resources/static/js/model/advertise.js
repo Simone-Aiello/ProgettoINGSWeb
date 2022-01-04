@@ -14,9 +14,11 @@ class Advertise{
 		this.#serializer[property] = value;
 	}
 	
+	/*
 	toJSON(){
 		return JSON.stringify(this.#serializer);
 	}
+	*/
 	
 	contructor(key){
 		if(key!=Advertise.#key)
@@ -57,12 +59,12 @@ class Advertise{
 		//use YYYY/MM//DD notation to check the date and then convert it to DD/MM/YYYY as the model requires
 		withExpiryDate = (expiryDateString) =>{
 			var regex = /^(\d{4})-(\d{2})-(\d{2})$/;
-			var expiryDate = new Date(expiryDateString);
+			//var expiryDate = new Date(expiryDateString);
 			//alert(expiryDate);
 			if(regex.test(expiryDateString)){
-				var dateSplit = expiryDateString.split("-");
-				var expiryDateDDMMYYYY = dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
-				this.#product.#addProperty("expiryDate", expiryDateDDMMYYYY);
+				//var dateSplit = expiryDateString.split("-");
+				//var expiryDateDDMMYYYY = dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+				this.#product.#addProperty("expiryDate", expiryDateString);
 			}
 			else{
 				throw new Error("data non valida");	
@@ -70,7 +72,7 @@ class Advertise{
 		}
 		
 		withAccount(account){
-			checktype(account, "Account");
+			checkType(account, "Account");
 			this.#product.#addProperty("account", account);
 		}
 		
@@ -108,8 +110,8 @@ class Advertise{
 		}
 		
 		withProvince(province){
-			checkType(province, "Province");
-			this.#product.#addProperty(province);
+			checkType(province, "String");
+			this.#product.#addProperty("province", province);
 		}
 		
 		withOffer(offer){
@@ -128,7 +130,7 @@ class Advertise{
 		build = function(){
 			if(this.#built) throw new Error("Builder had already been used");
 			this.#built = true;
-			this.#product.#addProperty("intrestedArea", this.areasList);
+			this.#product.#addProperty("interestedAreas", this.areasList);
 			this.#product.#addProperty("images", this.imagesList);
 			this.#product.#addProperty("offers", this.offersList);
 			return this.#product;			

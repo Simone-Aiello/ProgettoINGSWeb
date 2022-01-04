@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -32,12 +34,17 @@
 							<label class ="form-label">Data di scadenza*</label>
 							<input id = "advertiseExpiryDate" class = "form-control" type ="date">
 						</div>
-						<!--<div  id = "advertiseTitleFeedback"></div>-->
-						<label class = "form-label">Descrizione</label>
-						<textarea class = "form-control"  rows = "3" id = "advertiseDescription"></textarea>
+							<label class = "form-label">Descrizione</label>
+							<textarea class = "form-control"  rows = "3" id = "advertiseDescription"></textarea>
 						<div class="form-text">Aggiungi una breve descrizione del problema</div>
-
-						<!--<div  id = "advertiseExpiryDateFeedback"></div>-->
+						
+						<div class="mb-3 col-lg-6 col-md-6 col-xs-12 ">
+							<label class="form-label">Provincia*</label> 
+							<select
+								class="form-select" id="advertiseProvince" >
+								<option selected disabled value="">Scegli...</option>
+							</select>
+						</div>
 					</div>
 				</div>
 					<hr class = "solid" id = "firstSeparator">
@@ -77,7 +84,8 @@
 	</div>
 </div>	
 								
-			<hr class = "solid">	
+			<hr class = "solid">
+			<!-- 
 			<div id="area-div">
 				<div class="row">
 					<div class="col icon-div">
@@ -121,6 +129,17 @@
 					</div>
 				</div>
 			</div>
+			-->
+			<div id = "areaSelector" class = "row">
+							<c:forEach items = "${areas}" var = "area" varStatus = "loop">
+								<div class="col icon-div">
+									<figure class="icon-figure" id="area-${loop.count}">
+										<i class= "${area.icon} fa-3x icon ${area.name}" id="${area.id}"></i>
+									</figure>
+								</div>
+							</c:forEach>	
+			</div>
+			
 				
 				<button class ="btn btn-Primary" id = "confirmData">conferma</button>
 				</div>

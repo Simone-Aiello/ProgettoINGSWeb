@@ -7,30 +7,38 @@ $(document).ready(() => {
 
 function addAreasIconListener() {
 	$(".icon-figure").each(function (key,value){
-		let id = "#area-" + (key + 1);
+		let idFigure = "#area-" + (key + 1);
 		//selectedAreas[id] = false;
 		$(this).mouseenter(() => {
-			$(id).css("background-color", "#FF9400");
-			$(id + " .icon").css("color", "#FFFFFF");
+			$(idFigure).css("background-color", "#FF9400");
+			$(idFigure + " .icon").css("color", "#FFFFFF");
 		});
 		
 		$(this).mouseleave(() => {
-			if (listOfAreas.has(id)) return;
+			if (listOfAreas.has(idFigure)) return;
 			$(this).css("background-color", "#FFFFFF");
-			$(id + " .icon").css("color", "#FF9400");
+			$(idFigure + " .icon").css("color", "#FF9400");
 		});
 		
 		$(this).click(() => {
-			let id = "#"+$(this).attr("id");
-			//alert(id);
-			if(!listOfAreas.has(id)){
+			let idFigure = "#"+$(this).attr("id");
+			let idArea = $(idFigure).find("i").attr("id");
+			//alert(idArea);
+			if(!listOfAreas.has(idFigure)){
 				areaBuilder = new Area.Builder();
-				areaBuilder.withId($(id));
+				let classList = $("#" + idArea).attr("class");
+				let classArr = classList.split(/\s+/);
+				//APPEND FAS BEFORE IMAGE IN HTML
+				//areaBuilder.withIcon(classArr[0] + classArr[1]);
+				areaBuilder.withName(classArr[classArr.length -1]);
+				areaBuilder.withId(idArea);
+				//alert($(this).attr("id"));
 				var area = areaBuilder.build();
-				listOfAreas.set(id, area);
+				listOfAreas.set(idFigure, area);
+				//alert(listOfAreas.has()):;
 			}
 			else{
-				listOfAreas.delete(id);
+				listOfAreas.delete(idFigure);
 			}
 		});
 	});
