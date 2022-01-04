@@ -117,19 +117,20 @@ public class AccountDaoConcrete implements AccountDao {
 			// Salvo l'user associato all'account e mi prendo l'id
 			long userId = Database.getInstance().getUserDao().save(a.getPersonalInfo());
 			// Salvo l'immagine associata all'account PER ORA NON SALVO NIENTE
-
+			long imageId = Database.getInstance().getImageDao().save(a.getProfilePic());
 			String query = "INSERT INTO account (username, password, email, telefono, immagine_profilo, provincia_lavoro, id_utente, tipo_account,codice_validazione_account)"
-					+ " values(?, ?, ?, ?,null, ?, ?, cast(? as tipologia_account), ?);";
+					+ " values(?, ?, ?, ?, ?, ?, ?, cast(? as tipologia_account), ?);";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 			a.getPersonalInfo().setId(userId);
 			stmt.setString(1, a.getUsername());
 			stmt.setString(2, Utils.encryptPassword(a.getPassword()));
 			stmt.setString(3, a.getEmail());
 			stmt.setString(4, a.getNumber());
-			stmt.setString(5, a.getProvinceOfWork());
-			stmt.setLong(6, userId);
-			stmt.setString(7, a.getAccountType());
-			stmt.setString(8,activationCode);
+			stmt.setLong(5,imageId);
+			stmt.setString(6, a.getProvinceOfWork());
+			stmt.setLong(7, userId);
+			stmt.setString(8, a.getAccountType());
+			stmt.setString(9,activationCode);
 			stmt.execute();
 		}
 		for (Area area : a.getAreasOfWork()) {

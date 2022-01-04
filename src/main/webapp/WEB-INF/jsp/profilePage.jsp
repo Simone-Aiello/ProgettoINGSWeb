@@ -22,7 +22,19 @@
 	    <div class="row">
 	        <div class="col-md-3">
 	        <!-- Sostituire src con il path quando salveremo le immagini -->
-	            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="mt-5 image-fluid rounded-photo" src="/usersImages/profilePictures/defaultIcon.png"><span>${account.username}</span><span class="text-black-50">${account.email}</span><span></span></div>
+	            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+		            <c:choose>
+						<c:when test="${account.profilePic.value != null}">
+			            	<img class="mt-5 image-fluid rounded-photo" src="/usersImages/profilePictures/${account.username}/${account.profilePic.value}">
+						</c:when>
+						<c:otherwise>
+							<img class="mt-5 image-fluid rounded-photo" src="/usersImages/profilePictures/defaultIcon.png">
+						</c:otherwise>
+					</c:choose>
+	            	<span>${account.username}</span>
+	            	<span class="text-black-50">${account.email}</span>
+	            	<span></span>
+	            </div>
 	            <c:if test="${!account.valid}">
 		            <div class="alert alert-danger alert-dismissible fade show" role="alert">
 						Accedere alla mail e cliccare sul link ricevuto per confermare l'account oppure <a href="" class="alert-link">reinvia mail</a>.

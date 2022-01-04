@@ -18,7 +18,6 @@ function sendAccount() {
 		success: (response) => {
 			console.log(response);
 			window.location.replace(response);
-			console.log("Fare redirect a profilo personale");
 		},
 		error: (xhr) => {
 			console.log(xhr);

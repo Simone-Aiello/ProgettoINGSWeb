@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.progetto.Utils;
 import com.progetto.model.Area;
 import com.progetto.persistence.Database;
 
@@ -19,7 +20,7 @@ public class RegisterPagesController {
 			List<Area> areas = Database.getInstance().getAreaDao().findAll();
 			req.setAttribute("areas", areas);
 		} catch (SQLException e) {
-			//Sostituire con pagina generica di errore
+			//Pagina generica di errore
 			e.printStackTrace();
 		}
 		return "registerWorker";

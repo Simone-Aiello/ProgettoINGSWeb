@@ -1,5 +1,5 @@
 
-export class Address {
+class Address {
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 	constructor(key) {
 		if (key != Address.#key) {

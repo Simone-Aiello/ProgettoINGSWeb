@@ -2,6 +2,8 @@ package com.progetto.controller;
 
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +17,7 @@ import com.progetto.persistence.Database;
 public class PasswordRecoveryController {
 	
 	@PostMapping("/sendVerifyCode")
-	public void startResetPassword(@RequestBody String email) {
+	public void startResetPassword(@RequestBody String email,HttpServletRequest req) {
 		String code = Utils.getAlphaNumericString(Utils.ACTIVATION_CODE_LENGHT);
 		try {
 			if(Database.getInstance().getPasswordRecoveryDao().insertCode(email, code)) {

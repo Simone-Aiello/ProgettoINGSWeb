@@ -66,6 +66,7 @@ public class ImageDaoConcrete implements ImageDao {
 		statement.setLong(1, id);
 		ResultSet rs = statement.executeQuery();
 		if (rs.next()) {
+			m = new Image();
 			m.setId(id);
 			m.setValue(rs.getString("value"));
 		}

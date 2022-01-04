@@ -56,6 +56,7 @@ public class ProfilePagesController {
 	public String getProfilePage(@RequestParam("username") String username,HttpServletRequest req) {
 		try {
 			Account account = Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.COMPLETE);
+			//SPOSTARE IN UTILS
 			DateTime dt = account.getPersonalInfo().getDateOfBirth();
 			String paddedDay = dt.getDayOfMonth() < 10 ? "0" + dt.getDayOfMonth() : ""+dt.getDayOfMonth();
 			String paddedMonth = dt.getMonthOfYear() < 10 ? "0" + dt.getMonthOfYear() : ""+dt.getMonthOfYear();

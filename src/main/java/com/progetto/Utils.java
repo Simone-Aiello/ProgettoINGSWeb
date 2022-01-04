@@ -1,8 +1,19 @@
 package com.progetto;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.joda.time.DateTime;
+import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import com.progetto.model.Account;
@@ -62,5 +73,35 @@ public class Utils {
 	}
 	public static String encryptPassword(String password) {
 		return BCrypt.hashpw(password, BCrypt.gensalt(Utils.SALT));
+	}
+	public static String saveProfileImage(HttpServletRequest req,String base64,String usernameAccount) {
+		//Ritorna il path fino a webapp
+		File f = new File(req.getServletContext().getRealPath("/"));
+		//prendo il path fino alla cartella profilePictures
+		String pathToResources = f.getParentFile().getAbsolutePath()+System.getProperty("file.separator")+"resources"+System.getProperty("file.separator")+"static"+System.getProperty("file.separator")+"usersImages"+System.getProperty("file.separator")+"profilePictures";
+		//Prendo il valore dell'immagine e l'estensione
+		String imageValue = base64.split(",")[1];
+		String imageExt = base64.split("/")[1].split(";")[0];
+		if(imageExt.equals("png") || imageExt.equals("png") || imageExt.equals("jpeg")) {
+			byte[] imageBytes = Base64.decode(imageValue);
+			//Creo una cartella per l'username se non esiste, altrimenti cancello le vecchie foto
+			File directory = new File(pathToResources+System.getProperty("file.separator") + usernameAccount);
+			if(!directory.exists()) {
+				directory.mkdir();
+			}
+			else {
+				for(File file : directory.listFiles()){
+					file.delete();
+				}
+			}
+			try (OutputStream stream = new FileOutputStream(directory.getAbsolutePath()+System.getProperty("file.separator")+usernameAccount+"."+imageExt)) {
+				stream.write(imageBytes);
+			} catch (IOException e) {
+				return null;
+			}
+			//Ritorno la stringa che andrà nel DB
+			return usernameAccount +"."+imageExt;			
+		}
+		return null;
 	}
 }

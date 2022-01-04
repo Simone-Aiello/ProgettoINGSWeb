@@ -1,7 +1,11 @@
 package com.progetto.controller;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,16 +13,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.persistence.Database;
 
 @RestController
-public class RegisterController {
+public class RegisterControllerREST {
 	
 	@PostMapping("/registerWorker")
-	public String registerWorker(@RequestBody Account account) {
+	public String registerWorker(@RequestBody Account account,HttpServletRequest req) {
 		try {
+			//Faccio il set del tipo di account che voglio creare e salvo i dati
 			account.setAccountType("w");
+			if(account.getProfilePic() != null) {
+				String imageValue = Utils.saveProfileImage(req, account.getProfilePic().getValue(), account.getUsername());
+				account.getProfilePic().setValue(imageValue);
+			}
 			Database.getInstance().getAccountDao().save(account);
 			return "/profilePage?username=" + account.getUsername();
 		} catch (SQLException e) {
@@ -50,7 +61,6 @@ public class RegisterController {
 		try {
 			Database.getInstance().getAccountDao().validate(code);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
