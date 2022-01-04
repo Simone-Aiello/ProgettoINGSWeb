@@ -24,7 +24,7 @@ export class Account {
 		}
 
 		withPassword = function(password) {
-			var _regex = /^[a-zA-Z0-9!@#$%^_&*]{6,16}.(?=[!@#$%^_&?-\\\/*]).$/g
+			var _regex = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,16}$/;
 			if (_regex.test(password)) {
 				this.#product.password = password;
 			}

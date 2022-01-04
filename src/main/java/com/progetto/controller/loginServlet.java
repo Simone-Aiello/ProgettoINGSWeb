@@ -37,7 +37,7 @@ public class loginServlet{
 			}
 		}
 		
-		if(/*account == null || */!BCrypt.checkpw(a.getPassword(), dbPassword)) {
+		if(account == null || !BCrypt.checkpw(a.getPassword(), dbPassword)) {
 			resp.setStatus(204);
 		}
 		return account;
