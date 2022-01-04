@@ -2,20 +2,23 @@ package com.progetto.model;
 
 import static org.apache.commons.lang3.Validate.*;
 
+import java.util.List;
+
 import com.progetto.Utils;
 
 public class Offer {
 	
-	// aggiungere date disponibile
+
 	private long id;
 	private String description;
 	private String title;
 	private double quote;
-	private boolean done;
+	private boolean done = false;
 	private Account worker; 
 	private int hoursOfWork;
 	private Advertise advertise;
-
+	private List<String> availabilities ;
+	
 	
 	public long getId() {
 		return id;
@@ -72,6 +75,16 @@ public class Offer {
 	public void setAdvertise(Advertise advertise) {
 		notNull(advertise);
 		this.advertise = advertise;
+	}
+	
+	
+	public void setAvailabilities(List<String> availabilities) {
+		notNull(availabilities);
+		this.availabilities = availabilities;
+	}
+	
+	public List<String> getAvailabilities() {
+		return availabilities;
 	}
 	
 }

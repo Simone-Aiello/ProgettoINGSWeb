@@ -6,6 +6,8 @@ function createRow(){
 }
 
 function checkType(value,type){
+	if(type == "Number")
+		value = Number(value);
 	if(value.constructor.name != type)
 		throw new Error("The value: "+value+" is not a "+type);
 }
@@ -16,23 +18,22 @@ function createButtonWithIcon(icon){
     return button ;
 }
 
+var _regex = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 function isDate(date){
-    var _regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-    if(!_regex.test(date))
-        throw new Error("La data inserita non è valida");
+	if (!_regex.test(date))
+		throw new Error("La data inserita non è valida");
 }
 
 function isBeforeNow(date) {
 
-    var _regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-    if(!_regex.test(date))
-        throw new Error("La data inserita non è valida");
+    isDate(date);
 
     var match = date.match(_regex);
 
-    let day_user = parseInt(match[1]);
+    let day_user = parseInt(match[3]);
     let month_user = parseInt(match[2]);
-    let year_user = parseInt(match[3]);
+    let year_user = parseInt(match[1]);
 
     let today = new Date();
 
@@ -40,8 +41,9 @@ function isBeforeNow(date) {
     let today_month = today.getMonth() + 1;
     let today_year = today.getFullYear();
 
-    if(today_year != day_user){
-        if(today_year > day_user)
+
+    if(today_year != year_user){
+        if(today_year > year_user)
             return true ;
         return false;
     }
@@ -62,20 +64,19 @@ function isBeforeNow(date) {
 }
 
 function isAfterNowOrToday(date) {
-    return !isBeforeNow(date);
+	return !isBeforeNow(date) ;
 }
+
 
 function isAfterNow(date){
 
-    var _regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-    if(!_regex.test(date))
-        throw new Error("La data inserita non è valida");
+    isDate(date);
 
     var match = date.match(_regex);
 
-    let day_user = parseInt(match[1]);
+    let day_user = parseInt(match[3]);
     let month_user = parseInt(match[2]);
-    let year_user = parseInt(match[3]);
+    let year_user = parseInt(match[1]);
 
     let today = new Date();
 
@@ -148,12 +149,10 @@ function createMessage(data){
     message_container.close = () => {
         timeline.fromTo(message_container,state_container_2,state_container_1);
         timeline.to(message_container,{visibility:"hidden" , showing : false});
-        console.log(message_container.showing);
     }
 
     message_container.show = () => {
 
-        console.log(message_container.showing);
         if(message_container.showing)
             return ;
         message_container.showing = true ;
@@ -190,7 +189,6 @@ function createMessage(data){
     }else if(data.type == "information"){
         message_container.style.backgroundColor = "rgba(234, 226, 183, 0.6)" ;
         message_container.style.color = "black";
-        // message_container.style.border = "1px solid #f4a261";
     }
 
     message_container.appendChild(message);

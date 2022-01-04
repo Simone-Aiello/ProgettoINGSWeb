@@ -17,6 +17,7 @@
     position: absolute;
     visibility: hidden;
     min-width: 70px;
+    max-width: 150px;
     min-height: 50px;
     padding: 10px;
     display: flex;

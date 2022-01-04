@@ -18,7 +18,7 @@
     align-items: center;
     width: 100%;
     height: 100vh ;
-    background-color: rgba(43, 45, 66,0.4);
+    background-color: rgba(43, 45, 66,0.2);
     top : 0 ;
     left: 0 ;
 }
@@ -99,10 +99,15 @@
     -moz-appearance: textfield; 
 }
 
-.input_job_duration::-webkit-inner-spin-button,
-.input_job_duration::-webkit-outer-spin-button{
+input[type=number]{
+	-moz-appearance: textfield; 
+	margin: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{
     -webkit-appearance: none;
-    margin: 0;
+    
 }
 
 .inner_container_job_duration{

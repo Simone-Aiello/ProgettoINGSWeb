@@ -1,7 +1,10 @@
 
 
 
-function createCardOfferForm(data,card_advertise){
+function createCardOfferForm(data){
+	
+	let offer_builder = new Offer.Builder();
+
 
     let modal_bg = document.createElement("div");
     modal_bg.className = "modal-bg-offer-form";
@@ -100,7 +103,7 @@ function createCardOfferForm(data,card_advertise){
 
     let message_add_date = createMessage({
         element: add_date_button,
-        message: "Inserisci una data in cui sei disponibile per effetturare il lavore",
+        message: "Inserisci una data in cui sei disponibile per effetturare il lavoro",
         position : "left",
         type : "information",
     });
@@ -124,7 +127,8 @@ function createCardOfferForm(data,card_advertise){
         dropdown_item_date.style.margin = 0 ;
         dropdown_item_date.style.display = "flex";
         dropdown_item_date.style.justifyContent = "center";
-        dropdown_item_date.innerHTML = date;
+		let groups = date.match(_regex);
+        dropdown_item_date.innerHTML = groups[3]+"/"+groups[2]+"/"+groups[1];
         dropdown_item_date.className = "col-10";
     
         let dropdown_item_delete_date = createButtonWithIcon("far fa-calendar-minus");
@@ -135,9 +139,9 @@ function createCardOfferForm(data,card_advertise){
         dropdown_item_delete_date.onclick = () => {
             container_dropdown_dates.removeChild(row_dropdown_item_date);
             dates.splice(dates.indexOf(date),1);
+			offer_builder.removeAvailability(date);
             if(dates.length == 0)
                 container_dropdown_dates.appendChild(label_no_dates_added);
-
         }   
 
 
@@ -145,21 +149,6 @@ function createCardOfferForm(data,card_advertise){
         row_dropdown_item_date.appendChild(dropdown_item_delete_date);
     
         return row_dropdown_item_date ;
-    }
-
-    add_date_button.onclick = () => {
-        date_added = input_date.value ;
-
-        if(date_added == "" || dates.indexOf(date_added) >   -1)
-            return ;
-
-        if(container_dropdown_dates.contains(label_no_dates_added))
-            container_dropdown_dates.removeChild(label_no_dates_added);
-        let new_row_dropdown_date_item = createRowDropdownItem(date_added);
-        container_dropdown_dates.appendChild(new_row_dropdown_date_item);
-
-        dates.push(date_added);
-
     }
 
 
@@ -175,23 +164,32 @@ function createCardOfferForm(data,card_advertise){
 
     let show_date_boolean = true ;
 
+	container_dropdown_dates.timeline = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}}) ;
+	container_dropdown_dates.state_container_1 = {y : -10 , opacity : 0 , scale : 0.8};
+	container_dropdown_dates.state_container_2 = {y: 0 , opacity : 1 , scale:1 , visibility : "visible"};
+	
+	container_dropdown_dates.show = () => {
+			show_dates.classList.remove("fa-caret-square-down");
+            show_dates.classList.add("fa-caret-square-up");
+            container_dropdown_dates.timeline.fromTo(container_dropdown_dates,container_dropdown_dates.state_container_1,container_dropdown_dates.state_container_2);
+            show_date_boolean = false ;
+	}
+	
+	container_dropdown_dates.close = () => {
+			show_dates.classList.add("fa-caret-square-down");
+            show_dates.classList.remove("fa-caret-square-up");
+            container_dropdown_dates.timeline.fromTo(container_dropdown_dates,container_dropdown_dates.state_container_2,container_dropdown_dates.state_container_1);
+            container_dropdown_dates.timeline.to(container_dropdown_dates,{visibility : "hidden"});
+            show_date_boolean = true ;
+	}
+	
+
     show_dates.onclick = () => {
 
-        const timeline = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});
-
-        state_container_1 = {y : -10 , opacity : 0 , scale : 0.8};
-        state_container_2 = {y: 0 , opacity : 1 , scale:1 , visibility : "visible"};
         if(show_date_boolean){
-            show_dates.classList.remove("fa-caret-square-down");
-            show_dates.classList.add("fa-caret-square-up");
-            timeline.fromTo(container_dropdown_dates,state_container_1,state_container_2);
-            show_date_boolean = false ;
+            container_dropdown_dates.show();
         }else{
-            show_dates.classList.add("fa-caret-square-down");
-            show_dates.classList.remove("fa-caret-square-up");
-            timeline.fromTo(container_dropdown_dates,state_container_2,state_container_1);
-            timeline.to(container_dropdown_dates,{visibility : "hidden"});
-            show_date_boolean = true ;
+            container_dropdown_dates.close();
         }
 
     }
@@ -213,6 +211,52 @@ function createCardOfferForm(data,card_advertise){
         }
     }
 
+	add_date_button.onclick = () => {
+	
+        date_added = input_date.value ;
+		try{
+			offer_builder.withAvailability(date_added);
+		}catch(e){
+			createMessage({
+				message : e.message ,
+				element: row_date,
+		        position : "top",
+				auto_close : true,
+				duration : 1.5 ,
+		        type : "warning",
+			}).show();
+			return ;
+		}
+		
+		if(dates.indexOf(date_added) >   -1)
+		{
+			createMessage({
+				message : "La data è stata già inserita" ,
+				element: row_date,
+		        position : "top",
+				auto_close : true,
+				duration : 1.5 ,
+		        type : "warning",
+			}).show();
+			return ;
+		}
+
+				
+		
+        if(container_dropdown_dates.contains(label_no_dates_added))
+            container_dropdown_dates.removeChild(label_no_dates_added);
+        let new_row_dropdown_date_item = createRowDropdownItem(date_added);
+        container_dropdown_dates.appendChild(new_row_dropdown_date_item);
+
+        dates.push(date_added);
+
+		if(show_date_boolean){
+			container_dropdown_dates.show();
+			setTimeout(container_dropdown_dates.close,800);
+		}
+
+    }
+
     row_date.appendChild(add_date_button); 
     row_date.appendChild(input_date); 
     row_date.appendChild(show_dates); 
@@ -231,7 +275,7 @@ function createCardOfferForm(data,card_advertise){
 
     let input_quote = document.createElement("input");
     input_quote.className = "form-control"
-    input_quote.type = "text" ;
+    input_quote.type = "number" ;
     input_quote.placeholder = "Inserisci preventivo";
 
 
@@ -335,6 +379,85 @@ function createCardOfferForm(data,card_advertise){
     button_submit.style.padding = "7px";
     button_submit.style.textAlign = "center";
 
+	button_submit.onclick = () => {
+	
+		let flag_error = false ; 	
+		try{
+			let job_duration = input_job_duration.value ;
+			offer_builder.withHoursOfWork(job_duration);
+			let unit = combobox_unit.value ;
+		
+			if(unit == "minuti"){
+				job_duration = job_duration / 60 ;
+			}else if(unit == "giorni"){
+				job_duration = job_duration / 60 ;
+			}else if(unit == "settimane"){
+				job_duration = job_duration / 60 ;
+			}else if(unit == "mesi"){
+				job_duration = job_duration / 60 ;
+			}
+			offer_builder.withHoursOfWork(job_duration);
+		}catch(e){
+			createMessage({
+		        element: job_duration_container,
+		        message: e.message,
+		        position : "right",
+		        type : "error",
+				auto_close : true ,
+				duration : 2 
+		    }).show();
+			input_job_duration.value = 1 ;
+			flag_error = true ;
+		}
+	
+		
+		try{
+			let input_quote_value = input_quote.value ;
+			if(input_quote_value == "" )
+				input_quote_value = -1 ;
+			
+			offer_builder.withQuote(input_quote_value);
+		}catch(e){
+			createMessage({
+		        element: input_quote_container,
+		        message: e.message ,
+		        position : "left",
+		        type : "error",
+				auto_close : true ,
+				duration : 2 
+		    }).show();
+			flag_error = true ;
+			input_quote.value = "";
+		}
+		
+		if(dates.length == 0){
+		
+			createMessage({
+		        element: row_date,
+		        message: "Inserisci almeno una data dove sei disponibile" ,
+		        position : "top",
+		        type : "error",
+				auto_close : true ,
+				duration : 2 
+		    }).show();
+			
+			flag_error = true ;	
+		}
+	
+	
+		if(!flag_error)
+		{
+			let title = data.title + " <-> " + data.username_client ;
+			offer_builder.withTitle(title);
+			offer_builder.withDescription(card_description.value);		
+			worker_builder = new Account.Builder();
+			worker_builder.withUsername(data.username_worker);
+			offer_builder.withWorker(worker_builder.build());
+			let offer = offer_builder.build();
+			sendOffer(offer);
+		}
+	}
+
 
     let row_submit = document.createElement("div");
     row_submit.className = "d-flex flex-row-reverse m-2";
@@ -406,3 +529,7 @@ function createCardOfferForm(data,card_advertise){
 
     return card ;
 }
+
+
+
+
