@@ -6,6 +6,7 @@ import com.progetto.Utils;
 
 public class Offer {
 	
+	// aggiungere date disponibile
 	private long id;
 	private String description;
 	private String title;

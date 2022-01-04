@@ -48,6 +48,7 @@ try{
 }
 
 
+// Prova per far vedere funzionamento del builder completo
 var builder_offer = new Offer.Builder();
 
 builder_offer.withTitle("titolo1");
@@ -57,8 +58,13 @@ builder_offer.withDescription("descrizione1");
 var offer = builder_offer.build();
 offer.title = "titolo2";
 offer.quote = "3.2";
+offer.property = "new Property"
 
 console.log(JSON.stringify(offer));
+
+let list = ["ciao"];
+
+console.log(list.constructor.name);
 
 
 

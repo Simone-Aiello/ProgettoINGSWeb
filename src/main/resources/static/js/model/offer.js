@@ -1,9 +1,4 @@
 
-function checkType(value,type){
-	if(value.constructor.name != type)
-		throw new Error("The value: "+value+" is not a "+type);
-}
-
 class Offer{
 
     static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
@@ -51,11 +46,8 @@ class Offer{
         }   
 
 		withQuote = (quote) => {
-			let _regex = /^[0-9]+(\.[0-9]+)?$/ 
-			if(_regex.test(quote))
-				this.#product.#addProperty("quote",quote);
-			else
-				throw new Error("Il preventivo inserito non è valido") ;
+			checkType(title,"Number");
+			this.#product.#addProperty("quote",quote);
 		}	
 		
 		isDone = (done) => {
@@ -78,11 +70,25 @@ class Offer{
 			this.#product.#addProperty("advertise",advertise);
 		}
 		
+		withAvailabilities = (availabilities) => {
+			checkType(availabilities,"Array");
+			for(let availability of availabilities)
+				this.withAvailability(availability);
+		}
+
+		withAvailability = (availability) => {
+			isDate(availability);
+			isAfterNowOrToday(availability);
+			if(this.#product.#serializer.availabilities == null)
+				this.#product.#serializer.availabilities = [];
+			this.#product.#serializer.availabilities.push(availability); 
+		}
+
 		build = function() {
 			if (this.#built) throw new Error("This builder has already been used");
 			this.#built = true;
 			return this.#product;
-		}		        
+		}
     }
 }
 

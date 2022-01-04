@@ -1,6 +1,11 @@
-function createAdvertiseCardDetail(data){
 
-    let body = document.body;
+function resizeFont(element,sizes){
+	for(let size of size){
+						
+	}
+}
+
+function createAdvertiseCardDetail(data){
 
     let modal_bg = document.createElement("div");
     modal_bg.style.position = "fixed" ;
@@ -134,11 +139,12 @@ function createAdvertiseCardDetail(data){
     let container_offer_button = document.createElement("div");
     container_offer_button.className = "d-flex flex-row-reverse mt-4";
 
-    let card_offer_button = document.createElement("a");
-    card_offer_button.href = data.location_offer ;
+    let card_offer_button = document.createElement("button");
     card_offer_button.className = "btn p-2" ;
     card_offer_button.style = "background-color: #f4a261; color: white;";
     card_offer_button.innerHTML= "Proponiti" ;
+
+   
 
     container_offer_button.appendChild(card_offer_button);
 
@@ -155,6 +161,12 @@ function createAdvertiseCardDetail(data){
         if ($(window).width() <= 425) {  
             card_description.classList.add("mt-3");
             card_province.style = "margin-left: 0;" ;
+			if(data.title.length > 15 )
+			    card_title.style.fontSize = "16px" ;
+			if(data.title.length > 25 )
+			    card_title.style.fontSize = "14px" ;
+			if(data.title.length > 35 )
+			    card_title.style.fontSize = "12px" ;
             card_information.style.fontSize = "13px";
             if(data.province.length > 15 )
                 card_province.style.fontSize = "10px" ;
@@ -167,6 +179,12 @@ function createAdvertiseCardDetail(data){
             modal_bg.style.padding = "0 10px";
 			
         }else{
+			if(data.title.length > 15 )
+			    card_title.style.fontSize = "20px" ;
+			if(data.title.length > 25 )
+			    card_title.style.fontSize = "18px" ;
+			if(data.title.length > 35 )
+			    card_title.style.fontSize = "16px" ;
             card_description.classList.remove("mt-3");
             card_province.style.marginLeft = "28%";
             card_province.style.marginRight = "5px";
@@ -211,19 +229,21 @@ function createAdvertiseCardDetail(data){
         modal_timeline.to(card,{ scale : 0.8 });  
         modal_timeline.to(modal_bg,{ opacity :0 } ,'<');  
         modal_timeline.to(modal_bg,{ visibility : "hidden" , duration : 0 });  
-        body.style.overflow = "auto" ;
+        document.body.style.overflow = "auto" ;
+
+        return modal_timeline.totalDuration() ;
     }
 
     card.show  = () => {
 
         if(card.shown_details == null){
             card.shown_details = true ;
-            body.appendChild(modal_bg);
+            document.body.appendChild(modal_bg);
         }else{
             gsap.to(modal_bg,{opacity : 1 , duration : 1 });  
             modal_bg.style.visibility = "visible" ;
         }
-        body.style.overflow = "hidden" ;
+        document.body.style.overflow = "hidden" ;
         const tl = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});
 
         tl.fromTo(card_title,{x : -10, opacity : 0},{x : 0, opacity : 1});
@@ -244,6 +264,15 @@ function createAdvertiseCardDetail(data){
     }
 
     exit_button.onclick = card.close ;
+
+    card_offer_button.onclick = () => {
+
+        let card_offer = createCardOfferForm(data,card);
+        
+        let duration = card.close() ;
+        setTimeout(card_offer.show,duration * 1000);
+
+    }
     
     return card ;
 }
@@ -258,6 +287,7 @@ function createCard(data){
     card.className = "card shadow rounded";
     card.style = "width: 18rem;";
     card.style.visibility = "hidden" ;
+	card.style.margin = "10px";
     
     let card_body = document.createElement("div");
     card_body.className = "card-body" ;
@@ -272,7 +302,7 @@ function createCard(data){
         card_title.style.fontSize = "14px" ;
     if(data.title.length > 25 )
         card_title.style.fontSize = "12px" ;
-        if(data.title.length > 35 )
+    if(data.title.length > 35 )
         card_title.style.fontSize = "10px" ;
     card_title.innerHTML = data.title ;
 
@@ -347,7 +377,7 @@ function createCard(data){
        
         if(card_details == null ){
             console.log(data.title);
-            card.addImages([ "./images/immagine2.jpg", "./images/immagine2.jpg", "./images/immagine3.jpeg"]);
+            card.addImages([ "../images/immagine2.jpg", "../images/immagine2.jpg", "../images/immagine3.jpeg"]);
     	    data.imgs_url = imgs_url ;    
             console.log(data.imgs_url);
 			card_details = createAdvertiseCardDetail(data);
