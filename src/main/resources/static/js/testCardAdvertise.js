@@ -1,7 +1,8 @@
 
 // ------------------------------------------------------------------------------------------------------
 // ESEMPIO UTILIZZO CARD_PREVIEW e CARD_DETAILS
-var body = document.body ;
+
+
 
 var card_preview1 = createCard({
     id_advertise : 132132 , 
@@ -10,23 +11,23 @@ var card_preview1 = createCard({
     username_client : "instafiore",
     province : "Montepaone",
     date : "29/12/2021",
-    url_img : "images/testImage.png" ,
+    url_img : "../images/testImage.png" ,
     }) ; 
 
-body.appendChild(card_preview1);
+document.body.appendChild(card_preview1);
 
 var card_preview2 = createCard({
     id_advertise : 132132 , 
     title : "speriamo di prendere 30 testo lungo per vedere come si comporta",
-    description : "ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!",
+    description : "ciao questa è Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!",
     username_client : "giomarasco",
     province : "Montepaone",
     date : "29/12/2021",
-    url_img : "images/testImage.png" ,
+    url_img : "../images/testImage.png" ,
     }) ; 
 
     
-body.appendChild(card_preview2);
+document.body.appendChild(card_preview2);
 
 var card_preview3 = createCard({
     id_advertise : 132132 , 
@@ -35,10 +36,10 @@ var card_preview3 = createCard({
     username_client : "simoneLello",
     province : "Montepaone Lido",
     date : "29/12/2021",
-    url_img : "images/testImage.png" ,
+    url_img : "../images/testImage.png" ,
     }) ; 
 
-body.appendChild(card_preview3);
+document.body.appendChild(card_preview3);
 
 var card_preview4 = createCard({
     id_advertise : 132132 , 
@@ -47,10 +48,10 @@ var card_preview4 = createCard({
     username_client : "ndria",
     province : "Montepaone Lido San Gianni",
     date : "29/12/2021",
-    url_img : "images/testImage.png" ,
+    url_img : "../images/testImage.png" ,
     }) ; 
 
-body.appendChild(card_preview4);
+document.body.appendChild(card_preview4);
 
 card_preview1.show();
 card_preview2.show();

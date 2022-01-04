@@ -1,7 +1,5 @@
 
-import { Account } from "./model/account.js";
-import { User } from "./model/user.js";
-import {Address } from "./model/address.js";
+
 /*ADDRESS*/
 var address_builder = new Address.Builder();
 try{
@@ -43,9 +41,31 @@ try{
 	builder.withProvinceOfWork("Cosenza");
 	builder.withAccountType("w");
 	builder.withUser(user);
-	let account = builder.build();
+	var account = builder.build();
 	console.log(JSON.stringify(account));
 } catch (error) {
     console.log(error.message)
 }
+
+
+// Prova per far vedere funzionamento del builder completo
+var builder_offer = new Offer.Builder();
+
+builder_offer.withTitle("titolo1");
+builder_offer.withDescription("descrizione1");
+
+
+var offer = builder_offer.build();
+offer.title = "titolo2";
+offer.quote = "3.2";
+offer.property = "new Property"
+
+console.log(JSON.stringify(offer));
+
+let list = ["ciao"];
+
+console.log(list.constructor.name);
+
+
+
 
