@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-export class Account {
-
-=======
 class Account {
->>>>>>> 0db4651846f5f677aae57c3d963aad9d430b7ee6
+
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
 	constructor(key) {
@@ -29,7 +25,7 @@ class Account {
 		}
 
 		withPassword = function(password) {
-			var _regex = /^[a-zA-Z0-9!@#$%^_&*]{6,16}.(?=[!@#$%^_&?-\\\/*]).$/g
+			var _regex = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,16}$/;
 			if (_regex.test(password)) {
 				this.#product.password = password;
 			}
