@@ -9,13 +9,14 @@ body{
 .header{
     text-align: center;
 }
+/*Toglie lo scroll dall'input field dei numeri*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Firefox */
+/* Firefox  Toglie lo scroll dall'input field dei numeri*/
 input[type=number]{
   -moz-appearance: textfield;
 }
@@ -37,7 +38,7 @@ i{
 }
 .rounded-photo{
 	
-	height: 300px;
+	height: 210px;
 	clip-path: circle(40%);
 }
 /*	border: 2px solid black;*/

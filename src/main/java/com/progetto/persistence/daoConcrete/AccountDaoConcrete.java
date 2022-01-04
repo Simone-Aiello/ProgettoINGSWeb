@@ -13,25 +13,14 @@ import com.progetto.EmailSender;
 import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Area;
+import com.progetto.model.Image;
 import com.progetto.model.Review;
+import com.progetto.model.User;
 import com.progetto.persistence.Database;
 import com.progetto.persistence.daoInterfaces.AccountDao;
 
 public class AccountDaoConcrete implements AccountDao {
-	private final static int ACTIVATION_CODE_LENGHT = 12;
-	private final static int SALT = 12;
-	private String getAlphaNumericString(int n) {
-		String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789" + "abcdefghijklmnopqrstuvxyz";
-		StringBuilder sb = new StringBuilder(n);
-		for (int i = 0; i < n; i++) {
-			int index = (int) (AlphaNumericString.length() * Math.random());
-			sb.append(AlphaNumericString.charAt(index));
-		}
-		return sb.toString();
-	}
-	private String encryptPassword(String password) {
-		return BCrypt.hashpw(password, BCrypt.gensalt(SALT));
-	}
+	
 	@Override
 	public List<Account> findAll(int mode) throws SQLException {
 		String query = "SELECT * FROM account;";
@@ -52,25 +41,30 @@ public class AccountDaoConcrete implements AccountDao {
 		String query = "SELECT * FROM account WHERE username = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setString(1, username);
-		ResultSet rs = stmt.executeQuery(query);
+		ResultSet rs = stmt.executeQuery();
 		Account a = new Account();
 		if (rs.next()) {
 			a.setUsername(rs.getString("username"));
 			a.setEmail(rs.getString("email"));
+			a.setValid(rs.getBoolean("account_valido"));
 			if (mode != Utils.BASIC_INFO) {
 				int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
-				a.setNumber(rs.getString("telefono"));
+				String number = rs.getString("telefono");
+				if(number != null) a.setNumber(number);
 				a.setProvinceOfWork(rs.getString("provincia_lavoro"));
-				a.setPersonalInfo(Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next));
+				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
+				if(user != null) a.setPersonalInfo(user);
 				if (mode != Utils.LIGHT) {
-					a.setPassword(rs.getString("password"));
-					a.setProfilePic(
-							Database.getInstance().getImageDao().findByPrimaryKey(rs.getLong("immagine_profilo")));
+					//a.setPassword(rs.getString("password")); La password non la vogliamo mai indietro
+					Image image = Database.getInstance().getImageDao().findByPrimaryKey(rs.getLong("immagine_profilo"));
+					if(image != null) a.setProfilePic(image);
 					a.setAccountType(rs.getString("tipo_account"));
 					// if the account is a worker then he may work for some areas
 					if (a.getAccountType().equals(Account.WORKER)) {
-						a.setAreasOfWork(Database.getInstance().getAreaDao().findByWorker(a));
-						a.setReviews(Database.getInstance().getReviewDao().findByWorker(a));
+						List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
+						if(areas != null) a.setAreasOfWork(areas);
+						List<Review> reviews = Database.getInstance().getReviewDao().findByWorker(a);
+						if(reviews != null) a.setReviews(reviews);
 					}
 				}
 			}
@@ -80,7 +74,7 @@ public class AccountDaoConcrete implements AccountDao {
 
 	@Override
 	public void save(Account a) throws SQLException {
-		String activationCode =  getAlphaNumericString(ACTIVATION_CODE_LENGHT);
+		String activationCode =  Utils.getAlphaNumericString(Utils.ACTIVATION_CODE_LENGHT);
 		if (exists(a)) {
 			// NON PENSO SIA GIUSTO
 			String query = "UPDATE account SET password = ?, email = ?, telefono = ?, immagine_profilo = ?, provincia_lavoro = ?,  tipo_account  = ? WHERE username = ?;";
@@ -105,7 +99,7 @@ public class AccountDaoConcrete implements AccountDao {
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 			a.getPersonalInfo().setId(userId);
 			stmt.setString(1, a.getUsername());
-			stmt.setString(2, encryptPassword(a.getPassword()));
+			stmt.setString(2, Utils.encryptPassword(a.getPassword()));
 			stmt.setString(3, a.getEmail());
 			stmt.setString(4, a.getNumber());
 			stmt.setString(5, a.getProvinceOfWork());
@@ -123,7 +117,7 @@ public class AccountDaoConcrete implements AccountDao {
 		// Database.getInstance().getReviewDao().save(r); Non le salvo mai nell'insert
 		// dell'account
 		// }
-		EmailSender.getInstance().sendActivationCode(a.getEmail(), "Codice di attivazione account GetJobs", "http://localhost:8080/activateAccount?code="+activationCode);
+		EmailSender.getInstance().sendEmail(a.getEmail(), "Codice di attivazione account GetJobs", "http://localhost:8080/activateAccount?code="+activationCode);
 	}
 
 	@Override
@@ -186,5 +180,14 @@ public class AccountDaoConcrete implements AccountDao {
 		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
 		st.setString(1, username);
 		return st.executeQuery().next();
+	}
+
+	@Override
+	public void changePassword(String email, String password) throws SQLException {
+		String query = "update account set password = ? where email = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, Utils.encryptPassword(password));
+		st.setString(2, email);
+		st.executeUpdate();
 	}
 }

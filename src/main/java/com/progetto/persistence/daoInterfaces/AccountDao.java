@@ -16,4 +16,5 @@ public interface AccountDao {
 	public void validate(String code)throws SQLException;
 	public boolean usernameAlreadyUsed(String username) throws SQLException;
 	public boolean emailAlreadyUsed(String email) throws SQLException;
+	public void changePassword(String email,String password) throws SQLException;
 }

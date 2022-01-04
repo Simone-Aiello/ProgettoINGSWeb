@@ -16,6 +16,8 @@ function sendAccount() {
 		contentType: "application/json",
 		data: JSON.stringify(account),
 		success: (response) => {
+			console.log(response);
+			window.location.replace(response);
 			console.log("Fare redirect a profilo personale");
 		},
 		error: (xhr) => {
@@ -144,7 +146,7 @@ function switchToNextSection() {
 				currentSection++;
 			}
 			else {
-				appendError("last", "Selezionare almeno un ambito");
+				appendError("area-div", "Selezionare almeno un ambito");
 			}
 			break;
 		case 2:

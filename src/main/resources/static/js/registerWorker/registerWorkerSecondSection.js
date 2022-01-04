@@ -45,7 +45,7 @@ function addUploadAndDeleteListeners() {
 		$("#remove-photo").css("color", "#FF9400");
 	});
 	$("#remove-photo").click(() => {
-		$("#profile-pic").attr("src", "/images/defaultIcon.png");
+		$("#profile-pic").attr("src", "/usersImages/profilePictures/defaultIcon.png");
 		imageBuilder.withValue(null);
 	});
 }
@@ -84,6 +84,8 @@ function addAreasIconListener() {
 				addToAreaSummary(areaName);
 			}
 			else{
+				$(this).css("background-color", "#FFFFFF");
+				$(id + " .icon").css("color", "#FF9400");
 				account_builder.removeArea($(id+ " i").attr("id"));
 				removeFromAreaSummary(areaName);
 			}

@@ -128,13 +128,13 @@ public class AreaDaoConcrete implements AreaDao{
 	@Override
 	public List<Area> findByWorker(Account acc) throws SQLException {
 		List<Area> areas = new ArrayList<Area>();
-		String query = "select id_ambito, nome, icona from account_ambiti inner join ambiti on  id = id_ambito where username_account = ?";
+		String query = "select id_ambito, nome, icona from account_ambiti inner join ambiti on  ambiti.id = account_ambiti.id_ambito where username_account = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setString(1, acc.getUsername());
 		ResultSet set = statement.executeQuery();
 		while(set.next()) {
 			Area a = new Area();
-			a.setId(set.getLong("id"));
+			a.setId(set.getLong("id_ambito"));
 			a.setName(set.getString("nome"));
 			a.setIcon(set.getString("icona"));
 			
