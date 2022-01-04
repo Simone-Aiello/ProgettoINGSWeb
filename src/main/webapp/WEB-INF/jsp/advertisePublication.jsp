@@ -21,23 +21,26 @@
 		<script src = "js/advertisePublication/AdvertisePublication.js"></script>
 	</head>
 	<body>
-		<div id = "form">
+		<div id = "form" class = "shadow">
 			<h1 class = "title">Inserisci i dati del tuo annuncio</h1>
 			<form class = "needs-validation" id = "advertisePublicationForm" method = "post" >
-				<div>
-					<div class ="row mb-3" id="advertiseMainInformation">
+				<div class  = "row mb-3">
 						<div class = "mb-3 col-lg-6 col-md-6 col-xs-12">
 							<label class = "form-label">Titolo*</label>
 							<input type="text" class = "form-control" id = "advertiseTitle" placeholder = "Titolo dell'annuncio">
 						</div>
+
 						<div class = "mb-3 col-lg-6 col-md-6 col-xs-12">
 							<label class ="form-label">Data di scadenza*</label>
 							<input id = "advertiseExpiryDate" class = "form-control" type ="date">
 						</div>
+					</div>
+					<div class ="row mb-3">
 							<label class = "form-label">Descrizione</label>
 							<textarea class = "form-control"  rows = "3" id = "advertiseDescription"></textarea>
 						<div class="form-text">Aggiungi una breve descrizione del problema</div>
-						
+					</div>
+					<div class ="row mb-3">
 						<div class="mb-3 col-lg-6 col-md-6 col-xs-12 ">
 							<label class="form-label">Provincia*</label> 
 							<select
@@ -46,11 +49,11 @@
 							</select>
 						</div>
 					</div>
-				</div>
+
 					<hr class = "solid" id = "firstSeparator">
 					
-					<div class = "mb-3">
-						<label class="form-label">Aggiungi delle foto</label>
+		<div class = "row mb-3">
+						<label id = ""class="form-label  h4">Aggiungi delle foto</label>
 						<div id="uploadedImage" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
 		<div id="uploaded-image" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="false">
 		  <div class="carousel-indicators">

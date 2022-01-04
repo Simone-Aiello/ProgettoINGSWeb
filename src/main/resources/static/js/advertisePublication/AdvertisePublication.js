@@ -83,15 +83,15 @@ function addcheckRequiredInputs(){
 			//create advertise and send it to the server
 			for(const [key, value] of listOfImages.entries()){
 				console.log(key, value);
-				advertiseBuilder.withImage(value);
+				//advertiseBuilder.withImage(value);
 			}
 			for(const [key, value] of listOfAreas.entries()){
 				//console.log(key, value);
-				advertiseBuilder.withArea(value);
+				//advertiseBuilder.withArea(value);
 				
 			}
 			//advertiseBuilder.withImage(listOfImages[0]);
-			//console.log(JSON.stringify(advertiseBuilder.build()));
+
 			//THIS IS A TEST
 			accountBuilder = new Account.Builder();
 			accountBuilder.withUsername("aaaa");
@@ -99,11 +99,15 @@ function addcheckRequiredInputs(){
 			var account = accountBuilder.build();
 			advertiseBuilder.withAccount(account);
 			//
+			
+			let data = advertiseBuilder.build();
+			console.log(JSON.stringify(data));
+			
 			$.ajax({
 				type: "POST",
 				url: "/saveAdvertise",
 				contentType: "application/json",
-				data: JSON.stringify(advertiseBuilder.build()),
+				data: JSON.stringify(data),
 				success: function(){
 					console.log("SUCCESS");
 				},
@@ -112,10 +116,11 @@ function addcheckRequiredInputs(){
 				}
 			});
 			
+			
 			$("#advertiseTitle").text("");
 			$("#advertiseDescription").text("");
 			$("#advertiseExpiryDate").text("");
-			//form.submit();s
+			//form.submit();
 		}
 	});
 }

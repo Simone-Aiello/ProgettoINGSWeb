@@ -14,11 +14,9 @@ class Advertise{
 		this.#serializer[property] = value;
 	}
 	
-	/*
 	toJSON(){
 		return JSON.stringify(this.#serializer);
 	}
-	*/
 	
 	contructor(key){
 		if(key!=Advertise.#key)
