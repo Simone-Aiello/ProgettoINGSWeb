@@ -1,11 +1,23 @@
+
+body{
+	background-color: #f9dcc4
+
+;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+}
 .title{
 	text-align: center;
 }
 
 #form{
-	margin: auto;
-	width: 60%;
-	padding: 10px;
+	background-color: white;
+	margin: 20px;
+	width: 50%;
+	padding: 35px;
+	border-radius: 10px;
 }
 
 @media(max-width: 1024px){
@@ -16,4 +28,27 @@
 
 #fileChooser{
 	visibility: hidden;	
+}
+
+
+
+.icon-figure{
+	display: flex;
+	justify-content: center;
+	border-radius: 15px;
+	transition: transform .3s;
+	width: 80px;
+	height: 70px;
+}
+.icon-figure:hover {
+  transform: scale(1.1);
+}
+.icon-figure i{
+	position: relative;
+	top : 12px;
+	color: #FF9400;
+}
+.icon-div{
+	display: flex;
+	justify-content: center;
 }

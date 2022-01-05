@@ -1,20 +1,12 @@
 var acceptedExtensions = ["image/png", "image/jpg", "image/jpeg"];
 var numberOfImages = 0;
+var listOfImages = new Map();
+
 window.addEventListener("load", () => {
 	addDragAndDropListener();
-	//addDeleteImageListener();
 	addUploadListener();
 });
-/*
-function addDeleteImageListener() {
-	let button = document.querySelector(".carousel-control-delete");
-	button.addEventListener("click", () => {
-		let current = document.querySelector(".active img");
-		console.log(current.getAttribute("src"));
-	});
 
-
-}*/
 function addDragAndDropListener() {
 	let area = document.querySelector(".drag-area");
 	//Prevent default sul dragover altrimenti l'evento drop sulle div non si attiva
@@ -63,15 +55,28 @@ var handleFile = function(file){
 		//console.log('... file[' + i + '].name = ' + file.name);
 		let fileReader = new FileReader();
 		fileReader.readAsDataURL(file);
+
+		let imageName = file.name.substr(0, file.name.lastIndexOf("."));
 		fileReader.addEventListener("load", () => {
+			if(listOfImages.has(imageName)){
+				//alert("ALREADY ADDED THIS IMAGE");
+				return;
+			}
+			var imageBuilder = new Image.Builder();
+			imageBuilder.withValue(fileReader.result);
+			var image = imageBuilder.build();
+			listOfImages.set(imageName, image);
 			numberOfImages = numberOfImages + 1;
 			let divImage = document.createElement("div");
-			divImage.setAttribute("id", "img" + numberOfImages);
+			//console.log(listOfImages);
+			divImage.setAttribute("id", imageName);
 			divImage.setAttribute("class", "carousel-item");
 			let imageElement = document.createElement("img");
-			imageElement.setAttribute("class", "d-block w-100 resized-image");
+			imageElement.classList.add("d-block");
+			imageElement.classList.add("w-100");
+			imageElement.classList.add("resized-image");
 			imageElement.setAttribute("src", fileReader.result);
-			imageElement.setAttribute("id", "uploaded-image");
+			imageElement.setAttribute("id", "uploaded-image" + numberOfImages);
 			
 			let deleteButton = document.createElement("img");
 			 //<img class = "carousel-control-delete" alt="delete" src="/images/x-lg.svg">
@@ -80,12 +85,15 @@ var handleFile = function(file){
 			deleteButton.setAttribute("alt", "delete");
 			deleteButton.setAttribute("src", "/images/x-lg.svg");
 			deleteButton.addEventListener("click", function(){
+				//move visualization to the next image (drag&drop section if there are no other images)
 				document.getElementById("nextButton").click();
-				alert("delete clicked");
+				//alert("delete clicked");
 				var carouselItemId = this.parentElement.getAttribute("id");
-				alert(carouselItemId);
+				//alert(carouselItemId);
 				var carouselIndicator = document.querySelector("#sliderTo" + carouselItemId);
-				alert(carouselIndicator.getAttribute("id"));
+				//alert(carouselIndicator.getAttribute("id"));
+				listOfImages.delete(carouselItemId);
+				//console.log(listOfImages);
 				carouselIndicator.remove();
 				this.parentNode.remove();
 				numberOfImages = numberOfImages-1;
@@ -105,7 +113,7 @@ var handleFile = function(file){
 				if(attributeName === "data-bs-slide-to"){
 					attributeValue = (parseInt(attributeValue,10) + 1).toString();
 					console.log(parseInt(attributeValue,10));
-					buttonElement.setAttribute("id" , "sliderToimg" + (parseInt(attributeValue,10)).toString());
+					buttonElement.setAttribute("id" , "sliderTo" + imageName);
 				}
 				buttonElement.setAttribute(attributeName,attributeValue);
 			}
