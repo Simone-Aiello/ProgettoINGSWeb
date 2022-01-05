@@ -1,4 +1,4 @@
-export class User {
+class User {
 
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
@@ -6,7 +6,15 @@ export class User {
 		if (key != User.#key)
 			throw new Error("This constructor is private");
 	}
+
+	// Private serializer 
+	#serializer = {} ;
 	
+	#addProperty = (property,value) => {
+		this.#serializer[property] = value ;
+	} 
+
+	toJSON() { return this.#serializer ; }
 	
 	#getAge = function (match) {
 		let day_user = parseInt(match[3]);
@@ -47,9 +55,10 @@ export class User {
 
 
 		withName = function(name) {
+			checkType(name,"String");
 			let _regex = /^[a-zA-Z'-\s]+$/;
 			if(_regex.test(name)){			
-				this.#product.name = name;
+				this.#product.#addProperty("name",name);
 			}
 			else{
 				throw new Error("Il campo presenta caratteri non validi");
@@ -58,9 +67,10 @@ export class User {
 
 
 		withSurname = function(surname) {
+			checkType(surname,"String");
 			let _regex = /^[a-zA-Z'-\s]+$/;
 			if(_regex.test(surname)){			
-				this.#product.surname = surname;
+				this.#product.#addProperty("surname",surname);
 			}
 			else{
 				throw new Error("Il campo presenta caratteri non validi");
@@ -68,20 +78,21 @@ export class User {
 		}
 
 		withDateOfBirth = function(dateOfBirth) {
-			var _regex = /^(\d{4})-(\d{2})-(\d{2})$/;
-			if (_regex.test(dateOfBirth)) {
+			isDate(dateOfBirth)
+			if (isBeforeNow(dateOfBirth)) {
 				var match = dateOfBirth.match(_regex);
 				let age = this.#product.#getAge(match);
 				if (age <= 0) throw new Error("La data inserita è successiva a quella odierna");
 				if (age < 16) throw new Error("Devi aver almeno compiuto 16 anni d'età");
-				this.#product.dateOfBirth = dateOfBirth;
+				this.#product.#addProperty("dateOfBirth",dateOfBirth);
 			}
 			else
 				throw new Error("La data inserita non è valida");
 		}
 		
 		withAddress = function(address){
-			this.#product.address = address;
+			checkType(address,"Address");
+			this.#product.#addProperty("address",address);
 		}
 		
 		build = function() {

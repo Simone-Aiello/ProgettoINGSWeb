@@ -8,7 +8,9 @@ function createRow(){
 function checkType(value,type){
 	if(type == "Number")
 		value = Number(value);
-	if(value.constructor.name != type)
+    else if(type == "Date")
+        isDate(value);
+	else if(value.constructor.name != type)
 		throw new Error("The value: "+value+" is not a "+type);
 }
 
@@ -18,10 +20,10 @@ function createButtonWithIcon(icon){
     return button ;
 }
 
-var _regex = /^(\d{4})-(\d{2})-(\d{2})$/;
+var _regex_date = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 function isDate(date){
-	if (!_regex.test(date))
+	if (!_regex_date.test(date))
 		throw new Error("La data inserita non è valida");
 }
 
@@ -29,7 +31,7 @@ function isBeforeNow(date) {
 
     isDate(date);
 
-    var match = date.match(_regex);
+    var match = date.match(_regex_date);
 
     let day_user = parseInt(match[3]);
     let month_user = parseInt(match[2]);
@@ -72,7 +74,7 @@ function isAfterNow(date){
 
     isDate(date);
 
-    var match = date.match(_regex);
+    var match = date.match(_regex_date);
 
     let day_user = parseInt(match[3]);
     let month_user = parseInt(match[2]);

@@ -84,7 +84,6 @@ public class Advertise {
 	}
 	public void setExpiryDate(DateTime expiryDate) {
 		notNull(expiryDate);
-		isTrue(expiryDate.isAfterNow());
 		this.expiryDate = expiryDate;
 	}
 	public Account getAccount() {

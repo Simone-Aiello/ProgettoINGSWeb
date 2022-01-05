@@ -134,7 +134,7 @@ function createCardOfferForm(data){
         dropdown_item_date.style.margin = 0 ;
         dropdown_item_date.style.display = "flex";
         dropdown_item_date.style.justifyContent = "center";
-		let groups = date.match(_regex);
+		let groups = date.match(_regex_date);
         dropdown_item_date.innerHTML = groups[3]+"/"+groups[2]+"/"+groups[1];
         dropdown_item_date.className = "col-10";
     
@@ -378,7 +378,6 @@ function createCardOfferForm(data){
     let card_description = document.createElement("textarea"); 
     card_description.className = "form-control description-offer-form"  ;
     card_description.placeholder = "Inserisci una descrizione";
-    card_description.style.zIndex = -10 ;
     card_description.style.position = "relative";
 
     let button_submit = document.createElement("button");
@@ -401,11 +400,11 @@ function createCardOfferForm(data){
 			if(unit == "minuti"){
 				job_duration = job_duration / 60 ;
 			}else if(unit == "giorni"){
-				job_duration = job_duration / 60 ;
+				job_duration = job_duration * 24 ;
 			}else if(unit == "settimane"){
-				job_duration = job_duration / 60 ;
+				job_duration = job_duration * 24 * 7 ;
 			}else if(unit == "mesi"){
-				job_duration = job_duration / 60 ;
+				job_duration = job_duration * 24 * 30 ;
 			}
 			offer_builder.withHoursOfWork(job_duration);
 		}catch(e){
