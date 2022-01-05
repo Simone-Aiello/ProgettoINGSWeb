@@ -9,82 +9,80 @@ function createCardOfferForm(data){
     let modal_bg = document.createElement("div");
     modal_bg.className = "modal-bg-offer-form";
 
-    let card = document.createElement("div");
-    card.className = "card shadow rounded card-offer-form" ;
+    let form = document.createElement("div");
+    form.className = "card shadow rounded card-offer-form" ;
 
-    let card_body = document.createElement("div");
-    card_body.className = "card-body" ;
+    let inner_form = document.createElement("div");
+    inner_form.className = "card-body" ;
 
-    let card_header = createRow();
-    card_header.classList.add("space-between");
+    let first_row_form = createRow();
+    first_row_form.classList.add("space-between");
     
-    let card_title = document.createElement("h5");
-    card_title.className = "col-10 card-title";
-    card_title.innerHTML = "Compila proposta per: " + data.title ;
-    card_title.style.padding = 0 ;    
+    let form_title = document.createElement("h5");
+    form_title.className = "col-10 card-title";
+    form_title.innerHTML = "Compila proposta per: " + data.title ;
+    form_title.style.padding = 0 ;    
 
-    let exit_button = document.createElement("button");
-    exit_button.className = "btn  far fa-times-circle close-button-offer-form" ;
+    let exit_button_form = document.createElement("button");
+    exit_button_form.className = "btn  far fa-times-circle close-button-offer-form" ;
     
-    exit_button.onmouseover = () => {
-        gsap.to(exit_button,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)" , rotate : "-90deg"} );
+    exit_button_form.onmouseover = () => {
+        gsap.to(exit_button_form,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)" , rotate : "-90deg"} );
     }
 
-    exit_button.onmouseleave = () => {
-        gsap.to(exit_button,{ scale: 1 , ease : "elastic.out(1, 0.3)" , rotate : "0deg"} );
+    exit_button_form.onmouseleave = () => {
+        gsap.to(exit_button_form,{ scale: 1 , ease : "elastic.out(1, 0.3)" , rotate : "0deg"} );
     }
 
-    card_header.appendChild(card_title);
-    card_header.appendChild(exit_button);
+    first_row_form.appendChild(form_title);
+    first_row_form.appendChild(exit_button_form);
 
     let row_information_user_advertise = createRow();
     row_information_user_advertise.classList.add("space-between");
 
-    let card_username_client = document.createElement("a");
-    card_username_client.className = "card-subtitle text-muted small col-3 text-decoration-none" ;
-    card_username_client.innerHTML = "@"+ data.username_client ;
-    card_username_client.style.padding = 0 ;
+    let username_client_advertise = document.createElement("a");
+    username_client_advertise.className = "card-subtitle text-muted small col-3 text-decoration-none" ;
+    username_client_advertise.innerHTML = "@"+ data.username_client ;
+    username_client_advertise.style.padding = 0 ;
 
-    let row_province = createRow();
-    row_province.classList.add("col-4");
+    let row_province_client_advertise = createRow();
+    
+    let label_province_client_advertise = document.createElement("p");
+    label_province_client_advertise.className = "card-subtitle text-muted small" ;
+    label_province_client_advertise.innerHTML = "Provincia";
 
-    let label_province = document.createElement("p");
-    label_province.className = "card-subtitle text-muted small" ;
-    label_province.innerHTML = "Provincia";
+    let province_client_advertise = document.createElement("p");
+    province_client_advertise.className = "card-text" ;
+    province_client_advertise.innerHTML = data.province ;
+    province_client_advertise.style.alignSelf = "center" ;
 
+    row_province_client_advertise.appendChild(label_province_client_advertise);
+    row_province_client_advertise.appendChild(province_client_advertise);
 
-    let card_province = document.createElement("p");
-    card_province.className = "card-text" ;
-    card_province.innerHTML = data.province ;
-    card_province.style.alignSelf = "center" ;
+    let row_due_date_advertise = createRow();
+    row_due_date_advertise.classList.add("col-5");
 
-    row_province.appendChild(label_province);
-    row_province.appendChild(card_province);
+    let label_due_date_advertise = document.createElement("p");
+    label_due_date_advertise.className = "card-subtitle text-muted small" ;
+    label_due_date_advertise.innerHTML = "Data di scadenza";
 
-    let row_due_date = createRow();
-    row_due_date.classList.add("col-5");
+    let due_date_advertise = document.createElement("p");
+    due_date_advertise.className = "card-text" ;
+    due_date_advertise.innerHTML = data.date ;
 
-    let label_due_date = document.createElement("p");
-    label_due_date.className = "card-subtitle text-muted small" ;
-    label_due_date.innerHTML = "Data di scadenza";
+    row_due_date_advertise.appendChild(label_due_date_advertise);
+    row_due_date_advertise.appendChild(due_date_advertise);
 
-    let card_due_date = document.createElement("p");
-    card_due_date.className = "card-text" ;
-    card_due_date.innerHTML = data.date ;
+    row_information_user_advertise.appendChild(username_client_advertise);
+    row_information_user_advertise.appendChild(row_province_client_advertise);
+    row_information_user_advertise.appendChild(row_due_date_advertise);
 
-    row_due_date.appendChild(label_due_date);
-    row_due_date.appendChild(card_due_date);
-
-    row_information_user_advertise.appendChild(card_username_client);
-    row_information_user_advertise.appendChild(row_province);
-    row_information_user_advertise.appendChild(row_due_date);
-
-    let row_date = createRow() ;
-    row_date.style.margin = "10px 0";
-    row_date.style.position = "relative";
+    let row_availabilities = createRow() ;
+    row_availabilities.style.margin = "10px 0";
+    row_availabilities.style.position = "relative";
 
     let container_dropdown_dates = document.createElement("div");
-    container_dropdown_dates.className = "container-dropdown-dates";
+    container_dropdown_dates.className = "container-dropdown-availabilities";
 
     let label_no_dates_added = document.createElement("h1");
     label_no_dates_added.innerHTML = "Nessuna data inserita";
@@ -93,29 +91,38 @@ function createCardOfferForm(data){
     
     container_dropdown_dates.appendChild(label_no_dates_added);
 
-    let input_date = document.createElement("input");
-    input_date.type = "date" ;
-    input_date.className = "date-offer-form";
+    let wrapper_input_availabilities = document.createElement("div");
+    wrapper_input_availabilities.className = "wapper";
+    wrapper_input_availabilities.style.marginLeft = "10px" ;
+    wrapper_input_availabilities.style.position = "relative";
+
+    let input_availabilities = document.createElement("input");
+    input_availabilities.type = "date" ;
+    input_availabilities.className = "date-offer-form";
+
+    wrapper_input_availabilities.appendChild(input_availabilities);
+    wrapper_input_availabilities.appendChild(container_dropdown_dates);
 
    
-    let dates = [];
-    let add_date_button = createButtonWithIcon("far fa-calendar-plus");
+    let availabilities = [];
+    let add_availabilities_button = createButtonWithIcon("far fa-calendar-plus");
 
-    let message_add_date = createMessage({
-        element: add_date_button,
+    let message_add_availabilities_button = createMessage({
+        element: add_availabilities_button,
         message: "Inserisci una data in cui sei disponibile per effetturare il lavoro",
         position : "left",
         type : "information",
     });
 
-    add_date_button.onmouseover = () => {
-        message_add_date.show();
+    add_availabilities_button.onmouseover = () => {
+        message_add_availabilities_button.show();
     }
 
-    add_date_button.onmouseleave = () => {
-        message_add_date.close();
+    add_availabilities_button.onmouseleave = () => {
+        message_add_availabilities_button.close();
     }
-   
+
+    // CONTINUARE DA QUA
     function createRowDropdownItem(date){
 
         let row_dropdown_item_date = createRow();
@@ -138,9 +145,9 @@ function createCardOfferForm(data){
 
         dropdown_item_delete_date.onclick = () => {
             container_dropdown_dates.removeChild(row_dropdown_item_date);
-            dates.splice(dates.indexOf(date),1);
+            availabilities.splice(availabilities.indexOf(date),1);
 			offer_builder.removeAvailability(date);
-            if(dates.length == 0)
+            if(availabilities.length == 0)
                 container_dropdown_dates.appendChild(label_no_dates_added);
         }   
 
@@ -211,15 +218,15 @@ function createCardOfferForm(data){
         }
     }
 
-	add_date_button.onclick = () => {
+	add_availabilities_button.onclick = () => {
 	
-        date_added = input_date.value ;
+        date_added = input_availabilities.value ;
 		try{
 			offer_builder.withAvailability(date_added);
 		}catch(e){
 			createMessage({
 				message : e.message ,
-				element: row_date,
+				element: wrapper_input_availabilities,
 		        position : "top",
 				auto_close : true,
 				duration : 1.5 ,
@@ -228,11 +235,11 @@ function createCardOfferForm(data){
 			return ;
 		}
 		
-		if(dates.indexOf(date_added) >   -1)
+		if(availabilities.indexOf(date_added) >   -1)
 		{
 			createMessage({
 				message : "La data è stata già inserita" ,
-				element: row_date,
+				element: wrapper_input_availabilities,
 		        position : "top",
 				auto_close : true,
 				duration : 1.5 ,
@@ -248,7 +255,7 @@ function createCardOfferForm(data){
         let new_row_dropdown_date_item = createRowDropdownItem(date_added);
         container_dropdown_dates.appendChild(new_row_dropdown_date_item);
 
-        dates.push(date_added);
+        availabilities.push(date_added);
 
 		if(show_date_boolean){
 			container_dropdown_dates.show();
@@ -257,10 +264,9 @@ function createCardOfferForm(data){
 
     }
 
-    row_date.appendChild(add_date_button); 
-    row_date.appendChild(input_date); 
-    row_date.appendChild(show_dates); 
-    row_date.appendChild(container_dropdown_dates);
+    row_availabilities.appendChild(add_availabilities_button); 
+    row_availabilities.appendChild(wrapper_input_availabilities); 
+    row_availabilities.appendChild(show_dates); 
 
     let row_quote_duration_job = createRow();
     row_quote_duration_job.style.margin = "15px 0";
@@ -268,7 +274,7 @@ function createCardOfferForm(data){
 
 
     let input_quote_container = document.createElement("div");
-    input_quote_container.className = "input-group  col mb-3 mt-2 shadow ";
+    input_quote_container.className = "input-group mb-3 mt-2 shadow ";
     input_quote_container.classList.add("space-between");
     input_quote_container.style.padding = 0 ; 
     
@@ -372,12 +378,17 @@ function createCardOfferForm(data){
     let card_description = document.createElement("textarea"); 
     card_description.className = "form-control description-offer-form"  ;
     card_description.placeholder = "Inserisci una descrizione";
+    card_description.style.zIndex = -10 ;
+    card_description.style.position = "relative";
 
     let button_submit = document.createElement("button");
     button_submit.className = "btn  background-color-card-offer-form border-0 submit-offer-button" ;
     button_submit.innerHTML = "Invia proposta" ;
     button_submit.style.padding = "7px";
     button_submit.style.textAlign = "center";
+
+    let position_message_quote_error ;
+    let position_message_duration_job_error ;
 
 	button_submit.onclick = () => {
 	
@@ -399,9 +410,9 @@ function createCardOfferForm(data){
 			offer_builder.withHoursOfWork(job_duration);
 		}catch(e){
 			createMessage({
-		        element: job_duration_container,
+		        element: inner_container_job_duration,
 		        message: e.message,
-		        position : "right",
+		        position : position_message_duration_job_error,
 		        type : "error",
 				auto_close : true ,
 				duration : 2 
@@ -421,7 +432,7 @@ function createCardOfferForm(data){
 			createMessage({
 		        element: input_quote_container,
 		        message: e.message ,
-		        position : "left",
+		        position : position_message_quote_error,
 		        type : "error",
 				auto_close : true ,
 				duration : 2 
@@ -430,10 +441,10 @@ function createCardOfferForm(data){
 			input_quote.value = "";
 		}
 		
-		if(dates.length == 0){
+		if(availabilities.length == 0){
 		
 			createMessage({
-		        element: row_date,
+		        element: wrapper_input_availabilities,
 		        message: "Inserisci almeno una data dove sei disponibile" ,
 		        position : "top",
 		        type : "error",
@@ -460,29 +471,29 @@ function createCardOfferForm(data){
 
 
     let row_submit = document.createElement("div");
-    row_submit.className = "d-flex flex-row-reverse m-2";
+    row_submit.className = "d-flex m-2";
     
     row_submit.appendChild(button_submit);
    
     
-    card_body.appendChild(card_header);
-    card_body.appendChild(row_information_user_advertise)
-    card_body.appendChild(row_date);
-    card_body.appendChild(row_quote_duration_job);
-    card_body.appendChild(card_description);
-    card_body.appendChild(row_submit);
+    inner_form.appendChild(first_row_form);
+    inner_form.appendChild(row_information_user_advertise)
+    inner_form.appendChild(row_availabilities);
+    inner_form.appendChild(row_quote_duration_job);
+    inner_form.appendChild(card_description);
+    inner_form.appendChild(row_submit);
 
-    card.appendChild(card_body);
+    form.appendChild(inner_form);
     
     
-    modal_bg.appendChild(card);
+    modal_bg.appendChild(form);
     
-    card.close = () => {
+    form.close = () => {
 
         const inner_item_timeline = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});
 
-        inner_item_timeline.to(card_title,{x : -10, opacity : 0});
-        inner_item_timeline.to(exit_button,{y : -10, opacity : 0},'<');
+        inner_item_timeline.to(form_title,{x : -10, opacity : 0});
+        inner_item_timeline.to(exit_button_form,{y : -10, opacity : 0},'<');
         inner_item_timeline.to(row_quote_duration_job,{x : -20, opacity : 0 });
         inner_item_timeline.to(card_description,{x : 20, opacity : 0 }, '<');
         inner_item_timeline.to(button_submit,{y : -10, opacity : 0});
@@ -490,8 +501,8 @@ function createCardOfferForm(data){
 
         const modal_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
         
-        modal_timeline.to(card,{ scale : 0.4 });  
-        modal_timeline.to(card,{ scale : 0.8 });  
+        modal_timeline.to(form,{ scale : 0.4 });  
+        modal_timeline.to(form,{ scale : 0.8 });  
         modal_timeline.to(modal_bg,{ opacity :0 } ,'<');  
         modal_timeline.to(modal_bg,{ visibility : "hidden" , duration : 0 });  
         document.body.style.overflow = "auto" ;
@@ -499,10 +510,10 @@ function createCardOfferForm(data){
         return modal_timeline.totalDuration() ;
     }
 
-    card.show  = () => {
+    form.show  = () => {
         
-        if(card.appended == null){
-            card.appended = true ;
+        if(form.appended == null){
+            form.appended = true ;
             document.body.appendChild(modal_bg);
         }else{
             gsap.to(modal_bg,{opacity : 1 , duration : 1 });  
@@ -513,21 +524,58 @@ function createCardOfferForm(data){
 
         const tl = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});
 
-        tl.fromTo(card_title,{x : -10, opacity : 0},{x : 0, opacity : 1});
-        tl.fromTo(exit_button,{y : -10, opacity : 0},{y : 0, opacity : 1},'<');
+        tl.fromTo(form_title,{x : -10, opacity : 0},{x : 0, opacity : 1});
+        tl.fromTo(exit_button_form,{y : -10, opacity : 0},{y : 0, opacity : 1},'<');
         tl.fromTo(row_quote_duration_job,{x : -20, opacity : 0},{x : 0, opacity : 1 });
         tl.fromTo(card_description,{x : 20, opacity : 0},{x : 0, opacity : 1 }, '<');
         tl.fromTo(button_submit,{y : -10, opacity : 0},{y : 0, opacity : 1});
 
-        gsap.fromTo(card,{scale: 0.4 , opacity : 0} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)"});     
+        gsap.fromTo(form,{scale: 0.4 , opacity : 0} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)"});     
 
 
         return tl.duration() ;
     }
     
-    exit_button.onclick = card.close ;
+    exit_button_form.onclick = form.close ;
 
-    return card ;
+
+	let responsive = function(){
+        
+        if ($(window).width() <= 425) {  
+            position_message_quote_error = "bottom" ;
+            position_message_duration_job_error = "bottom" ;
+            row_availabilities.classList.add("center");
+            row_province_client_advertise.classList.add("col-7");
+            row_province_client_advertise.classList.remove("col-4");
+            row_due_date_advertise.classList.add("col-7");
+            row_due_date_advertise.classList.remove("col-4");
+            row_due_date_advertise.style.marginLeft = "42%";
+            input_quote_container.classList.add("col-12");
+            input_quote_container.classList.remove("col");
+            row_submit.classList.add("center");
+            row_submit.classList.remove("flex-row-reverse");
+        }else{
+            position_message_quote_error = "left" ;
+            position_message_duration_job_error = "right" ;
+            row_province_client_advertise.classList.add("col-4");
+            row_province_client_advertise.classList.remove("col-7");
+            row_due_date_advertise.classList.add("col-4");
+            row_due_date_advertise.classList.remove("col-7");
+            row_due_date_advertise.style.marginLeft = "0%";
+            row_availabilities.classList.remove("center");
+            input_quote_container.classList.add("col");
+			input_quote_container.classList.remove("col-12");
+            row_submit.classList.add("flex-row-reverse");
+            row_submit.classList.remove("center");
+        } 
+    }
+
+    responsive();
+    $(window).resize(responsive);
+    
+   
+
+    return form ;
 }
 
 

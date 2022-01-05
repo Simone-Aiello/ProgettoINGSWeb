@@ -178,7 +178,7 @@ function createMessage(data){
     message.style.fontSize = "12px";
 
     if(data.type == "error"){
-        message_container.style.backgroundColor = "rgba(255, 166, 158, 1)" 
+        message_container.style.backgroundColor = "rgba(255, 166, 158, 0.8)" 
         message_container.style.color = "#f94144";
     }else if(data.type == "default"){
         message_container.style.backgroundColor = "rgba(0, 48, 73, 0.6)" ;
