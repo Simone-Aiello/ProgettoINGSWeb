@@ -56,19 +56,12 @@ public class ProfilePagesController {
 	public String getProfilePage(@RequestParam("username") String username,HttpServletRequest req) {
 		try {
 			Account account = Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.COMPLETE);
-			//SPOSTARE IN UTILS
-			DateTime dt = account.getPersonalInfo().getDateOfBirth();
-			String paddedDay = dt.getDayOfMonth() < 10 ? "0" + dt.getDayOfMonth() : ""+dt.getDayOfMonth();
-			String paddedMonth = dt.getMonthOfYear() < 10 ? "0" + dt.getMonthOfYear() : ""+dt.getMonthOfYear();
-			String date = paddedDay + "/" + paddedMonth + "/" + dt.getYear();
-			//
 			account.setReviews(randomRatingForTesting());
 			int rating = Database.getInstance().getReviewDao().averageRatingWorker(account);
 			req.setAttribute("account", account);
-			req.setAttribute("date", date);
+			req.setAttribute("date", Utils.convertDate(account.getPersonalInfo().getDateOfBirth()));
 			req.setAttribute("rating", rating);
 		} catch (SQLException e) {
-			//generica pagina di errore
 			e.printStackTrace();
 		}
 		return "profilePage";

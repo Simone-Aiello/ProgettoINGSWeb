@@ -26,10 +26,6 @@ public class RegisterControllerREST {
 		try {
 			//Faccio il set del tipo di account che voglio creare e salvo i dati
 			account.setAccountType("w");
-			if(account.getProfilePic() != null) {
-				String imageValue = Utils.saveProfileImage(req, account.getProfilePic().getValue(), account.getUsername());
-				account.getProfilePic().setValue(imageValue);
-			}
 			Database.getInstance().getAccountDao().save(account);
 			return "/profilePage?username=" + account.getUsername();
 		} catch (SQLException e) {

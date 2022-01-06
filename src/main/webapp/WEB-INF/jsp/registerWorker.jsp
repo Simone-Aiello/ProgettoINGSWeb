@@ -24,6 +24,7 @@
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <script src="/js/registerWorker/registerWorker.js"></script>
 <script src="/js/registerWorker/registerWorkerSecondSection.js"></script>
+<script src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
 <link rel="stylesheet" href="/css/registerWorker.css">
 </head>
 <body>
@@ -149,57 +150,18 @@
 				</div>
 			</div>
 			<hr />
-			<div id="area-div"> 
-					<div class="row">
-						<c:forEach items="${areas}" var="area" varStatus="loop">
-							<div class="col icon-div">
-								<figure class="icon-figure" id="area-${loop.count}">
-									<i class="fas ${area.icon} fa-3x icon ${area.name}" id="${area.id}"></i>
-								</figure>
-							</div>
-						</c:forEach>
-					</div>
-					<!--<div class="col icon-div">
-						<figure class="icon-figure" id="area-1">
-							<i class="fas fa-paint-roller fa-3x icon" id="6"></i>
-						</figure>
-					</div>
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-2">
-							<i class="fas fa-wrench fa-3x icon" id="4"></i>
-						</figure>
-					</div>
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-3">
-							<i class="fas fa-plug fa-3x icon" id="5"></i>
-						</figure>
-					</div>
-				</div>
+			<div id="area-div">
 				<div class="row">
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-4">
-							<i class="fas fa-desktop fa-3x icon" id="7"></i>
-						</figure>
-					</div>
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-5">
-							<i class="fas fa-dog fa-3x icon" id="8"></i>
-						</figure>
-					</div>
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-6">
-							<i class="fas fa-baby-carriage fa-3x icon" id="9"></i>
-						</figure>
-					</div>
+					<c:forEach items="${areas}" var="area" varStatus="loop">
+						<div class="col icon-div">
+							<figure class="icon-figure" id="area-${loop.count}">
+								<i class="${area.icon} fa-3x icon"
+									id="${area.id}"></i>
+							</figure>
+						</div>
+					</c:forEach>
 				</div>
-				<div class="row" id="last">
-					<div class="col icon-div">
-						<figure class="icon-figure" id="area-7">
-							<i class="fas fa-faucet fa-3x icon" id="3"></i>
-						</figure>
-					</div>
-				</div>-->
-				<input class="form-check-input" type="checkbox" value=""
+				<input class="form-check-input my-2" type="checkbox" value=""
 					id="flexCheckDefault"><label class="form-check-label">L'ambito
 					per cui voglio iscrivermi non è tra quelli proposti</label>
 				<form id="missing-area">
@@ -219,8 +181,12 @@
 			<div class="centered-div">
 				<figure class="profile-figure">
 					<img alt="" src="/usersImages/profilePictures/defaultIcon.png"
-						class="image-fluid rounded-photo">
+						class="image-fluid rounded-photo" id="summary-profile-pic">
 				</figure>
+			</div>
+			<div id="summary-areas-outer" class="centered-div">
+				<div id="summary-areas">
+				</div>
 			</div>
 			<p>
 				<span class="bold">Username</span>: <span id="summary-username"></span>
@@ -264,11 +230,6 @@
 				<span class="bold">Sede di lavoro</span>: <span
 					id="summary-province-of-work"></span>
 			</p>
-			<p>
-				<span class="bold">Ambiti di lavoro</span>:
-			</p>
-			<ul id="area-list">
-			</ul>
 		</section>
 		<div class="button-div">
 			<button class="btn btn-secondary" id="previous">Precedente</button>

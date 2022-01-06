@@ -3,12 +3,18 @@ var acceptedExtensions = ["image/png", "image/jpg", "image/jpeg"];
 var selectedAreas = {};
 var imageBuilder = new Image.Builder();
 var areaBuilder = null;
+var defaultPhoto = "/usersImages/profilePictures/defaultIcon.png";
 function addToAreaSummary(areaName){
-	$("#area-list").append("<li id ="+ areaName + ">"+ capitalizeFirstLetter(areaName) + "</li>");
+	$("#summary-areas").append(`<i id ="${areaName}" class="fas ${areaName} fa-2x icon"></i>`);
 }
 function removeFromAreaSummary(areaName){
-	console.log("tolgo");
 	$("#" + areaName).remove();
+}
+function addImageToSummary(value){
+	$("#summary-profile-pic").attr("src",value);
+}
+function removeImmageFromSummary(){
+	$("#summary-profile-pic").attr("src",defaultPhoto);
 }
 function atLeastOneArea(){
 	for(const [key,value] of Object.entries(selectedAreas)){
@@ -21,10 +27,11 @@ function addFileReaderListener() {
 		$("#profile-pic").attr("src", e.target.result);
 		imageBuilder.withValue(e.target.result);
 		$("#file-input")[0].value = '';
+		addImageToSummary(e.target.result);
 	};
 }
 function addUploadAndDeleteListeners() {
-	//Upload listeners
+	//Upload button listeners
 	$("#upload-photo").hover((enter) => {
 		$("#upload-photo").css("background-color", "#FF9400");
 		$("#upload-photo").css("color", "#FFFFFF");
@@ -36,7 +43,7 @@ function addUploadAndDeleteListeners() {
 		$("#file-input").click();
 	});
 
-	//Remove listeners
+	//Remove button listeners
 	$("#remove-photo").hover((enter) => {
 		$("#remove-photo").css("background-color", "#FF9400");
 		$("#remove-photo").css("color", "#FFFFFF");
@@ -45,8 +52,9 @@ function addUploadAndDeleteListeners() {
 		$("#remove-photo").css("color", "#FF9400");
 	});
 	$("#remove-photo").click(() => {
-		$("#profile-pic").attr("src", "/usersImages/profilePictures/defaultIcon.png");
+		$("#profile-pic").attr("src", defaultPhoto);
 		imageBuilder.withValue(null);
+		removeImmageFromSummary();
 	});
 }
 function addInputListener() {
@@ -74,9 +82,8 @@ function addAreasIconListener() {
 		
 		$(this).click(() => {
 			let id = "#"+$(this).attr("id");
-			let allClasses = $(id+ " i").attr("class").split(/\s+/);
-			let areaName = allClasses[allClasses.length - 1];
 			selectedAreas[id] = !selectedAreas[id];
+			let areaName = $(id + " i").attr("class").split(/\s+/)[1];
 			if(selectedAreas[id]){
 				areaBuilder = new Area.Builder();
 				areaBuilder.withId($(id+ " i").attr("id"));

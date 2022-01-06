@@ -1,6 +1,13 @@
 .fa-star{
 	color : #FF9400;
 }
+i{
+	color: #FF9400;
+	padding-left: 3px;
+}
+.areas{
+	display: inline-block;
+}
 .rounded-photo{
 	
 	height: 210px;
@@ -27,12 +34,19 @@
 	left: 20px;
 	top: 3px;
 }
-@media(max-width:1200px){
-	.card-title{
-		float: none;
-		padding-right: 7px;
-	}
+/*Toglie lo scroll dall'input field dei numeri*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
+
+/* Firefox  Toglie lo scroll dall'input field dei numeri*/
+input[type=number]{
+  -moz-appearance: textfield;
+}
+
+
 /*@media(max-width:995px){
 	.review-header{
 		float: none;

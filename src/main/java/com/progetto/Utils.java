@@ -74,11 +74,22 @@ public class Utils {
 	public static String encryptPassword(String password) {
 		return BCrypt.hashpw(password, BCrypt.gensalt(Utils.SALT));
 	}
-	public static String saveProfileImage(HttpServletRequest req,String base64,String usernameAccount) {
+	public static String convertDate(DateTime date) {
+		String paddedDay = date.getDayOfMonth() < 10 ? "0" + date.getDayOfMonth() : ""+date.getDayOfMonth();
+		String paddedMonth = date.getMonthOfYear() < 10 ? "0" + date.getMonthOfYear() : ""+date.getMonthOfYear();
+		String convertedDate = date.getYear() + "-" + paddedMonth + "-" + paddedDay;
+		return convertedDate;
+	}
+	
+	/*private static String getPathToProfilePictureFolder(HttpServletRequest req) {
 		//Ritorna il path fino a webapp
 		File f = new File(req.getServletContext().getRealPath("/"));
 		//prendo il path fino alla cartella profilePictures
-		String pathToResources = f.getParentFile().getAbsolutePath()+System.getProperty("file.separator")+"resources"+System.getProperty("file.separator")+"static"+System.getProperty("file.separator")+"usersImages"+System.getProperty("file.separator")+"profilePictures";
+		return f.getParentFile().getAbsolutePath()+System.getProperty("file.separator")+"resources"+System.getProperty("file.separator")+"static"+System.getProperty("file.separator")+"usersImages"+System.getProperty("file.separator")+"profilePictures";
+	}
+	public static String saveProfileImage(HttpServletRequest req,String base64,String usernameAccount) {
+		//String pathToResources = getPathToProfilePictureFolder(req);
+		String pathToResources  = req.getServletContext().getRealPath("/");
 		//Prendo il valore dell'immagine e l'estensione
 		String imageValue = base64.split(",")[1];
 		String imageExt = base64.split("/")[1].split(";")[0];
@@ -104,4 +115,13 @@ public class Utils {
 		}
 		return null;
 	}
+	public static String getPathToProfilePicture(HttpServletRequest req, String username) {
+		//String pathUsernamePictureFolder = getPathToProfilePictureFolder(req) + System.getProperty("file.separator") + username;
+		String pathUsernamePictureFolder = req.getServletContext().getRealPath("/testProfileImage/testProfileImage.jpeg") + System.getProperty("file.separator") + username;
+		System.out.println(pathUsernamePictureFolder);
+		File directoryUsername = new File(pathUsernamePictureFolder);
+		System.out.println(directoryUsername.listFiles()[0].getAbsolutePath());
+		String pathUsernamePictureFolder = req.getServletContext().getRealPath("/META_INF/testProfileImage/testProfileImage.jpeg");
+		return pathUsernamePictureFolder;
+	}*/
 }
