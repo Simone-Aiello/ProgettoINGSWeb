@@ -13,6 +13,7 @@ function createOfferDetailCard(data){
 	let titleRow = document.createElement('div');
 	titleRow.className = 'row';
 	let title = document.createElement('h5');
+	title.id = 'title-' + data.index;
 	title.innerHTML = 'Proposta compilata per : ' + data.title;
 	title.className = 'col-10 card-title';
 	
@@ -37,7 +38,7 @@ function createOfferDetailCard(data){
 	usernameCol.className = 'col';
 	let username = document.createElement('p');
 	username.className = 'card-subtitle text-muted small';
-	username.id = 'username';
+	username.id = 'username-'+data.index;
 	username.innerHTML = '@' + data.username;
 	usernameCol.appendChild(username);
 	infoRow.appendChild(usernameCol);
@@ -51,7 +52,7 @@ function createOfferDetailCard(data){
 	
 	let province = document.createElement('p');
 	province.className = 'small';
-	province.id = 'province';
+	province.id = 'province-'+data.index;
 	province.innerHTML = data.province;
 	
 	provinceCol.appendChild(provinceLabel);
@@ -67,7 +68,7 @@ function createOfferDetailCard(data){
 	
 	let date = document.createElement('p');
 	date.className = 'small';
-	date.id = 'province';
+	date.id = 'due-date-'+data.index;
 	date.innerHTML = data.dueDate;
 	
 	dueDateCol.appendChild(dueDateLabel);
@@ -116,6 +117,7 @@ function createOfferDetailCard(data){
 	let jobTimeLabel = document.createElement('label');
 	jobTimeLabel.className = 'card-subtitle text-muted small';
 	jobTimeLabel.innerHTML = 'Durata lavoro : ' + data.jobExecutionTime + ' ' + data.jobExecutionTimeUnit;
+	jobTimeLabel.id = 'job-time-'+data.index;
 	jobTimeInfo.appendChild(jobTimeLabel);
 		
 	dateTimeInfoRow.appendChild(datesDropDown);
@@ -132,7 +134,7 @@ function createOfferDetailCard(data){
 	price.className = 'form-control';
 	price.type = "text";
 	price.readOnly = "readonly";
-	price.id = "amount";
+	price.id = "amount-"+data.index;
 	price.value = data.amount;
 	let sideInfo = document.createElement('div');
 	sideInfo.className = 'input-group-append';
@@ -161,6 +163,7 @@ function createOfferDetailCard(data){
 	textArea.style = 'border-color : #e3e3e3';
 	textArea.readOnly = 'readonly';
 	textArea.value = data.description;
+	textArea.id = 'description-'+data.index;
 	textAreaRow.appendChild(textArea);
 	
 	
@@ -168,13 +171,19 @@ function createOfferDetailCard(data){
 	let buttonDiv = document.createElement('div');
 	buttonDiv.className = 'd-flex flex-row-reverse mt-3';
 	let button = document.createElement('a');
-	button.className = 'btn btn-primary';
-	button.id = 'accept-button';
-	button.innerHTML = 'Conferma';
-	button.style = 'background-color : #f4a261; border:none';
+	button.className = 'btn btn-success';
+	button.id = data.index;
+	button.innerHTML = 'Accetta';
+	
+	
+	let refuseButton = document.createElement('a');
+	refuseButton.className = "btn btn-danger";
+	refuseButton.innerHTML = 'Rifiuta';
+	refuseButton.style = 'margin-right: 20px;'
+	
 	
 	buttonDiv.appendChild(button);
-
+	buttonDiv.appendChild(refuseButton);
 
 	//build the card
 	card_body.appendChild(titleRow);
@@ -188,8 +197,9 @@ function createOfferDetailCard(data){
 	
 }
 
-/*$(document).ready(() => {
-	body = document.getElementById('body') ;
+$(document).ready(() => {
+	console.log("ciao");
+	/*body = document.getElementById('body') ;
 
 	card = createOfferDetailCard({
                     title : "titolo",
@@ -202,5 +212,5 @@ function createOfferDetailCard(data){
 					amount : 1200,
 					description : "Lorem ipsum dolor sit amet. Sit esse maxime id tempora repellendus non odit velit. Id architecto iure aut consequatur totam sed aperiam mollitia ut minus possimus. Nam laudantium perferendis sit velit maiores aut odio laudantium. Qui officia illo qui eveniet officiis et tempora internos 33 tenetur modi quo porro doloribus qui iure odio."
                     }) ;
-	body.append(card);
-});*/
+	body.append(card);*/
+});

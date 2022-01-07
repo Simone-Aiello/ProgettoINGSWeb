@@ -39,21 +39,21 @@ public class ShowOffersController {
 		Offer o1 = new Offer();
 		o1.setTitle("title 1");
 		o1.setDescription("description");
-		o1.setHoursOfWork(12);
+		o1.setHoursOfWork(4);
 		o1.setQuote(12.50);
 		o1.setDone(false);
 		
 		Offer o2 = new Offer();
 		o2.setTitle("title 2");
 		o2.setDescription("description");
-		o2.setHoursOfWork(12);
+		o2.setHoursOfWork(1);
 		o2.setQuote(1300.50);
 		o2.setDone(false);
 		
 		Offer o3 = new Offer();
 		o3.setTitle("title 2");
 		o3.setDescription("description");
-		o3.setHoursOfWork(12);
+		o3.setHoursOfWork(8);
 		o3.setQuote(1240.50);
 		o3.setDone(false);
 		
