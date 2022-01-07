@@ -3,7 +3,7 @@ var account_builder = new Account.Builder();
 var user_builder = new User.Builder();
 var address_builder = new Address.Builder();
 var currentSection = 0;
-var steps = ["personal-information", "picture-and-areas","summary"];
+var steps = ["personal-information", "picture-and-areas", "summary"];
 function sendAccount() {
 	user_builder.withAddress(address_builder.build());
 	account_builder.withUser(user_builder.build());
@@ -24,7 +24,7 @@ function sendAccount() {
 		}
 	});
 }
-function updateSummary(idElement,currentText){
+function updateSummary(idElement, currentText) {
 	let idSummary = "#summary-" + idElement;
 	$(idSummary).text(currentText);
 }
@@ -125,7 +125,7 @@ function switchToNextSection() {
 						appendError("username", "Username già in uso sul sito");
 					}
 					else if (!data[1]) {
-						appendError("email", "Email già in uso sul sito. <a href=" +"/passwordRecovery.html class=\"link-primary\">Recupera password</a>");
+						appendError("email", "Email già in uso sul sito. <a href=" + "/passwordRecovery.html class=\"link-primary\">Recupera password</a>");
 					}
 					else {
 						animateFormTransition(steps[currentSection], steps[currentSection + 1]);
@@ -146,7 +146,7 @@ function switchToNextSection() {
 			}
 			break;
 		case 2:
-				sendAccount();
+			sendAccount();
 			break;
 	}
 }
@@ -234,17 +234,17 @@ function getProvince() {
 		}
 	});
 }*/
-/*function handleUsernameInput(){
+function handleUsernameInput() {
 	let usernameField = $("#username");
-		let username = usernameField.val();
-		try {
-			account_builder.withUsername(username);
-			appendCorrect("username");
-		}
-		catch (error) {
-			appendError("username", error.message);
-		}
-}*/
+	let username = usernameField.val();
+	try {
+		account_builder.withUsername(username);
+		appendCorrect("username");
+	}
+	catch (error) {
+		appendError("username", error.message);
+	}
+}
 function addUsernameListeners() {
 	$("#username").on("input", () => {
 		/*let usernameField = $("#username");
@@ -257,88 +257,103 @@ function addUsernameListeners() {
 			appendError("username", error.message);
 		}*/
 		handleUsernameInput();
-		updateSummary("username",$("#username").val());
+		updateSummary("username", $("#username").val());
 	});
+}
+function handleEmailInput() {
+	let emailField = $("#email");
+	let email = emailField.val();
+	try {
+		account_builder.withEmail(email);
+		appendCorrect("email");
+	}
+	catch (error) {
+		appendError("email", error.message);
+	}
 }
 function addEmailListeners() {
 	$("#email").on("input", () => {
-		let emailField = $("#email");
-		let email = emailField.val();
-		try {
-			account_builder.withEmail(email);
-			appendCorrect("email");
-		}
-		catch (error) {
-			appendError("email", error.message);
-		}
-		updateSummary("email",email);
+		handleEmailInput();
+		updateSummary("email", $("#email").val());
 	});
+}
+function handleNameInput() {
+	try {
+		user_builder.withName($("#name").val());
+		appendCorrect("name");
+	}
+	catch (error) {
+		appendError("name", error.message);
+	}
 }
 function addNameListeners() {
 	$("#name").on("input", () => {
-		try {
-			user_builder.withName($("#name").val());
-			appendCorrect("name");
-		}
-		catch (error) {
-			appendError("name", error.message);
-		}
-		updateSummary("name",$("#name").val());
+		handleNameInput();
+		updateSummary("name", $("#name").val());
 	});
+}
+function handleSurnameInput() {
+	try {
+		user_builder.withSurname($("#surname").val());
+		appendCorrect("surname");
+	}
+	catch (error) {
+		appendError("surname", error.message);
+	}
 }
 function addSurnameListeners() {
 	$("#surname").on("input", () => {
-		try {
-			user_builder.withSurname($("#surname").val());
-			appendCorrect("surname");
-		}
-		catch (error) {
-			appendError("surname", error.message);
-		}
-		updateSummary("surname",$("#surname").val());
+		handleSurnameInput();
+		updateSummary("surname", $("#surname").val());
 	});
+}
+function handleTelephoneInput() {
+	let telephoneField = $("#telephone");
+	let telephoneValue = telephoneField.val();
+	try {
+		account_builder.withNumber(telephoneValue);
+		appendCorrect("telephone");
+	}
+	catch (error) {
+		appendError("telephone", error.message);
+	}
 }
 function addTelephoneListeners() {
 	$("#telephone").on("input", () => {
-		let telephoneField = $("#telephone");
-		let telephoneValue = telephoneField.val();
-		try {
-			account_builder.withNumber(telephoneValue);
-			appendCorrect("telephone");
-		}
-		catch (error) {
-			appendError("telephone", error.message);
-		}
-		updateSummary("telephone",telephoneValue);
+		handleTelephoneInput();
+		updateSummary("telephone", $("#telephone").val());
 	})
+}
+function handleDateOfBirthListeners() {
+	let dateField = $("#date-of-birth");
+	let dateValue = dateField.val();
+	try {
+		user_builder.withDateOfBirth(dateValue);
+		appendCorrect("date-of-birth");
+	}
+	catch (error) {
+		appendError("date-of-birth", error.message);
+	}
 }
 function addDateOfBirthListeners() {
 	$("#date-of-birth").on("input", () => {
-		let dateField = $("#date-of-birth");
-		let dateValue = dateField.val();
-		try {
-			user_builder.withDateOfBirth(dateValue);
-			appendCorrect("date-of-birth");
-		}
-		catch (error) {
-			appendError("date-of-birth", error.message);
-		}
-		updateSummary("date-of-birth",dateValue);
+		handleDateOfBirthListeners();
+		updateSummary("date-of-birth", $("#date-of-birth").val());
 	});
 }
-function loadZipCode() {
+function loadZipCode(withSummary) {
 	let selectedProvince = $("#province").val().toLowerCase();
 	let currentCity = $("#city").val();
 	for (c of city[selectedProvince]) {
 		if (c["nome"] === currentCity) {
 			$("#zip-code").val(c["cap"]);
 			address_builder.withZipCode(c["cap"]);
-			updateSummary("zip-code",$("#zip-code").val());
+			if (withSummary) updateSummary("zip-code", $("#zip-code").val());
 			return;
 		}
 	}
 }
-function loadCity(selectedProvince) {
+function loadCity(selectedProvince, withSummary) {
 	let currentCity = $("#city");
 	$.ajax({
 		type: "GET",
@@ -359,39 +374,48 @@ function loadCity(selectedProvince) {
 			}
 			address_builder.withTown($("#city").val());
 			appendCorrect("city");
-			loadZipCode();
-			updateSummary("city",$("#city").val());
+			loadZipCode(withSummary);
+			if (withSummary) updateSummary("city", $("#city").val());
 		},
 		error: function() {
 			showSystemError();
 		}
 	});
 }
+function handleProvinceOfWorkInput() {
+	try {
+		account_builder.withProvinceOfWork($("#province-of-work").val());
+		appendCorrect("province-of-work");
+	}
+	catch (error) {
+		appendError("province-of-work", error.message);
+	}
+}
+function handleCityInput() {
+	let townVal = $("#city").val();
+	try {
+		address_builder.withTown(townVal);
+		appendCorrect("city");
+	}
+	catch (error) {
+		appendError("city", error.message);
+		return false;
+	}
+	return true;
+}
 function addProvinceAndCityListeners() {
 	$("#province-of-work").on("input", () => {
-		try {
-			account_builder.withProvinceOfWork($("#province-of-work").val());
-			appendCorrect("province-of-work");
-		}
-		catch (error) {
-			appendError("province-of-work", error.message);
-		}
+		handleProvinceOfWorkInput();
 	});
 	$("#city").on("input", () => {
-		let townVal = $("#city").val();
-		try {
-			address_builder.withTown(townVal);
-			appendCorrect("city");
-			loadZipCode();
+		if(handleCityInput()){
+			loadZipCode(true);
+			updateSummary("city", townVal);			
 		}
-		catch (error) {
-			appendError("city", error.message);
-		}
-		updateSummary("city",townVal);
 	});
 	$("#province").change((event) => {
-			var selectedProvince = (event.target.value);
-		try{
+		var selectedProvince = (event.target.value);
+		try {
 			address_builder.withProvince(selectedProvince);
 			account_builder.withProvinceOfWork(selectedProvince);
 			let lowerCaseSelected = selectedProvince.toLowerCase();
@@ -402,45 +426,50 @@ function addProvinceAndCityListeners() {
 					currentCity.append("<option>" + c + "</option>");
 				}
 				address_builder.withTown(currentCity.val());
-				loadZipCode();
+				loadZipCode(true);
 			}
 			else {
-				loadCity(lowerCaseSelected);
+				loadCity(lowerCaseSelected, true);
 			}
 			appendCorrect("province");
 			$("#province-of-work").val(selectedProvince);
 			appendCorrect("province-of-work");
 		}
-		catch(error){
+		catch (error) {
 			appendError("province");
 		}
-		updateSummary("province",selectedProvince);
-		updateSummary("province-of-work",selectedProvince);
+		updateSummary("province", selectedProvince);
+		updateSummary("province-of-work", selectedProvince);
 	});
+}
+function handleViaInput() {
+	let viaField = $("#via");
+	let viaValue = viaField.val();
+	try {
+		address_builder.withVia(viaValue);
+		appendCorrect("via");
+	}
+	catch (error) {
+		appendError("via", error.message);
+	}
+}
+function handleHouseNumberInput() {
+	try {
+		address_builder.withHouseNumber($("#house-number").val());
+		appendCorrect("house-number");
+	}
+	catch (error) {
+		appendError("house-number-error", error.message);
+	}
 }
 function addAddressListeners() {
 	$("#via").on("input", () => {
-		let viaField = $("#via");
-		let viaValue = viaField.val();
-		try {
-			address_builder.withVia(viaValue);
-			appendCorrect("via");
-		}
-		catch (error) {
-			appendError("via", error.message);
-		}
-		updateSummary("via",viaField.val());
+		handleViaInput();
+		updateSummary("via", $("#via").val());
 	});
 	$("#house-number").on("input", () => {
-		let houseNumberField = $("#house-number");
-		try {
-			address_builder.withHouseNumber($("#house-number").val());
-			appendCorrect("house-number");
-		}
-		catch (error) {
-			appendError("house-number-error", error.message);
-		}
-		updateSummary("house-number",$("#house-number").val());
+		handleHouseNumberInput();
+		updateSummary("house-number", $("#house-number").val());
 	});
 }
 function addNextListeners() {

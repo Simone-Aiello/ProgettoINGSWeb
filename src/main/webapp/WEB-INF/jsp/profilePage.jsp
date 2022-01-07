@@ -23,6 +23,8 @@
 <script src="/js/model/area.js"></script>
 <script src="/js/model/image.js"></script>
 <script src="/js/profilePage/profilePageLogged.js"></script>
+<script
+	src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
 </head>
 <body>
 	<div class="container mt-5 shadow">
@@ -87,7 +89,7 @@
 							<div class="col-md-12 mb-1">
 								<label>Numero di telefono</label><input type="text"
 									class="form-control" placeholder="Numero di telefono"
-									value="${account.number}" id="number" readonly>
+									value="${account.number}" id="telephone" readonly>
 							</div>
 							<div class="col-md-12 mb-1">
 								<label>Provincia di residenza</label> <select
@@ -100,6 +102,15 @@
 									id="city" disabled>
 									<option selected>${account.personalInfo.address.town}</option>
 								</select>
+							</div>
+							<div class="col-md-12 mb-1" id="via-div">
+								<label class="form-label">Via</label> <input type="text"
+									class="form-control" placeholder="Via" id="via" required>
+							</div>
+							<div class="col-md-12 mb-1" id="house-number-div">
+								<label class="form-label">Numero civico</label> <input
+									class="form-control" type="number" placeholder="Numero civico"
+									id="house-number" required>
 							</div>
 							<div class="col-md-12 mb-1">
 								<label>CAP</label><input type="text" class="form-control"
@@ -115,9 +126,18 @@
 							</div>
 						</div>
 					</form>
-					<div class="mt-5 text-center">
+					<div class="mt-5" id="select-area-div-outer">
+						<h5>Seleziona i nuovi ambiti</h5>
+						<div class="mt-5" id="select-area-div">
+						</div>
+					</div>
+					<div class="mt-5 text-center" id="button-div">
 						<button class="btn btn-primary" type="button" id="modify-button">Modifica
 							Profilo</button>
+						<button class="btn btn-secondary" type="button" id="delete-button">Elimina
+							modifiche</button>
+						<button class="btn btn-primary mx-3" type="button"
+							id="save-button">Salva modifiche</button>
 					</div>
 				</div>
 			</div>

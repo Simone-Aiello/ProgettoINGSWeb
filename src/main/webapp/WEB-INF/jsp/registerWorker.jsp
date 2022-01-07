@@ -24,7 +24,6 @@
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <script src="/js/registerWorker/registerWorker.js"></script>
 <script src="/js/registerWorker/registerWorkerSecondSection.js"></script>
-<script src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
 <link rel="stylesheet" href="/css/registerWorker.css">
 </head>
 <body>

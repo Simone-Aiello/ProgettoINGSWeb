@@ -45,8 +45,33 @@ input::-webkit-inner-spin-button {
 input[type=number]{
   -moz-appearance: textfield;
 }
-
-
+#button-div{
+	display: flex;
+	justify-content: center;
+}
+#delete-button,#save-button,#house-number-div,#via-div,#select-area-div-outer{
+	display: none;
+}
+.icon-figure{
+	display: flex;
+	justify-content: center;
+	border-radius: 15px;
+	transition: transform .3s;
+	width: 80px;
+	height: 70px;
+}
+.icon-figure:hover {
+  transform: scale(1.1);
+}
+.icon-figure i{
+	position: relative;
+	top : 12px;
+	color: #FF9400;
+}
+.icon-div{
+	display: flex;
+	justify-content: center;
+}
 /*@media(max-width:995px){
 	.review-header{
 		float: none;
