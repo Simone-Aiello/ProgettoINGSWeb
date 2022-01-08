@@ -172,4 +172,27 @@ public class OfferDaoConcrete implements OfferDao {
 		}
 		return offers;
 	}
+
+	@Override
+	public List<Offer> findOffersByAdvertise(Advertise a) throws SQLException {
+		List<Offer> offers = new ArrayList<>();
+		String query = "SELECT * FROM proposte WHERE id_annuncio = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setLong(1, a.getId());
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			Offer o = new Offer();
+			o.setDescription(rs.getString("descrizione"));
+			o.setHoursOfWork(rs.getInt("ore_di_lavoro"));
+			o.setId(rs.getLong("id"));
+			o.setQuote(rs.getDouble("preventivo"));
+			o.setTitle(rs.getString("titolo"));
+			Account acc = new Account();
+			acc.setUsername(rs.getString("username_lavoratore"));
+			o.setWorker(acc);
+			offers.add(o);
+		}
+		
+		return offers;
+	}
 }

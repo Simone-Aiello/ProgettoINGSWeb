@@ -214,7 +214,7 @@ function setAcceptButtonListener(target){
 		console.log(title + ' ' + worker_username + ' ' + province + ' ' + dueDate);
 		
 		//TEST
-		let advertiseId = 1;
+		let advertiseId = 4;
 		//ENDTEST
 		
 		let message = [title, worker_username, offerId, advertiseId];

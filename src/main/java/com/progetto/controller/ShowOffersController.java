@@ -26,9 +26,12 @@ public class ShowOffersController {
 	public String showOffers(HttpServletRequest req, HttpServletResponse resp, Advertise a) {
 		List<Offer> offers = null;
 		try {
+			//TEST
 			Advertise a1 = new Advertise();
 			a1.setId(4);
-			offers = Database.getInstance().getOfferDao().offersByAdvertise(a1);
+			if(!Database.getInstance().getAdvertiseDao().alreadyAssigned(a1))
+			offers = Database.getInstance().getOfferDao().findOffersByAdvertise(a1);
+			//END TEST
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,12 +107,19 @@ public class ShowOffersController {
 		System.out.println(message[2] + " " + message[3]);
 		
 		Advertise a = new Advertise();
+		Account acc = new Account();
+		Notification n = new Notification();
 		Offer o = new Offer();
 		a.setId(Long.parseLong(message[3]));
 		o.setId(Long.parseLong(message[2]));
 		a.setAcceptedOffer(o);
+		acc.setUsername(message[1]);
+		n.setReceiver(acc);
+		n.setText("La tua offerta è stata accetta!");
+		n.setType("r");
 		try {
 			Database.getInstance().getAdvertiseDao().updateAdvertise(a);
+			Database.getInstance().getNotificationDao().saveNotificationByOfferRefuse(n);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

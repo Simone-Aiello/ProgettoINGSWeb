@@ -30,7 +30,7 @@
 								jobExecutionTime : "${offer.getHoursOfWork()}",
 								jobExecutionTimeUnit : 'h',
 								amount : ${offer.getQuote()},
-								description : "Lorem ipsum dolor sit amet. Sit esse maxime id tempora repellendus non odit velit. Id architecto iure aut consequatur totam sed aperiam mollitia ut minus possimus. Nam laudantium perferendis sit velit maiores aut odio laudantium. Qui officia illo qui eveniet officiis et tempora internos 33 tenetur modi quo porro doloribus qui iure odio.",
+								description : "${offer.getDescription()}",
 			                   	offer_id : ${offer.getId()},
 								index : i
 								}) ;

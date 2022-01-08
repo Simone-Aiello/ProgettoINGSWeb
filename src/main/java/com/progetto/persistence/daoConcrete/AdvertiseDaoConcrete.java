@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import com.progetto.Utils;
 import com.progetto.model.Advertise;
 import com.progetto.model.Area;
 import com.progetto.model.Image;
+import com.progetto.model.Offer;
 import com.progetto.persistence.Database;
 import com.progetto.persistence.daoInterfaces.AdvertiseDao;
 
@@ -171,6 +173,42 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		ps.setInt(2, (int)advertise.getId());
 		
 		ps.executeUpdate();
+	}
+
+	@Override
+	public boolean alreadyAssigned(Advertise a) throws SQLException {
+		String query = "select proposta_accettata from annunci where id = ?";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(query);
+		ps.setLong(1, a.getId());
+		ResultSet set = ps.executeQuery();
+		Long assignedOfferIndex = null;
+		if(set.next()) {
+			assignedOfferIndex = set.getLong("proposta_accettata");
+		}
+		return assignedOfferIndex != null;
+	}
+
+	@Override
+	public List<Advertise> findAdvertisesByUsername(String username) throws SQLException {
+		List<Advertise> advertises = new ArrayList<Advertise>();
+		String FIND_ADVERTISES_BY_USERNAME = "select * from annunci where username_cliente = ?";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(FIND_ADVERTISES_BY_USERNAME);
+		ps.setString(1, username);
+		ResultSet set = ps.executeQuery();
+		while(set.next()) {
+			Advertise a = new Advertise();
+			a.setId(set.getLong("id"));
+			if(set.getString("descrizione") != null)
+				a.setDescription(set.getString("descrizione"));
+			a.setTitle(set.getString("titolo"));
+			a.setExpiryDateWithoutValidation(DateTime.parse(set.getString("data_scadenza")));
+			Offer o = new Offer();
+			o.setId(set.getLong("proposta_accettata"));
+			a.setAcceptedOffer(o);
+			a.setProvince(set.getString("provincia_annuncio"));
+			advertises.add(a);
+		}
+		return advertises;
 	}
 	
 	
