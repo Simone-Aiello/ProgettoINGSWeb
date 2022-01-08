@@ -26,7 +26,7 @@ public class loginServlet{
 			try {
 				account = Database.getInstance().getAccountDao().findByPrimaryKey(a.getUsername(), Utils.COMPLETE);	
 			} catch (SQLException e) {
-				resp.setStatus(204); // 204 : The server successfully processed the request, and is not returning any content.[
+				resp.setStatus(204); // 204 : The server successfully processed the request, and is not returning any content.
 			}
 		}else {
 			try {

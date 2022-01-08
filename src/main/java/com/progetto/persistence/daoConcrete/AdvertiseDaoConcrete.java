@@ -162,6 +162,18 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		}
 		return ann;
 	}
+
+	@Override
+	public void updateAdvertise(Advertise advertise) throws SQLException {
+		String UPDATE_ADVERTISE = "update annunci set proposta_accettata = ? where id = ?;";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(UPDATE_ADVERTISE);
+		ps.setInt(1,(int)advertise.getAcceptedOffer().getId());
+		ps.setInt(2, (int)advertise.getId());
+		
+		ps.executeUpdate();
+	}
+	
+	
 	/*
 	 * public static void main(String[] args) { AdvertiseDaoConcrete test = new
 	 * AdvertiseDaoConcrete(); try { String[] a = {"meccanico"}; List<String> areas

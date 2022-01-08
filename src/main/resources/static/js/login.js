@@ -52,7 +52,7 @@ function doLogin(){
 	
 	
 	loginCredentials = loginCredentials.build();
-	console.log(loginCredentials);
+	//console.log(loginCredentials);
 	$.ajax({
 		type : "POST",
 		url : "/login",

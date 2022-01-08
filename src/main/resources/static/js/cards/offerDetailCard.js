@@ -3,28 +3,28 @@ function createOfferDetailCard(data){
 	let card = document.createElement('div');
 	card.className = 'card shadow rounded mt-4';
 	card.style = 'width : 32rem; margin-left : 20px; margin-right : 20px';
+	card.id = 'c-'+data.index;
 	
 	//card body
 	let card_body = document.createElement('div');
 	card_body.className = 'card-body';
 	
 	
-	//first row : title + close button
+	//first row : title + offer id
 	let titleRow = document.createElement('div');
 	titleRow.className = 'row';
 	let title = document.createElement('h5');
 	title.id = 'title-' + data.index;
-	title.innerHTML = 'Proposta compilata per : ' + data.title;
+	title.innerHTML = data.title;
 	title.className = 'col-10 card-title';
 	
-	let closeButton = document.createElement('a');
-	closeButton.className = 'col-2 btn';
-	let closeIcon = document.createElement('i');
-	closeIcon.className = 'far fa-times-circle';
-	closeIcon.style = 'font-size : 24px; color : #f4a261';
-	closeButton.appendChild(closeIcon);
+	let offerId = document.createElement('label');
+	offerId.className = 'col-2 muted';
+	offerId.innerHTML = '#'+data.offer_id;
+	offerId.id = 'label-'+data.index;
+	
 	titleRow.appendChild(title);
-	titleRow.appendChild(closeButton);
+	titleRow.appendChild(offerId);
 
 	
 	
@@ -179,7 +179,11 @@ function createOfferDetailCard(data){
 	let refuseButton = document.createElement('a');
 	refuseButton.className = "btn btn-danger";
 	refuseButton.innerHTML = 'Rifiuta';
+	refuseButton.id = 'r-'+data.index;
 	refuseButton.style = 'margin-right: 20px;'
+	refuseButton.setAttribute('data-toggle','modal');
+	refuseButton.setAttribute('data-target','#modal');
+	
 	
 	
 	buttonDiv.appendChild(button);
@@ -197,9 +201,193 @@ function createOfferDetailCard(data){
 	
 }
 
-$(document).ready(() => {
+function setAcceptButtonListener(target){
+	button = document.getElementById(target);
+	button.addEventListener('click', function() {
+		let title = document.getElementById('title-'+target).innerText;
+		let worker_username = document.getElementById('username-'+target).innerText;
+		worker_username = worker_username.split('@')[1];
+		let province = document.getElementById('province-'+target).innerText;
+		let dueDate = document.getElementById('due-date-'+target).innerText;
+		let offerId = document.getElementById('label-'+target).innerText;
+		offerId = offerId.split('#')[1];
+		console.log(title + ' ' + worker_username + ' ' + province + ' ' + dueDate);
+		
+		//TEST
+		let advertiseId = 1;
+		//ENDTEST
+		
+		let message = [title, worker_username, offerId, advertiseId];
+		
+		$.ajax({
+		    type : 'POST',
+		    contentType: "application/json",
+		    url : '/acceptOffer',
+		    data:JSON.stringify(message),
+		    success:function() {
+		        console.log('updated successfully');
+				//rifiutare tutte le proposte che non sono state accettate
+				let cards = document.getElementsByClassName('card');
+				let eliminatedCards = [];
+				for(let i = 0; i < cards.length; ++i){
+					console.log(cards[i].id + " " + 'c-'+target)
+					if(cards[i].id != 'c-'+target){
+						eliminatedCards.push(i);
+					}
+				}
+				console.log(eliminatedCards);
+				for(let i = eliminatedCards.length-1; i >= 0; --i){
+					let worker_username = document.getElementById('username-'+i).innerHTML;
+					worker_username = worker_username.split('@')[1];
+					let message = [worker_username,'il cliente ha scelto un\'altra offerta'];
+					console.log(message);
+					//chiamata ajax per notificare il lavoratore che non è stato scelto
+					$.ajax({
+						type : "POST",
+						url : "/refuseOffer",
+						contentType: "application/json",
+						data : JSON.stringify(message),
+						success : (response) =>{
+							console.log(response);
+						}, 
+						error : (xhr) =>{
+							console.log(xhr);
+						}		
+					});
+					removeCard(eliminatedCards[i]);
+				}
+		    },
+		    error:function() {
+		        console.log('error occured');
+		    }
+		});
+		
+	});
+	
+		
+}
+
+function setRefuseButtonListener(target){
+	button = document.getElementById('r-'+target);
+	button.addEventListener('click', function(){
+		if(document.getElementById('modal') === null){
+			modal = createModal(target);
+			$('#body').append(modal);
+		}
+		modal = document.getElementById('modal');
+		modal.setAttribute('cardid',target);
+		$('#modal').modal("show");
+	});
+}
+
+
+
+
+function createModal(id){
+	let modal = document.createElement('div');
+	modal.className = 'modal fade';
+	modal.id = 'modal';
+	modal.setAttribute('tabindex','-1');
+	modal.setAttribute('role','dialog');
+	modal.setAttribute('cardid',id);
+	
+	let modal_dialog = document.createElement('div');
+	modal_dialog.className = 'modal-dialog modal-dialog-centered';
+	modal_dialog.setAttribute('role','document');
+	
+	let modal_content = document.createElement('div');
+	modal_content.className = 'modal-content';
+	
+	let modal_header = document.createElement('div');
+	modal_header.className = 'modal-header';
+	
+	let modal_title = document.createElement('h5');
+	modal_title.className = 'modal-title';
+	modal_title.innerHTML = 'Dicci perché hai rifiutato questa offerta';
+	
+	let modal_close_button = document.createElement('button');
+	modal_close_button.className = 'btn close';
+	modal_close_button.type = 'button';
+	modal_close_button.setAttribute('data-dismiss','modal');
+	modal_close_button.setAttribute('aria-label','Close');
+	modal_close_button.addEventListener('click', function(){
+		$('#modal').modal("hide");
+	});
+	
+	let span = document.createElement('span');
+	span.setAttribute('aria-hidden','true');
+	span.innerHTML = '&times;';
+	
+	modal_close_button.appendChild(span);
+	
+	modal_header.appendChild(modal_title);
+	modal_header.appendChild(modal_close_button);
+	
+	let modal_body = document.createElement('div');
+	modal_body.className = 'modal-body';
+	let text_area = document.createElement('textarea');
+	text_area.id = 'textArea';
+	text_area.className = 'form-control';
+	text_area.placeholder = 'es. Il preventivo era troppo costoso ...'
+	text_area.rows = '4';
+	
+	let modal_footer = document.createElement('div');
+	modal_footer.className = 'modal-footer';
+	
+	let modal_button = document.createElement('button');
+	modal_button.className = 'btn btn-success';
+	modal_button.type = 'button';
+	modal_button.innerHTML = 'Invia';
+	modal_button.addEventListener('click',function(){
+		
+		let workerUsername = document.getElementById('username-'+modal.getAttribute('cardid')).innerText;
+		workerUsername = workerUsername.split('@')[1];
+		let motivation = document.getElementById('textArea').value;
+		let message = [workerUsername,motivation];
+		console.log(message);
+		//chiamata ajax per notificare il lavoratore che non è stato scelto
+		$.ajax({
+		type : "POST",
+		url : "/refuseOffer",
+		contentType: "application/json",
+		data : JSON.stringify(message),
+		success : (response) =>{
+			console.log(response);
+		}, 
+		error : (xhr) =>{
+			console.log(xhr);
+		}		
+	});
+		
+		
+		removeCard(modal.getAttribute('cardid'));
+		$('#modal').modal("hide");
+	});
+	
+	
+	modal_footer.appendChild(modal_button);
+	
+	modal_body.appendChild(text_area);
+	
+	modal_content.appendChild(modal_header);
+	modal_content.appendChild(modal_body);
+	modal_content.appendChild(modal_footer);
+	modal_dialog.appendChild(modal_content);
+	modal.appendChild(modal_dialog);
+
+	return modal;
+		
+}
+
+function removeCard(target){
+	card = document.getElementById('c-'+target);
+	card.parentNode.removeChild(card);
+}
+
+
+/*$(document).ready(() => {
 	console.log("ciao");
-	/*body = document.getElementById('body') ;
+	body = document.getElementById('body') ;
 
 	card = createOfferDetailCard({
                     title : "titolo",
@@ -212,5 +400,5 @@ $(document).ready(() => {
 					amount : 1200,
 					description : "Lorem ipsum dolor sit amet. Sit esse maxime id tempora repellendus non odit velit. Id architecto iure aut consequatur totam sed aperiam mollitia ut minus possimus. Nam laudantium perferendis sit velit maiores aut odio laudantium. Qui officia illo qui eveniet officiis et tempora internos 33 tenetur modi quo porro doloribus qui iure odio."
                     }) ;
-	body.append(card);*/
-});
+	body.append(card);
+});*/

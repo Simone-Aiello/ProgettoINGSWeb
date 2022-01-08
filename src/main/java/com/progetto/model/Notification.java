@@ -14,6 +14,14 @@ public class Notification {
 	private String text;
 	private String type;
 	private Account receiver;
+	
+	
+	public Account getReceiver() {
+		return receiver;
+	}
+	public void setReceiver(Account receiver) {
+		this.receiver = receiver;
+	}
 	public long getId() {
 		return id;
 	}
