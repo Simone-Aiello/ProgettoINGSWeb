@@ -40,18 +40,25 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 	}
 
 	private void saveImages(Advertise a) throws SQLException {
-		String query = "update immagini set id_annuncio = ? where id = ?;";
-		for (Image m : a.getImages()) {
+		String query = "INSERT INTO immagini(value, id_annuncio) values(?, ?);";
+		for (Image im : a.getImages()) {
 			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
-			Database.getInstance().getImageDao().save(m);
-			st.setLong(1, a.getId());
-			st.setLong(2, m.getId());
+			//Database.getInstance().getImageDao().save(im);
+			st.setString(1, im.getValue());
+			st.setLong(2, a.getId());
 			st.execute();
 		}
 	}
+	//add an association between an area and an advertise
 	private void saveAreas(Advertise a) throws SQLException {
+		
 		for (Area area : a.getInterestedAreas()) {
-			Database.getInstance().getAreaDao().save(area);
+			String query ="INSERT INTO annunci_ambiti(id_annuncio, id_ambito) values(?, ?);";
+			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+			st.setLong(1, a.getId());
+			st.setLong(2, area.getId());
+			st.execute();
+			//Database.getInstance().getAreaDao().save(area);
 		}
 	}
 	
@@ -69,15 +76,19 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			statement.executeUpdate();
 			Database.getInstance().getImageDao().deleteByAdvertise(a);
 		} else {
-			String insert = "insert into annunci (descrizione,titolo,data_scadenza,username_cliente,provincia_annuncio) values (?,?,?,?,?);";
+			String insert = "insert into annunci (descrizione,titolo,data_scadenza,username_cliente,provincia_annuncio, disponibilita) values (?,?,?,?,?, ?) RETURNING id;";
 			statement = Database.getInstance().getConnection().prepareStatement(insert);
 			statement.setString(1, a.getDescription());
 			statement.setString(2, a.getTitle());
 			statement.setDate(3, new Date(a.getExpiryDate().getMillis()));
 			statement.setString(4, a.getAccount().getUsername());
 			statement.setString(5, a.getProvince());
-			statement.execute();
+			statement.setString(6, a.getAvailability());
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			a.setId(rs.getLong("id"));
 		}
+		Database.getInstance().getNotificationDao().saveNotificationByAdvertise(a);
 		saveImages(a);
 		saveAreas(a);
 	}

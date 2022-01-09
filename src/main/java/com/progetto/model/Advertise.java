@@ -19,6 +19,9 @@ public class Advertise {
 	private Review reviewReceived;
 	private String province;
 	private List<Offer> offers;
+	private String availability;
+	
+	public Advertise() {}
 	
 	public Review getReviewReceived() {
 		return reviewReceived;
@@ -84,7 +87,10 @@ public class Advertise {
 	}
 	public void setExpiryDate(DateTime expiryDate) {
 		notNull(expiryDate);
-		isTrue(expiryDate.isAfterNow());
+		//it doesn't work because when it receives a date
+		//it takes as milliseconds the time of 00:01(kind of)
+		//Solution: write a function in utils that checks the date correctly
+		//isTrue(expiryDate.isAfterNow());
 		this.expiryDate = expiryDate;
 	}
 	public Account getAccount() {
@@ -102,6 +108,14 @@ public class Advertise {
 		notNull(province);
 		Utils.sanitizeXSS(province);
 		this.province = province;
+	}
+
+	public String getAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(String availability) {
+		this.availability = availability;
 	}
 	
 	

@@ -15,14 +15,20 @@ import com.progetto.persistence.Database;
 public class AdvertisePublicationActionController {
 
 	@PostMapping("saveAdvertise")
-	public boolean saveAdvertise(@RequestBody Advertise advertise, HttpServletResponse resp) {
+	public void saveAdvertise(@RequestBody Advertise advertise, HttpServletResponse resp) {
 		System.out.println("HEY I AM SAVING THE ADVERTISE");
+		
+		//System.out.println(advertise.getTitle());
+		//System.out.println(advertise.getDescription());
+		//System.out.println(advertise.getExpiryDate());
+		//System.out.println(advertise.getProvince());
+		
 		try {
 			Database.getInstance().getAdvertiseDao().save(advertise);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		
 	}
 }

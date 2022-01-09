@@ -27,8 +27,7 @@ public class AreaDaoConcrete implements AreaDao{
 	
 	@Override
 	public boolean exists(Area area) throws SQLException {
-		
-		String FIND_BY_PRYMARY_KEY = "" + "select *" + "from area" + "where id = ?";
+		String FIND_BY_PRYMARY_KEY = "select *" + " from ambiti" + " where id = ?;";
 		
 		PreparedStatement preparedStatement = Database.getInstance().getConnection()
 				.prepareStatement(FIND_BY_PRYMARY_KEY);
@@ -38,7 +37,7 @@ public class AreaDaoConcrete implements AreaDao{
 		ResultSet resultSet = preparedStatement.executeQuery() ;
 		
 		
-		return resultSet.first();
+		return resultSet.next();
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class AreaDaoConcrete implements AreaDao{
 		
 		if(exists(area)) {
 			
-			query = "update ambiti set name = ?, icona = ?  where id = ? " ;
+			query = "update ambiti set nome = ?, icona = ?  where id = ? " ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
 			
@@ -83,7 +82,7 @@ public class AreaDaoConcrete implements AreaDao{
 			
 			
 		}else {
-			
+		
 			query = "insert into ambiti(nome, icona) values(?, ?) " ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);

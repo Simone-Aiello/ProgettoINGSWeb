@@ -1,0 +1,57 @@
+.containerCard {
+	border: 3px solid red;
+	background: #fff;
+	border-radius: 3px;
+	overflow: hidden;
+
+}
+
+
+img {
+	display: block;
+	border-radius: 50%;
+	background: #FF9400;
+}
+
+.imageDiv {
+		position: relative;
+		width: 70px;
+		height: 70px;
+		margin: 38px auto 0 auto;
+}
+
+.profileButton{
+	display: block;
+	width: 120px;
+	height: 30px;
+	margin: 0 auto 10px auto;
+	background: none;
+	border: 1px solid black;
+	border-radius: 15px;
+	font-size: 12px;
+	font-weight: 600;
+	color: black;
+			
+}
+.profileDiv {
+	float: left;
+	/*width: 200px;
+	height: 320px;*/
+	text-align: center;		
+}
+
+.box {
+	/*
+	width: 120px;
+	height: 99px;*/
+	background: #F5E8DF;
+	text-align: center;
+	padding-top: 28px;
+}
+
+span {
+	display: block;
+}
+.stats {
+	float: left;
+}
