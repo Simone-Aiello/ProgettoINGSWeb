@@ -43,7 +43,7 @@ class Account {
 
 		withNumber = function(number) {
 			var _regex = /^([0-9]{10}|0[0-9]{8})$/
-			if (_regex.test(number))
+			if (_regex.test(number) || number == "")
 				this.#product.number = number;
 			else
 				throw new Error("Il numero inserito non è valido");

@@ -29,7 +29,7 @@
 <body>
 	<div class="container mt-5 shadow">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-12" id="initial-info">
 				<div
 					class="d-flex flex-column align-items-center text-center p-3 py-5">
 					<c:choose>
@@ -45,20 +45,29 @@
 					</c:choose>
 					<div class="areas">
 						<c:forEach items="${account.areasOfWork}" var="area">
-							<i class="area fas ${area.icon} fa-2x icon mb-3 p-2"
-								id="${area.id}"></i>
+							<i class="area ${area.icon} fa-2x icon mb-3 p-2" id="${area.id}"></i>
 						</c:forEach>
 					</div>
-					<span>${account.username}</span> <span class="text-black-50">${account.email}</span>
-					<span></span>
+					<div class="gx-1" id="photo-button-div">
+						<button id="remove-photo">
+							<i class="fas fa-trash-alt" id="delete-icon"></i>Rimuovi foto
+						</button>
+						<input id="file-input" type="file" accept=".jpg,.jpeg,.png" />
+						<button id="upload-photo">
+							<i class="fas fa-upload" id="upload-icon"></i>Carica foto
+						</button>
+					</div>
+					<span id="username">${account.username}</span> <span
+						class="text-black-50">${account.email}</span> <span></span>
 				</div>
 				<c:if test="${!account.valid}">
 					<div class="alert alert-danger alert-dismissible fade show"
 						role="alert">
 						Accedere alla mail e cliccare sul link ricevuto per confermare
-						l'account oppure <a href="" class="alert-link">re-invia mail</a>.
-						<button type="button" class="btn-close" data-bs-dismiss="alert"
-							aria-label="Close"></button>
+						l'account oppure <a id="send-email" class="alert-link">re-invia
+							mail</a>.
+						<button id="dismiss-alert" type="button" class="btn-close"
+							data-bs-dismiss="alert" aria-label="Close"></button>
 					</div>
 				</c:if>
 			</div>
@@ -126,9 +135,10 @@
 							</div>
 						</div>
 					</form>
-					<div class="mt-5" id="select-area-div-outer">
-						<h5>Seleziona i nuovi ambiti</h5>
-						<div class="mt-5" id="select-area-div">
+					<div class="p-3" id="area-div-outer">
+						<div id="area-div">
+							<h5>Seleziona i nuovi ambiti</h5>
+							<div class="row" id="area-row"></div>
 						</div>
 					</div>
 					<div class="mt-5 text-center" id="button-div">
@@ -140,53 +150,57 @@
 							id="save-button">Salva modifiche</button>
 					</div>
 				</div>
-			</div>
-			<div class="col-12">
-				<div class="p-3 py-5">
-					<div class="review-container">
-						<h4 class="review-header">Recensioni</h4>
-						<div class="star-container">
-							<c:forEach begin="1" end="5" varStatus="loop">
-								<c:choose>
-									<c:when test="${loop.index <= rating}">
-										<i class="fas fa-star"></i>
-									</c:when>
-									<c:otherwise>
-										<i class="far fa-star"></i>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-							<span>(${account.reviews.size()})</span>
-						</div>
-					</div>
-					<c:forEach items="${account.reviews}" var="review">
-						<div class="card mb-2">
-							<div class="row">
-								<div class="col">
-									<div class="card-body">
-										<h5 class="card-title">${review.title}</h5>
-										<c:forEach begin="1" end="5" varStatus="loop">
-											<c:choose>
-												<c:when test="${loop.index <= review.rating}">
-													<i class="fas fa-star"></i>
-												</c:when>
-												<c:otherwise>
-													<i class="far fa-star"></i>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-										<p class="card-text review-description mb-1">${review.description}</p>
-										<p class="card-text">
-											<small class="text-muted">${review.client.username}</small>
-										</p>
-									</div>
-								</div>
+				<div class="col-12">
+					<div class="p-3 py-5">
+						<div class="review-container">
+							<h4 class="review-header">Recensioni</h4>
+							<div class="star-container">
+								<c:forEach begin="1" end="5" varStatus="loop">
+									<c:choose>
+										<c:when test="${loop.index <= rating}">
+											<i class="fas fa-star"></i>
+										</c:when>
+										<c:otherwise>
+											<i class="far fa-star"></i>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<span>(${count})</span>
 							</div>
 						</div>
-					</c:forEach>
-					<div class="mt-5 text-center">
-						<button class="btn btn-primary" type="button">Mostra
-							altre</button>
+						<div id="reviews-list">
+							<c:forEach items="${account.reviews}" var="review">
+								<div class="card mb-2">
+									<div>
+										<div>
+											<div class="card-body">
+												<h5 class="card-title">${review.title}</h5>
+												<div id="review-stars">
+													<c:forEach begin="1" end="5" varStatus="loop">
+														<c:choose>
+															<c:when test="${loop.index <= review.rating}">
+																<i class="fas fa-star"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="far fa-star"></i>
+															</c:otherwise>
+														</c:choose>
+													</c:forEach>
+												</div>
+												<p class="card-text review-description mb-1">${review.description}</p>
+												<p class="card-text">
+													<small class="text-muted">${review.client.username}</small>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+						<div class="mt-5 text-center">
+							<button id="next-reviews" class="btn btn-primary" type="button">Mostra
+								altre</button>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -69,7 +69,7 @@ public class NotificationDaoConcrete implements NotificationDao{
 	@Override
 	public void save(Notification notification) throws SQLException {
 		
-		String query = "" ;
+		String query = null ;
 		
 		PreparedStatement preparedStatement = null ;
 		

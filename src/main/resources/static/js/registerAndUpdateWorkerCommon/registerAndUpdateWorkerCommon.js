@@ -2,6 +2,7 @@ var city = {};
 var account_builder = new Account.Builder();
 var user_builder = new User.Builder();
 var address_builder = new Address.Builder();
+var image_builder = new Image.Builder();
 function removePreviousError(idElement) {
 	let errorId = "#" + idElement + "-error";
 	$(errorId).remove();
@@ -31,38 +32,6 @@ function appendCorrect(idElement) {
 		$("#insert-password-info").css("color", "");
 	}
 }
-function checkUsernameUnique(username) {
-	return new Promise((resolve, reject) => {
-		$.ajax({
-			type: "POST",
-			url: "/usernameUnique",
-			contentType: "application/json",
-			data: username,
-			success: (response) => {
-				resolve(response);
-			},
-			error: (xhr) => {
-				reject(null);
-			}
-		});
-	});
-}
-function checkEmailUnique(email) {
-	return new Promise((resolve, reject) => {
-		$.ajax({
-			type: "POST",
-			url: "/emailUnique",
-			contentType: "application/json",
-			data: email,
-			success: (response) => {
-				resolve(response);
-			},
-			error: (xhr) => {
-				reject(null);
-			}
-		});
-	});
-}
 function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -75,11 +44,11 @@ function getProvince() {
 			let work = $("#province-of-work");
 			let province = $("#province");
 			let arrayProvince = [];
-			for(let p of risposta){
+			for (let p of risposta) {
 				arrayProvince.push(capitalizeFirstLetter(p["nome"]));
 			}
 			arrayProvince.sort();
-			for(let provinceName of arrayProvince){
+			for (let provinceName of arrayProvince) {
 				let tmp = `<option id = "${provinceName}">${provinceName}</option> `
 				//work.append("<option>" + provinceName + "</option>");
 				//province.append("<option>" + provinceName + "</option>");
@@ -110,27 +79,27 @@ function handleSurnameInput() {
 		appendError("surname", error.message);
 	}
 }
-function handleTelephoneInput(){
+function handleTelephoneInput() {
 	let telephoneField = $("#telephone");
-		let telephoneValue = telephoneField.val();
-		try {
-			account_builder.withNumber(telephoneValue);
-			appendCorrect("telephone");
-		}
-		catch (error) {
-			appendError("telephone", error.message);
-		}
+	let telephoneValue = telephoneField.val();
+	try {
+		account_builder.withNumber(telephoneValue);
+		appendCorrect("telephone");
+	}
+	catch (error) {
+		appendError("telephone", error.message);
+	}
 }
-function handleDateOfBirthListeners(){
+function handleDateOfBirthListeners() {
 	let dateField = $("#date-of-birth");
-		let dateValue = dateField.val();
-		try {
-			user_builder.withDateOfBirth(dateValue);
-			appendCorrect("date-of-birth");
-		}
-		catch (error) {
-			appendError("date-of-birth", error.message);
-		}
+	let dateValue = dateField.val();
+	try {
+		user_builder.withDateOfBirth(dateValue);
+		appendCorrect("date-of-birth");
+	}
+	catch (error) {
+		appendError("date-of-birth", error.message);
+	}
 }
 function loadZipCode(withSummary) {
 	let selectedProvince = $("#province").val().toLowerCase();
@@ -139,21 +108,21 @@ function loadZipCode(withSummary) {
 		if (c["nome"] === currentCity) {
 			$("#zip-code").val(c["cap"]);
 			address_builder.withZipCode(c["cap"]);
-			if(withSummary) updateSummary("zip-code", $("#zip-code").val());
+			if (withSummary) updateSummary("zip-code", $("#zip-code").val());
 			return;
 		}
 	}
 }
-function handleViaInput(){
-		let viaField = $("#via");
-		let viaValue = viaField.val();
-		try {
-			address_builder.withVia(viaValue);
-			appendCorrect("via");
-		}
-		catch (error) {
-			appendError("via", error.message);
-		}
+function handleViaInput() {
+	let viaField = $("#via");
+	let viaValue = viaField.val();
+	try {
+		address_builder.withVia(viaValue);
+		appendCorrect("via");
+	}
+	catch (error) {
+		appendError("via", error.message);
+	}
 }
 function handleHouseNumberInput() {
 	try {
@@ -164,7 +133,7 @@ function handleHouseNumberInput() {
 		appendError("house-number-error", error.message);
 	}
 }
-function loadCity(selectedProvince,withSummary) {
+function loadCity(selectedProvince, withSummary) {
 	let currentCity = $("#city");
 	$.ajax({
 		type: "GET",
@@ -186,7 +155,7 @@ function loadCity(selectedProvince,withSummary) {
 			address_builder.withTown($("#city").val());
 			appendCorrect("city");
 			loadZipCode(withSummary);
-			if(withSummary) updateSummary("city", $("#city").val());
+			if (withSummary) updateSummary("city", $("#city").val());
 		},
 		error: function() {
 			showSystemError();

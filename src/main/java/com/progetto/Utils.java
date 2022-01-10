@@ -29,7 +29,7 @@ public class Utils {
 	
 	public final static int ACTIVATION_CODE_LENGHT = 12;
 	public final static int SALT = 12;
-	
+	public final static int INITIAL_REVIEW_NUMBER = 5;
 	public static String sanitizeXSS(String string) {
 		
 		for (int i = 0; i < string.length(); i++) {

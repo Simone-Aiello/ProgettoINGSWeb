@@ -85,7 +85,6 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 	public void delete(Advertise a) throws SQLException {
 		Database.getInstance().getImageDao().deleteByAdvertise(a);
 		Database.getInstance().getOfferDao().deleteByAdvertise(a);
-		
 		//delete associations with areas
 		String deleteAssociatedAreas = "DELETE FROM annunci_ambiti WHERE id_annuncio = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(deleteAssociatedAreas);

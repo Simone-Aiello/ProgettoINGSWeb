@@ -19,6 +19,9 @@ class Area{
 		withName = function(name){
 			this.#product.name = name;
 		}
+		withIcon = function(icon){
+			this.#product.icon = icon;
+		}
 		build = function() {
 			if (this.built) throw new Error("This builder has already been used");
 			this.built = true;

@@ -3,7 +3,6 @@
 }
 i{
 	color: #FF9400;
-	padding-left: 3px;
 }
 .areas{
 	display: inline-block;
@@ -14,12 +13,11 @@ i{
 	clip-path: circle(40%);
 }
 .card-title{
-	float: left;
 	padding-right: 7px;
 }
 .review-description{
 	clear: left;
-	max-height: 50px;
+	max-height: 100px;
 	overflow-x: hidden;
 	overflow-y: auto;
 }
@@ -49,7 +47,7 @@ input[type=number]{
 	display: flex;
 	justify-content: center;
 }
-#delete-button,#save-button,#house-number-div,#via-div,#select-area-div-outer{
+#delete-button,#save-button,#house-number-div,#via-div,#area-div-outer,#photo-button-div{
 	display: none;
 }
 .icon-figure{
@@ -71,6 +69,25 @@ input[type=number]{
 .icon-div{
 	display: flex;
 	justify-content: center;
+}
+#upload-photo,#remove-photo{
+	padding: 10px 18px;
+	border-radius: 10px;
+	color: #FF9400;
+	background-color: #FFFFFF;
+	border : none;
+}
+#delete-icon{
+	margin-right: 8px;	
+}
+#upload-icon{
+	margin-right: 8px;	
+}
+#file-input{
+	display: none;
+}
+#send-email{
+	cursor: pointer;
 }
 /*@media(max-width:995px){
 	.review-header{

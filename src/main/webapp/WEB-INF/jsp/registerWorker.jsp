@@ -103,14 +103,16 @@
 							<option selected disabled value="">Scegli...</option>
 						</select>
 					</div>
-					<div class="mb-3 col-lg-6 col-md-6 col-xs-12">
-						<label class="form-label">Sede di lavoro</label> <select
-							class="form-select" id="province-of-work">
-							<option selected disabled value="">Scegli...</option>
-						</select>
-						<div class="form-text">La provincia per la quale si intende
-							ricevere notifiche in merito ai nuovi annunci</div>
-					</div>
+					<c:if test="${type == w}">
+						<div class="mb-3 col-lg-6 col-md-6 col-xs-12">
+							<label class="form-label">Sede di lavoro</label> <select
+								class="form-select" id="province-of-work">
+								<option selected disabled value="">Scegli...</option>
+							</select>
+							<div class="form-text">La provincia per la quale si intende
+								ricevere notifiche in merito ai nuovi annunci</div>
+						</div>
+					</c:if>
 				</div>
 				<div class="row">
 					<div class="mb-3 col-lg-6 col-md-6 col-xs-12">
@@ -130,7 +132,7 @@
 			</form>
 		</section>
 		<section id="picture-and-areas">
-			<h1 class="header">Inserisci una foto e i tuoi ambiti di lavoro</h1>
+			<h1 class="">Inserisci una foto e i tuoi ambiti di lavoro</h1>
 			<div id="profile-div">
 				<div class="centered-div">
 					<figure class="profile-figure">
@@ -149,44 +151,46 @@
 				</div>
 			</div>
 			<hr />
-			<div id="area-div">
-				<div class="row">
-					<c:forEach items="${areas}" var="area" varStatus="loop">
-						<div class="col icon-div">
-							<figure class="icon-figure" id="area-${loop.count}">
-								<i class="${area.icon} fa-3x icon"
-									id="${area.id}"></i>
-							</figure>
-						</div>
-					</c:forEach>
+			<c:if test="${type == w}">
+				<div id="area-div">
+					<div class="row">
+						<c:forEach items="${areas}" var="area" varStatus="loop">
+							<div class="col icon-div">
+								<figure class="icon-figure" id="area-${loop.count}">
+									<i class="${area.icon} fa-3x icon" id="${area.id}"></i>
+								</figure>
+							</div>
+						</c:forEach>
+					</div>
+					<input class="form-check-input my-2" type="checkbox" value=""
+						id="new-area-checkbox"><label class="form-check-label">L'ambito
+						per cui voglio iscrivermi non è tra quelli proposti</label>
+					<form id="missing-area">
+						<label class="form-label">Ambito*</label> <input type="text"
+							class="form-control" placeholder="Nome" id="name-new-area">
+						<label class="form-label">Descrizione*</label>
+						<textarea class="form-control" id="description-new-area" rows="3"></textarea>
+						<p class="text-muted">La preghiamo di selezionare un ambito
+							che più si avvicina a quello che vorrebbe richiedere, riceverà
+							una notifica quando la proposta di aggiunta dell'ambito verrà
+							presa in carico dagli amministratori</p>
+					</form>
 				</div>
-				<input class="form-check-input my-2" type="checkbox" value=""
-					id="flexCheckDefault"><label class="form-check-label">L'ambito
-					per cui voglio iscrivermi non è tra quelli proposti</label>
-				<form id="missing-area">
-					<label class="form-label">Ambito*</label> <input type="text"
-						class="form-control" placeholder="Nome" id="name-new-area">
-					<label class="form-label">Descrizione*</label>
-					<textarea class="form-control" id="description-new-area" rows="3"></textarea>
-					<p class="text-muted">La preghiamo di selezionare un ambito che
-						più si avvicina a quello che vorrebbe richiedere, riceverà una
-						notifica quando la proposta di aggiunta dell'ambito verrà presa in
-						carico dagli amministratori</p>
-				</form>
-			</div>
+			</c:if>
 		</section>
 		<section id="summary">
-			<h1 class="header">Riepilogo informazioni</h1>
+			<h1 class="header-summary">Riepilogo informazioni</h1>
 			<div class="centered-div">
 				<figure class="profile-figure">
 					<img alt="" src="/usersImages/profilePictures/defaultIcon.png"
 						class="image-fluid rounded-photo" id="summary-profile-pic">
 				</figure>
 			</div>
-			<div id="summary-areas-outer" class="centered-div">
-				<div id="summary-areas">
+			<c:if test="${type == w}">
+				<div id="summary-areas-outer" class="centered-div">
+					<div id="summary-areas"></div>
 				</div>
-			</div>
+			</c:if>
 			<p>
 				<span class="bold">Username</span>: <span id="summary-username"></span>
 			</p>
@@ -225,10 +229,12 @@
 			<p>
 				<span class="bold">CAP</span>: <span id="summary-zip-code"></span>
 			</p>
-			<p>
-				<span class="bold">Sede di lavoro</span>: <span
-					id="summary-province-of-work"></span>
-			</p>
+			<c:if test="${type == w}">
+				<p>
+					<span class="bold">Sede di lavoro</span>: <span
+						id="summary-province-of-work"></span>
+				</p>
+			</c:if>
 		</section>
 		<div class="button-div">
 			<button class="btn btn-secondary" id="previous">Precedente</button>

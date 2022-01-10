@@ -10,25 +10,26 @@ function sendAccount() {
 	account_builder.withProfilePic(imageBuilder.build());
 	var account = account_builder.build();
 	console.log(account);
-	$.ajax({
-		type: "POST",
-		url: "/registerWorker",
-		contentType: "application/json",
-		data: JSON.stringify(account),
-		success: (response) => {
-			console.log(response);
-			window.location.replace(response);
-		},
-		error: (xhr) => {
-			console.log(xhr);
-		}
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "POST",
+			url: "/registerWorker",
+			contentType: "application/json",
+			data: JSON.stringify(account),
+			success: (response) => {
+				resolve(response);
+			},
+			error: () => {
+				reject();
+			}
+		});
 	});
 }
 function updateSummary(idElement, currentText) {
 	let idSummary = "#summary-" + idElement;
 	$(idSummary).text(currentText);
 }
-/*function removePreviousError(idElement) {
+function removePreviousError(idElement) {
 	let errorId = "#" + idElement + "-error";
 	$(errorId).remove();
 }
@@ -56,17 +57,20 @@ function appendCorrect(idElement) {
 	if (idElement === "insert-password") {
 		$("#insert-password-info").css("color", "");
 	}
-}*/
+}
 function checkFormError(sectionId) {
 	let ok = true;
 	$("#" + sectionId).find('input').each(function() {
-		if (($(this).prop('required') && $(this).val() === "") || !$(this).hasClass("is-valid")) {
+		if (($(this).prop('required') && $(this).val() === "")) {
 			ok = false;
 			appendError($(this).attr("id"), "Il campo è obbligatorio");
 		}
+		else if ($(this).hasClass("is-invalid")) {
+			ok = false;
+		}
 	});
 	$("#" + sectionId).find('select').each(function() {
-		if (($(this).prop('required') && $(this).val() === null) || !$(this).hasClass("is-valid")) {
+		if (($(this).prop('required') && $(this).val() === null)) {
 			ok = false;
 			appendError($(this).attr("id"), "Il campo è obbligatorio");
 		}
@@ -82,7 +86,7 @@ function animateFormTransition(sectionToHide, sectionToShow) {
 	$(idHide).hide("slow");
 	$(idShow).show("slow");
 }
-/*function checkUsernameUnique(username) {
+function checkUsernameUnique(username) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "POST",
@@ -92,7 +96,7 @@ function animateFormTransition(sectionToHide, sectionToShow) {
 			success: (response) => {
 				resolve(response);
 			},
-			error: (xhr) => {
+			error: () => {
 				reject(null);
 			}
 		});
@@ -108,12 +112,12 @@ function checkEmailUnique(email) {
 			success: (response) => {
 				resolve(response);
 			},
-			error: (xhr) => {
+			error: () => {
 				reject(null);
 			}
 		});
 	});
-}*/
+}
 function switchToNextSection() {
 	switch (currentSection) {
 		case 0:
@@ -131,28 +135,36 @@ function switchToNextSection() {
 						animateFormTransition(steps[currentSection], steps[currentSection + 1]);
 						currentSection++;
 					}
-				}).catch((error) => {
-					showSystemError();
+				}).catch(() => {
+					showSystemError("header");
 				});
 			}
 			break;
 		case 1:
-			if (atLeastOneArea()) {
+			if (!atLeastOneArea() && $("#area-div").length) {
+				appendError("area-div", "Selezionare almeno un ambito");
+			}
+			else if (!newAreaFormValid() && $("#area-div").length) {
+				appendError("missing-area", "Campi obbligatori");
+			}
+			else {
 				animateFormTransition(steps[currentSection], steps[currentSection + 1]);
 				currentSection++;
 			}
-			else {
-				appendError("area-div", "Selezionare almeno un ambito");
-			}
 			break;
 		case 2:
-			sendAccount();
+			Promise.all([sendAccount(), sendNewArea()]).then((data) => {
+				window.location.replace(data[0]);
+			}).catch(() => {
+				showSystemError("header-summary");
+			});
 			break;
 	}
 }
-function showSystemError() {
-	$("#system-error").remove();
-	$(".header").after("<div id=\"system-error\" class=\"alert alert-danger\" role=\"alert\">C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi</div>");
+function showSystemError(locationClass) {
+	$(`#system-error-${locationClass}`).remove();
+	$(`.${locationClass}`).after(`<div id="system-error-${locationClass}" class="alert alert-danger" role="alert">C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi</div>`);
+	//$(`.${locationClass}`).after("<div id=\"system-error\" class=\"alert alert-danger\" role=\"alert\">C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi</div>");
 }
 function addPasswordListeners() {
 	//Check password security standard
@@ -208,7 +220,7 @@ function addPasswordListeners() {
 		}
 	});
 }
-/*function capitalizeFirstLetter(string) {
+function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 function getProvince() {
@@ -220,20 +232,20 @@ function getProvince() {
 			let work = $("#province-of-work");
 			let province = $("#province");
 			let arrayProvince = [];
-			for(let p of risposta){
+			for (let p of risposta) {
 				arrayProvince.push(capitalizeFirstLetter(p["nome"]));
 			}
 			arrayProvince.sort();
-			for(let provinceName of arrayProvince){
+			for (let provinceName of arrayProvince) {
 				work.append("<option>" + provinceName + "</option>");
 				province.append("<option>" + provinceName + "</option>");
 			}
 		},
 		error: function(xhr) {
-			showSystemError();
+			showSystemError("header");
 		}
 	});
-}*/
+}
 function handleUsernameInput() {
 	let usernameField = $("#username");
 	let username = usernameField.val();
@@ -247,15 +259,6 @@ function handleUsernameInput() {
 }
 function addUsernameListeners() {
 	$("#username").on("input", () => {
-		/*let usernameField = $("#username");
-		let username = usernameField.val();
-		try {
-			account_builder.withUsername(username);
-			appendCorrect("username");
-		}
-		catch (error) {
-			appendError("username", error.message);
-		}*/
 		handleUsernameInput();
 		updateSummary("username", $("#username").val());
 	});
@@ -378,7 +381,7 @@ function loadCity(selectedProvince, withSummary) {
 			if (withSummary) updateSummary("city", $("#city").val());
 		},
 		error: function() {
-			showSystemError();
+			showSystemError("header");
 		}
 	});
 }
@@ -405,25 +408,26 @@ function handleCityInput() {
 }
 function addProvinceAndCityListeners() {
 	$("#province-of-work").on("input", () => {
-		handleProvinceOfWorkInput();
+		if ($("#province-of-work").length) {
+			handleProvinceOfWorkInput();
+		}
 	});
 	$("#city").on("input", () => {
-		if(handleCityInput()){
+		if (handleCityInput()) {
 			loadZipCode(true);
-			updateSummary("city", townVal);			
+			updateSummary("city", $("#city").val());
 		}
 	});
 	$("#province").change((event) => {
 		var selectedProvince = (event.target.value);
 		try {
 			address_builder.withProvince(selectedProvince);
-			account_builder.withProvinceOfWork(selectedProvince);
 			let lowerCaseSelected = selectedProvince.toLowerCase();
 			let currentCity = $("#city");
 			currentCity.html("");
 			if (city.hasOwnProperty(lowerCaseSelected)) {
 				for (c of city[lowerCaseSelected]) {
-					currentCity.append("<option>" + c + "</option>");
+					currentCity.append(`<option id="${c["nome"]}"> ${c["nome"]} </option>`);
 				}
 				address_builder.withTown(currentCity.val());
 				loadZipCode(true);
@@ -432,14 +436,20 @@ function addProvinceAndCityListeners() {
 				loadCity(lowerCaseSelected, true);
 			}
 			appendCorrect("province");
-			$("#province-of-work").val(selectedProvince);
-			appendCorrect("province-of-work");
+			//Esiste se si sta registrando un lavoratore
+			if ($("#province-of-work").length) {
+				account_builder.withProvinceOfWork(selectedProvince);
+				$("#province-of-work").val(selectedProvince);
+				appendCorrect("province-of-work");
+			}
 		}
 		catch (error) {
 			appendError("province");
 		}
 		updateSummary("province", selectedProvince);
-		updateSummary("province-of-work", selectedProvince);
+		if ($("#province-of-work").length) {
+			updateSummary("province-of-work", selectedProvince);
+		}
 	});
 }
 function handleViaInput() {
@@ -485,7 +495,16 @@ function addPreviousListeners() {
 		}
 	});
 }
+function clearAll() {
+	$("input").each(function() {
+		$(this).val(null);
+	});
+	$("select").each(function() {
+		$(this).val(null);
+	});
+}
 $(document).ready(() => {
+	clearAll();
 	getProvince();
 	addPasswordListeners();
 	addUsernameListeners();
@@ -498,4 +517,5 @@ $(document).ready(() => {
 	addAddressListeners();
 	addNextListeners();
 	addPreviousListeners();
+	console.log('${type}');
 });
