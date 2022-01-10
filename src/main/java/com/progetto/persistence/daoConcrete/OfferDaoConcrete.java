@@ -1,6 +1,7 @@
 package com.progetto.persistence.daoConcrete;
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 
 import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Advertise;
@@ -17,10 +20,15 @@ import com.progetto.persistence.daoInterfaces.OfferDao;
 
 public class OfferDaoConcrete implements OfferDao {
 	
+	private ObjectMapper mapper = new ObjectMapper();
+	
 	@Override
 	public boolean exists(Offer offer) throws SQLException {
 		
-		String FIND_BY_PRYMARY_KEY = "" + "select *" + "from proposte" + "where id = ?";
+		if(offer.getId() <= 0)
+			return false ;
+		
+		String FIND_BY_PRYMARY_KEY = "select *" + "from proposte" + "where id = ?;";
 		
 		PreparedStatement preparedStatement = Database.getInstance().getConnection()
 				.prepareStatement(FIND_BY_PRYMARY_KEY);
@@ -54,8 +62,8 @@ public class OfferDaoConcrete implements OfferDao {
 
 	@Override
 	public Offer findByPrimaryKey(long id_offer,int mode)  throws SQLException{
-
-		String FIND_BY_PRYMARY_KEY = "" + "select *" + "from proposte" + "where id = ?";
+		
+		String FIND_BY_PRYMARY_KEY = "select * from proposte where id = ?;";
 		Offer offer = null;
 		
 		PreparedStatement preparedStatement = Database.getInstance().getConnection()
@@ -72,15 +80,17 @@ public class OfferDaoConcrete implements OfferDao {
 	}
 
 	@Override
-	public void save(Offer offer)  throws SQLException{
+	public long save(Offer offer)  throws SQLException, JsonProcessingException{
 		
 		String query = "" ;
 		
 		PreparedStatement preparedStatement = null ;
 		
-		if(exists(offer)) {
+		long id ;
+		
+		if(!exists(offer)) {
 			
-			query = "insert into proposte values(null,?,?,?,?,?,?,?)" ;
+			query = "insert into proposte(descrizione,titolo,preventivo,lavoro_effettuato,username_lavoratore,ore_di_lavoro,id_annuncio,disponibilità) values(?,?,?,?,?,?,?,?) RETURNING id" ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
 			
@@ -91,20 +101,23 @@ public class OfferDaoConcrete implements OfferDao {
 			preparedStatement.setBoolean(4, offer.isDone());
 			preparedStatement.setString(5, offer.getWorker().getUsername());
 			preparedStatement.setInt(6, offer.getHoursOfWork());
-			// QUA COME FACCIO A SAPERE CHE ANNUNCIO È ? 
-			preparedStatement.setLong(7,offer.getAdvertise().getId());
-			
+			//preparedStatement.setLong(7,offer.getAdvertise().getId());
+			preparedStatement.setLong(7,4);
+			preparedStatement.setString(8,mapper.writeValueAsString(offer.getAvailabilities()));
+			ResultSet rs = preparedStatement.executeQuery();
+			rs.next();
+			id = rs.getLong("id");
 		}else {
 			
 			query = "update proposte set descrizione = ? , titolo = ? , preventivo = ? , "
 					+ "lavoro_effettuato = ? , username_lavoratore = ? , ore_di_lavoro = ? , "
 					+ "id_annuncio = ? "
-					+ "where id = ? ";
+					+ "where id = ? ;";
 			
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
 			
-			
+			id = offer.getId() ;
 			preparedStatement.setLong(8, offer.getId());
 			preparedStatement.setString(1, offer.getDescription());
 			preparedStatement.setString(2, offer.getTitle());
@@ -114,16 +127,18 @@ public class OfferDaoConcrete implements OfferDao {
 			preparedStatement.setInt(6, offer.getHoursOfWork());
 			// QUA COME FACCIO A SAPERE CHE ANNUNCIO È ? 
 			preparedStatement.setLong(8,offer.getAdvertise().getId());
+			
+			preparedStatement.executeUpdate();
 		}
 		
-		preparedStatement.execute();
+		return id ;
 		
 	}
 
 	@Override
 	public void delete(Offer offer)  throws SQLException{
 		
-		String query = "delete from proposte where id = ?" ;
+		String query = "delete from proposte where id = ?;" ;
 		
 		PreparedStatement preparedStatement = Database.getInstance().getConnection().prepareStatement(query);	
 		preparedStatement.setLong(1, offer.getId());
@@ -136,7 +151,7 @@ public class OfferDaoConcrete implements OfferDao {
 		
 		ArrayList<Offer> offers = new ArrayList<Offer>() ;
 		
-		String query = "select * from proposte where username_lavoratore = ?" ;
+		String query = "select * from proposte where username_lavoratore = ?;" ;
 		
 		PreparedStatement preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
 		preparedStatement.setString(1, worker.getUsername());
@@ -163,7 +178,7 @@ public class OfferDaoConcrete implements OfferDao {
 	@Override
 	public List<Offer> offersByAdvertise(Advertise a) throws SQLException{
 		List<Offer> offers = new ArrayList<>();
-		String query = "SELECT * FROM proposte WHERE id_annuncio = ?";
+		String query = "SELECT * FROM proposte WHERE id_annuncio = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setLong(1, a.getId());
 		ResultSet rs = stmt.executeQuery();

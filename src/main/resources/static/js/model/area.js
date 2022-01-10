@@ -1,6 +1,16 @@
 class Area{
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
+	// Private serializer 
+	#serializer = {} ;
+	
+	#addProperty = (property,value) => {
+		this.#serializer[property] = value ;
+	} 
+
+	toJSON() { return this.#serializer ; }
+
+
 	constructor(key) {
 		if (key != Area.#key)
 			throw new Error("This constructor is private");
@@ -13,11 +23,13 @@ class Area{
 		}
 		
 		withId = function (id){
-			this.#product.id = id;
+			checkType(id,"Number");
+			this.#product.#addProperty("id",id);
 		}
 		
 		withName = function(name){
-			this.#product.name = name;
+			checkType(name,"String");
+			this.#product.#addProperty("name",name);
 		}
 		withIcon = function(icon){
 			this.#product.icon = icon;

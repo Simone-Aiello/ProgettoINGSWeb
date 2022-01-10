@@ -7,6 +7,15 @@ class Address {
 		}
 	}
 
+	// Private serializer 
+	#serializer = {} ;
+	
+	#addProperty = (property,value) => {
+		this.#serializer[property] = value ;
+	} 
+
+	toJSON() { return this.#serializer ; }
+
 	static Builder = class {
 		#product = new Address(Address.#key);
 
@@ -25,36 +34,41 @@ class Address {
 		}
 		
 		withVia = (via) => {
+			checkType(via,"String");
 			if (this.checkOnlyLetters(via)) {
-				this.#product.via = via;
+				this.#product.#addProperty("via",via);
 			}
 			else throw new Error("Sono presenti caratteri non validi");
 		}
 
 		withZipCode = (zipCode) => {
+			checkType(zipCode,"String");
 			if (this.checkOnlyNumbers(zipCode)) {
-				this.#product.zipCode = zipCode;
+				this.#product.#addProperty("zipCode",zipCode);
 			}
 			else throw new Error("Sono presenti caratteri non validi");
 		}
 
 		withHouseNumber = (houseNumber) => {
+			checkType(houseNumber,"String");
 			if (this.checkOnlyNumbers(houseNumber)) {
-				this.#product.houseNumber = houseNumber;
+				this.#product.#addProperty("houseNumber",houseNumber);
 			}
 			else throw new Error("Sono presenti caratteri non validi");
 		}
 
 		withProvince = (province) => {
+			checkType(province,"String");
 			if (this.checkOnlyLetters(province)) {
-				this.#product.province = province;
+				this.#product.#addProperty("province",province);
 			}
 			else throw new Error("Sono presenti caratteri non validi");
 		}
 
 		withTown = (town) => {
+			checkType(town,"String");
 			if (this.checkOnlyLetters(town)) {
-				this.#product.town = town;
+				this.#product.#addProperty("town",town);
 			}
 			else throw new Error("Sono presenti caratteri non validi");
 		}

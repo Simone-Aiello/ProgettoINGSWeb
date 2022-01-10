@@ -43,24 +43,41 @@ function createAdvertiseCardDetail(data){
     let card_information = document.createElement("div");
     card_information.style = " display: flex; justify-content: space-between; width: 100%;" ;
 
-    let card_username_client = document.createElement("p");
-    card_username_client.className = "col-3 text-muted" ;
-    card_username_client.innerHTML = data.username_client ;
+    let card_username_client = document.createElement("a");
+    card_username_client.className = "col-3 text-muted text-decoration-none" ;
+    card_username_client.innerHTML = "@"+data.username_client ;
+    card_username_client.href = "#";
 
+    let row_card_province = createRow();
+    row_card_province.style.marginLeft = "10px";
+    
+    let label_card_province = document.createElement("p");
+    label_card_province.className = "card-subtitle text-muted small" ;
+    label_card_province.innerHTML = "Provincia";
 
     let card_province = document.createElement("p");
-    card_province.className = "col-3 card-text" ;
+    card_province.className = "card-text m-0-p-0" ;
     card_province.innerHTML = data.province ;
-    card_province.style.alignSelf = "center" ;
 
+    row_card_province.appendChild(label_card_province);
+    row_card_province.appendChild(card_province);
+
+    let row_card_due_date = createRow();
+    
+    let label_card_due_date = document.createElement("p");
+    label_card_due_date.className = "card-subtitle text-muted small" ;
+    label_card_due_date.innerHTML = "Data di scadenza";
 
     let card_date = document.createElement("p");
-    card_date.className = "col-3 card-text" ;
+    card_date.className = "card-text" ;
     card_date.innerHTML = data.date ;
 
+    row_card_due_date.appendChild(label_card_due_date);
+    row_card_due_date.appendChild(card_date);
+
     card_information.appendChild(card_username_client);
-    card_information.appendChild(card_province);
-    card_information.appendChild(card_date);
+    card_information.appendChild(row_card_province);
+    card_information.appendChild(row_card_due_date);
 
     let card_center = document.createElement("div");
     card_center.className = "row" ;
@@ -186,9 +203,9 @@ function createAdvertiseCardDetail(data){
 			if(data.title.length > 35 )
 			    card_title.style.fontSize = "16px" ;
             card_description.classList.remove("mt-3");
-            card_province.style.marginLeft = "28%";
+        
             card_province.style.marginRight = "5px";
-            card_information.style.fontSize = "20px";
+            card_information.style.fontSize = "16px";
             if(data.province.length > 15 )
                 card_province.style.fontSize = "14px" ;
             if(data.province.length > 25 )
@@ -335,9 +352,18 @@ function createCard(data){
 
     let card_information = document.createElement("div");
     card_information.className = "row" ;
+    card_information.style.fontSize = "15px";
+
+    let row_card_province = createRow();
+    row_card_province.classList.add("col");
+    
+    let label_card_province = document.createElement("p");
+    label_card_province.className = "card-subtitle text-muted small" ;
+    label_card_province.innerHTML = "Provincia";
+
 
     let card_province = document.createElement("p");
-    card_province.className = "col-6 card-text" ;
+    card_province.className = "card-text" ;
     card_province.innerHTML = data.province ;
     if(data.province.length > 10 )
         card_province.style.fontSize = "13px" ;
@@ -348,12 +374,26 @@ function createCard(data){
     if(data.province.length > 35 )
         card_province.style.fontSize = "7px" ;
 
+    row_card_province.appendChild(label_card_province);
+    row_card_province.appendChild(card_province);
+
+    let row_card_due_date = createRow();
+    row_card_due_date.classList.add("col");
+    
+    let label_card_due_date = document.createElement("p");
+    label_card_due_date.className = "card-subtitle text-muted small" ;
+    label_card_due_date.innerHTML = "Data di scadenza";
+
+
     let card_date = document.createElement("p");
-    card_date.className = "col-6 card-text" ;
+    card_date.className = "card-text" ;
     card_date.innerHTML = data.date ;
 
-    card_information.appendChild(card_province);
-    card_information.appendChild(card_date);
+    row_card_due_date.appendChild(label_card_due_date)
+    row_card_due_date.appendChild(card_date);
+
+    card_information.appendChild(row_card_province);
+    card_information.appendChild(row_card_due_date);
 
     card_body.appendChild(card_header);
     card_body.appendChild(card_username_client);

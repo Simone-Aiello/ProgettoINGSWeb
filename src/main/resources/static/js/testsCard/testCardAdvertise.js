@@ -1,8 +1,4 @@
 
-// ------------------------------------------------------------------------------------------------------
-// ESEMPIO UTILIZZO CARD_PREVIEW e CARD_DETAILS
-
-
 
 var card_preview1 = createCard({
     id_advertise : 132132 , 
@@ -57,5 +53,7 @@ card_preview1.show();
 card_preview2.show();
 card_preview3.show();
 card_preview4.show();
+
+
 // ------------------------------------------------------------------------------------------------------
 
