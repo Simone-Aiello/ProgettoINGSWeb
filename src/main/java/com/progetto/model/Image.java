@@ -9,7 +9,7 @@ public class Image {
 		return id;
 	}
 	public void setId(long id) {
-		isTrue(id >0);
+		isTrue(id > 0);
 		this.id = id;
 	}
 	public String getValue() {

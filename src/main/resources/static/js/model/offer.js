@@ -11,10 +11,7 @@ class Offer{
 		this.#serializer[property] = value ;
 	} 
 
-	toJSON() {
-		 return JSON.stringify(this.#serializer) ; 
-	}
-	
+	toJSON() { return this.#serializer ; }
 	
 	constructor(key) {
 	
@@ -34,10 +31,7 @@ class Offer{
 		
 		withTitle = (title) => {
 			checkType(title,"String");
-			if(title.length <= Offer.#max_length_title)
-				this.#product.#addProperty("title",title);
-			else
-				throw new Error("Il titolo può avere massimo "+Offer.#max_length_title+" caratteri");
+			this.#product.#addProperty("title",title);
 		}
 
         withDescription = (description) => {
@@ -46,7 +40,14 @@ class Offer{
         }   
 
 		withQuote = (quote) => {
-			checkType(title,"Number");
+			try{
+				checkType(quote,"Number");
+			}catch(e){
+				throw new Error("Il valore inserito non è un numero");
+			}
+			if(quote < 0 ){
+				throw new Error("Inserisci un preventivo maggiore o uguale a zero");
+			}
 			this.#product.#addProperty("quote",quote);
 		}	
 		
@@ -61,7 +62,14 @@ class Offer{
 		}
 		
 		withHoursOfWork = (hoursOfWork) => {
-			checkType(hoursOfWork,"Number");
+			try{
+				checkType(hoursOfWork,"Number");
+			}catch(e){
+				throw new Error("Il valore inserito non è un numero");
+			}
+			if(hoursOfWork <= 0 ){
+				throw new Error("Inserisci una durata del lavoro maggiore di zero");
+			}
 			this.#product.#addProperty("hoursOfWork",hoursOfWork);
 		}
 	
@@ -78,10 +86,19 @@ class Offer{
 
 		withAvailability = (availability) => {
 			isDate(availability);
-			isAfterNowOrToday(availability);
+			if(!isAfterNowOrToday(availability))
+				throw new Error("La data deve essere una data futura");
 			if(this.#product.#serializer.availabilities == null)
 				this.#product.#serializer.availabilities = [];
 			this.#product.#serializer.availabilities.push(availability); 
+		}
+	
+		removeAvailability = (availability) => {
+			if(this.#product.#serializer.availabilities == null)
+				return ;
+			let index = this.#product.#serializer.availabilities.indexOf(availability) ; 
+			if( index > -1)
+				this.#product.#serializer.availabilities.splice(index,1);
 		}
 
 		build = function() {
@@ -90,6 +107,27 @@ class Offer{
 			return this.#product;
 		}
     }
+}
+
+
+function sendOffer(offer){
+	
+	checkType(offer,"Offer");
+	
+	let data = JSON.stringify(offer);
+	
+	$.ajax({
+		type: "POST",
+		url: "/registerOffer",
+		contentType: "application/json",
+		data: data,
+		success: (response) => {
+			console.log(response);
+		},
+		error: (xhr) => {
+			console.log(xhr.message);
+		}
+	});
 }
 
 

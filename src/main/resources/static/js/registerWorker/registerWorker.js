@@ -3,29 +3,29 @@ var account_builder = new Account.Builder();
 var user_builder = new User.Builder();
 var address_builder = new Address.Builder();
 var currentSection = 0;
-var steps = ["personal-information", "picture-and-areas","summary"];
+var steps = ["personal-information", "picture-and-areas", "summary"];
 function sendAccount() {
 	user_builder.withAddress(address_builder.build());
 	account_builder.withUser(user_builder.build());
 	account_builder.withProfilePic(imageBuilder.build());
 	var account = account_builder.build();
 	console.log(account);
-	$.ajax({
-		type: "POST",
-		url: "/registerWorker",
-		contentType: "application/json",
-		data: JSON.stringify(account),
-		success: (response) => {
-			console.log(response);
-			window.location.replace(response);
-			console.log("Fare redirect a profilo personale");
-		},
-		error: (xhr) => {
-			console.log(xhr);
-		}
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "POST",
+			url: "/registerWorker",
+			contentType: "application/json",
+			data: JSON.stringify(account),
+			success: (response) => {
+				resolve(response);
+			},
+			error: () => {
+				reject();
+			}
+		});
 	});
 }
-function updateSummary(idElement,currentText){
+function updateSummary(idElement, currentText) {
 	let idSummary = "#summary-" + idElement;
 	$(idSummary).text(currentText);
 }
@@ -61,16 +61,16 @@ function appendCorrect(idElement) {
 function checkFormError(sectionId) {
 	let ok = true;
 	$("#" + sectionId).find('input').each(function() {
-		if ($(this).prop('required') && $(this).val() === "") {
+		if (($(this).prop('required') && $(this).val() === "")) {
 			ok = false;
 			appendError($(this).attr("id"), "Il campo è obbligatorio");
 		}
-		/*else if ($(this).hasClass("is-invalid")) {
+		else if ($(this).hasClass("is-invalid")) {
 			ok = false;
-		}*/
+		}
 	});
 	$("#" + sectionId).find('select').each(function() {
-		if ($(this).prop('required') && $(this).val() === null) {
+		if (($(this).prop('required') && $(this).val() === null)) {
 			ok = false;
 			appendError($(this).attr("id"), "Il campo è obbligatorio");
 		}
@@ -96,7 +96,7 @@ function checkUsernameUnique(username) {
 			success: (response) => {
 				resolve(response);
 			},
-			error: (xhr) => {
+			error: () => {
 				reject(null);
 			}
 		});
@@ -112,7 +112,7 @@ function checkEmailUnique(email) {
 			success: (response) => {
 				resolve(response);
 			},
-			error: (xhr) => {
+			error: () => {
 				reject(null);
 			}
 		});
@@ -129,34 +129,42 @@ function switchToNextSection() {
 						appendError("username", "Username già in uso sul sito");
 					}
 					else if (!data[1]) {
-						appendError("email", "Email già in uso sul sito");
+						appendError("email", "Email già in uso sul sito. <a href=" + "/passwordRecovery.html class=\"link-primary\">Recupera password</a>");
 					}
 					else {
 						animateFormTransition(steps[currentSection], steps[currentSection + 1]);
 						currentSection++;
 					}
-				}).catch((error) => {
-					showSystemError();
+				}).catch(() => {
+					showSystemError("header");
 				});
 			}
 			break;
 		case 1:
-			if (atLeastOneArea()) {
+			if (!atLeastOneArea() && $("#area-div").length) {
+				appendError("area-div", "Selezionare almeno un ambito");
+			}
+			else if (!newAreaFormValid() && $("#area-div").length) {
+				appendError("missing-area", "Campi obbligatori");
+			}
+			else {
 				animateFormTransition(steps[currentSection], steps[currentSection + 1]);
 				currentSection++;
 			}
-			else {
-				appendError("area-div", "Selezionare almeno un ambito");
-			}
 			break;
 		case 2:
-				sendAccount();
+			Promise.all([sendAccount(), sendNewArea()]).then((data) => {
+				window.location.replace(data[0]);
+			}).catch(() => {
+				showSystemError("header-summary");
+			});
 			break;
 	}
 }
-function showSystemError() {
-	$("#system-error").remove();
-	$(".header").after("<div id=\"system-error\" class=\"alert alert-danger\" role=\"alert\">C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi</div>");
+function showSystemError(locationClass) {
+	$(`#system-error-${locationClass}`).remove();
+	$(`.${locationClass}`).after(`<div id="system-error-${locationClass}" class="alert alert-danger" role="alert">C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi</div>`);
+	//$(`.${locationClass}`).after("<div id=\"system-error\" class=\"alert alert-danger\" role=\"alert\">C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi</div>");
 }
 function addPasswordListeners() {
 	//Check password security standard
@@ -224,120 +232,131 @@ function getProvince() {
 			let work = $("#province-of-work");
 			let province = $("#province");
 			let arrayProvince = [];
-			for(let p of risposta){
+			for (let p of risposta) {
 				arrayProvince.push(capitalizeFirstLetter(p["nome"]));
 			}
 			arrayProvince.sort();
-			for(let provinceName of arrayProvince){
+			for (let provinceName of arrayProvince) {
 				work.append("<option>" + provinceName + "</option>");
 				province.append("<option>" + provinceName + "</option>");
 			}
-			/*for (let p of risposta) {
-				let provinceName = capitalizeFirstLetter(p["nome"]);
-				work.append("<option>" + provinceName + "</option>");
-				province.append("<option>" + provinceName + "</option>");
-			}*/
 		},
 		error: function(xhr) {
-			showSystemError();
+			showSystemError("header");
 		}
 	});
+}
+function handleUsernameInput() {
+	let usernameField = $("#username");
+	let username = usernameField.val();
+	try {
+		account_builder.withUsername(username);
+		appendCorrect("username");
+	}
+	catch (error) {
+		appendError("username", error.message);
+	}
 }
 function addUsernameListeners() {
 	$("#username").on("input", () => {
-		let usernameField = $("#username");
-		let username = usernameField.val();
-		try {
-			account_builder.withUsername(username);
-			appendCorrect("username");
-		}
-		catch (error) {
-			appendError("username", error.message);
-		}
-		updateSummary("username",usernameField.val());
+		handleUsernameInput();
+		updateSummary("username", $("#username").val());
 	});
+}
+function handleEmailInput() {
+	let emailField = $("#email");
+	let email = emailField.val();
+	try {
+		account_builder.withEmail(email);
+		appendCorrect("email");
+	}
+	catch (error) {
+		appendError("email", error.message);
+	}
 }
 function addEmailListeners() {
 	$("#email").on("input", () => {
-		let emailField = $("#email");
-		let email = emailField.val();
-		try {
-			account_builder.withEmail(email);
-			appendCorrect("email");
-		}
-		catch (error) {
-			appendError("email", error.message);
-		}
-		updateSummary("email",email);
+		handleEmailInput();
+		updateSummary("email", $("#email").val());
 	});
+}
+function handleNameInput() {
+	try {
+		user_builder.withName($("#name").val());
+		appendCorrect("name");
+	}
+	catch (error) {
+		appendError("name", error.message);
+	}
 }
 function addNameListeners() {
 	$("#name").on("input", () => {
-		try {
-			user_builder.withName($("#name").val());
-			appendCorrect("name");
-		}
-		catch (error) {
-			appendError("name", error.message);
-		}
-		updateSummary("name",$("#name").val());
+		handleNameInput();
+		updateSummary("name", $("#name").val());
 	});
+}
+function handleSurnameInput() {
+	try {
+		user_builder.withSurname($("#surname").val());
+		appendCorrect("surname");
+	}
+	catch (error) {
+		appendError("surname", error.message);
+	}
 }
 function addSurnameListeners() {
 	$("#surname").on("input", () => {
-		try {
-			user_builder.withSurname($("#surname").val());
-			appendCorrect("surname");
-		}
-		catch (error) {
-			appendError("surname", error.message);
-		}
-		updateSummary("surname",$("#surname").val());
+		handleSurnameInput();
+		updateSummary("surname", $("#surname").val());
 	});
+}
+function handleTelephoneInput() {
+	let telephoneField = $("#telephone");
+	let telephoneValue = telephoneField.val();
+	try {
+		account_builder.withNumber(telephoneValue);
+		appendCorrect("telephone");
+	}
+	catch (error) {
+		appendError("telephone", error.message);
+	}
 }
 function addTelephoneListeners() {
 	$("#telephone").on("input", () => {
-		let telephoneField = $("#telephone");
-		let telephoneValue = telephoneField.val();
-		try {
-			account_builder.withNumber(telephoneValue);
-			appendCorrect("telephone");
-		}
-		catch (error) {
-			appendError("telephone", error.message);
-		}
-		updateSummary("telephone",telephoneValue);
+		handleTelephoneInput();
+		updateSummary("telephone", $("#telephone").val());
 	})
+}
+function handleDateOfBirthListeners() {
+	let dateField = $("#date-of-birth");
+	let dateValue = dateField.val();
+	try {
+		user_builder.withDateOfBirth(dateValue);
+		appendCorrect("date-of-birth");
+	}
+	catch (error) {
+		appendError("date-of-birth", error.message);
+	}
 }
 function addDateOfBirthListeners() {
 	$("#date-of-birth").on("input", () => {
-		let dateField = $("#date-of-birth");
-		let dateValue = dateField.val();
-		try {
-			let datePart = dateValue.split("-");
-			let date = datePart[2] + "/" + datePart[1] + "/" + datePart[0];
-			user_builder.withDateOfBirth(dateValue);
-			appendCorrect("date-of-birth");
-		}
-		catch (error) {
-			appendError("date-of-birth", error.message);
-		}
-		updateSummary("date-of-birth",dateValue);
+		handleDateOfBirthListeners();
+		updateSummary("date-of-birth", $("#date-of-birth").val());
 	});
 }
-function loadZipCode() {
+function loadZipCode(withSummary) {
 	let selectedProvince = $("#province").val().toLowerCase();
 	let currentCity = $("#city").val();
 	for (c of city[selectedProvince]) {
 		if (c["nome"] === currentCity) {
 			$("#zip-code").val(c["cap"]);
 			address_builder.withZipCode(c["cap"]);
-			updateSummary("zip-code",$("#zip-code").val());
+			if (withSummary) updateSummary("zip-code", $("#zip-code").val());
 			return;
 		}
 	}
 }
-function loadCity(selectedProvince) {
+function loadCity(selectedProvince, withSummary) {
 	let currentCity = $("#city");
 	$.ajax({
 		type: "GET",
@@ -358,117 +377,109 @@ function loadCity(selectedProvince) {
 			}
 			address_builder.withTown($("#city").val());
 			appendCorrect("city");
-			loadZipCode();
-			updateSummary("city",$("#city").val());
+			loadZipCode(withSummary);
+			if (withSummary) updateSummary("city", $("#city").val());
 		},
-		error: function(xhr) {
-			showSystemError();
+		error: function() {
+			showSystemError("header");
 		}
 	});
 }
+function handleProvinceOfWorkInput() {
+	try {
+		account_builder.withProvinceOfWork($("#province-of-work").val());
+		appendCorrect("province-of-work");
+	}
+	catch (error) {
+		appendError("province-of-work", error.message);
+	}
+}
+function handleCityInput() {
+	let townVal = $("#city").val();
+	try {
+		address_builder.withTown(townVal);
+		appendCorrect("city");
+	}
+	catch (error) {
+		appendError("city", error.message);
+		return false;
+	}
+	return true;
+}
 function addProvinceAndCityListeners() {
 	$("#province-of-work").on("input", () => {
-		try {
-			account_builder.withProvinceOfWork($("#province-of-work").val());
-			appendCorrect("province-of-work");
-		}
-		catch (error) {
-			appendError("province-of-work", error.message);
+		if ($("#province-of-work").length) {
+			handleProvinceOfWorkInput();
 		}
 	});
 	$("#city").on("input", () => {
-		let townVal = $("#city").val();
-		try {
-			address_builder.withTown(townVal);
-			appendCorrect("city");
-			loadZipCode();
+		if (handleCityInput()) {
+			loadZipCode(true);
+			updateSummary("city", $("#city").val());
 		}
-		catch (error) {
-			appendError("city", error.message);
-		}
-		updateSummary("city",townVal);
 	});
 	$("#province").change((event) => {
-			var selectedProvince = (event.target.value);
-		try{
+		var selectedProvince = (event.target.value);
+		try {
 			address_builder.withProvince(selectedProvince);
-			account_builder.withProvinceOfWork(selectedProvince);
 			let lowerCaseSelected = selectedProvince.toLowerCase();
 			let currentCity = $("#city");
 			currentCity.html("");
 			if (city.hasOwnProperty(lowerCaseSelected)) {
 				for (c of city[lowerCaseSelected]) {
-					currentCity.append("<option>" + c + "</option>");
+					currentCity.append(`<option id="${c["nome"]}"> ${c["nome"]} </option>`);
 				}
 				address_builder.withTown(currentCity.val());
-				loadZipCode();
+				loadZipCode(true);
 			}
 			else {
-				loadCity(lowerCaseSelected);
+				loadCity(lowerCaseSelected, true);
 			}
 			appendCorrect("province");
-			$("#province-of-work").val(selectedProvince);
-			appendCorrect("province-of-work");
-		}
-		catch(error){
-			appendError("province");
-		}
-		updateSummary("province",selectedProvince);
-		updateSummary("province-of-work",selectedProvince);
-	});
-	/*$("#province").on("input", () => {
-		console.log("input");
-		try {
-			let selected = $("#province").val();
-			
-			appendCorrect("city");
-			
+			//Esiste se si sta registrando un lavoratore
+			if ($("#province-of-work").length) {
+				account_builder.withProvinceOfWork(selectedProvince);
+				$("#province-of-work").val(selectedProvince);
+				appendCorrect("province-of-work");
+			}
 		}
 		catch (error) {
 			appendError("province");
 		}
+		updateSummary("province", selectedProvince);
+		if ($("#province-of-work").length) {
+			updateSummary("province-of-work", selectedProvince);
+		}
 	});
-	$("#province").change((event) => {
-		console.log("change");
-		let selectedProvince = (event.target.value).toLowerCase();
-		let currentCity = $("#city");
-		currentCity.html("");
-		if (city.hasOwnProperty(selectedProvince)) {
-			for (c of city[selectedProvince]) {
-				currentCity.append("<option>" + c + "</option>");
-			}
-			loadZipCode();
-		}
-		else {
-			loadCity(selectedProvince);
-		}
-		console.log($("#city").val());
-		address_builder.withTown($("#city").val());
-	});*/
+}
+function handleViaInput() {
+	let viaField = $("#via");
+	let viaValue = viaField.val();
+	try {
+		address_builder.withVia(viaValue);
+		appendCorrect("via");
+	}
+	catch (error) {
+		appendError("via", error.message);
+	}
+}
+function handleHouseNumberInput() {
+	try {
+		address_builder.withHouseNumber($("#house-number").val());
+		appendCorrect("house-number");
+	}
+	catch (error) {
+		appendError("house-number-error", error.message);
+	}
 }
 function addAddressListeners() {
 	$("#via").on("input", () => {
-		let viaField = $("#via");
-		let viaValue = viaField.val();
-		try {
-			address_builder.withVia(viaValue);
-			appendCorrect("via");
-		}
-		catch (error) {
-			appendError("via", error.message);
-		}
-		updateSummary("via",viaField.val());
+		handleViaInput();
+		updateSummary("via", $("#via").val());
 	});
 	$("#house-number").on("input", () => {
-		let houseNumberField = $("#house-number");
-		try {
-			address_builder.withHouseNumber($("#house-number").val());
-			appendCorrect("house-number");
-		}
-		catch (error) {
-			appendError("house-number-error", error.message);
-		}
-		updateSummary("house-number",$("#house-number").val());
+		handleHouseNumberInput();
+		updateSummary("house-number", $("#house-number").val());
 	});
 }
 function addNextListeners() {
@@ -484,7 +495,16 @@ function addPreviousListeners() {
 		}
 	});
 }
+function clearAll() {
+	$("input").each(function() {
+		$(this).val(null);
+	});
+	$("select").each(function() {
+		$(this).val(null);
+	});
+}
 $(document).ready(() => {
+	clearAll();
 	getProvince();
 	addPasswordListeners();
 	addUsernameListeners();
@@ -497,4 +517,5 @@ $(document).ready(() => {
 	addAddressListeners();
 	addNextListeners();
 	addPreviousListeners();
+	console.log('${type}');
 });

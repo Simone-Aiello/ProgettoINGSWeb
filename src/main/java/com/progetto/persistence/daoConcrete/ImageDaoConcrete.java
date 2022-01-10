@@ -66,6 +66,7 @@ public class ImageDaoConcrete implements ImageDao {
 		statement.setLong(1, id);
 		ResultSet rs = statement.executeQuery();
 		if (rs.next()) {
+			m = new Image();
 			m.setId(id);
 			m.setValue(rs.getString("value"));
 		}
@@ -75,14 +76,13 @@ public class ImageDaoConcrete implements ImageDao {
 	@Override
 	public long save(Image img) throws SQLException {
 		if(alreadyExists(img)) {
-			String update = "UPDATE immagini SET value = ?, where id = ?;";
+			String update = "UPDATE immagini SET value = ? where id = ?;";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(update);
 			stmt.setString(1, img.getValue());
 			stmt.setLong(2, img.getId());
 			stmt.execute();
 		}
-		else 
-		{
+		else if(img.getValue() != null){
 			String insert = "insert into immagini(value) values(?) RETURNING id";
 			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(insert);
 			st.setString(1, img.getValue());
@@ -101,6 +101,14 @@ public class ImageDaoConcrete implements ImageDao {
 		statement.setLong(1, img.getId());
 		ResultSet rs = statement.executeQuery();
 		return rs.next();
+	}
+
+	@Override
+	public void delete(long id) throws SQLException {
+		String query = "delete from immagini where id = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setLong(1, id);
+		st.execute();
 	}
 
 }

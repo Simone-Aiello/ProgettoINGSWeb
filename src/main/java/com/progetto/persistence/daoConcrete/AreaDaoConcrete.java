@@ -165,4 +165,13 @@ public class AreaDaoConcrete implements AreaDao{
 		return areas;
 	}
 
+
+	@Override
+	public void deleteLinkByAccount(Account a) throws SQLException{
+		String query = "delete from account_ambiti where username_account = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, a.getUsername());
+		st.execute();
+	}
+
 }

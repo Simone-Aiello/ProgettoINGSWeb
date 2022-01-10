@@ -1,18 +1,23 @@
 .fa-star{
 	color : #FF9400;
 }
+i{
+	color: #FF9400;
+}
+.areas{
+	display: inline-block;
+}
 .rounded-photo{
 	
 	height: 210px;
 	clip-path: circle(40%);
 }
 .card-title{
-	float: left;
 	padding-right: 7px;
 }
 .review-description{
 	clear: left;
-	max-height: 50px;
+	max-height: 100px;
 	overflow-x: hidden;
 	overflow-y: auto;
 }
@@ -27,11 +32,62 @@
 	left: 20px;
 	top: 3px;
 }
-@media(max-width:1200px){
-	.card-title{
-		float: none;
-		padding-right: 7px;
-	}
+/*Toglie lo scroll dall'input field dei numeri*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox  Toglie lo scroll dall'input field dei numeri*/
+input[type=number]{
+  -moz-appearance: textfield;
+}
+#button-div{
+	display: flex;
+	justify-content: center;
+}
+#delete-button,#save-button,#house-number-div,#via-div,#area-div-outer,#photo-button-div{
+	display: none;
+}
+.icon-figure{
+	display: flex;
+	justify-content: center;
+	border-radius: 15px;
+	transition: transform .3s;
+	width: 80px;
+	height: 70px;
+}
+.icon-figure:hover {
+  transform: scale(1.1);
+}
+.icon-figure i{
+	position: relative;
+	top : 12px;
+	color: #FF9400;
+}
+.icon-div{
+	display: flex;
+	justify-content: center;
+}
+#upload-photo,#remove-photo{
+	padding: 10px 18px;
+	border-radius: 10px;
+	color: #FF9400;
+	background-color: #FFFFFF;
+	border : none;
+}
+#delete-icon{
+	margin-right: 8px;	
+}
+#upload-icon{
+	margin-right: 8px;	
+}
+#file-input{
+	display: none;
+}
+#send-email{
+	cursor: pointer;
 }
 /*@media(max-width:995px){
 	.review-header{

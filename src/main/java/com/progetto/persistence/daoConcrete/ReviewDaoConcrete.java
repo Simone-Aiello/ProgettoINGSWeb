@@ -19,11 +19,13 @@ import com.progetto.persistence.daoInterfaces.ReviewDao;
 
 public class ReviewDaoConcrete implements ReviewDao {
 	@Override
-	public List<Review> findByWorker(Account account) throws SQLException {
+	public List<Review> findByWorker(Account account,Integer limit,Integer offset) throws SQLException {
 		List<Review> reviews = new ArrayList<Review>();
-		String query = "select * from recensioni where username_lavoratore = ?";
+		String query = "select * from recensioni where username_lavoratore = ? limit ? offset ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setString(1, account.getUsername());
+		statement.setInt(2, limit);
+		statement.setInt(3, offset);
 		ResultSet set = statement.executeQuery();
 		while (set.next()) {
 			Review r = new Review();
@@ -31,7 +33,7 @@ public class ReviewDaoConcrete implements ReviewDao {
 			r.setDescription(set.getString("descrizione"));
 			r.setRating(set.getInt("valutazione"));
 			r.setTitle(set.getString("titolo"));
-			// Servono i proxy
+			reviews.add(r);
 		}
 		return reviews;
 	}
@@ -76,12 +78,16 @@ public class ReviewDaoConcrete implements ReviewDao {
 	}
 
 	@Override
-	public int averageRatingWorker(Account account) throws SQLException {
-		String query = "select avg(valutazione) as rating from recensioni where username_lavoratore = ?";
+	public int[] averageRatingWorkerAndCount(Account account) throws SQLException {
+		String query = "select avg(valutazione) as rating,count(*) as total from recensioni where username_lavoratore = ?";
 		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
 		st.setString(1, account.getUsername());
 		ResultSet set = st.executeQuery();
-		int rating = set.next() ? set.getInt("rating") : 0;
-		return rating;
+		int[] data = {0,0};
+		if(set.next()) {
+			data[0] = set.getInt("rating");
+			data[1] = set.getInt("total");
+		}
+		return data;
 	}
 }

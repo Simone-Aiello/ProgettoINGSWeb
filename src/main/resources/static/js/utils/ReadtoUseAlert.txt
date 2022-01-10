@@ -1,0 +1,3 @@
+Codice da inserire per utilizzare 'createMessage' :
+    <script src="../js/utils/utils.js"></script>
+    <link rel="stylesheet" href="../css/common.css">

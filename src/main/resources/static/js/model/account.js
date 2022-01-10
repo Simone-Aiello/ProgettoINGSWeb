@@ -2,6 +2,15 @@ class Account {
 
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
+	// Private serializer 
+	#serializer = {} ;
+	
+	#addProperty = (property,value) => {
+		this.#serializer[property] = value ;
+	} 
+
+	toJSON() { return this.#serializer ; }
+
 	constructor(key) {
 		if (key != Account.#key)
 			throw new Error("This constructor is private");
@@ -17,62 +26,70 @@ class Account {
 		}
 
 		withUsername = function(username) {
+			checkType(username,"String");
 			var _regex = /^[\w-]+$/g;
 			if (_regex.test(username)) {
-				this.#product.username = username;
+				this.#product.#addProperty("username",username);
 			}
 			else throw new Error("L'username inserito non è valido");
 		}
 
 		withPassword = function(password) {
-
+			checkType(password,"String");
 			var _regex = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,16}$/;
 			if (_regex.test(password)) {
-				this.#product.password = password;
+				this.#product.#addProperty("password",password);
 			}
 			else
 				throw new Error("La password non rispetta i requisti di sicurezza");
 		}
 
 		withEmail = function(email) {
+			checkType(email,"String");
 			var _regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 			if (_regex.test(email))
-				this.#product.email = email;
+				this.#product.#addProperty("email",email);
 			else throw new Error("L' email inserita non è valida");
 		}
 
 		withNumber = function(number) {
+			checkType(number,"Number");
 			var _regex = /^([0-9]{10}|0[0-9]{8})$/
-			if (_regex.test(number))
-				this.#product.number = number;
+			if (_regex.test(number) || number == "")
+				this.#product.#addProperty("number",number);
 			else
 				throw new Error("Il numero inserito non è valido");
 		}
 
 		withProvinceOfWork = function(provinceOfWork) {
-
-			this.#product.provinceOfWork = provinceOfWork;
+			checkType(provinceOfWork,"String");
+			this.#product.#addProperty("provinceOfWork",provinceOfWork);
 			return this;
 		}
 
 		withAccountType = function(accountType) {
+			checkType(accountType,"String");
 			var _regex = /^[awu]$/;
 			if  (_regex.test(accountType))
-				this.#product.accountType = accountType;
+				this.#product.#addProperty("accountType",accountType);
 			else throw new Error("The account type is not valid");
 		}
 
 		withUser = function(user) {
+			checkType(user,"User");
 			this.#product.personalInfo = user;
 			return this;
 		}
 		withProfilePic = function(profilePic){
+			checkType(profilePic,"String");
 			this.#product.profilePic = profilePic;
 		}
 		withArea = function(area){
+			checkType(area,"Area");
 			this.areasList.push(area);
 		}
 		removeArea = function(area){
+			checkType(area,"Area");
 			this.areasList = this.areasList.filter((elem) =>{
 				return elem["id"] != area;
 			});
