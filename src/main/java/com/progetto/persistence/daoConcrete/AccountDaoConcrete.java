@@ -277,6 +277,22 @@ public class AccountDaoConcrete implements AccountDao {
 
 
 	@Override
+	public List<Account> findWorkersByProvince(String province) throws SQLException {
+		//add control that the account is a worker? not needed  with trigger
+		String query = "SELECT username FROM account WHERE provincia_lavoro = ?;";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, province);
+		ResultSet rs = stmt.executeQuery();
+		List<Account> workers= new ArrayList<>();
+		while(rs.next()) {
+			Account w= new Account();
+			w.setUsername(rs.getString("username"));
+			w.setAreasOfWork(Database.getInstance().getAreaDao().findByWorker(w));
+			workers.add(w);
+		}
+		return workers;
+	}
+
 	public String getVerificationCode(String username) throws SQLException {
 		String query = "select codice_validazione_account from account where username = ?";
 		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);

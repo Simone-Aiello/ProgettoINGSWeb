@@ -4,10 +4,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.progetto.model.Account;
-import com.progetto.model.Chat;
 
 public interface AccountDao {
 	public List<Account> findAll(int mode)throws SQLException;
+	public List<Account> findWorkersByProvince(String province)throws SQLException;
 	public Account findByPrimaryKey(String username,int mode)throws SQLException;
 	public Account findByEmail(String email) throws SQLException;
 	public void save(Account a)throws SQLException;

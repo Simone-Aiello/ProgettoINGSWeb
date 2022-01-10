@@ -1,6 +1,7 @@
 package com.progetto.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.*;
 
@@ -10,6 +11,21 @@ import com.progetto.Utils;
 
 public class Account {
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(username);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		return Objects.equals(username, other.username);
+	}
 	//PATTERNS
 	private static final String USERNAME_PATTERN = "[\\w-]+" ;
 	private static final String EMAIL_PATTERN = "\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+" ;

@@ -1,0 +1,74 @@
+.containerCard {
+	border: 3px solid gray;
+	background: #fff;
+	border-radius: 3px;
+	overflow: hidden;
+	border-radius: 10px;
+	padding: 5px;
+	background: #FF9400;
+	/*
+	max-width: 398px;
+	max-height: 248px;*/
+}
+
+img {
+	display: block;
+	border-radius: 50%;
+	background: #FF9400;
+
+}
+
+.imageDiv {
+		position: relative;
+		width: 70px;
+		height: 70px;
+		margin: 38px auto 0 auto;
+
+}
+
+.profileButton{
+	display: block;
+	width: 120px;
+	height: 30px;
+	margin: 0 auto 10px auto;
+	border: 1px solid black;
+	border-radius: 15px;
+
+			
+}
+
+.profileButton:hover{
+	transform:scale(1.1);
+}
+.profileDiv {
+	background: white;
+	padding: 0px;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.box {
+	background: #F5E8DF;
+	text-align: center;
+	padding: 12px;
+	margin: 4px 0px 4px 4px;
+	border-radius: 5px;
+}
+
+span {
+	display: block;
+}
+.stats {
+	padding: 0px;
+	float: left;
+	display: inline;
+	position: relative;
+}
+
+.boxes{
+	padding: 0px;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+

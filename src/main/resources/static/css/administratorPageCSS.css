@@ -1,0 +1,124 @@
+
+body{
+	background-color: #f9dcc4;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mainDiv{
+	background-color: white;
+	margin: auto;
+	width: 50%;
+	padding: 35px;
+	border-radius: 10px;
+	
+}
+
+@media(max-width: 1024px){
+	.mainDiv{
+		width: 85%;
+	}
+}
+
+.areaTitle, .areaIconText{
+	padding-left: 30px;
+}
+
+.cardButtons{
+	display: flex;
+	justify-content: space-between;
+	white-space:nowrap;
+	margin-top: 20px;
+}
+
+.icon-figure{
+	margin: 20px;
+	display: flex;
+	justify-content: center;
+	border-radius: 15px;
+	transition: transform .3s;
+	width: 80px;
+	height: 70px;
+	background-color: #FF9400;
+}
+.icon-figure:hover {
+  transform: scale(1.1);
+}
+.icon-figure i{
+	position: relative;
+	top : 12px;
+	color: white;
+}
+.icon-div{
+	display: flex;
+	justify-content: center;
+}
+
+.areaCard{
+	margin-top: 15px;
+	margin-bottom: 15px;	
+	border-radius: 10px;
+	border-width: 3px;
+	border-style: solid;
+}
+
+#addAreaDiv{
+ 	display: flex;
+ 	justify-content: center;
+ 	align-items: center;
+}	
+
+#requestAddAreaForm{
+	width: 70px;
+
+}
+
+#addAreaForm{
+	margin-top: 15px;
+	margin-bottom: 15px;	
+	border-width: 3px;
+	border-radius: 10px;
+	border-style: solid;
+	border-color:gray;
+	padding: 10px;
+}
+
+#addAreaButtonDiv{
+	text-align: center;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.title{
+ 	text-align: center;
+
+}
+
+#addAreaFormContent{
+	padding-left: 10px;	
+}
+
+.hidden{
+	display: none;	
+}
+
+#searchBox{
+	margin: 20px;
+	padding: 5px;
+	background-color: #FF9400;
+	border-radius: 20px;
+}
+
+#searchButtonDiv{
+	position: relative;	
+}
+#searchButtonDiv{
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: column;
+}
+.searchBarLabel{
+	padding: 0;
+	margin: 0;
+}
