@@ -91,43 +91,67 @@
 				</div>
 			</section>
 			
-			<section id = "profilesManagerSection"  class =" shadow mainDiv">
-				<div class ="title">
-					<h2>Gestione profili</h2>
-				</div>
-				<div class = "profileCards">
-					  <div class="containerCard row mb-3">
-							<div class="profileDiv col-lg-8 col-md-6 col-sm-6 col-xs-8">
-								<div class="imageDiv">
-									<img src="/images/defaultProfilePic.png" width="70" height="70" alt="we wee">
+			<section id = "profilesManagerSection">
+			
+			<div class = "mainDiv shadow">
+					<div class ="title">
+						<h2>Gestione profili</h2>
+					</div>
+					
+					<div id = "searchBox" class = "row">
+						<div id = "" class = "col">
+							<label class = "form-label searchBarLabel"> Chi cerchi?</label>
+							<input type = "text" placeholder = "username" class = "form-control form-control-sm">					
+						</div>
+						<div id = "" class = "col">
+							<label class = "form-label form-label-sm searchBarLabel">ambito?</label>
+							<select  class = " selectpicker form-control  form-control-sm"  multiple data-live-search = "true" size = "1">	
+								<option>Meccanico</option>
+								<option>Idraulico</option>
+								<option>Idraulico</option>
+								<option>Idraulico</option>
+								<option>Idraulico</option>
+							</select>				
+						</div>
+						<div id = "searchButtonDiv" class = "col">
+							<button id = "searchButton" type = "button" class = "form-control form-control-sm">Cerca</button>			
+						</div>
+					</div>
+					<div class = "profileCards">
+						  <div class="containerCard row mb-3 container-sm">
+								<div class="profileDiv col">
+									<div class="imageDiv">
+										<img src="/images/defaultProfilePic.png" width="70" height="70">
+									</div>
+									
+									<div class="profileName"><p>Ciccio Pasticcio</p></div>
+									
+									<div class="actions">
+										<button class="profileButton">Vedi profilo</button>
+										<button class="profileButton">Avvia chat</button>
+										<button class="profileButton">Banna account</button>
+									</div>
 								</div>
 								
-								<div class="name">Jessica Potter</div>
-								<div class="job">Visual Artist</div>
-								
-								<div class="actions">
-									<button class="profileButton">Follow</button>
-									<button class="profileButton">Message</button>
+								<div class="stats col">
+									<div class ="boxes container-fluid">
+										<div class="box">
+											<span class="value">21</span>
+											<span class="parameter">Advertises</span>
+										</div>
+										<div class="box">
+											<span class="value">Meccanico</span>
+											<span class="parameter">Main area</span>
+										</div>
+										<div class="box">
+											<span class="value">4,5</span>
+											<span class="parameter">Rating</span>
+										</div>
+									</div>
 								</div>
-							</div>
-							
-							<div class="stats col-lg-4 col-md-6 col-sm-6 col-xs-4">
-								<div class="box">
-									<span class="value">523</span>
-									<span class="parameter">Advertises</span>
-								</div>
-								<div class="box">
-									<span class="value">1387</span>
-									<span class="parameter">Main area</span>
-								</div>
-								<div class="box">
-									<span class="value">146</span>
-									<span class="parameter">Rating</span>
-								</div>
-							</div>
-					  </div>
-
-				</div>
+						  </div>
+					</div>
+				</div>				
 			</section>
 		
 		</div>
