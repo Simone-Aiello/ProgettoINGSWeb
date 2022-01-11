@@ -84,14 +84,14 @@ public class Advertise {
 	}
 	public void setExpiryDate(DateTime expiryDate) {
 		notNull(expiryDate);
-		isTrue(expiryDate.isAfterNow());
+		//isTrue(expiryDate.isAfterNow());
 		this.expiryDate = expiryDate;
 	}
 	
-	public void setExpiryDateWithoutValidation(DateTime expiryDate) {
-		notNull(expiryDate);
-		this.expiryDate = expiryDate;
-	}
+//	public void setExpiryDateWithoutValidation(DateTime expiryDate) {
+//		notNull(expiryDate);
+//		this.expiryDate = expiryDate;
+//	}
 	public Account getAccount() {
 		return account;
 	}

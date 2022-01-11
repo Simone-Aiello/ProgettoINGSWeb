@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import com.progetto.Utils;
+import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Area;
 import com.progetto.model.Image;
@@ -185,6 +186,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		if(set.next()) {
 			assignedOfferIndex = set.getLong("proposta_accettata");
 		}
+		assignedOfferIndex = (assignedOfferIndex == 0) ? null : assignedOfferIndex;
 		return assignedOfferIndex != null;
 	}
 
@@ -201,11 +203,14 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			if(set.getString("descrizione") != null)
 				a.setDescription(set.getString("descrizione"));
 			a.setTitle(set.getString("titolo"));
-			a.setExpiryDateWithoutValidation(DateTime.parse(set.getString("data_scadenza")));
+			a.setExpiryDate(DateTime.parse(set.getString("data_scadenza")));
 			Offer o = new Offer();
 			o.setId(set.getLong("proposta_accettata"));
 			a.setAcceptedOffer(o);
 			a.setProvince(set.getString("provincia_annuncio"));
+			Account acc = new Account();
+			acc.setUsername(set.getString("username_cliente"));
+			a.setAccount(acc);
 			advertises.add(a);
 		}
 		return advertises;

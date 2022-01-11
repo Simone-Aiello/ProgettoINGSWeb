@@ -2,7 +2,6 @@ package com.progetto.controller;
 
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,64 +22,28 @@ import com.progetto.persistence.Database;
 @Controller
 public class ShowOffersController {
 	@GetMapping("/showOffers")
-	public String showOffers(HttpServletRequest req, HttpServletResponse resp, Advertise a) {
+	public String showOffers(HttpServletRequest req, HttpServletResponse resp) {
 		List<Offer> offers = null;
 		try {
 			//TEST
 			Advertise a1 = new Advertise();
-			a1.setId(4);
-			if(!Database.getInstance().getAdvertiseDao().alreadyAssigned(a1))
-			offers = Database.getInstance().getOfferDao().findOffersByAdvertise(a1);
+			String id = req.getParameter("AdvertiseID");
+			a1.setId(Long.parseLong(id));
+			if(Database.getInstance().getAdvertiseDao().alreadyAssigned(a1) == false) 
+				offers = Database.getInstance().getOfferDao().findOffersByAdvertise(a1);
+			
 			//END TEST
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-////TEST
-//		offers = new ArrayList<Offer>();
-//		Offer o = new Offer();
-//		o.setId(12);
-//		o.setTitle("title");
-//		o.setDescription("description");
-//		o.setHoursOfWork(12);
-//		o.setQuote(1200.50);
-//		o.setDone(false);
-//		
-//		Offer o1 = new Offer();
-//		o1.setId(13);
-//		o1.setTitle("title 1");
-//		o1.setDescription("description");
-//		o1.setHoursOfWork(4);
-//		o1.setQuote(12.50);
-//		o1.setDone(false);
-//		
-//		Offer o2 = new Offer();
-//		o2.setId(14);
-//		o2.setTitle("title 2");
-//		o2.setDescription("description");
-//		o2.setHoursOfWork(1);
-//		o2.setQuote(1300.50);
-//		o2.setDone(false);
-//		
-//		Offer o3 = new Offer();
-//		o3.setId(15);
-//		o3.setTitle("title 3");
-//		o3.setDescription("description");
-//		o3.setHoursOfWork(8);
-//		o3.setQuote(1240.50);
-//		o3.setDone(false);
-//		
-//		offers.add(o);
-//		offers.add(o1);
-//		offers.add(o2);
-//		offers.add(o3);
-////END TEST
 		req.setAttribute("offers", offers);
-		return "showOffers";
+		
+		return "/showOffers";
  	}
 	
 	@PostMapping("/refuseOffer")
+	@ResponseBody
 	public void refuseOffer(@RequestBody String[] message) {
 		System.out.println("refused " + message[0]);
 		Notification n = new Notification();
@@ -100,6 +63,7 @@ public class ShowOffersController {
 		}
 		
 	}
+	
 	
 	@PostMapping("/acceptOffer")
 	@ResponseBody

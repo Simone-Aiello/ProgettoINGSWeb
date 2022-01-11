@@ -2,7 +2,7 @@ function createOfferDetailCard(data){
 	//card
 	let card = document.createElement('div');
 	card.className = 'card shadow rounded mt-4';
-	card.style = 'width : 32rem; margin-left : 20px; margin-right : 20px';
+	card.style = 'width : 22rem; margin-left : 20px; margin-right : 20px';
 	card.id = 'c-'+data.index;
 	
 	//card body
@@ -76,81 +76,69 @@ function createOfferDetailCard(data){
 	infoRow.appendChild(dueDateCol);
 	
 	
-	//third row : job's dates + job's execution time
-	let dateTimeInfoRow = document.createElement('div');
-	dateTimeInfoRow.className = 'row';
+	//GALLERIA
+	/*
+	let gallery = document.createElement('div');
+	gallery.id = 'carouselExampleIndicators';
+	gallery.className = 'carousel slide';
+	gallery.setAttribute('data-ride','carousel');
 	
-	//date drop-down
-	let datesDropDown = document.createElement('div');
-	datesDropDown.className = 'col dropdown';
-	//button
-	let datesButton = document.createElement('button');
-	datesButton.type = 'button';
-	datesButton.className = 'btn btn-primary dropdown-toggle';
-	datesButton.setAttribute('data-bs-toggle','dropdown');
-	datesButton.setAttribute('data-toggle','dropdown');
-	datesButton.innerHTML = 'Vedi date disponibili';
-	datesButton.style = 'background-color : #f4a261; border:none';
+	let imagesContainer = document.createElement('div');
+	imagesContainer.className = 'carousel-inner';
 	
-	//button icon
-	let icon = document.createElement('span');
-	icon.className = 'caret';
+	let firstImage = document.createElement('div');
+	firstImage.className = 'carousel-item active';
 	
-	let droppedMenu = document.createElement('ul');
-	droppedMenu.className = 'dropdown-menu';
-	//for each data add it to dropdown menu
-	data.dates.forEach((item) =>{
-		let li = document.createElement('li');
-		li.style = "margin-left : 10px"
-		li.innerHTML = item;
-		droppedMenu.appendChild(li);
-	});
-	datesButton.appendChild(icon);
+	let image1 = document.createElement('img');
+	image1.className = 'd-block w-100';
+	image1.alt = 'First slide';
+	image1.src = '../../images/immagine1.jpg';
+	firstImage.appendChild(image1);
 	
-	datesDropDown.appendChild(datesButton);
-	datesDropDown.appendChild(droppedMenu);
+	let image = document.createElement('div');
+	image.className = 'carousel-item ';
+	
+	let image2 = document.createElement('img');
+	image1.className = 'd-block w-100';
+	image1.alt = 'First slide';
+	image1.src = '../../images/immagine2.jpg';
+	image.appendChild(image2);
+	
+	imagesContainer.appendChild(firstImage);
+	imagesContainer.appendChild(image);
+	
+	let backButton = document.createElement('a');
+	backButton.className = 'carousel-control-prev';
+	backButton.href = '#carouselExampleIndicators';
+	backButton.setAttribute('role','button');
+	backButton.setAttribute('data-slide','prev');
+	let backIcon = document.createElement('span')
+	backIcon.className = 'carousel-control-prev-icon';
+	backIcon.setAttribute('ria-hidden','true');
+	backButton.appendChild(backIcon);
+	
+	gallery.appendChild(imagesContainer);
+	gallery.appendChild(backButton);
 	
 	
-	//job execution time
-	let jobTimeInfo = document.createElement('div');
-	jobTimeInfo.className = 'col mt-2';
-	let jobTimeLabel = document.createElement('label');
-	jobTimeLabel.className = 'card-subtitle text-muted small';
-	jobTimeLabel.innerHTML = 'Durata lavoro : ' + data.jobExecutionTime + ' ' + data.jobExecutionTimeUnit;
-	jobTimeLabel.id = 'job-time-'+data.index;
-	jobTimeInfo.appendChild(jobTimeLabel);
-		
-	dateTimeInfoRow.appendChild(datesDropDown);
-	dateTimeInfoRow.appendChild(jobTimeInfo);
+
+	/*
 	
-	//fourth row : price 
-	let priceRow = document.createElement('div');
-	priceRow.className = 'row mt-3';
-	//container
-	let priceContainer = document.createElement('div');
-	priceContainer.className = 'col input-group';
-	//price
-	let price = document.createElement('input');
-	price.className = 'form-control';
-	price.type = "text";
-	price.readOnly = "readonly";
-	price.id = "amount-"+data.index;
-	price.value = data.amount;
-	let sideInfo = document.createElement('div');
-	sideInfo.className = 'input-group-append';
-	let sideInfoSpan = document.createElement('span');
-	sideInfoSpan.className = 'input-group-text';
-	sideInfoSpan.innerHTML = '&#128;';
-	sideInfo.appendChild(sideInfoSpan);
-	priceContainer.appendChild(price);
-	priceContainer.appendChild(sideInfo);
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+	 */
+
 	
-	//filling div
-	let fillingDiv = document.createElement('div');
-	fillingDiv.className = 'col';
 	
-	priceRow.appendChild(priceContainer);
-	priceRow.appendChild(fillingDiv);
+	
+	
+
 	
 	
 	//fiveth row : description text area 
@@ -169,18 +157,19 @@ function createOfferDetailCard(data){
 	
 	//accept button
 	let buttonDiv = document.createElement('div');
-	buttonDiv.className = 'd-flex flex-row-reverse mt-3';
+	buttonDiv.className = 'row d-flex flex-row-reverse mt-3';
 	let button = document.createElement('a');
-	button.className = 'btn btn-success';
+	button.className = 'col-5 btn';
 	button.id = data.index;
-	button.innerHTML = 'Accetta';
+	button.style = 'background-color:#f4a261;';
+	button.innerHTML = 'Mostra offerte ricevute';
 	
 	
 	let refuseButton = document.createElement('a');
-	refuseButton.className = "btn btn-danger";
-	refuseButton.innerHTML = 'Rifiuta';
+	refuseButton.className = "col-5 btn";
+	refuseButton.innerHTML = 'Recensisci';
 	refuseButton.id = 'r-'+data.index;
-	refuseButton.style = 'margin-right: 20px;'
+	refuseButton.style = 'background-color:#f4a261;margin-right : 50px;'
 	refuseButton.setAttribute('data-toggle','modal');
 	refuseButton.setAttribute('data-target','#modal');
 	
@@ -192,8 +181,9 @@ function createOfferDetailCard(data){
 	//build the card
 	card_body.appendChild(titleRow);
 	card_body.appendChild(infoRow);
-	card_body.appendChild(dateTimeInfoRow);
-	card_body.appendChild(priceRow);
+	//card_body.appendChild(dateTimeInfoRow);
+	//card_body.appendChild(priceRow);
+	//card_body.appendChild(gallery);
 	card_body.appendChild(textAreaRow);
 	card_body.appendChild(buttonDiv);
 	card.appendChild(card_body)
@@ -201,10 +191,11 @@ function createOfferDetailCard(data){
 	
 }
 
-function setAcceptButtonListener(target){
+function setShowOffersActionListener(target){
 	button = document.getElementById(target);
 	button.addEventListener('click', function() {
-		let title = document.getElementById('title-'+target).innerText;
+		console.log("Show Offers " + target);
+		/*let title = document.getElementById('title-'+target).innerText;
 		let worker_username = document.getElementById('username-'+target).innerText;
 		worker_username = worker_username.split('@')[1];
 		let province = document.getElementById('province-'+target).innerText;
@@ -217,67 +208,33 @@ function setAcceptButtonListener(target){
 		let advertiseId = 4;
 		//ENDTEST
 		
-		let message = [title, worker_username, offerId, advertiseId];
-		
+		let message = [title, worker_username, offerId, advertiseId];*/
+		let advertiseId = target;
+		let adsId = document.getElementById('label-'+target).innerText;
+			adsId = adsId.split('#')[1];
 		$.ajax({
-		    type : 'POST',
-		    contentType: "application/json",
-		    url : '/acceptOffer',
-		    data:JSON.stringify(message),
-		    success:function() {
-		        console.log('updated successfully');
-				//rifiutare tutte le proposte che non sono state accettate
-				let cards = document.getElementsByClassName('card');
-				let eliminatedCards = [];
-				for(let i = 0; i < cards.length; ++i){
-					console.log(cards[i].id + " " + 'c-'+target)
-					if(cards[i].id != 'c-'+target){
-						eliminatedCards.push(i);
-					}
-				}
-				console.log(eliminatedCards);
-				for(let i = eliminatedCards.length-1; i >= 0; --i){
-					let worker_username = document.getElementById('username-'+i).innerHTML;
-					worker_username = worker_username.split('@')[1];
-					let message = [worker_username,'il cliente ha scelto un\'altra offerta'];
-					console.log(message);
-					//chiamata ajax per notificare il lavoratore che non è stato scelto
-					$.ajax({
-						type : "POST",
-						url : "/refuseOffer",
-						contentType: "application/json",
-						data : JSON.stringify(message),
-						success : (response) =>{
-							console.log(response);
-						}, 
-						error : (xhr) =>{
-							console.log(xhr);
-						}		
-					});
-					removeCard(eliminatedCards[i]);
-				}
-				window.location = '/showMyAdvertises';
-		    },
-		    error:function() {
-		        console.log('error occured');
-		    }
+		type : "GET",
+		url : '/showOffers?AdvertiseID='+adsId,
+		contentType: "application/json",
+		data : JSON.stringify(advertiseId),
+		success : (response) =>{
+			console.log(response);
+			window.location = '/showOffers?AdvertiseID='+adsId;
+		}, 
+		error : (xhr) =>{
+			//alert(xhr);
+			}		
 		});
-		
+
 	});
 	
 		
 }
 
-function setRefuseButtonListener(target){
+function setReviewActionListener(target){
 	button = document.getElementById('r-'+target);
 	button.addEventListener('click', function(){
-		if(document.getElementById('modal') === null){
-			modal = createModal(target);
-			$('#body').append(modal);
-		}
-		modal = document.getElementById('modal');
-		modal.setAttribute('cardid',target);
-		$('#modal').modal("show");
+		console.log("Review " +  target);
 	});
 }
 
@@ -304,7 +261,7 @@ function createModal(id){
 	
 	let modal_title = document.createElement('h5');
 	modal_title.className = 'modal-title';
-	modal_title.innerHTML = 'Facci sapere perché vuoi rifiutare questa offerta :c';
+	modal_title.innerHTML = 'Dicci perché hai rifiutato questa offerta';
 	
 	let modal_close_button = document.createElement('button');
 	modal_close_button.className = 'btn close';
@@ -388,18 +345,21 @@ function removeCard(target){
 
 /*$(document).ready(() => {
 	console.log("ciao");
-	body = document.getElementById('body') ;
-
+	body = document.getElementById('advertises') ;
 	card = createOfferDetailCard({
-                    title : "titolo",
-                    username : "GiovanniMarasco",
+			        title : "titolo",
+			        username :"GiovanniMarasco",
 					province : "Catanzaro",
 					dueDate : "04/10/2022",
 					dates : ['03/01/2022', '04/01/2022', '06/04/2022'],
 					jobExecutionTime : 12,
 					jobExecutionTimeUnit : 'h',
 					amount : 1200,
-					description : "Lorem ipsum dolor sit amet. Sit esse maxime id tempora repellendus non odit velit. Id architecto iure aut consequatur totam sed aperiam mollitia ut minus possimus. Nam laudantium perferendis sit velit maiores aut odio laudantium. Qui officia illo qui eveniet officiis et tempora internos 33 tenetur modi quo porro doloribus qui iure odio."
-                    }) ;
+					description : "Lorem ipsum dolor sit amet. Sit esse maxime id tempora repellendus non odit velit. Id architecto iure aut consequatur totam sed aperiam mollitia ut minus possimus. Nam laudantium perferendis sit velit maiores aut odio laudantium. Qui officia illo qui eveniet officiis et tempora internos 33 tenetur modi quo porro doloribus qui iure odio.",
+			        offer_id : 0,
+					index : 0
+					}) ;
 	body.append(card);
+	setReviewActionListener(0);
+	setShowOffersActionListener(0);
 });*/
