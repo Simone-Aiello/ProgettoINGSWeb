@@ -1,8 +1,8 @@
-function createOfferDetailCard(data){
+function createOfferCardSummary(data){
 	//card
 	let card = document.createElement('div');
 	card.className = 'card shadow rounded';
-	card.style = 'width : 32rem';
+	card.style = 'width : 32rem margin: 10px;';
 	
 	//card body
 	let card_body = document.createElement('div');
@@ -16,7 +16,7 @@ function createOfferDetailCard(data){
 	title.innerHTML = 'Proposta compilata per : ' + data.title;
 	title.className = 'col-10 card-title';
 	
-	let closeButton = document.createElement('a');
+	let closeButton = document.createElement('button');
 	closeButton.className = 'col-2 btn';
 	let closeIcon = document.createElement('i');
 	closeIcon.className = 'far fa-times-circle';
@@ -26,21 +26,19 @@ function createOfferDetailCard(data){
 	titleRow.appendChild(closeButton);
 
 	
-	
-	
-	//second row : username + province + due-date
+	//second row : username_client + province + due-date
 	let infoRow = document.createElement('div');
 	infoRow.className = 'row mt-2';
 	
-	//username
-	let usernameCol = document.createElement('div');
-	usernameCol.className = 'col';
-	let username = document.createElement('p');
-	username.className = 'card-subtitle text-muted small';
-	username.id = 'username';
-	username.innerHTML = '@' + data.username;
-	usernameCol.appendChild(username);
-	infoRow.appendChild(usernameCol);
+	//username_client
+	let username_clientCol = document.createElement('div');
+	username_clientCol.className = 'col';
+	let username_client = document.createElement('p');
+	username_client.className = 'card-subtitle text-muted small';
+	username_client.id = 'username_client';
+	username_client.innerHTML = '@' + data.username_client;
+	username_clientCol.appendChild(username_client);
+	infoRow.appendChild(username_clientCol);
 	
 	//province
 	let provinceCol = document.createElement('div');
@@ -68,7 +66,7 @@ function createOfferDetailCard(data){
 	let date = document.createElement('p');
 	date.className = 'small';
 	date.id = 'province';
-	date.innerHTML = data.dueDate;
+	date.innerHTML = data.due_date;
 	
 	dueDateCol.appendChild(dueDateLabel);
 	dueDateCol.appendChild(date);
@@ -98,7 +96,7 @@ function createOfferDetailCard(data){
 	let droppedMenu = document.createElement('ul');
 	droppedMenu.className = 'dropdown-menu';
 	//for each data add it to dropdown menu
-	data.dates.forEach((item) =>{
+	data.availabilities.forEach((item) =>{
 		let li = document.createElement('li');
 		li.style = "margin-left : 10px"
 		li.innerHTML = item;
@@ -115,7 +113,7 @@ function createOfferDetailCard(data){
 	jobTimeInfo.className = 'col mt-2';
 	let jobTimeLabel = document.createElement('label');
 	jobTimeLabel.className = 'card-subtitle text-muted small';
-	jobTimeLabel.innerHTML = 'Durata lavoro : ' + data.jobExecutionTime + ' ' + data.jobExecutionTimeUnit;
+	jobTimeLabel.innerHTML = 'Durata lavoro : ' + data.job_duration;
 	jobTimeInfo.appendChild(jobTimeLabel);
 		
 	dateTimeInfoRow.appendChild(datesDropDown);
@@ -126,14 +124,14 @@ function createOfferDetailCard(data){
 	priceRow.className = 'row mt-3';
 	//container
 	let priceContainer = document.createElement('div');
-	priceContainer.className = 'col input-group';
+	priceContainer.className = 'col-12 input-group';
 	//price
 	let price = document.createElement('input');
-	price.className = 'form-control';
+	price.className = 'card-control';
 	price.type = "text";
 	price.readOnly = "readonly";
 	price.id = "amount";
-	price.value = data.amount;
+	price.value = data.quote;
 	let sideInfo = document.createElement('div');
 	sideInfo.className = 'input-group-append';
 	let sideInfoSpan = document.createElement('span');
@@ -142,7 +140,7 @@ function createOfferDetailCard(data){
 	sideInfo.appendChild(sideInfoSpan);
 	priceContainer.appendChild(price);
 	priceContainer.appendChild(sideInfo);
-	
+
 	//filling div
 	let fillingDiv = document.createElement('div');
 	fillingDiv.className = 'col';
@@ -167,14 +165,108 @@ function createOfferDetailCard(data){
 	//accept button
 	let buttonDiv = document.createElement('div');
 	buttonDiv.className = 'd-flex flex-row-reverse mt-3';
-	let button = document.createElement('a');
+	let button = document.createElement('button');
 	button.className = 'btn btn-primary';
 	button.id = 'accept-button';
 	button.innerHTML = 'Conferma';
 	button.style = 'background-color : #f4a261; border:none';
-	
-	buttonDiv.appendChild(button);
 
+	button.onmouseover = () => {
+		gsap.to(button,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
+	}
+
+
+	button.onmouseleave = () => {
+		gsap.to(button,{ scale: 1 ,ease : "elastic.out(1, 0.3)"  });
+	}
+
+
+	button.onclick = () => {
+		let offer = data.offer_builder.build();
+		sendOffer(offer);
+	}
+
+	let button_back = document.createElement('button');
+	button_back.className = 'btn btn-primary';
+	button_back.id = 'exit-button';
+	button_back.innerHTML = 'Torna indietro';
+	button_back.style = 'background-color : red ; border:none ; margin-right : 20px ; ';
+	
+	button_back.onmouseover = () => {
+		gsap.to(button_back,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
+	}
+
+
+	button_back.onmouseleave = () => {
+		gsap.to(button_back,{ scale: 1 ,ease : "elastic.out(1, 0.3)"  });
+	}
+
+
+	buttonDiv.appendChild(button);
+	buttonDiv.appendChild(button_back);
+
+	card.close  = () => {
+        
+    	const card_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
+        
+        card_timeline.to(card,{ scale : 0.4 });  
+        card_timeline.to(card,{ scale : 0.8 });  
+        card_timeline.to(card,{ opacity :0 } ,'<');  
+        card_timeline.to(card,{ visibility : "hidden" , duration : 0 , display : "none"});  
+    
+		let totalTime = card_timeline.totalDuration() ;
+
+		setTimeout(data.cardOfferForm.show,totalTime*1000)
+        return  totalTime ;
+    }
+	
+	// CLOSE ALL
+    card.exit = () => {
+
+
+        const modal_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
+        
+        modal_timeline.to(card,{ scale : 0.4 });  
+        modal_timeline.to(card,{ scale : 0.8 });  
+        modal_timeline.to(data.modal_bg,{ opacity :0 } ,'<');  
+        modal_timeline.to(data.modal_bg,{ visibility : "hidden" , duration : 0 , display : "none"});  
+        document.body.style.overflow = "auto" ;
+
+
+        return modal_timeline.totalDuration() ;
+    }
+
+	closeButton.onclick = card.exit ;
+
+
+
+	card.close  = () => {
+        
+    	const card_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
+        
+        card_timeline.to(card,{ scale : 0.4 });  
+        card_timeline.to(card,{ scale : 0.8 });  
+        card_timeline.to(card,{ opacity :0 } ,'<');  
+        card_timeline.to(card,{ visibility : "hidden" , duration : 0 , display : "none"});  
+    
+		let totalTime = card_timeline.totalDuration() ;
+
+		setTimeout(data.cardOfferForm.show,totalTime*1000)
+        return  totalTime ;
+    }
+
+	button_back.onclick = () => {
+
+		let time = card.close();
+		setTimeout(data.cardOfferForm.show,time*1000);
+	}
+
+	card.show  = () => {
+        
+    	gsap.fromTo(card,{scale: 0.4 , opacity : 0 , visibility : "hidden" , display: "none"} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)", display: "flex" , visibility: "visible"});     
+
+        return 1 ;
+    }
 
 	//build the card
 	card_body.appendChild(titleRow);
@@ -183,25 +275,7 @@ function createOfferDetailCard(data){
 	card_body.appendChild(priceRow);
 	card_body.appendChild(textAreaRow);
 	card_body.appendChild(buttonDiv);
-	card.appendChild(card_body)
+	card.appendChild(card_body);
 	return card;
 	
 }
-
-
-$(document).ready(() => {
-	body = document.getElementById('body') ;
-
-	card = createOfferDetailCard({
-                    title : "titolo",
-                    username : "GiovanniMarasco",
-					province : "Catanzaro",
-					dueDate : "04/10/2022",
-					dates : ['03/01/2022', '04/01/2022', '06/04/2022'],
-					jobExecutionTime : 12,
-					jobExecutionTimeUnit : 'h',
-					amount : 1200,
-					description : "Lorem ipsum dolor sit amet. Sit esse maxime id tempora repellendus non odit velit. Id architecto iure aut consequatur totam sed aperiam mollitia ut minus possimus. Nam laudantium perferendis sit velit maiores aut odio laudantium. Qui officia illo qui eveniet officiis et tempora internos 33 tenetur modi quo porro doloribus qui iure odio."
-                    }) ;
-	body.append(card);
-});

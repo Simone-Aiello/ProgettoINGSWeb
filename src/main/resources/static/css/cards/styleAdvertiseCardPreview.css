@@ -1,0 +1,83 @@
+
+p h5{
+    margin: 0;
+    padding: 0;
+
+}
+
+.card-advertise-preview{
+    visibility: hidden;
+    display: none;
+    margin: 3px;
+    height: 80%;
+}
+
+.card-body-advertise-preview{ height: 100%; }
+.card-header-advertise-preview{ align-items: flex-start;  }
+
+.card-title-advertise-preview{
+    margin-right: 2px;
+    height: 100%;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 1.0rem;
+}
+
+
+.button-details-advertise-preview{
+    background-color: #f4a261;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.card-img-advertise-preview{
+    height: 40%;
+    width: auto;
+    position: relative;
+    margin: 2px;
+    display: flex;
+}
+
+.card-information-advertise-preview{
+    display: grid;
+    grid-template-columns: 50% 45%;
+    column-gap: 5%;
+    font-size: 13px;
+    height: 20%;
+    
+}
+
+.label-information{
+    align-self: end;
+}
+
+
+.card-information-advertise-preview p { 
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+
+@media screen and (max-width:800px){
+    
+    .card-header-advertise-preview{ height: 30%; }
+    .card-information-advertise-preview{ height: 50% ; margin: 0; }
+    .card-title-advertise-preview{ font-size: 0.9rem; }
+}
+
+@media screen and (min-width:1080px){
+    
+    .card-title-advertise-preview{ font-size: 1.3rem; }
+
+}

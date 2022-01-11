@@ -6,9 +6,10 @@ var card_preview1 = createCard({
     description : "ciao questa dnlsnfjd è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!",
     username_client : "instafiore",
     province : "Montepaone",
-    date : "29/12/2021",
+    due_date : "29/12/2021",
     url_img : "../images/testImage.png" ,
     }) ; 
+
 
 document.body.appendChild(card_preview1);
 
@@ -18,7 +19,7 @@ var card_preview2 = createCard({
     description : "ciao questa è Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!",
     username_client : "giomarasco",
     province : "Montepaone",
-    date : "29/12/2021",
+    due_date : "29/12/2021",
     url_img : "../images/testImage.png" ,
     }) ; 
 
@@ -31,7 +32,7 @@ var card_preview3 = createCard({
 	description : "Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?",
     username_client : "simoneLello",
     province : "Montepaone Lido",
-    date : "29/12/2021",
+    due_date : "29/12/2021",
     url_img : "../images/testImage.png" ,
     }) ; 
 
@@ -43,7 +44,7 @@ var card_preview4 = createCard({
     description : "Una descrizione corta di prova",
     username_client : "ndria",
     province : "Montepaone Lido San Gianni",
-    date : "29/12/2021",
+    due_date : "29/12/2021",
     url_img : "../images/testImage.png" ,
     }) ; 
 
