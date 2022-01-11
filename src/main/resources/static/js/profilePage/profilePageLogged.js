@@ -35,28 +35,32 @@ function loadOldInfo() {
 	oldUserInformation.withSurname($("#surname").val());
 	oldUserInformation.withDateOfBirth($("#date-of-birth").val());
 	if ($("#telephone").val() != "") oldAccountInformation.withNumber($("#telephone").val());
-	oldAccountInformation.withProvinceOfWork($("#province-of-work").val());
 	oldAccountInformation.withUser(oldUserInformation.build());
 	oldAccountInformation.withProfilePic(oldImageInformation.build());
-	$("i.area").each(function() {
-		let areaBuilder = new Area.Builder();
-		areaBuilder.withId($(this).attr("id"));
-		areaBuilder.withIcon($(this).attr("class").split(/\s+/)[2]);
-		oldAccountInformation.withArea(areaBuilder.build());
-	});
+	if(accountType == "w"){
+		oldAccountInformation.withProvinceOfWork($("#province-of-work").val());
+		$("i.area").each(function() {
+			let areaBuilder = new Area.Builder();
+			areaBuilder.withId($(this).attr("id"));
+			areaBuilder.withIcon($(this).attr("class").split(/\s+/)[2]);
+			oldAccountInformation.withArea(areaBuilder.build());
+		});		
+	}
 }
 function buildNewAccount() {
 	user_builder.withAddress(address_builder.build());
 	account_builder.withProfilePic(image_builder.build());
 	account_builder.withUser(user_builder.build());
 	account_builder.withUsername($("#username").text());
-	for (area in selectedAreas) {
-		if (selectedAreas[area]) {
-			let area_builder = new Area.Builder();
-			area_builder.withId($(area + " i").attr("id"));
-			area_builder.withIcon($(area + " i").attr("class").split(/\s+/)[1]);
-			account_builder.withArea(area_builder.build());
-		}
+	if(accountType == "w"){
+		for (area in selectedAreas) {
+			if (selectedAreas[area]) {
+				let area_builder = new Area.Builder();
+				area_builder.withId($(area + " i").attr("id"));
+				area_builder.withIcon($(area + " i").attr("class").split(/\s+/)[1]);
+				account_builder.withArea(area_builder.build());
+			}
+		}		
 	}
 	return account_builder.build();
 }
@@ -68,11 +72,13 @@ function displayAccount(account) {
 	if (account.personalInfo.address.zipCode != undefined) $("#zip-code").val(account.personalInfo.address.zipCode);
 	if (account.personalInfo.address.province != undefined) $("#province").html(`<option selected>${account.personalInfo.address.province}<option>`);
 	if (account.personalInfo.address.town != undefined) $("#city").html(`<option selected>${account.personalInfo.address.town}<option>`);
-	if (account.provinceOfWork != undefined) $("#province-of-work").html(`<option selected>${account.provinceOfWork}<option>`);
 	if (account.profilePic.value != undefined) $("#profile-pic").attr("src", account.profilePic.value == "default" ? defaultPhoto : account.profilePic.value);
-	$(".areas").html("");
-	for (area of account.areasOfWork) {
-		$(".areas").append(`<i class="area fas ${area.icon} fa-2x icon mb-3 p-2" id="${area.id}"></i>`);
+	if(accountType == "w"){
+		if (account.provinceOfWork != undefined) $("#province-of-work").html(`<option selected>${account.provinceOfWork}<option>`);
+		$(".areas").html("");
+		for (area of account.areasOfWork) {
+			$(".areas").append(`<i class="area fas ${area.icon} fa-2x icon mb-3 p-2" id="${area.id}"></i>`);
+		}		
 	}
 }
 function makeFormUneditable() {
@@ -93,8 +99,10 @@ function clearSelectField() {
 	let option = "<option selected disabled value=\"\">Scegli...</option>";
 	$("#province").html(option);
 	$("#city").html(option);
-	$("#province-of-work").html(option);
 	$("#zip-code").val("");
+	if(accountType == "w"){
+		$("#province-of-work").html(option);		
+	}
 }
 function hideViaAndHouseNumberField() {
 	$("#via-div").css("display", "none");
@@ -143,7 +151,6 @@ function atLeastOneArea() {
 	return false;
 }
 function sendAccount(account) {
-	console.log(account);
 	$.ajax({
 		type: "POST",
 		url: "/updateWorker",
@@ -161,7 +168,12 @@ function sendAccount(account) {
 function addSaveButtonListeners() {
 	$("#save-button").click(() => {
 		if (formValid()) {
-			if (atLeastOneArea()) {
+			if(accountType !== "w"){
+				changeToViewMode();
+				let acc = buildNewAccount();
+				sendAccount(acc);
+			}
+			else if (atLeastOneArea()) {
 				$("#area-div").removeClass("is-invalid");
 				changeToViewMode();
 				let acc = buildNewAccount();
@@ -196,7 +208,9 @@ function addDiscardChangesButtonListeners() {
 	$("#delete-button").click(() => {
 		displayAccount(oldAccountInformation.build());
 		changeToViewMode();
-		showAreas();
+		if(accountType == "w"){
+			showAreas();			
+		}
 	});
 }
 function addAreasListeners() {
@@ -213,7 +227,6 @@ function addAreasListeners() {
 			$(id + " .icon").css("color", "#FF9400");
 		});
 		$(this).click(() => {
-			console.log(selectedAreas);
 			let id = "#" + $(this).attr("id");
 			selectedAreas[id] = !selectedAreas[id];
 			if (!selectedAreas[id]) {
@@ -262,11 +275,11 @@ function addModifyButtonListener() {
 		user_builder.withName($("#name").val());
 		user_builder.withSurname($("#surname").val());
 		user_builder.withDateOfBirth($("#date-of-birth").val());
-		if (!areaAlreadyLoaded) {
+		if (!areaAlreadyLoaded && accountType === "w") {
 			loadAreas();
 			areaAlreadyLoaded = true;
 		}
-		else showAreasDiv();
+		else if(accountType == "w") showAreasDiv();
 		//Rende il form modificabile
 		$("input").each(function() {
 			if ($(this).attr("id") !== "zip-code") {
@@ -284,8 +297,10 @@ function addModifyButtonListener() {
 		clearSelectField();
 		showViaAndHouseNumberField();
 		showSaveAndDeleteButtons();
-		hideAreas();
 		showUploadDeleteImage();
+		if(accountType == "w"){
+			hideAreas();			
+		}
 	});
 }
 function addProvinceListeners() {
@@ -293,7 +308,9 @@ function addProvinceListeners() {
 		var selectedProvince = (event.target.value);
 		try {
 			address_builder.withProvince(selectedProvince);
-			account_builder.withProvinceOfWork(selectedProvince);
+			if(accountType == "w"){
+				account_builder.withProvinceOfWork(selectedProvince);				
+			}
 			let lowerCaseSelected = selectedProvince.toLowerCase();
 			let currentCity = $("#city");
 			currentCity.html("");
@@ -308,8 +325,10 @@ function addProvinceListeners() {
 				loadCity(lowerCaseSelected, false);
 			}
 			appendCorrect("province");
-			$("#province-of-work").val(selectedProvince);
-			appendCorrect("province-of-work");
+			if(accountType == "w"){
+				$("#province-of-work").val(selectedProvince);
+				appendCorrect("province-of-work");				
+			}
 		}
 		catch (error) {
 			console.log(error);
@@ -502,5 +521,7 @@ $(document).ready(() => {
 	addFileReaderListener();
 	addInputListener();
 	addSendEmailListeners();
-	addNextReviewsButtonListeners();
+	if(accountType == "w"){
+		addNextReviewsButtonListeners();		
+	}
 });

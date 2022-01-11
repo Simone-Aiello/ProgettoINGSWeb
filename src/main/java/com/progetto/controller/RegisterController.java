@@ -21,19 +21,6 @@ import com.progetto.persistence.Database;
 public class RegisterController {
 
 	private ObjectMapper mapper = new ObjectMapper();
-
-	@PostMapping("/registerWorker")
-	public String registerWorker(@RequestBody Account account) {
-		try {
-			account.setAccountType("w");
-			Database.getInstance().getAccountDao().save(account);
-			return "/profilePage?username=" + account.getUsername();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	@PostMapping("/registerOffer")
 	public Offer registerOffer(@RequestBody Offer offer) {
 		long id;
@@ -51,35 +38,5 @@ public class RegisterController {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	@PostMapping("/usernameUnique")
-	public boolean usernameUnique(@RequestBody String data, HttpServletResponse resp) {
-		try {
-			return !Database.getInstance().getAccountDao().usernameAlreadyUsed(data);
-		} catch (SQLException e) {
-			resp.setStatus(500);
-		}
-		return false;
-	}
-
-	@PostMapping("/emailUnique")
-	public boolean emailUnique(@RequestBody String email, HttpServletResponse resp) {
-		try {
-			return !Database.getInstance().getAccountDao().emailAlreadyUsed(email);
-		} catch (SQLException e) {
-			resp.setStatus(500);
-		}
-		return false;
-	}
-
-	@GetMapping("/activateAccount")
-	public void activateAccount(@RequestParam("code") String code) {
-		try {
-			Database.getInstance().getAccountDao().validate(code);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

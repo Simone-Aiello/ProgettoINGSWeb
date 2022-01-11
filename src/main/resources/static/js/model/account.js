@@ -77,12 +77,14 @@ class Account {
 
 		withUser = function(user) {
 			checkType(user,"User");
-			this.#product.personalInfo = user;
+			this.#product.#addProperty("personalInfo", user);
 			return this;
 		}
 		withProfilePic = function(profilePic){
-			checkType(profilePic,"String");
-			this.#product.profilePic = profilePic;
+			if(profilePic.value != null){
+				checkType(profilePic.value,"String");				
+			}
+			this.#product.#addProperty("profilePic", profilePic);
 		}
 		withArea = function(area){
 			checkType(area,"Area");
@@ -97,7 +99,7 @@ class Account {
 		build = function() {
 			if (this.built) throw new Error("This builder has already been used");
 			this.built = true;
-			this.#product.areasOfWork = this.areasList; 
+			this.#product.#addProperty("areasOfWord",this.areasList); 
 			return this.#product;
 		}
 

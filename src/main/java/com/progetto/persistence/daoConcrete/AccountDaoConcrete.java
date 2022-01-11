@@ -56,7 +56,7 @@ public class AccountDaoConcrete implements AccountDao {
 				int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 				String number = rs.getString("telefono");
 				if(number != null) a.setNumber(number);
-				a.setProvinceOfWork(rs.getString("provincia_lavoro"));
+				if(a.getProvinceOfWork() != null) a.setProvinceOfWork(rs.getString("provincia_lavoro"));
 				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
 				if(user != null) a.setPersonalInfo(user);
 				if (mode != Utils.LIGHT) {
@@ -178,7 +178,7 @@ public class AccountDaoConcrete implements AccountDao {
 		} else {
 			// Salvo l'user associato all'account e mi prendo l'id
 			long userId = Database.getInstance().getUserDao().save(a.getPersonalInfo());
-			// Salvo l'immagine associata all'account PER ORA NON SALVO NIENTE
+			// Salvo l'immagine associata all'account
 			long imageId = Database.getInstance().getImageDao().save(a.getProfilePic());
 			String query = "INSERT INTO account (username, password, email, telefono, immagine_profilo, provincia_lavoro, id_utente, tipo_account,codice_validazione_account)"
 					+ " values(?, ?, ?, ?, ?, ?, ?, cast(? as tipologia_account), ?);";

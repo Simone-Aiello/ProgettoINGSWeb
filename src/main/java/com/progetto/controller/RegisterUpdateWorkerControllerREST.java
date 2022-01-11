@@ -39,7 +39,22 @@ public class RegisterUpdateWorkerControllerREST {
 		}
 		return null;
 	}
-
+	@PostMapping("/register")
+	public String register(@RequestBody Account account, HttpServletRequest req,HttpServletResponse resp) {
+		try {
+			if(account.getAccountType() == Account.ADMIN) {
+				resp.setStatus(500);
+			}
+			else {
+				Database.getInstance().getAccountDao().save(account);
+				return "/profilePage?username=" + account.getUsername();				
+			}
+		} catch (SQLException e) {
+			resp.setStatus(500);
+			e.printStackTrace();
+		}
+		return null;
+	}
 	@PostMapping("/usernameUnique")
 	public boolean usernameUnique(@RequestBody String data, HttpServletResponse resp) {
 		try {

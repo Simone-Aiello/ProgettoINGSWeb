@@ -26,7 +26,9 @@ class Image{
 			this.#product.#addProperty("id",id);
 		}
 		withValue = function(value){
-			checkType(value,"String");
+			if(value != null){
+				checkType(value,"String");				
+			}
 			this.#product.#addProperty("value",value);
 		}
 		build = function() {
