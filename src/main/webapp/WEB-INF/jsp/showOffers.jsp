@@ -40,6 +40,7 @@
 				offers.append(card);
 				setAcceptButtonListener(i);
 				setRefuseButtonListener(i);
+				setReviewActionListener(i);
 				i = i+1;
 				</script>
 			</c:forEach>

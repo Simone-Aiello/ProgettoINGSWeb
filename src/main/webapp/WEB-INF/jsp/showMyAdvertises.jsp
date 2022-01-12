@@ -15,7 +15,7 @@
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    		
    
-		<title>Show adveritses</title>
+		<title>Show advertises</title>
 	</head>
 	
 	<body id = "body" style = "margin : 0; padding : 0;">
@@ -39,7 +39,7 @@
 								index : i
 								}) ;
 							ads.append(card);
-							setReviewActionListener(i);
+							//setReviewActionListener(i);
 							setShowOffersActionListener(i);
 							i = i+1;
 						</script>

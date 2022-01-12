@@ -60,7 +60,7 @@ function createOfferDetailCard(data){
 	infoRow.appendChild(provinceCol);
 	
 	//due-date
-	let dueDateCol = document.createElement('div');
+	/*let dueDateCol = document.createElement('div');
 	dueDateCol.className = 'col';
 	let dueDateLabel = document.createElement('p');
 	dueDateLabel.className = 'card-subtitle text-muted small';
@@ -73,7 +73,7 @@ function createOfferDetailCard(data){
 	
 	dueDateCol.appendChild(dueDateLabel);
 	dueDateCol.appendChild(date);
-	infoRow.appendChild(dueDateCol);
+	infoRow.appendChild(dueDateCol);*/
 	
 	
 	//third row : job's dates + job's execution time
@@ -175,7 +175,7 @@ function createOfferDetailCard(data){
 	button.id = data.index;
 	button.innerHTML = 'Accetta';
 	
-	
+	//refuse button
 	let refuseButton = document.createElement('a');
 	refuseButton.className = "btn btn-danger";
 	refuseButton.innerHTML = 'Rifiuta';
@@ -184,10 +184,18 @@ function createOfferDetailCard(data){
 	refuseButton.setAttribute('data-toggle','modal');
 	refuseButton.setAttribute('data-target','#modal');
 	
-	
+	//review button
+	let reviewButton = document.createElement('a');
+	reviewButton.className = 'btn btn-warning';
+	reviewButton.innerHTML = 'Recensisci';
+	reviewButton.id = 'review-'+data.index;
+	reviewButton.style = 'margin-right: 20px;';
+	reviewButton.setAttribute('data-toggle','modal');
+	reviewButton.setAttribute('data-target','#reviewModal');
 	
 	buttonDiv.appendChild(button);
 	buttonDiv.appendChild(refuseButton);
+	buttonDiv.appendChild(reviewButton);
 
 	//build the card
 	card_body.appendChild(titleRow);
@@ -385,6 +393,175 @@ function removeCard(target){
 	card.parentNode.removeChild(card);
 }
 
+
+function setReviewActionListener(target){
+	button = document.getElementById('review-'+target);
+	button.addEventListener('click', function(){
+		let modal;
+	console.log("Review " +  target);
+		if(document.getElementById('reviewModal') === null){
+			modal = createReviewModal(target);
+			$('#body').append(modal);
+		}
+		//modal = document.getElementById('modal');
+		//modal.setAttribute('cardid',target);
+		else
+			modal = $('#reviewModal');
+		$('#reviewModal').attr('cardid', target);
+		$('#reviewModal').modal("show");
+	});
+}
+
+
+
+
+function createReviewModal(id){
+	let modal = document.createElement('div');
+	modal.className = 'modal fade';
+	modal.id = 'reviewModal';
+	modal.setAttribute('tabindex','-1');
+	modal.setAttribute('role','dialog');
+	modal.setAttribute('cardid',id);
+	
+	let modal_dialog = document.createElement('div');
+	modal_dialog.className = 'modal-dialog modal-dialog-centered';
+	modal_dialog.setAttribute('role','document');
+	
+	let modal_content = document.createElement('div');
+	modal_content.className = 'modal-content';
+	
+	let modal_header = document.createElement('div');
+	modal_header.className = 'modal-header';
+	
+	let modal_title = document.createElement('h5');
+	modal_title.className = 'modal-title';
+	modal_title.innerHTML = 'Recensisci ';
+	
+	let modal_close_button = document.createElement('button');
+	modal_close_button.className = 'btn close';
+	modal_close_button.type = 'button';
+	modal_close_button.setAttribute('data-dismiss','modal');
+	modal_close_button.setAttribute('aria-label','Close');
+	modal_close_button.addEventListener('click', function(){
+		$('#reviewModal').modal("hide");
+		document.getElementById('revtextArea').value = '';
+		for(let j = 0; j < 5; ++j)
+			document.getElementById('s-'+j).style = 'margin : 5px;';
+		let error = document.getElementById('error');
+		error.hidden = true;
+	});
+	
+	let span = document.createElement('span');
+	span.setAttribute('aria-hidden','true');
+	span.innerHTML = '&times;';
+	
+	modal_close_button.appendChild(span);
+	
+	modal_header.appendChild(modal_title);
+	modal_header.appendChild(modal_close_button);
+	
+	let modal_body = document.createElement('div');
+	modal_body.className = 'modal-body';
+	let text_area = document.createElement('textarea');
+	text_area.id = 'revtextArea';
+	text_area.className = 'form-control';
+	text_area.placeholder = 'es. Il lavoro è stato svolto correttamente e senza problemi ...'
+	text_area.rows = 4;
+	
+	let errorContainer = document.createElement('div');
+	errorContainer.id = 'error';
+	errorContainer.hidden = true;
+	errorContainer.className = 'alert alert-danger';
+	errorContainer.innerHTML = '<strong>Attenzione!</strong> Inserisci una valutazione.';
+	
+	let star_rating_row = document.createElement('div');
+	star_rating_row.className = 'd-flex flex-direction-row';
+	let offset = 0;
+	for(let i = 0; i < 5; ++i){
+		let starContainer = document.createElement('div');
+		starContainer.id = 's-'+i;
+		starContainer.addEventListener('click',() => {
+			offset = starContainer.id.split('s-')[1];
+			for(let j = 0; j < 5; j++){
+				if(j <= offset){
+					document.getElementById('s-'+j).classList.add('checked');
+					document.getElementById('s-'+j).style = 'color: orange; margin : 5px;';
+				}
+				else{
+					document.getElementById('s-'+j).style = 'margin : 5px;';
+					document.getElementById('s-'+j).classList.remove('checked');
+				}
+			}
+		});
+		starContainer.style = 'margin : 5px;';
+		let star = document.createElement('span');
+		star.className = 'fa fa-star';
+		starContainer.appendChild(star);
+		star_rating_row.appendChild(starContainer);
+		
+	}
+	
+	
+	
+	let modal_footer = document.createElement('div');
+	modal_footer.className = 'modal-footer';
+	
+	let modal_button = document.createElement('button');
+	modal_button.className = 'btn btn-success';
+	modal_button.type = 'button';
+	modal_button.innerHTML = 'Invia';
+	modal_button.addEventListener('click',function(){
+		if(offset == 0){
+			let error = document.getElementById('error');
+			error.hidden = false;
+			console.log("ERROR");
+			return;
+		}
+		let workerUsername = document.getElementById('username-'+modal.getAttribute('cardid')).innerText;
+		workerUsername = workerUsername.split('@')[1];
+		let motivation = document.getElementById('revtextArea').value;
+		let offerId = document.getElementById('label-'+modal.getAttribute('cardid')).innerHTML;
+		let rating = parseInt(offset)+1;
+		offerId = offerId.split('#')[1];
+		let message = [workerUsername,motivation,offerId,rating];
+		console.log(message);
+		$.ajax({
+			type : "POST",
+			url : "/reviewOffer",
+			contentType: "application/json",
+			data : JSON.stringify(message),
+			success : (response) =>{
+				console.log(response);
+			}, 
+			error : (xhr) =>{
+				console.log(xhr);
+			}		
+		});
+		$('#reviewModal').modal("hide");
+		document.getElementById('revtextArea').value = '';
+		for(let j = 0; j < 5; ++j)
+			document.getElementById('s-'+j).style = 'margin : 5px;';
+		let error = document.getElementById('error');
+			error.hidden = true;
+	});
+	
+	
+	modal_footer.appendChild(modal_button);
+	
+	modal_body.appendChild(errorContainer);
+	modal_body.appendChild(star_rating_row);
+	modal_body.appendChild(text_area);
+	
+
+	modal_content.appendChild(modal_header);
+	modal_content.appendChild(modal_body);
+	modal_content.appendChild(modal_footer);
+	modal_dialog.appendChild(modal_content);
+	modal.appendChild(modal_dialog);
+
+	return modal;
+		
+}
 
 /*$(document).ready(() => {
 	console.log("ciao");

@@ -17,6 +17,7 @@ import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Notification;
 import com.progetto.model.Offer;
+import com.progetto.model.Review;
 import com.progetto.persistence.Database;
 
 @Controller
@@ -25,14 +26,11 @@ public class ShowOffersController {
 	public String showOffers(HttpServletRequest req, HttpServletResponse resp) {
 		List<Offer> offers = null;
 		try {
-			//TEST
 			Advertise a1 = new Advertise();
 			String id = req.getParameter("AdvertiseID");
 			a1.setId(Long.parseLong(id));
-			if(Database.getInstance().getAdvertiseDao().alreadyAssigned(a1) == false) 
+			//if(Database.getInstance().getAdvertiseDao().alreadyAssigned(a1) == false) 
 				offers = Database.getInstance().getOfferDao().findOffersByAdvertise(a1);
-			
-			//END TEST
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,5 +86,50 @@ public class ShowOffersController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@PostMapping("/reviewOffer")
+	@ResponseBody
+	public String reviewOffer(@RequestBody String[] review) {
+		String username = review[0];
+		String message = review[1];
+		Long offerId = Long.parseLong(review[2]);
+		int rating = Integer.parseInt(review[3]);
+		System.out.println(username + " " + message + " " + offerId + " " + rating);
+		
+		//1) salvare la recensione
+		Review r = new Review();
+		Offer o = new Offer();
+		o.setId(offerId);
+		Account worker = new Account();
+		Account client = new Account();
+		worker.setUsername(username);
+		r.setDescription(message);
+		r.setRating(rating);
+		r.setOffer(o);
+		r.setWorker(worker);
+		r.setClient(client);
+		try {
+			Database.getInstance().getReviewDao().save(r);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//2) notificare al lavoratore che è stata fatta una recensione a suo nome
+		Notification n = new Notification();
+		Account reciver = new Account();
+		reciver.setUsername(username);
+		n.setReceiver(reciver);
+		n.setText("ha appena pubblicato una recensione per l'offerta : #" + offerId);
+		n.setType("r");
+		try {
+			Database.getInstance().getNotificationDao().saveNotificationByOfferRefuse(n);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return review[0];
 	}
 }
