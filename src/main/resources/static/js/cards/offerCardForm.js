@@ -44,7 +44,7 @@ function createCardOfferForm(data){
 
     let username_client_advertise = document.createElement("a");
     username_client_advertise.className = "card-subtitle text-muted small col-3 text-decoration-none" ;
-    username_client_advertise.innerHTML = "@"+ data.username_client ;
+    username_client_advertise.innerHTML = "@"+ data.account.username ;
     username_client_advertise.style.padding = 0 ;
 
     let row_province_client_advertise = createRow();
@@ -70,7 +70,7 @@ function createCardOfferForm(data){
 
     let due_date_advertise = document.createElement("p");
     due_date_advertise.className = "card-text" ;
-    due_date_advertise.innerHTML = data.due_date ;
+    due_date_advertise.innerHTML = date_from_db_to_ISO(data.expiryDate)  ;
 
     row_due_date_advertise.appendChild(label_due_date_advertise);
     row_due_date_advertise.appendChild(due_date_advertise);
@@ -465,7 +465,7 @@ function createCardOfferForm(data){
         
 		if(!flag_error)
 		{
-			let title = data.title + " <-> " + data.username_client ;
+			let title = data.title + " <-> " + data.account.username ;
 			offer_builder.withTitle(title);
 			worker_builder = new Account.Builder();
 			worker_builder.withUsername(data.username_worker);

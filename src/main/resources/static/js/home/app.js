@@ -1,115 +1,44 @@
 
+let quantity_advertises = 8 ;
 
-// On scroll change padding and color on header
+function createSpinner(){
 
-$(window).scroll(() =>{ $("header").toggleClass( "sticky", window.scrollY > 0); });
+    let spinner = document.createElement('div');
+    spinner.className = "spinner-border text-warning";
+    spinner.setAttribute('role','status');
 
-var card_preview1 = createCard({
-    id_advertise : 132132 , 
-    title : "Cerco un imbianchino...",
-    description : "ciao questa dnlsnfjd è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!",
-    username_client : "instafiore",
-    province : "Montepaone",
-    due_date : "29/12/2021",
-    url_img : "./images/testImage.png" ,
-    }) ; 
-
-
-document.querySelector(".inner-container-advertises").appendChild(card_preview1);
-
-var card_preview2 = createCard({
-    id_advertise : 132132 , 
-    title : "Cerco un imbianchino che imbianca ma che imbianca bene mi raccomando",
-    description : "ciao questa è Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!",
-    username_client : "giomarasco",
-    province : "Montepaone",
-    due_date : "29/12/2021",
-    url_img : "./images/testImage.png" ,
-    }) ; 
-
-    
-document.querySelector(".inner-container-advertises").appendChild(card_preview2);
-
-var card_preview3 = createCard({
-    id_advertise : 132132 , 
-    title : "Cerco un imbianchino che imbianca",
-	description : "Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?",
-    username_client : "simoneLello",
-    province : "Montepaone Lido",
-    due_date : "29/12/2021",
-    url_img : "./images/testImage.png" ,
-    }) ; 
-
-document.querySelector(".inner-container-advertises").appendChild(card_preview3);
-
-var card_preview4 = createCard({
-    id_advertise : 132132 , 
-    title : "Cerco un imbianchino che imbianca",
-    description : "Una descrizione corta di prova",
-    username_client : "ndria",
-    province : "Montepaone Lido San Gianni",
-    due_date : "29/12/2021",
-    url_img : "./images/testImage.png" ,
-    }) ; 
-
-document.querySelector(".inner-container-advertises").appendChild(card_preview4);
+    let span = document.createElement("span");
+    span.className = "sr-only";
+    span.innerHTML = "Loading...";
+	
+	return spinner ;
+}
 
 
-var card_preview5 = createCard({
-    id_advertise : 132132 , 
-    title : "Cerco un imbianchino che imbianca",
-    description : "ciao questa dnlsnfjd è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!",
-    username_client : "instafiore",
-    province : "Montepaone",
-    due_date : "29/12/2021",
-    url_img : "./images/testImage.png" ,
-    }) ; 
+// Sticky behavior
+$(window).scroll(() =>{
+    let boolean_scroll = window.scrollY > 0 
+    $("header").toggleClass( "sticky",boolean_scroll); 
+    $(".search-bar").toggleClass( "search-bar-sticky",boolean_scroll);
+    $(".button-choose-area").toggleClass( "button-choose-area-sticky",boolean_scroll);
+    $(".wrapper-search-bar-items .wrapper input").toggleClass( "search-bar-input-sticky",boolean_scroll);
+    $(".button-search-advertise i").toggleClass("button-search-advertise-sticky",boolean_scroll); 
+});
 
 
-document.querySelector(".inner-container-advertises").appendChild(card_preview5);
+// Container advertise
+customElements.define('container-advertise', ContainerAdvertises);
+let inner_container_advertise = document.createElement('container-advertise');
+inner_container_advertise.init({
+		quantity : 8 ,
+	});
+let outer_container_advertise = document.querySelector('.outer-container-advertises');
+outer_container_advertise.insertBefore(inner_container_advertise, outer_container_advertise.children[1]);
 
-var card_preview6 = createCard({
-    id_advertise : 132132 , 
-    title : "Cerco un imbianchino che imbianca",
-    description : "ciao questa è Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse,una descrizione di prova!!!ciao questa è una descrizione di prova!!!ciao questa è una descrizione di prova!!!",
-    username_client : "giomarasco",
-    province : "Montepaone",
-    due_date : "29/12/2021",
-    url_img : "./images/testImage.png" ,
-    }) ; 
 
-    
-document.querySelector(".inner-container-advertises").appendChild(card_preview6);
+// CONNECTING BUTTONS PREV NEXT
+let button_prev_advertises = document.getElementById('prev-button');
+let button_next_advertises = document.getElementById('next-button');
 
-var card_preview7 = createCard({
-    id_advertise : 132132 , 
-    title : "Cerco un imbianchino che imbianca",
-	description : "Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?Una descrizione corta di prova    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere atque repudiandae ea magnam. Esse, vel perferendis! Et doloremque dignissimos magnam quam vitae dolor! Ducimus, magnam nisi natus cumque sint voluptates?",
-    username_client : "simoneLello",
-    province : "Montepaone Lido",
-    due_date : "29/12/2021",
-    url_img : "./images/testImage.png" ,
-    }) ; 
-
-document.querySelector(".inner-container-advertises").appendChild(card_preview7);
-
-var card_preview8 = createCard({
-    id_advertise : 132132 , 
-    title : "Cerco un imbianchino che imbianca",
-    description : "Una descrizione corta di prova",
-    username_client : "ndria",
-    province : "Montepaone Lido San Gianni",
-    due_date : "29/12/2021",
-    url_img : "./images/testImage.png" ,
-    }) ; 
-
-document.querySelector(".inner-container-advertises").appendChild(card_preview8);
-
-card_preview1.show();
-card_preview2.show();
-card_preview3.show();
-card_preview4.show();
-card_preview5.show();
-card_preview6.show();
-card_preview7.show();
-card_preview8.show();
+button_prev_advertises.onclick = inner_container_advertise.show_prev_view ;
+button_next_advertises.onclick = inner_container_advertise.show_next_view ;

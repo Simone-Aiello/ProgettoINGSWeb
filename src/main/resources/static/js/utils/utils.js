@@ -27,6 +27,13 @@ function isDate(date){
 		throw new Error("La data inserita non è valida");
 }
 
+var date_from_db_to_ISO = (value) =>{
+	let regex = /^(\d{4})-(\d{2})-(\d{2}).*$/	
+	let match = value.match(regex);
+	return match[3]+"/"+match[2]+"/"+match[1];
+}
+
+
 function isBeforeNow(date) {
 
     isDate(date);
@@ -197,3 +204,50 @@ function createMessage(data){
 
     return message_container ;
 }
+
+
+function sendOffer(offer){
+	
+	checkType(offer,"Offer");
+	
+	let data = JSON.stringify(offer);
+	
+	$.ajax({
+		type: "POST",
+		url: "/registerOffer",
+		contentType: "application/json",
+		data: data,
+		success: (response) => {
+			console.log(response);
+		},
+		error: (xhr) => {
+			console.log(xhr.message);
+		}
+	});
+}
+
+
+var requestImagesAdvertise = (id_advertise) =>{
+	
+	let data = JSON.stringify(id_advertise);
+	let res = null ;
+	
+	return new Promise((resolve, reject) => {
+		$.ajax({
+		type: "POST",
+		url: "/imagesFromAdvertise",
+		contentType: "application/json",
+		data: data,
+		async : false ,
+		success: (response) => {
+				res = response
+			},
+		error: (xhr) => {
+				console.log(xhr.message);
+			}
+		})
+	});
+}
+
+
+

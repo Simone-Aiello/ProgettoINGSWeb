@@ -1,5 +1,10 @@
 
+
+
+
 function createAdvertiseCardDetails(data){
+
+	
 
     // Modal bg
     let modal_bg = document.createElement("div");
@@ -37,7 +42,7 @@ function createAdvertiseCardDetails(data){
     // Username client advertise
     let card_username_client = document.createElement("a");
     card_username_client.className = "col-3 text-muted text-decoration-none" ;
-    card_username_client.innerHTML = "@"+data.username_client ;
+    card_username_client.innerHTML = "@"+data.account.username ;
     card_username_client.href = "#";
 
     // Row province
@@ -68,7 +73,7 @@ function createAdvertiseCardDetails(data){
     // Date
     let card_date = document.createElement("p");
     card_date.className = "card-text" ;
-    card_date.innerHTML = data.due_date ;
+    card_date.innerHTML = date_from_db_to_ISO(data.expiryDate) ;
 
     row_card_due_date.appendChild(label_card_due_date);
     row_card_due_date.appendChild(card_date);
@@ -96,14 +101,14 @@ function createAdvertiseCardDetails(data){
     let first = true ;
 
     // Filling with images
-    for(let url_img of data.imgs_url){
+    for(let image of data.images){
 
         let container_img = document.createElement("div");
         container_img.className = "carousel-item" ;
 
         let img_carousel = document.createElement("img");
 
-        img_carousel.src = url_img;
+        img_carousel.src = image.value;
         img_carousel.className = "d-block w-100" ;
         img_carousel.alt = "Immagine non trovata" ;
         img_carousel.style ="object-fit: cover; object-position: center;";

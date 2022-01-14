@@ -36,7 +36,7 @@ function createOfferCardSummary(data){
 	let username_client = document.createElement('p');
 	username_client.className = 'card-subtitle text-muted small';
 	username_client.id = 'username_client';
-	username_client.innerHTML = '@' + data.username_client;
+	username_client.innerHTML = '@' + data.account.username;
 	username_clientCol.appendChild(username_client);
 	infoRow.appendChild(username_clientCol);
 	
@@ -49,7 +49,6 @@ function createOfferCardSummary(data){
 	
 	let province = document.createElement('p');
 	province.className = 'small';
-	province.id = 'province';
 	province.innerHTML = data.province;
 	
 	provinceCol.appendChild(provinceLabel);
@@ -65,8 +64,7 @@ function createOfferCardSummary(data){
 	
 	let date = document.createElement('p');
 	date.className = 'small';
-	date.id = 'province';
-	date.innerHTML = data.due_date;
+	date.innerHTML = date_from_db_to_ISO(data.expiryDate) ;
 	
 	dueDateCol.appendChild(dueDateLabel);
 	dueDateCol.appendChild(date);
@@ -205,6 +203,7 @@ function createOfferCardSummary(data){
 	buttonDiv.appendChild(button);
 	buttonDiv.appendChild(button_back);
 
+	// CLOSE CARD
 	card.close  = () => {
         
     	const card_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});

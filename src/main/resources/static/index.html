@@ -11,21 +11,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Tag relativi alla home -->
+    <script src="./js/home/container_advertises.js"></script>
+    <script defer src="./js/home/app.js"></script>
     <link rel="stylesheet" href="./css/home/style_home.css">
     <link rel="stylesheet" href="./css/home/style_home_responsive.css">
-    <script defer src="./js/home/app.js"></script>
     <!-- Tag relativi alle funzionalità del file utils -->
     <script src="./js/utils/utils.js"></script>
     <link rel="stylesheet" href="./css/common.css">
     <!-- Tag relativi alla card advertise  -->
-    <script src="./js/cards/advertiseCardDetails.js"></script>
+    <script defer src="./js/cards/advertiseCardDetails.js"></script>
     <link rel="stylesheet" href="./css/cards/styleAdvertiseCardDetails.css">
-    <script src="./js/cards/advertiseCardPreview.js"></script>
+    <script defer  src="./js/cards/advertiseCardPreview.js"></script>
     <link rel="stylesheet" href="./css/cards/styleAdvertiseCardPreview.css">
 	<!-- Tag relativi alla card offerForm -->
     <link rel="stylesheet" href="./css/cards/styleOfferCardForm.css">
-    <script src="./js/cards/offerCardForm.js"></script>
-    <script src="./js/cards/offerCardSummary.js"></script>
+    <script defer  src="./js/cards/offerCardForm.js"></script>
+    <script defer src="./js/cards/offerCardSummary.js"></script>
     <script src="./js/model/offer.js"></script>
     <!-- Tag relativi ad i model account e annuncio -->
     <script src="./js/model/account.js"></script>
@@ -34,7 +35,25 @@
 <body>
 
     <header class="shadow">
-        <div class="wrapper shadow"><h1>Logo</h1></div>
+        <div class="wrapper shadow logo"><img src="./images/logoGetJobs.png" alt=""></div>
+        <div class="search-bar shadow">
+            <div class="wrapper-search-bar-items">
+                <p class="">Cosa cerchi?</p>
+                <div class="wrapper">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <input type="text" placeholder="Un esempio..." />
+                </div>
+            </div>
+            <div class="wrapper-search-bar-items">
+                <p class="">Dove?</p>
+                <div class="wrapper">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    <input type="text" placeholder="Un esempio..." />
+                </div>
+            </div>
+            <button class= "btn button-choose-area rounded shadow" ><h5>Ambito</h5></button>
+            <button class= "btn button-search-advertise" ><i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
         <ul>
             <li>
                 <div class="wrapper add_advertise shadow">
@@ -48,13 +67,10 @@
             </li>
         </ul>
     </header>
-    <section class="banner" >
-        <!-- <div class="search-bar rounded shadow">
-
-        </div> -->
-        <div class="outer-container-advertises rounded shadow">
+    <section class="banner">
+        <div class="outer-container-advertises shadow">
             <div class="wrapper"><h5 class="information-advertises shadow rounded">Tutti gli annunci</h5></div>
-            <div class="wrapper inner-container-advertises"></div>
+            <!-- CONTAINER -->
             <div class="control-container-advertises">
                 <button class= "btn button-controll-container-advertise" id = "prev-button"><i class="fa fa-angle-double-left"></i></button>
                 <button class= "btn button-controll-container-advertise" id = "next-button"><i class="fa fa-angle-double-right"></i></button>

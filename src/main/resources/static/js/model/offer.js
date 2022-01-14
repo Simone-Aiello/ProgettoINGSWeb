@@ -110,25 +110,7 @@ class Offer{
 }
 
 
-function sendOffer(offer){
-	
-	checkType(offer,"Offer");
-	
-	let data = JSON.stringify(offer);
-	
-	$.ajax({
-		type: "POST",
-		url: "/registerOffer",
-		contentType: "application/json",
-		data: data,
-		success: (response) => {
-			console.log(response);
-		},
-		error: (xhr) => {
-			console.log(xhr.message);
-		}
-	});
-}
+
 
 
 

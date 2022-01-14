@@ -7,7 +7,14 @@ class Account {
 	
 	#addProperty = (property,value) => {
 		this.#serializer[property] = value ;
+		this.#addGetter(property);
 	} 
+
+	#addGetter = (property) =>{
+		this[property] = () =>{
+			return JSON.parse(JSON.stringify(this.#serializer[property])) ;
+		}
+	}
 
 	toJSON() { return this.#serializer ; }
 
@@ -27,7 +34,7 @@ class Account {
 
 		withUsername = function(username) {
 			checkType(username,"String");
-			var _regex = /^[\w-]+$/g;
+			var _regex = /^[\w-]+$/;
 			if (_regex.test(username)) {
 				this.#product.#addProperty("username",username);
 			}

@@ -1,4 +1,8 @@
 
+img{
+	object-fit: scale-down;
+}
+
 p h5{
     margin: 0;
     padding: 0;
@@ -39,10 +43,12 @@ p h5{
 
 .card-img-advertise-preview{
     height: 40%;
-    width: auto;
+    width: 80%;
     position: relative;
     margin: 2px;
     display: flex;
+    transform: translateX(-50%);
+    left: 50%;
 }
 
 .card-information-advertise-preview{
@@ -51,14 +57,13 @@ p h5{
     column-gap: 5%;
     font-size: 13px;
     height: 20%;
-    
+    margin-bottom: 2px;
 }
 
 .label-information{
     align-self: end;
 }
-
-
+.due-date{ justify-self: end;}
 .card-information-advertise-preview p { 
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;

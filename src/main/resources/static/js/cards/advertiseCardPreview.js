@@ -3,8 +3,6 @@ function createCard(data){
     // Cache for detail 
 	let card_details = null ;
     
-    // Images of detail
-	let imgs_url = [data.url_img] ;
 
     // The whole card
     let card = document.createElement("div");
@@ -39,12 +37,13 @@ function createCard(data){
     // Username client
     let card_username_client = document.createElement("p");
     card_username_client.className = "card-subtitle text-muted small" ;
-    card_username_client.innerHTML = "@"+data.username_client ;
+    card_username_client.innerHTML = "@"+data.account.username ;
 
     // Card image
     let card_img = document.createElement("img");
-    card_img.className = "card-img card-img-advertise-preview";
-    card_img.src = data.url_img ;
+	let src_no_image_available =  "../../images/no_image_available.jpg" ;
+    card_img.className = "card-img card-img-advertise-preview rounded";
+    card_img.src =  data.images[0] !=  null ? data.images[0].value : src_no_image_available ;
     card_img.alt = "Immagine non trovata" ;
 
 
@@ -57,20 +56,21 @@ function createCard(data){
     label_card_province.className = "card-subtitle text-muted small m-0 label-information" ;
     label_card_province.innerHTML = "Provincia";
 
-    // Label due date
-    let label_card_due_date = document.createElement("p");
-    label_card_due_date.className = "card-subtitle text-muted small m-0 label-information" ;
-    label_card_due_date.innerHTML = "Scadenza";
 
     // Card province
     let card_province = document.createElement("p");
     card_province.className = "card-text m-0" ;
     card_province.innerHTML = data.province ;
 
+	// Label due date
+    let label_card_due_date = document.createElement("p");
+    label_card_due_date.className = "card-subtitle text-muted small m-0 label-information due-date" ;
+    label_card_due_date.innerHTML = "Scadenza";
+
     // Card due date
     let card_due_date = document.createElement("p");
-    card_due_date.className = "card-text m-0" ;
-    card_due_date.innerHTML = data.due_date ;
+    card_due_date.className = "card-text m-0 due-date" ;
+    card_due_date.innerHTML = date_from_db_to_ISO(data.expiryDate);
      
     card_information.appendChild(label_card_province);
     card_information.appendChild(label_card_due_date);
@@ -87,14 +87,14 @@ function createCard(data){
     // Methods details button
     button_details.onclick = () => {
         
-        // Fare richiesta ajax
-        let id_advertise = data.id_advertise ;
-        
-        if(card_details == null ){
-            console.log(data.title);
-            card.addImages([ "../images/immagine2.jpg", "../images/immagine2.jpg", "../images/immagine3.jpeg"]);
-    	    data.imgs_url = imgs_url ;    
-            console.log(data.imgs_url);
+		data.id_advertise = data.id ;
+        if(card_details == null && card_img.src != src_no_image_available){
+			let res = requestImagesAdvertise(data.id_advertise) ;
+	        res.then((images) => {
+					data.images = images
+				}).catch((e) => {
+					console.log(e);
+				});
 			card_details = createAdvertiseCardDetails(data);
         }
         card_details.show() ;
@@ -111,10 +111,10 @@ function createCard(data){
     
 
     // Methods card
-    card.addImage = (img_url) => { imgs_url.add(img_url); }
+    card.addImage = (img) => { imgs.add(img); }
     card.addImages = (urls) => { 
         for(let url of urls){
-            imgs_url.push(url);
+            imgs.push(url);
         }
     }
     
@@ -150,7 +150,7 @@ function createCard(data){
         tl.fromTo(card_img,{y : -10, opacity : 0},{y : 0, opacity : 1 });
     
     
-        gsap.fromTo(card,{scale: 0.5 , opacity : 0} , {scale : 1 , opacity :1 , duration : 1.1 , ease : "elastic.out(1, 0.3)"});
+        gsap.fromTo(card,{ scale: 0.5 , opacity : 0} , { scale : 1 , opacity :1 , duration : 1.1 , ease : "elastic.out(1, 0.3)"});
         
     }
 

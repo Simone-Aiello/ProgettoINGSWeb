@@ -1,4 +1,6 @@
-
+img{
+	object-fit: scale-down;
+}
 
 *{
     padding: 0;
