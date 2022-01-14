@@ -25,6 +25,7 @@ public class ShowOffersController {
 	@GetMapping("/showOffers")
 	public String showOffers(HttpServletRequest req, HttpServletResponse resp) {
 		List<Offer> offers = null;
+		
 		try {
 			Advertise a1 = new Advertise();
 			String id = req.getParameter("AdvertiseID");

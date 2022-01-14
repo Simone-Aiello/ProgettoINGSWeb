@@ -39,7 +39,6 @@
 								index : i
 								}) ;
 							ads.append(card);
-							//setReviewActionListener(i);
 							setShowOffersActionListener(i);
 							i = i+1;
 						</script>

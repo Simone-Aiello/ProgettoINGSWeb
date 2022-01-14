@@ -147,7 +147,7 @@ function setShowOffersActionListener(target){
 		}, 
 		error : (xhr) =>{
 			alert(xhr);
-		}		
+		},		
 		});
 
 	});
