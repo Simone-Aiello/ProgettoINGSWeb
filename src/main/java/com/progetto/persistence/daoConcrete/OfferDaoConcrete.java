@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration;
-
 import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Advertise;
@@ -55,7 +53,7 @@ public class OfferDaoConcrete implements OfferDao {
 	@Override
 	public Offer findByPrimaryKey(long id_offer,int mode)  throws SQLException{
 
-		String FIND_BY_PRYMARY_KEY = "" + "select *" + "from proposte" + "where id = ?";
+		String FIND_BY_PRYMARY_KEY = "" + "select *" + " from proposte " + " where id = ?";
 		Offer offer = null;
 		
 		PreparedStatement preparedStatement = Database.getInstance().getConnection()
@@ -190,9 +188,33 @@ public class OfferDaoConcrete implements OfferDao {
 			Account acc = new Account();
 			acc.setUsername(rs.getString("username_lavoratore"));
 			o.setWorker(acc);
+			o.setDates(rs.getString("disponibilità"));
 			offers.add(o);
 		}
 		
 		return offers;
+	}
+
+	@Override
+	public Offer findByPrimaryKeyForUsers(long id_offer) throws SQLException {
+		String query = "select * from proposte where id = ?";
+		Offer o = null;
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(query);
+		ps.setLong(1, id_offer);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			o = new Offer();
+			o.setDescription(rs.getString("descrizione"));
+			o.setHoursOfWork(rs.getInt("ore_di_lavoro"));
+			o.setId(rs.getLong("id"));
+			o.setQuote(rs.getDouble("preventivo"));
+			o.setTitle(rs.getString("titolo"));
+			Account acc = new Account();
+			acc.setUsername(rs.getString("username_lavoratore"));
+			o.setWorker(acc);
+			o.setDates(rs.getString("disponibilità"));
+			o.setDone(rs.getBoolean("lavoro_effettuato"));
+		}
+		return o;
 	}
 }

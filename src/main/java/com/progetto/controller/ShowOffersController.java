@@ -2,6 +2,7 @@ package com.progetto.controller;
 
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Notification;
@@ -30,8 +32,15 @@ public class ShowOffersController {
 			Advertise a1 = new Advertise();
 			String id = req.getParameter("AdvertiseID");
 			a1.setId(Long.parseLong(id));
-			//if(Database.getInstance().getAdvertiseDao().alreadyAssigned(a1) == false) 
+			Long acceptedOfferIndex = Database.getInstance().getAdvertiseDao().alreadyAssigned(a1);
+			if(acceptedOfferIndex == null) 
 				offers = Database.getInstance().getOfferDao().findOffersByAdvertise(a1);
+			else {
+				offers = new ArrayList<Offer>();
+				Offer o = Database.getInstance().getOfferDao().findByPrimaryKeyForUsers(acceptedOfferIndex);
+				o.setAccepted(true);
+				offers.add(o);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,9 +56,6 @@ public class ShowOffersController {
 		System.out.println("refused " + message[0]);
 		Notification n = new Notification();
 		Account a = new Account();
-//		//TEST
-//		a.setUsername("aaaa");
-//		//END TEST
 		a.setUsername(message[0]);
 		n.setReceiver(a);
 		n.setText("La tua offerta è stata rifiutata perché " + message[1]);
@@ -67,7 +73,6 @@ public class ShowOffersController {
 	@PostMapping("/acceptOffer")
 	@ResponseBody
 	public void acceptOffer(@RequestBody String[] message) {
-		System.out.println(message[2] + " " + message[3]);
 		
 		Advertise a = new Advertise();
 		Account acc = new Account();

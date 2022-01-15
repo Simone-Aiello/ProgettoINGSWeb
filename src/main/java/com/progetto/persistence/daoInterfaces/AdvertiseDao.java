@@ -8,7 +8,7 @@ import com.progetto.model.Advertise;
 public interface AdvertiseDao {
 	public Advertise findByPrimaryKey(long id,int mode) throws SQLException;
 	public List<Advertise> findAdvertisesByUsername(String username) throws SQLException;
-	public boolean alreadyAssigned(Advertise a) throws SQLException;
+	public Long alreadyAssigned(Advertise a) throws SQLException;
 	public void save(Advertise a) throws SQLException;
 	public void updateAdvertise(Advertise advertise) throws SQLException;
 	public void delete(Advertise a) throws SQLException;

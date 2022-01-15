@@ -107,6 +107,9 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		ann.setTitle(result.getString("titolo"));
 		ann.setExpiryDate(new DateTime(result.getDate("data_scadenza")));
 		ann.setProvince(result.getString("provincia_annuncio"));
+		Offer offer = new Offer();
+		offer.setId(result.getLong("proposta_accettata"));
+		ann.setAcceptedOffer(offer);
 		if(mode != Utils.BASIC_INFO) {
 			int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 			ann.setAccount(Database.getInstance().getAccountDao().findByPrimaryKey(result.getString("username_cliente"),next));
@@ -177,7 +180,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 	}
 
 	@Override
-	public boolean alreadyAssigned(Advertise a) throws SQLException {
+	public Long alreadyAssigned(Advertise a) throws SQLException {
 		String query = "select proposta_accettata from annunci where id = ?";
 		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(query);
 		ps.setLong(1, a.getId());
@@ -187,7 +190,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			assignedOfferIndex = set.getLong("proposta_accettata");
 		}
 		assignedOfferIndex = (assignedOfferIndex == 0) ? null : assignedOfferIndex;
-		return assignedOfferIndex != null;
+		return assignedOfferIndex;
 	}
 
 	@Override

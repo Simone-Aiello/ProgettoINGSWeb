@@ -4,9 +4,13 @@ package com.progetto.controller;
 
 import java.sql.SQLException;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +23,9 @@ import com.progetto.persistence.Database;
 public class loginServlet{
 	
 	@PostMapping("/login")
-	public Account test(@RequestBody Account a, HttpServletResponse resp) {
+	public Account login(@RequestBody Account a, HttpServletResponse resp, HttpServletRequest req) {
 		Account account = null;
+		
 		
 		if(a.getEmail() == null) {
 			try {
@@ -36,13 +41,32 @@ public class loginServlet{
 				resp.setStatus(204);
 			}
 		}
-		//System.out.println(BCrypt.hashpw(a.getPassword(), BCrypt.gensalt(12)));
 		
 		if(account == null || !BCrypt.checkpw(a.getPassword(), account.getPassword())) {
 			resp.setStatus(204);
+		}else {
+			
+			HttpSession session = req.getSession();
+			req.getSession(true);
+			session.setAttribute("username", a.getUsername());
+			Cookie userName = new Cookie("user", a.getUsername());
+			userName.setMaxAge(30*60);
+			resp.addCookie(userName);
 		}
+		
 		return account;
 	}
+	
+	@GetMapping("/logout")
+	public void doLogout(HttpServletRequest req) {
+		HttpSession session=req.getSession(false); 
+		if(session != null) {
+			System.out.println(session.getAttribute("user"));
+	        session.invalidate();  
+	        System.out.println("logout");
+		}
+	}
+	
 	
 	
 }

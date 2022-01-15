@@ -166,36 +166,37 @@ function createOfferDetailCard(data){
 	textArea.id = 'description-'+data.index;
 	textAreaRow.appendChild(textArea);
 	
-	
-	//accept button
 	let buttonDiv = document.createElement('div');
-	buttonDiv.className = 'd-flex flex-row-reverse mt-3';
-	let button = document.createElement('a');
-	button.className = 'btn btn-success';
-	button.id = data.index;
-	button.innerHTML = 'Accetta';
-	
-	//refuse button
-	let refuseButton = document.createElement('a');
-	refuseButton.className = "btn btn-danger";
-	refuseButton.innerHTML = 'Rifiuta';
-	refuseButton.id = 'r-'+data.index;
-	refuseButton.style = 'margin-right: 20px;'
-	refuseButton.setAttribute('data-toggle','modal');
-	refuseButton.setAttribute('data-target','#modal');
-	
+		buttonDiv.className = 'd-flex flex-row-reverse mt-3';
+	if(!data.accepted && !data.done){
+		//accept button
+		let button = document.createElement('a');
+		button.className = 'btn btn-success';
+		button.id = data.index;
+		button.innerHTML = 'Accetta';
+		
+		//refuse button
+		let refuseButton = document.createElement('a');
+		refuseButton.className = "btn btn-danger";
+		refuseButton.innerHTML = 'Rifiuta';
+		refuseButton.id = 'r-'+data.index;
+		refuseButton.style = 'margin-right: 20px;'
+		refuseButton.setAttribute('data-toggle','modal');
+		refuseButton.setAttribute('data-target','#modal');
+		buttonDiv.appendChild(button);
+		buttonDiv.appendChild(refuseButton);
+	}
 	//review button
-	let reviewButton = document.createElement('a');
-	reviewButton.className = 'btn btn-warning';
-	reviewButton.innerHTML = 'Recensisci';
-	reviewButton.id = 'review-'+data.index;
-	reviewButton.style = 'margin-right: 20px;';
-	reviewButton.setAttribute('data-toggle','modal');
-	reviewButton.setAttribute('data-target','#reviewModal');
-	
-	buttonDiv.appendChild(button);
-	buttonDiv.appendChild(refuseButton);
-	buttonDiv.appendChild(reviewButton);
+	if(data.done && data.accepted){
+		let reviewButton = document.createElement('a');
+		reviewButton.className = 'btn btn-warning';
+		reviewButton.innerHTML = 'Recensisci';
+		reviewButton.id = 'review-'+data.index;
+		reviewButton.style = 'margin-left: 20px;';
+		reviewButton.setAttribute('data-toggle','modal');
+		reviewButton.setAttribute('data-target','#reviewModal');
+		buttonDiv.appendChild(reviewButton);
+	}
 
 	//build the card
 	card_body.appendChild(titleRow);
@@ -211,82 +212,83 @@ function createOfferDetailCard(data){
 
 function setAcceptButtonListener(target){
 	button = document.getElementById(target);
-	button.addEventListener('click', function() {
-		let title = document.getElementById('title-'+target).innerText;
-		let worker_username = document.getElementById('username-'+target).innerText;
-		worker_username = worker_username.split('@')[1];
-		let province = document.getElementById('province-'+target).innerText;
-		let dueDate = document.getElementById('due-date-'+target).innerText;
-		let offerId = document.getElementById('label-'+target).innerText;
-		offerId = offerId.split('#')[1];
-		console.log(title + ' ' + worker_username + ' ' + province + ' ' + dueDate);
-		
-		//TEST
-		let advertiseId = 4;
-		//ENDTEST
-		
-		let message = [title, worker_username, offerId, advertiseId];
-		
-		$.ajax({
-		    type : 'POST',
-		    contentType: "application/json",
-		    url : '/acceptOffer',
-		    data:JSON.stringify(message),
-		    success:function() {
-		        console.log('updated successfully');
-				//rifiutare tutte le proposte che non sono state accettate
-				let cards = document.getElementsByClassName('card');
-				let eliminatedCards = [];
-				for(let i = 0; i < cards.length; ++i){
-					console.log(cards[i].id + " " + 'c-'+target)
-					if(cards[i].id != 'c-'+target){
-						eliminatedCards.push(i);
+	if(button != null){
+		button.addEventListener('click', function() {
+			let title = document.getElementById('title-'+target).innerText;
+			let worker_username = document.getElementById('username-'+target).innerText;
+			worker_username = worker_username.split('@')[1];
+			let province = document.getElementById('province-'+target).innerText;
+			//let dueDate = document.getElementById('due-date-'+target).innerText;
+			let offerId = document.getElementById('label-'+target).innerText;
+			offerId = offerId.split('#')[1];
+			let url = window.location.href;
+			let params = (new URL(url)).searchParams;
+			let advertiseID = params.get("AdvertiseID");
+			
+			let message = [title, worker_username, offerId, advertiseID];
+			
+			$.ajax({
+			    type : 'POST',
+			    contentType: "application/json",
+			    url : '/acceptOffer',
+			    data:JSON.stringify(message),
+			    success:function() {
+			        console.log('updated successfully');
+					//rifiutare tutte le proposte che non sono state accettate
+					let cards = document.getElementsByClassName('card');
+					let eliminatedCards = [];
+					for(let i = 0; i < cards.length; ++i){
+						console.log(cards[i].id + " " + 'c-'+target)
+						if(cards[i].id != 'c-'+target){
+							eliminatedCards.push(i);
+						}
 					}
-				}
-				console.log(eliminatedCards);
-				for(let i = eliminatedCards.length-1; i >= 0; --i){
-					let worker_username = document.getElementById('username-'+i).innerHTML;
-					worker_username = worker_username.split('@')[1];
-					let message = [worker_username,'il cliente ha scelto un\'altra offerta'];
-					console.log(message);
-					//chiamata ajax per notificare il lavoratore che non è stato scelto
-					$.ajax({
-						type : "POST",
-						url : "/refuseOffer",
-						contentType: "application/json",
-						data : JSON.stringify(message),
-						success : (response) =>{
-							console.log(response);
-						}, 
-						error : (xhr) =>{
-							console.log(xhr);
-						}		
-					});
-					removeCard(eliminatedCards[i]);
-				}
-				window.location = '/showMyAdvertises';
-		    },
-		    error:function() {
-		        console.log('error occured');
-		    }
+					console.log(eliminatedCards);
+					for(let i = eliminatedCards.length-1; i >= 0; --i){
+						let worker_username = document.getElementById('username-'+i).innerHTML;
+						worker_username = worker_username.split('@')[1];
+						let message = [worker_username,'il cliente ha scelto un\'altra offerta'];
+						console.log(message);
+						//chiamata ajax per notificare il lavoratore che non è stato scelto
+						$.ajax({
+							type : "POST",
+							url : "/refuseOffer",
+							contentType: "application/json",
+							data : JSON.stringify(message),
+							success : (response) =>{
+								console.log(response);
+							}, 
+							error : (xhr) =>{
+								console.log(xhr);
+							}		
+						});
+						removeCard(eliminatedCards[i]);
+					}
+					window.location = '/showMyAdvertises';
+			    },
+			    error:function() {
+			        console.log('error occured');
+			    }
+			});
+			
 		});
-		
-	});
-	
+	}
 		
 }
 
 function setRefuseButtonListener(target){
 	button = document.getElementById('r-'+target);
-	button.addEventListener('click', function(){
-		if(document.getElementById('modal') === null){
-			modal = createModal(target);
-			$('#body').append(modal);
-		}
-		modal = document.getElementById('modal');
-		modal.setAttribute('cardid',target);
-		$('#modal').modal("show");
-	});
+	if(button != null){
+		button.addEventListener('click', function(){
+			if(document.getElementById('modal') === null){
+				modal = createModal(target);
+				$('#body').append(modal);
+			}
+			modal = document.getElementById('modal');
+			modal.setAttribute('cardid',target);
+			$('#modal').modal("show");
+		});
+	}
 }
 
 
@@ -396,20 +398,22 @@ function removeCard(target){
 
 function setReviewActionListener(target){
 	button = document.getElementById('review-'+target);
-	button.addEventListener('click', function(){
-		let modal;
-	console.log("Review " +  target);
-		if(document.getElementById('reviewModal') === null){
-			modal = createReviewModal(target);
-			$('#body').append(modal);
-		}
-		//modal = document.getElementById('modal');
-		//modal.setAttribute('cardid',target);
-		else
-			modal = $('#reviewModal');
-		$('#reviewModal').attr('cardid', target);
-		$('#reviewModal').modal("show");
-	});
+	if(button != null){
+		button.addEventListener('click', function(){
+			let modal;
+		console.log("Review " +  target);
+			if(document.getElementById('reviewModal') === null){
+				modal = createReviewModal(target);
+				$('#body').append(modal);
+			}
+			//modal = document.getElementById('modal');
+			//modal.setAttribute('cardid',target);
+			else
+				modal = $('#reviewModal');
+			$('#reviewModal').attr('cardid', target);
+			$('#reviewModal').modal("show");
+		});
+	}
 }
 
 

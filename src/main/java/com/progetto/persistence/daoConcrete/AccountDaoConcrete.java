@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
-
 import com.progetto.EmailSender;
 import com.progetto.Utils;
 import com.progetto.model.Account;

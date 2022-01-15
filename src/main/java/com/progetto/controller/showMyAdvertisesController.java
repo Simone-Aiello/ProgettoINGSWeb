@@ -3,6 +3,7 @@ package com.progetto.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,15 @@ public class showMyAdvertisesController {
 	
 	@GetMapping("/showMyAdvertises")
 	public String showMyAdvertises(HttpServletRequest req) {
+		Cookie[] cookies = req.getCookies();
 		Account a = new Account();
-		a.setUsername("aaaa");
+		if(cookies != null) {
+			 for (int i = 0; i < cookies.length; i++) {
+				 if(cookies[i].getName().equals("user")) 
+					 a.setUsername(cookies[i].getValue());
+			 }
+		}
+		
 		List<Advertise> advertises = null;
 		
 		try {

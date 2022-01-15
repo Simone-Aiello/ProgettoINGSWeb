@@ -12,6 +12,7 @@ public interface OfferDao {
 	
 	boolean exists(Offer offer) throws SQLException;		
 	Offer findByPrimaryKey(long id_offer,int mode) throws SQLException;
+	Offer findByPrimaryKeyForUsers(long id_offer) throws SQLException;
 	List<Offer> findOffersByAdvertise(Advertise a) throws SQLException;
 	List<Offer> offersByAdvertise(Advertise a)throws SQLException;
 	void save(Offer offer) throws SQLException;	

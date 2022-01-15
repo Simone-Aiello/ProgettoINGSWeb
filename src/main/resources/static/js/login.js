@@ -65,7 +65,7 @@ function doLogin(){
 				//alert(account);
 				}
 			else
-				window.location.replace("Dashboard.html");
+				window.location.replace("test.html");
 		}, 
 		error : (xhr) =>{
 			alert(xhr)

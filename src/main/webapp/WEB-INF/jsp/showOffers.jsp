@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,33 +19,50 @@
 		<title>Show offers</title>
 	</head>
 	<body id = "body" style = "margin : 0; padding : 0;">
-		<div class = "align-items-center justify-content-center mt-5 row" id = "offers">
+		<div class = "align-items-center justify-content-center mt-5 row" id = "offersContainer">
 			<script type="text/javascript">
 				offers = document.getElementById('offers');
 				var i = 0;
 			</script>
-			<c:forEach items="${offers}" var = "offer">
-				<script type="text/javascript">
-				card = createOfferDetailCard({
-			                    title : "${offer.getTitle()}",
-			                    username : "${offer.getWorker().getUsername()}",
-								province : "Catanzaro",
-								dueDate : "04/10/2022",
-								dates : ['03/01/2022', '04/01/2022', '06/04/2022'],
-								jobExecutionTime : "${offer.getHoursOfWork()}",
-								jobExecutionTimeUnit : 'h',
-								amount : ${offer.getQuote()},
-								description : "${offer.getDescription()}",
-			                   	offer_id : ${offer.getId()},
-								index : i
-								}) ;
-				offers.append(card);
-				setAcceptButtonListener(i);
-				setRefuseButtonListener(i);
-				setReviewActionListener(i);
-				i = i+1;
-				</script>
-			</c:forEach>
+					<c:forEach items="${offers}" var = "offer">
+						<script type="text/javascript">
+						card = createOfferDetailCard({
+					                    title : "${offer.getTitle()}",
+					                    username : "${offer.getWorker().getUsername()}",
+										province : "Catanzaro",
+										dueDate : "04/10/2022",
+										dates : ${offer.getDates()},
+										jobExecutionTime : "${offer.getHoursOfWork()}",
+										jobExecutionTimeUnit : 'h',
+										amount : ${offer.getQuote()},
+										description : "${offer.getDescription()}",
+					                   	offer_id : ${offer.getId()},
+					                   	done : ${offer.isDone()},
+					                   	accepted : ${offer.isAccepted()},
+										index : i
+										}) ;
+						offersContainer.append(card);
+						setAcceptButtonListener(i);
+						setRefuseButtonListener(i);
+						setReviewActionListener(i);
+						i = i+1;
+						</script>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${fn:length(offers) == 0}">
+							<div class = "row alert alert-info" style = "width : 50%;">
+								<div class = "col-4 d-flex justify-content-center align-items-center">
+									<i class="fas fa-user-injured" style = "font-size : 100px"></i>
+								</div>
+								<div class="col-8 " role="alert" >
+									 <h4 class="alert-heading">Ooops!</h4>
+									 <p> Non hai ancora ricevuto offerte... </p>
+									 <p>Prova a ricontrollare più tardi!</p>
+								</div>
+							</div>
+						</c:when>
+					</c:choose>
+			
 		</div>
  
 	</body>
