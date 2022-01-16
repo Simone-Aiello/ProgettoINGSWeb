@@ -22,22 +22,29 @@ public class UserDaoConcrete implements UserDao{
 		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(FIND_BY_PRIMARY_KEY);
 		ps.setLong(1, id);
 		ResultSet set = ps.executeQuery();
-		//if(set.next()) System.out.println("Ha il next");
 		User user = (set.next()) ? loadUser(set,mode) : null;
 		return user;
 	}
-
+	private long getAddressId(User u) throws SQLException {
+		String query = "select indirizzo_utente from utenti where id = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setLong(1,u.getId());
+		ResultSet r = st.executeQuery();
+		r.next();
+		return r.getLong("indirizzo_utente");
+	}
 	@Override
 	public long save(User u) throws SQLException {
 		 long id = -1;
 		 if(exists(u)) {
-			 String UPDATE_USER = "update utenti cognome = ?, nome = ?, data_nascita = ?, indirizzo_utente = ? where id = ?";
+			 u.getAddress().setId(getAddressId(u));
+			 Database.getInstance().getAddressDao().save(u.getAddress());
+			 String UPDATE_USER = "update utenti set cognome = ?, nome = ?, data_nascita = ? where id = ?";
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(UPDATE_USER);
 			 ps.setString(1, u.getSurname());
 			 ps.setString(2, u.getName());
-			 ps.setDate(3, (Date) u.getDateOfBirth().toDate());
-			 ps.setLong(4, u.getAddress().getId());
-			 ps.setLong(5, u.getId());
+			 ps.setDate(3, new Date(u.getDateOfBirth().toDate().getTime()));
+			 ps.setLong(4, u.getId());
 			 ps.executeUpdate();
 			 id = u.getId();
 		 }else {

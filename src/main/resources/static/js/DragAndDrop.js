@@ -70,20 +70,26 @@ var handleFile = function(file){
 			let divImage = document.createElement("div");
 			//console.log(listOfImages);
 			divImage.setAttribute("id", imageName);
-			divImage.setAttribute("class", "carousel-item");
+			//divImage.setAttribute("class", "carousel-item");
+			divImage.classList.add("carousel-item");
+
+			
 			let imageElement = document.createElement("img");
 			imageElement.classList.add("d-block");
 			imageElement.classList.add("w-100");
 			imageElement.classList.add("resized-image");
+			//imageElement.classList.add("shadow-lg");
 			imageElement.setAttribute("src", fileReader.result);
 			imageElement.setAttribute("id", "uploaded-image" + numberOfImages);
 			
-			let deleteButton = document.createElement("img");
-			 //<img class = "carousel-control-delete" alt="delete" src="/images/x-lg.svg">
+			let deleteButton = document.createElement("button");
 			deleteButton.classList.add("carousel-control-delete");
 			deleteButton.classList.add("delete-button");
+			deleteButton.classList.add("btn");
+			deleteButton.classList.add("btn-warning");
+			deleteButton.innerHTML = "elimina";
 			deleteButton.setAttribute("alt", "delete");
-			deleteButton.setAttribute("src", "/images/x-lg.svg");
+			//deleteButton.setAttribute("src", "/images/x-lg.svg");
 			deleteButton.addEventListener("click", function(){
 				//move visualization to the next image (drag&drop section if there are no other images)
 				document.getElementById("nextButton").click();

@@ -2,6 +2,8 @@ package com.progetto.model;
 
 import static org.apache.commons.lang3.Validate.*;
 
+import java.util.List;
+
 import com.progetto.Utils;
 
 public class Offer {
@@ -10,12 +12,13 @@ public class Offer {
 	private String description;
 	private String title;
 	private double quote;
-	private boolean done;
+	private boolean done = false;
 	private boolean accepted;
 	private Account worker; 
 	private int hoursOfWork;
 	private Advertise advertise;
 	private String dates;
+	private List<String> availabilities ;
 	
 	
 
@@ -25,6 +28,7 @@ public class Offer {
 	public void setAccepted(boolean accepted) {
 		this.accepted = accepted;
 	}
+
 	
 	public String getDates() {
 		return dates;
@@ -87,6 +91,16 @@ public class Offer {
 	public void setAdvertise(Advertise advertise) {
 		notNull(advertise);
 		this.advertise = advertise;
+	}
+	
+	
+	public void setAvailabilities(List<String> availabilities) {
+		notNull(availabilities);
+		this.availabilities = availabilities;
+	}
+	
+	public List<String> getAvailabilities() {
+		return availabilities;
 	}
 	
 }

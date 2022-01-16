@@ -1,8 +1,6 @@
 
 body{
-	background-color: #f9dcc4
-
-;
+	background-color: #f9dcc4;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -12,16 +10,26 @@ body{
 	text-align: center;
 }
 
-#form{
-	background-color: white;
+.delete-button{
 	margin: 20px;
+	
+}
+
+.image{
+	padding: 10px;
+}
+
+
+.formSection{
+	background-color: white;
+	margin: 40px;
 	width: 50%;
 	padding: 35px;
 	border-radius: 10px;
 }
 
 @media(max-width: 1024px){
-	#form{
+	#form, #preview{
 		width: 85%;
 	}
 }
@@ -52,3 +60,45 @@ body{
 	display: flex;
 	justify-content: center;
 }
+
+.previewButtons{
+	display: flex;
+	justify-content: space-between;
+	white-space:nowrap;
+	margin-top: 20px;
+}
+
+
+.previewData{
+	margin-left: 20px;
+}
+.imgPreview{
+	padding: 5px;
+	border: 4px inset;
+	border-color: #FF9400;
+	border-radius: 5px;
+	margin-top:15px;
+}
+
+
+
+#availabilityDateSection{
+	display: flex;
+}
+
+#previewImages{
+	max-height: 500px;
+	justify-content: center;
+
+}
+
+#previewAreas, #previewImages{
+	margin-top: 20px;
+
+}
+
+
+#addAvailabilityDate{
+	margin-left: 10px;	
+}
+

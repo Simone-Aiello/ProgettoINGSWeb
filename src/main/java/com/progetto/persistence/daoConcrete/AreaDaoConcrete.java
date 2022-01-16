@@ -27,8 +27,7 @@ public class AreaDaoConcrete implements AreaDao{
 	
 	@Override
 	public boolean exists(Area area) throws SQLException {
-		
-		String FIND_BY_PRYMARY_KEY = "" + "select *" + "from area" + "where id = ?";
+		String FIND_BY_PRYMARY_KEY = "select *" + " from ambiti" + " where id = ?;";
 		
 		PreparedStatement preparedStatement = Database.getInstance().getConnection()
 				.prepareStatement(FIND_BY_PRYMARY_KEY);
@@ -38,7 +37,7 @@ public class AreaDaoConcrete implements AreaDao{
 		ResultSet resultSet = preparedStatement.executeQuery() ;
 		
 		
-		return resultSet.first();
+		return resultSet.next();
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class AreaDaoConcrete implements AreaDao{
 		
 		if(exists(area)) {
 			
-			query = "update ambiti set name = ?, icona = ?  where id = ? " ;
+			query = "update ambiti set nome = ?, icona = ?  where id = ? " ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
 			
@@ -83,7 +82,7 @@ public class AreaDaoConcrete implements AreaDao{
 			
 			
 		}else {
-			
+		
 			query = "insert into ambiti(nome, icona) values(?, ?) " ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
@@ -110,7 +109,7 @@ public class AreaDaoConcrete implements AreaDao{
 	@Override
 	public List<Area> findByAdvertise(Advertise ann) throws SQLException{
 		List<Area> areas = new ArrayList<Area>();
-		String query = "select id_ambito, nome, icona from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
+		String query = "select id, nome, icona from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setLong(1, ann.getId());
 		ResultSet set = statement.executeQuery();
@@ -164,6 +163,15 @@ public class AreaDaoConcrete implements AreaDao{
 			areas.add(loadArea(set));
 		}
 		return areas;
+	}
+
+
+	@Override
+	public void deleteLinkByAccount(Account a) throws SQLException{
+		String query = "delete from account_ambiti where username_account = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, a.getUsername());
+		st.execute();
 	}
 
 }

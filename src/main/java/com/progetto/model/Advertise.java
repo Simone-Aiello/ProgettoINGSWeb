@@ -19,6 +19,9 @@ public class Advertise {
 	private Review reviewReceived;
 	private String province;
 	private List<Offer> offers;
+	private String availability;
+	
+	public Advertise() {}
 	
 	public Review getReviewReceived() {
 		return reviewReceived;
@@ -84,14 +87,9 @@ public class Advertise {
 	}
 	public void setExpiryDate(DateTime expiryDate) {
 		notNull(expiryDate);
-		//isTrue(expiryDate.isAfterNow());
 		this.expiryDate = expiryDate;
 	}
 	
-//	public void setExpiryDateWithoutValidation(DateTime expiryDate) {
-//		notNull(expiryDate);
-//		this.expiryDate = expiryDate;
-//	}
 	public Account getAccount() {
 		return account;
 	}
@@ -107,6 +105,14 @@ public class Advertise {
 		notNull(province);
 		Utils.sanitizeXSS(province);
 		this.province = province;
+	}
+
+	public String getAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(String availability) {
+		this.availability = availability;
 	}
 	
 	

@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.progetto.model.Account;
+import com.progetto.model.Advertise;
+import com.progetto.model.Area;
 import com.progetto.model.Notification;
-import com.progetto.model.Offer;
 import com.progetto.persistence.Database;
 import com.progetto.persistence.daoInterfaces.NotificationDao;
 
@@ -17,7 +18,7 @@ public class NotificationDaoConcrete implements NotificationDao{
 	
 	private Notification loadNotification(ResultSet resultSet) throws SQLException {
 		
-		Notification notification = null ;
+		Notification notification = new Notification();
 		
 		notification.setId(resultSet.getLong("id"));
 		notification.setText(resultSet.getString("contenuto"));
@@ -69,7 +70,7 @@ public class NotificationDaoConcrete implements NotificationDao{
 	@Override
 	public void save(Notification notification) throws SQLException {
 		
-		String query = "" ;
+		String query = null ;
 		
 		PreparedStatement preparedStatement = null ;
 		
@@ -110,7 +111,7 @@ public class NotificationDaoConcrete implements NotificationDao{
 		preparedStatement.execute();
 		
 	}
-
+	//NEEDS REFACTOR
 	@Override
 	public List<Notification> findNotificationsByReceiver(Account receiver) throws SQLException {
 		
@@ -151,6 +152,34 @@ public class NotificationDaoConcrete implements NotificationDao{
 		ps1.setInt(1, id);
 		ps1.setString(2, notification.getReceiver().getUsername());
 		ps1.execute();
+	}
+	
+	public void saveNotificationByAdvertise(Advertise a) throws SQLException {
+		//Insert notification
+		String saveNotificationQuery = "INSERT INTO notifiche(contenuto, tipologia, account_username) values(?, cast(? as tipologia_notifica), ?) RETURNING id";
+		PreparedStatement stmtSaveNotification = Database.getInstance().getConnection().prepareStatement(saveNotificationQuery);
+		stmtSaveNotification.setString(1, "Un annuncio che potrebbe interessarti: " + a.getTitle());
+		stmtSaveNotification.setString(2, Notification.ADVERTISE);
+		stmtSaveNotification.setString(3, a.getAccount().getUsername());
+		ResultSet rs = stmtSaveNotification.executeQuery();
+		rs.next();
+		long idNotification = rs.getLong("id");
+		//Insert associations between workers and the advertise
+		List<Account> workers = Database.getInstance().getAccountDao().findWorkersByProvince(a.getProvince());
+		for(Account w: workers) {
+			//if the worker works for at least one of the areas in advertise then he should be notified 
+			for(Area area: a.getInterestedAreas()) {
+				if(w.getAreasOfWork().contains(area)) {
+					String saveAssociationsQuery = "INSERT INTO account_notifiche(id_notifica, username_ricevente) values(?, ?)";
+					PreparedStatement stmtSaveAssociation = Database.getInstance().getConnection().prepareStatement(saveAssociationsQuery);
+					stmtSaveAssociation.setLong(1, idNotification);
+					stmtSaveAssociation.setString(2, w.getUsername());
+					stmtSaveAssociation.execute();
+					//notify the worker only one time (for the first area)
+					break;
+				}
+			}
+		}
 	}
 
 }

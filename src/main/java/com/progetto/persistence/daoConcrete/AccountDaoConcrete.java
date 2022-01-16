@@ -7,6 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.progetto.EmailSender;
 import com.progetto.Utils;
 import com.progetto.model.Account;
@@ -49,25 +52,29 @@ public class AccountDaoConcrete implements AccountDao {
 			a.setUsername(rs.getString("username"));
 			a.setEmail(rs.getString("email"));
 			a.setValid(rs.getBoolean("account_valido"));
-			a.setPassword(rs.getString("password")); // la password mi serve per la login "GM"
-			if (mode != Utils.BASIC_INFO) {
+			//Rimuovere sostituire con n metodo apposta
+			a.setPassword(rs.getString("password")); 
+			a.setAccountType(rs.getString("tipo_account"));
+			Image image = Database.getInstance().getImageDao().findByPrimaryKey(rs.getLong("immagine_profilo"));
+			if(image != null) 
+				a.setProfilePic(image);
+				if (mode != Utils.BASIC_INFO) {
 				int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 				String number = rs.getString("telefono");
 				if(number != null) a.setNumber(number);
-				a.setProvinceOfWork(rs.getString("provincia_lavoro"));
+				if(a.getProvinceOfWork() != null) a.setProvinceOfWork(rs.getString("provincia_lavoro"));
 				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
 				if(user != null) a.setPersonalInfo(user);
 				if (mode != Utils.LIGHT) {
 					//a.setPassword(rs.getString("password")); La password non la vogliamo mai indietro
-					Image image = Database.getInstance().getImageDao().findByPrimaryKey(rs.getLong("immagine_profilo"));
-					if(image != null) a.setProfilePic(image);
-					a.setAccountType(rs.getString("tipo_account"));
 					// if the account is a worker then he may work for some areas
 					if (a.getAccountType().equals(Account.WORKER)) {
 						List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
 						if(areas != null) a.setAreasOfWork(areas);
-						List<Review> reviews = Database.getInstance().getReviewDao().findByWorker(a);
-						if(reviews != null) a.setReviews(reviews);
+						List<Review> reviews = Database.getInstance().getReviewDao().findByWorker(a,Utils.INITIAL_REVIEW_NUMBER,0);
+						if(reviews != null) {
+							a.setReviews(reviews);
+						}
 					}
 				}
 			}
@@ -94,53 +101,109 @@ public class AccountDaoConcrete implements AccountDao {
 		}
 		return a;
 	}
-
+	private long getProfilePictureId(String username) throws SQLException {
+		String query = "select immagine_profilo as id from account where username = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, username);
+		ResultSet set = st.executeQuery();
+		if(set.next()) {
+			return set.getLong("id");
+		}
+		return 0;
+	}
+	private long getUserId(String username) throws SQLException{
+		String query = "select id_utente as id from account where username = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, username);
+		ResultSet set = st.executeQuery();
+		set.next();
+		return set.getLong("id");
+	}
+	private void resetPhoto(Account a) throws SQLException{
+		long idCurrentPic = getProfilePictureId(a.getUsername());
+		String nullifyProPicQuery = "update account set immagine_profilo = null where username = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(nullifyProPicQuery);
+		st.setString(1, a.getUsername());
+		st.execute();
+		Database.getInstance().getImageDao().delete(idCurrentPic);
+	}
 	@Override
 	public void save(Account a) throws SQLException {
 		String activationCode =  Utils.getAlphaNumericString(Utils.ACTIVATION_CODE_LENGHT);
 		if (exists(a)) {
-			// NON PENSO SIA GIUSTO
-			String query = "UPDATE account SET password = ?, email = ?, telefono = ?, immagine_profilo = ?, provincia_lavoro = ?,  tipo_account  = ? WHERE username = ?;";
-			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
-			long id = Database.getInstance().getImageDao().save(a.getProfilePic());
-			a.getProfilePic().setId(id);
-			stmt.setString(1, a.getPassword());
-			stmt.setString(2, a.getEmail());
-			stmt.setString(3, a.getNumber());
-			stmt.setLong(4, a.getProfilePic().getId());
-			stmt.setString(5, a.getProvinceOfWork());
-			stmt.setString(6, a.getAccountType());
-			stmt.setString(7, a.getUsername());
-			stmt.execute();
+			List<String> clauses = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
+			if(a.getNumber() != null) {
+				clauses.add("telefono = ?");
+				values.add(a.getNumber());
+			}
+			if(a.getProvinceOfWork() != null) {
+				clauses.add("provincia_lavoro = ?");
+				values.add(a.getProvinceOfWork());
+			}
+			if(a.getProfilePic() != null && a.getProfilePic().getValue() != null) {
+				//Se la foto ha un valore vedo se l'utente ne ha già inserita una
+				Long idPicture = getProfilePictureId(a.getUsername());
+				//Se mi viene rischiesta la foto di default resetto il campo
+				if(a.getProfilePic().getValue().equals("default")) {
+					resetPhoto(a);
+				}
+				else if(idPicture != 0) {
+					//L'utente ha già inserito una foto, chiamo il save che mi va ad aggiornare il campo value
+					a.getProfilePic().setId(idPicture);
+					Database.getInstance().getImageDao().save(a.getProfilePic());
+				}
+				else {
+					//L'utente non ha una foto, salvo prima la foto e poi faccio l'update del campo
+					long idNewPicture = Database.getInstance().getImageDao().save(a.getProfilePic());
+					clauses.add("immagine_profilo = ?");
+					values.add(idNewPicture);					
+				}
+			}
+			if(a.getPersonalInfo() != null) {
+				long idUser = getUserId(a.getUsername());
+				a.getPersonalInfo().setId(idUser);
+				Database.getInstance().getUserDao().save(a.getPersonalInfo());
+			}
+			if(a.getAreasOfWork() != null && a.getAreasOfWork().size() > 0) {
+				Database.getInstance().getAreaDao().deleteLinkByAccount(a);
+				for(Area area : a.getAreasOfWork()) {
+					Database.getInstance().getAreaDao().linkToAccount(area, a);
+				}
+			}
+			String query = "UPDATE account SET " + StringUtils.join(clauses,", ") + " where username = ?";
+			values.add(a.getUsername());
+			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+			for(int i = 0; i < values.size();i++) {
+				st.setObject(i+1, values.get(i));
+			}
+			st.executeUpdate();
 		} else {
 			// Salvo l'user associato all'account e mi prendo l'id
 			long userId = Database.getInstance().getUserDao().save(a.getPersonalInfo());
-			// Salvo l'immagine associata all'account PER ORA NON SALVO NIENTE
-
+			// Salvo l'immagine associata all'account
+			long imageId = Database.getInstance().getImageDao().save(a.getProfilePic());
 			String query = "INSERT INTO account (username, password, email, telefono, immagine_profilo, provincia_lavoro, id_utente, tipo_account,codice_validazione_account)"
-					+ " values(?, ?, ?, ?,null, ?, ?, cast(? as tipologia_account), ?);";
+					+ " values(?, ?, ?, ?, ?, ?, ?, cast(? as tipologia_account), ?);";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 			a.getPersonalInfo().setId(userId);
 			stmt.setString(1, a.getUsername());
 			stmt.setString(2, Utils.encryptPassword(a.getPassword()));
 			stmt.setString(3, a.getEmail());
 			stmt.setString(4, a.getNumber());
-			stmt.setString(5, a.getProvinceOfWork());
-			stmt.setLong(6, userId);
-			stmt.setString(7, a.getAccountType());
-			stmt.setString(8,activationCode);
+			stmt.setObject(5,imageId == 0 ? null : imageId);
+			stmt.setObject(6, a.getProvinceOfWork());
+			stmt.setLong(7, userId);
+			stmt.setString(8, a.getAccountType());
+			stmt.setString(9,activationCode);
 			stmt.execute();
+			if(a.getAccountType() == Account.WORKER) {
+				for (Area area : a.getAreasOfWork()) {
+					Database.getInstance().getAreaDao().linkToAccount(area, a);
+				}				
+			}
+			EmailSender.getInstance().sendEmail(a.getEmail(), "Codice di attivazione account GetJobs", "http://localhost:8080/activateAccount?code="+activationCode);
 		}
-		for (Area area : a.getAreasOfWork()) {
-			Database.getInstance().getAreaDao().linkToAccount(area, a);
-			// Database.getInstance().getAreaDao().save(area); Non devo salvare gli ambiti,
-			// quelli sono già sul db, devo creare una tupla della relazione account_ambiti
-		}
-		// for(Review r : a.getReviews()) {
-		// Database.getInstance().getReviewDao().save(r); Non le salvo mai nell'insert
-		// dell'account
-		// }
-		EmailSender.getInstance().sendEmail(a.getEmail(), "Codice di attivazione account GetJobs", "http://localhost:8080/activateAccount?code="+activationCode);
 	}
 
 	@Override
@@ -165,7 +228,7 @@ public class AccountDaoConcrete implements AccountDao {
 		String query = "SELECT username FROM account WHERE username = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setString(1, a.getUsername());
-		return false;
+		return stmt.executeQuery().next();
 	}
 
 	private void deleteAreaAssociations(Account a) throws SQLException {
@@ -212,5 +275,93 @@ public class AccountDaoConcrete implements AccountDao {
 		st.setString(1, Utils.encryptPassword(password));
 		st.setString(2, email);
 		st.executeUpdate();
+	}
+
+
+
+	@Override
+	public List<Account> findWorkersByProvince(String province) throws SQLException {
+		//add control that the account is a worker? not needed  with trigger
+		String query = "SELECT username FROM account WHERE provincia_lavoro = ?;";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, province);
+		ResultSet rs = stmt.executeQuery();
+		List<Account> workers= new ArrayList<>();
+		while(rs.next()) {
+			Account w= new Account();
+			w.setUsername(rs.getString("username"));
+			w.setAreasOfWork(Database.getInstance().getAreaDao().findByWorker(w));
+			workers.add(w);
+		}
+		return workers;
+	}
+
+	public String getVerificationCode(String username) throws SQLException {
+		String query = "select codice_validazione_account from account where username = ?";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1, username);
+		ResultSet set = st.executeQuery();
+		if(set.next()) {
+			return set.getString("codice_validazione_account");
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Account> findWorkersByAreasAndUsername(List<Area> areas, String username) throws SQLException{
+		List<Account> accounts = new ArrayList<>();
+
+		StringBuilder builder = new StringBuilder("");
+		for(Area a: areas) {
+			if(a.getId() != 0)
+				builder.append("?" + ",");
+		}
+		if(areas.size() !=0 )
+			builder.deleteCharAt(builder.length() - 1);
+		String query = "";
+		PreparedStatement stmt;
+		if(username == null)
+			username = "";
+		//this is not the best query
+		if(username.equals("") && areas.size() != 0){//don't search by username
+			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON username_account = username WHERE id_ambito IN(" 
+					+ builder.toString() + ")";
+			
+			stmt = Database.getInstance().getConnection().prepareStatement(query);
+			for(int i = 0; i < areas.size(); ++i)
+				stmt.setLong(i + 1, areas.get(i).getId());
+		}
+		else if(!username.equals("") && areas.size() == 0){	//Search by only username
+			query = "SELECT username FROM account WHERE username LIKE ?";
+			stmt = Database.getInstance().getConnection().prepareStatement(query);
+			stmt.setString(1, "%" + username + "%");
+		}
+		else { //if(!username.equals("") && areas.size() != 0){//search by both username and areas (will only find workers)
+			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON username_account = username WHERE "
+					+ "username LIKE ? AND id_ambito IN(" + builder.toString() + ")";
+			stmt = Database.getInstance().getConnection().prepareStatement(query);
+			stmt.setString(1, "%" + username + "%");
+			for(int i = 0; i < areas.size(); ++i)
+				stmt.setLong(i + 2, areas.get(i).getId());
+		}
+		
+
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			Account a = findByPrimaryKey(rs.getString("username"), Utils.BASIC_INFO);
+			if(a != null)
+				accounts.add(a);
+		}
+		return accounts;
+	}
+
+
+
+	@Override
+	public void banAccount(Account a) throws SQLException {
+		String query = "UPDATE accounts SET bannato = true WHERE username = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, a.getUsername());
+		stmt.execute();
 	}
 }

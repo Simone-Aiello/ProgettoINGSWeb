@@ -1,4 +1,4 @@
-package com.progetto.persistence.daoConcrete;
+	package com.progetto.persistence.daoConcrete;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -43,18 +43,25 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 	}
 
 	private void saveImages(Advertise a) throws SQLException {
-		String query = "update immagini set id_annuncio = ? where id = ?;";
-		for (Image m : a.getImages()) {
+		String query = "INSERT INTO immagini(value, id_annuncio) values(?, ?);";
+		for (Image im : a.getImages()) {
 			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
-			Database.getInstance().getImageDao().save(m);
-			st.setLong(1, a.getId());
-			st.setLong(2, m.getId());
+			//Database.getInstance().getImageDao().save(im);
+			st.setString(1, im.getValue());
+			st.setLong(2, a.getId());
 			st.execute();
 		}
 	}
+	//add an association between an area and an advertise
 	private void saveAreas(Advertise a) throws SQLException {
+		
 		for (Area area : a.getInterestedAreas()) {
-			Database.getInstance().getAreaDao().save(area);
+			String query ="INSERT INTO annunci_ambiti(id_annuncio, id_ambito) values(?, ?);";
+			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+			st.setLong(1, a.getId());
+			st.setLong(2, area.getId());
+			st.execute();
+			//Database.getInstance().getAreaDao().save(area);
 		}
 	}
 	
@@ -72,15 +79,19 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			statement.executeUpdate();
 			Database.getInstance().getImageDao().deleteByAdvertise(a);
 		} else {
-			String insert = "insert into annunci (descrizione,titolo,data_scadenza,username_cliente,provincia_annuncio) values (?,?,?,?,?);";
+			String insert = "insert into annunci (descrizione,titolo,data_scadenza,username_cliente,provincia_annuncio, disponibilita) values (?,?,?,?,?, ?) RETURNING id;";
 			statement = Database.getInstance().getConnection().prepareStatement(insert);
 			statement.setString(1, a.getDescription());
 			statement.setString(2, a.getTitle());
 			statement.setDate(3, new Date(a.getExpiryDate().getMillis()));
 			statement.setString(4, a.getAccount().getUsername());
 			statement.setString(5, a.getProvince());
-			statement.execute();
+			statement.setString(6, a.getAvailability());
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			a.setId(rs.getLong("id"));
 		}
+		Database.getInstance().getNotificationDao().saveNotificationByAdvertise(a);
 		saveImages(a);
 		saveAreas(a);
 	}
@@ -88,7 +99,6 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 	public void delete(Advertise a) throws SQLException {
 		Database.getInstance().getImageDao().deleteByAdvertise(a);
 		Database.getInstance().getOfferDao().deleteByAdvertise(a);
-		
 		//delete associations with areas
 		String deleteAssociatedAreas = "DELETE FROM annunci_ambiti WHERE id_annuncio = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(deleteAssociatedAreas);
@@ -101,24 +111,30 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		statement.execute();
 	}
 	private Advertise load(ResultSet result,int mode) throws SQLException {
+		
 		Advertise ann = new Advertise();
+		
 		ann.setId(result.getLong("id"));
-		ann.setDescription(result.getString("descrizione"));
+		String description = result.getString("descrizione") ;
+		if(description != null) {
+			ann.setDescription(description);
+		}
 		ann.setTitle(result.getString("titolo"));
 		ann.setExpiryDate(new DateTime(result.getDate("data_scadenza")));
 		ann.setProvince(result.getString("provincia_annuncio"));
 		Offer offer = new Offer();
 		offer.setId(result.getLong("proposta_accettata"));
 		ann.setAcceptedOffer(offer);
-		if(mode != Utils.BASIC_INFO) {
+		List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
+		ann.setInterestedAreas(areas);				
+		if(mode == Utils.BASIC_INFO) {
+			ann.setAccount(Database.getInstance().getAccountDao().findByPrimaryKey(result.getString("username_cliente"),Utils.BASIC_INFO));
+			ann.setImages(Database.getInstance().getImageDao().findByAdvertise(ann,Utils.BASIC_INFO));
+		}
+		else if(mode != Utils.BASIC_INFO) {
 			int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
-			ann.setAccount(Database.getInstance().getAccountDao().findByPrimaryKey(result.getString("username_cliente"),next));
 			List<Image> images = Database.getInstance().getImageDao().findByAdvertise(ann,next);
 			ann.setImages(images);
-			if(mode == Utils.COMPLETE) {
-				List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
-				ann.setInterestedAreas(areas);				
-			}
 		}				
 		return ann;
 	}
@@ -128,7 +144,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		List<Advertise> ann = new LinkedList<Advertise>();
 		List<Object> parameters = new LinkedList<Object>();
 		List<String> clauses = new LinkedList<String>();
-		StringBuilder queryBuilder = new StringBuilder("select * from annunci");
+		StringBuilder queryBuilder = new StringBuilder("select * from  annunci");
 		if (areas != null) {
 			queryBuilder.append(
 					" inner join annunci_ambiti on annunci.id = annunci_ambiti.id_annuncio inner join ambiti on id_ambito = ambiti.id ");
@@ -152,7 +168,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			clauses.add(" titolo like ? ");
 		}
 		if (clauses.size() != 0) {
-			queryBuilder.append(" where" + StringUtils.join(clauses, " and "));
+			queryBuilder.append(" where "+ StringUtils.join(clauses, " and "));
 		}
 		queryBuilder.append(" limit ? offset ?;");
 		parameters.add(quantity == null ? null : quantity);
@@ -226,4 +242,24 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 	 * = Arrays.asList(a); test.findGroup(null, areas, "CS", 30, null); } catch
 	 * (SQLException e) { e.printStackTrace(); } }
 	 */
+
+	@Override
+	public int[] findAdvertisesNumberAndAreasByAccount(String username) throws SQLException {
+		String query1 = "SELECT COUNT(DISTINCT id), COUNT(DISTINCT id_ambito) FROM annunci INNER JOIN annunci_ambiti ON id = id_annuncio WHERE username_cliente = ?";
+		PreparedStatement stmt1 = Database.getInstance().getConnection().prepareStatement(query1);
+		stmt1.setString(1, username);
+		ResultSet rs1= stmt1.executeQuery();
+		rs1.next();
+		int numberOfAdv = rs1.getInt(1);
+		int numberOfAreas = rs1.getInt(2);
+		
+		String query2 = "SELECT count(id) FROM annunci WHERE username_cliente = ? AND proposta_accettata IS NULL AND data_scadenza >= CURRENT_DATE"; 
+		PreparedStatement stmt2 = Database.getInstance().getConnection().prepareStatement(query2);
+		stmt2.setString(1, username);
+		ResultSet rs2 = stmt2.executeQuery();
+		rs2.next();
+		int numberOfOnlineAdv = rs2.getInt(1);
+		int[] v = {numberOfAdv, numberOfAreas, numberOfOnlineAdv};
+		return v;
+	}
 }

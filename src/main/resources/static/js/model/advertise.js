@@ -15,7 +15,7 @@ class Advertise{
 	}
 	
 	toJSON(){
-		return JSON.stringify(this.#serializer);
+		return this.#serializer;
 	}
 	
 	contructor(key){
@@ -31,9 +31,9 @@ class Advertise{
 		#built = false;
 				
 		constructor(){
-			this.areasList = [];
-			this.imagesList = [];
-			this.offersList = [];
+			this.interestedAreas = [];
+			this.images = [];
+			this.offers = [];
 		}
 		//add the specified property to the product
 		
@@ -76,25 +76,21 @@ class Advertise{
 		
 		withArea(area){
 			checkType(area, "Area");
-			this.areasList.push(area);
-		}
-		removeArea(area){
-			checkType(area, "Area");
-			this.areasList = this.areasList.filter((e)=>{
-				return e["id"] != area;
-			});
+			this.interestedAreas.push(area)
+			//this.interestedAreas = areas;
 		}
 		
-		withImage(image){
-			checkType(image, "Image");
-			this.imagesList.push(image);	
+		removeAreas(){
+			this.interestedAreas = [];
 		}
 		
-		removeImage(image){
-			checkType(image,  "Image");	
-			this.imageList = this.imagesList.filter((e)=>{
-				return e["id"] != image;
-			});
+		removeImages(){
+			this.images = [];	
+		}
+		
+		withImages(image){			
+			this.images.push(image);
+			//this.images = images;	
 		}
 		
 		withAcceptedOffer(offer){
@@ -114,23 +110,27 @@ class Advertise{
 		
 		withOffer(offer){
 			checkType(offer, "Offer");
-			this.offersList.push(offer);
+			this.offers.push(offer);
 			
 		}
 		removeOffer(offer){
 			checkType(offer,  "Offer");	
-			this.offersList = this.offersList.filter((e)=>{
+			this.offers = this.offers.filter((e)=>{
 				return e["id"] != offer;
 			});
+		}
+		withDates(dates){
+			//checkType(dates, "String");
+			this.#product.#addProperty("availability", dates);
 		}
 		
 	
 		build = function(){
 			if(this.#built) throw new Error("Builder had already been used");
 			this.#built = true;
-			this.#product.#addProperty("interestedAreas", this.areasList);
-			this.#product.#addProperty("images", this.imagesList);
-			this.#product.#addProperty("offers", this.offersList);
+			this.#product.#addProperty("interestedAreas", this.interestedAreas);
+			this.#product.#addProperty("images", this.images);
+			this.#product.#addProperty("offers", this.offers);
 			return this.#product;			
 		}	
 	}

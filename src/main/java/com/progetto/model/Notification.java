@@ -6,22 +6,22 @@ import com.progetto.Utils;
 
 
 public class Notification {
-	public static final String SYSTEM = "s";
-	public static final String MESSAGE = "m";
+	public static final String ADVERTISE = "a";
+	public static final String OFFER = "o";
 	public static final String REVIEW = "r";
-	private static final String PATTERN_TYPE_NOTIFICATION = "[smr]";
+	public static final String SYSTEM = "s";
+	//public static final String MESSAGE = "m";
+
+	private static final String PATTERN_TYPE_NOTIFICATION = "[aors]";
 	private long id;
 	private String text;
 	private String type;
 	private Account receiver;
+	private Account createdBy;
 	
 	
-	public Account getReceiver() {
-		return receiver;
-	}
-	public void setReceiver(Account receiver) {
-		this.receiver = receiver;
-	}
+	public Notification() {}
+
 	public long getId() {
 		return id;
 	}
@@ -44,6 +44,18 @@ public class Notification {
 		notNull(type);
 		matchesPattern(type, PATTERN_TYPE_NOTIFICATION);
 		this.type = type;
+	}
+	public Account getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(Account createdBy) {
+		this.createdBy = createdBy;
+	}
+	public Account getReceiver() {
+		return receiver;
+	}
+	public void setReceiver(Account receiver) {
+		this.receiver = receiver;
 	}
 	
 }

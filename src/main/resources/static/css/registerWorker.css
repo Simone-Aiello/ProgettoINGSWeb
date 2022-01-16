@@ -90,3 +90,11 @@ i{
 #summary{
 	display:none;
 }
+#summary-areas{
+	display: inline-block;
+}
+#summary-areas i{
+	cursor: default;
+	padding-right: 8px;
+	color: #FF9400
+}

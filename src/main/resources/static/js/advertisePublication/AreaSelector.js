@@ -6,40 +6,52 @@ $(document).ready(() => {
 
 
 function addAreasIconListener() {
+
 	$(".icon-figure").each(function (key,value){
-		let idFigure = "#area-" + (key + 1);
+		let id = "#area-" + (key + 1);
 		//selectedAreas[id] = false;
 		$(this).mouseenter(() => {
-			$(idFigure).css("background-color", "#FF9400");
-			$(idFigure + " .icon").css("color", "#FFFFFF");
+			$(id).css("background-color", "#FF9400");
+			$(id + " .icon").css("color", "#FFFFFF");
 		});
 		
 		$(this).mouseleave(() => {
-			if (listOfAreas.has(idFigure)) return;
+			let id = "#"+$(this).attr("id");
+			//let allClasses = $(id+ " i").attr("class").split(/\s+/);
+			//let areaName = allClasses[allClasses.length - 1];
+			if (listOfAreas.has(id)) return;
 			$(this).css("background-color", "#FFFFFF");
-			$(idFigure + " .icon").css("color", "#FF9400");
+			$(id + " .icon").css("color", "#FF9400");
 		});
 		
 		$(this).click(() => {
-			let idFigure = "#"+$(this).attr("id");
-			let idArea = $(idFigure).find("i").attr("id");
-			//alert(idArea);
-			if(!listOfAreas.has(idFigure)){
+			//alert("CLICKED AREAS");
+			let id = "#"+$(this).attr("id");
+			//alert("clicked" + id);
+			//let allClasses = $(id+ " i").attr("class").split(/\s+/);
+			//let areaName = allClasses[allClasses.length - 1];
+			//alert("clicked"+ id + " " + areaName);
+			//selectedAreas[id] = !selectedAreas[id];
+			if(!listOfAreas.has(id)){
+
 				areaBuilder = new Area.Builder();
-				let classList = $("#" + idArea).attr("class");
-				let classArr = classList.split(/\s+/);
-				//APPEND FAS BEFORE IMAGE IN HTML
-				//areaBuilder.withIcon(classArr[0] + classArr[1]);
-				areaBuilder.withName(classArr[classArr.length -1]);
-				areaBuilder.withId(idArea);
-				//alert($(this).attr("id"));
-				var area = areaBuilder.build();
-				listOfAreas.set(idFigure, area);
-				//alert(listOfAreas.has()):;
+				let idArea= $(id+ " i").attr("id");
+				areaBuilder.withId(parseInt(idArea, 10));
+				listOfAreas.set(id, areaBuilder.build());
+				//account_builder.withArea(areaBuilder.build());
+				//addToAreaSummary(areaName);
 			}
 			else{
-				listOfAreas.delete(idFigure);
+				$(this).css("background-color", "#FFFFFF");
+				$(id + " .icon").css("color", "#FF9400");
+				listOfAreas.delete(id);
+				//account_builder.removeArea($(id+ " i").attr("id"));
+				//removeFromAreaSummary(areaName);
 			}
 		});
 	});
+
 }
+
+
+
