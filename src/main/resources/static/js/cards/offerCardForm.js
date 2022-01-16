@@ -39,8 +39,8 @@ function createCardOfferForm(data){
     first_row_form.appendChild(form_title);
     first_row_form.appendChild(exit_button_form);
 
-    let row_information_user_advertise = createRow();
-    row_information_user_advertise.classList.add("space-between");
+    let row_information_user_advertise = document.createElement('div');
+    row_information_user_advertise.className = "wrapper space-between";
 
     let username_client_advertise = document.createElement("a");
     username_client_advertise.className = "card-subtitle text-muted small col-3 text-decoration-none" ;
@@ -98,7 +98,6 @@ function createCardOfferForm(data){
     wrapper_input_availabilities.className = "wrapper";
     wrapper_input_availabilities.style.marginLeft = "10px" ;
     wrapper_input_availabilities.style.position = "relative";
-    wrapper_input_availabilities.style.width = "50%";
     let input_availabilities = document.createElement("input");
     input_availabilities.type = "date" ;
     input_availabilities.className = "date-offer-form";
