@@ -1,0 +1,112 @@
+:root{
+    --color-orange-1 : rgba(244, 162, 97, 1);
+    --color-orange-0-9 : rgba(244, 162, 97, 0.9);
+    --color-orange-0-8 : rgba(244, 162, 97, 0.8);
+    --color-orange-0-7 : rgba(244, 162, 97, 0.7);
+    --color-orange-0-6 : rgba(244, 162, 97, 0.6);
+    --color-orange-0-5 : rgba(244, 162, 97, 0.5);
+}
+img{
+	object-fit: scale-down;
+}
+
+p h5{
+    margin: 0;
+    padding: 0;
+
+}
+
+.card-advertise-preview{
+    visibility: hidden;
+    display: none;
+    margin: 3px;
+    height: 80%;
+}
+
+.card-body-advertise-preview{ height: 100%; }
+.card-header-advertise-preview{ align-items: flex-start;  }
+
+.card-title-advertise-preview{
+    margin-right: 2px;
+    height: 100%;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 1.0rem;
+}
+
+
+.button-details-advertise-preview{
+    background-color: #f4a261;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.card-img-advertise-preview{
+    height: 40%;
+    width: 80%;
+    position: relative;
+    margin: 2px;
+    display: flex;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.icon-card{
+	position: fixed ;
+	top:50%;
+	right: 0;
+	transform: translateY(-50%);
+	font-size: 2rem;
+	color: white;
+	background-color: var(--color-orange-0-8);
+	border-radius : 10px 0 0 10px ;
+	padding: 5px;
+}
+.icon-card:hover{
+	scale: 1.1;
+    transition: 0.4s;
+    cursor: pointer ;
+}
+.card-information-advertise-preview{
+    display: grid;
+    grid-template-columns: 50% 45%;
+    column-gap: 5%;
+    font-size: 13px;
+    height: 20%;
+    margin-bottom: 2px;
+}
+
+.label-information{
+    align-self: end;
+}
+.due-date{ justify-self: end;}
+.card-information-advertise-preview p { 
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+
+@media screen and (max-width:800px){
+    
+    .card-header-advertise-preview{ height: 30%; }
+    .card-information-advertise-preview{ height: 50% ; margin: 0; }
+    .card-title-advertise-preview{ font-size: 0.9rem; }
+    .icon-card{ font-size: 1.2rem;}
+}
+
+@media screen and (min-width:1080px){
+    
+    .card-title-advertise-preview{ font-size: 1.3rem; }
+
+}

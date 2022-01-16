@@ -1,11 +1,17 @@
 package com.progetto.persistence.daoConcrete;
 
+import java.io.IOException;
+
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.progetto.Utils;
@@ -15,9 +21,24 @@ import com.progetto.model.Offer;
 import com.progetto.persistence.Database;
 import com.progetto.persistence.daoInterfaces.OfferDao;
 
+
+import org.json.*;
+
+
 public class OfferDaoConcrete implements OfferDao {
 	
 	private ObjectMapper mapper = new ObjectMapper();
+	
+	public static void main(String[] args) {
+		
+		try {
+			Database.getInstance().getOfferDao().findByPrimaryKey(1,Utils.COMPLETE);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	@Override
 	public boolean exists(Offer offer) throws SQLException {
@@ -47,9 +68,12 @@ public class OfferDaoConcrete implements OfferDao {
 		if(mode != Utils.BASIC_INFO) {
 			offer.setDone(resultSet.getBoolean("lavoro_effettuato"));
 			offer.setHoursOfWork(resultSet.getInt("ore_di_lavoro"));
+			JSONArray object = new JSONArray(resultSet.getString("disponibilità"));
+			List<String> availabilities = object.toList().stream().map( availabilitiesObject -> availabilitiesObject.toString()).collect(Collectors.toList());
+			offer.setAvailabilities(availabilities);
 			Account account = Database.getInstance().getAccountDao().findByPrimaryKey(resultSet.getString("username_lavoratore"), next);
 			offer.setWorker(account);
-			offer.setQuote(resultSet.getDouble("preventivo"));
+			ArrayList<String> a = new ArrayList<String>() ;
 			Advertise advertise = Database.getInstance().getAdvertiseDao().findByPrimaryKey(resultSet.getLong("id_annuncio"), next);
 			offer.setAdvertise(advertise);
 		}
@@ -101,6 +125,7 @@ public class OfferDaoConcrete implements OfferDao {
 			//preparedStatement.setLong(7,offer.getAdvertise().getId());
 			preparedStatement.setLong(7,4);
 			preparedStatement.setString(8,mapper.writeValueAsString(offer.getAvailabilities()));
+			
 			ResultSet rs = preparedStatement.executeQuery();
 			rs.next();
 			id = rs.getLong("id");

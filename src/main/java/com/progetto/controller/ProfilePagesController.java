@@ -27,11 +27,18 @@ public class ProfilePagesController {
 	public String getProfilePage(@RequestParam("username") String username,HttpServletRequest req,HttpServletResponse resp) {
 		try {
 			Account account = Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.COMPLETE);
-			int[] ratingAndCount = Database.getInstance().getReviewDao().averageRatingWorkerAndCount(account);
+			if(account == null) {
+				req.setAttribute("message", "Mi dispiace ma l'utente che stai cercando non esiste");
+				return "genericInfoPage";
+			}
+			req.setAttribute("type", account.getAccountType());
 			req.setAttribute("account", account);
 			req.setAttribute("date", Utils.convertDate(account.getPersonalInfo().getDateOfBirth()));
-			req.setAttribute("rating", ratingAndCount[0]);
-			req.setAttribute("count", ratingAndCount[1]);
+			if(account.getAccountType().equals(Account.WORKER)) {
+				int[] ratingAndCount = Database.getInstance().getReviewDao().averageRatingWorkerAndCount(account);
+				req.setAttribute("rating", ratingAndCount[0]);
+				req.setAttribute("count", ratingAndCount[1]);				
+			}
 		} catch (SQLException e) {
 			resp.setStatus(500);
 			e.printStackTrace();

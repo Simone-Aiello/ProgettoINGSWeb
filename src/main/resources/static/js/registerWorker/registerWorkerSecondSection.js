@@ -110,7 +110,7 @@ function newAreaFormValid() {
 }
 function sendNewArea() {
 	//Se la checkbox non è spuntata o si sta registrando un utente questa promise non la creo
-	if(!$("#new-area-checkbox").is(":checked") || $("#area-div").length <= 0) return null;
+	if(!$("#new-area-checkbox").is(":checked") || accountType != "w") return null;
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "POST",
@@ -149,7 +149,7 @@ $(document).ready(() => {
 	addFileReaderListener();
 	addUploadAndDeleteListeners();
 	addInputListener();
-	if($("#area-div").length){		
+	if(accountType == "w"){		
 		addAreasIconListener();
 		addNewAreaListener();
 	}

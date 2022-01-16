@@ -8,12 +8,14 @@ function sendAccount() {
 	user_builder.withAddress(address_builder.build());
 	account_builder.withUser(user_builder.build());
 	account_builder.withProfilePic(imageBuilder.build());
+	account_builder.withAccountType(accountType);
 	var account = account_builder.build();
-	console.log(account);
+	console.log(JSON.stringify(account));
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "POST",
-			url: "/registerWorker",
+			//url: "/registerWorker",
+			url: "/register",
 			contentType: "application/json",
 			data: JSON.stringify(account),
 			success: (response) => {
@@ -29,7 +31,7 @@ function updateSummary(idElement, currentText) {
 	let idSummary = "#summary-" + idElement;
 	$(idSummary).text(currentText);
 }
-function removePreviousError(idElement) {
+/*function removePreviousError(idElement) {
 	let errorId = "#" + idElement + "-error";
 	$(errorId).remove();
 }
@@ -57,7 +59,7 @@ function appendCorrect(idElement) {
 	if (idElement === "insert-password") {
 		$("#insert-password-info").css("color", "");
 	}
-}
+}*/
 function checkFormError(sectionId) {
 	let ok = true;
 	$("#" + sectionId).find('input').each(function() {
@@ -141,10 +143,10 @@ function switchToNextSection() {
 			}
 			break;
 		case 1:
-			if (!atLeastOneArea() && $("#area-div").length) {
+			if (!atLeastOneArea() && accountType == "w") {
 				appendError("area-div", "Selezionare almeno un ambito");
 			}
-			else if (!newAreaFormValid() && $("#area-div").length) {
+			else if (!newAreaFormValid() && accountType == "w") {
 				appendError("missing-area", "Campi obbligatori");
 			}
 			else {
@@ -220,7 +222,7 @@ function addPasswordListeners() {
 		}
 	});
 }
-function capitalizeFirstLetter(string) {
+/*function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 function getProvince() {
@@ -245,7 +247,7 @@ function getProvince() {
 			showSystemError("header");
 		}
 	});
-}
+}*/
 function handleUsernameInput() {
 	let usernameField = $("#username");
 	let username = usernameField.val();
@@ -280,7 +282,7 @@ function addEmailListeners() {
 		updateSummary("email", $("#email").val());
 	});
 }
-function handleNameInput() {
+/*function handleNameInput() {
 	try {
 		user_builder.withName($("#name").val());
 		appendCorrect("name");
@@ -288,14 +290,14 @@ function handleNameInput() {
 	catch (error) {
 		appendError("name", error.message);
 	}
-}
+}*/
 function addNameListeners() {
 	$("#name").on("input", () => {
 		handleNameInput();
 		updateSummary("name", $("#name").val());
 	});
 }
-function handleSurnameInput() {
+/*function handleSurnameInput() {
 	try {
 		user_builder.withSurname($("#surname").val());
 		appendCorrect("surname");
@@ -303,14 +305,14 @@ function handleSurnameInput() {
 	catch (error) {
 		appendError("surname", error.message);
 	}
-}
+}*/
 function addSurnameListeners() {
 	$("#surname").on("input", () => {
 		handleSurnameInput();
 		updateSummary("surname", $("#surname").val());
 	});
 }
-function handleTelephoneInput() {
+/*function handleTelephoneInput() {
 	let telephoneField = $("#telephone");
 	let telephoneValue = telephoneField.val();
 	try {
@@ -320,14 +322,14 @@ function handleTelephoneInput() {
 	catch (error) {
 		appendError("telephone", error.message);
 	}
-}
+}*/
 function addTelephoneListeners() {
 	$("#telephone").on("input", () => {
 		handleTelephoneInput();
 		updateSummary("telephone", $("#telephone").val());
 	})
 }
-function handleDateOfBirthListeners() {
+/*function handleDateOfBirthListeners() {
 	let dateField = $("#date-of-birth");
 	let dateValue = dateField.val();
 	try {
@@ -337,14 +339,14 @@ function handleDateOfBirthListeners() {
 	catch (error) {
 		appendError("date-of-birth", error.message);
 	}
-}
+}*/
 function addDateOfBirthListeners() {
 	$("#date-of-birth").on("input", () => {
 		handleDateOfBirthListeners();
 		updateSummary("date-of-birth", $("#date-of-birth").val());
 	});
 }
-function loadZipCode(withSummary) {
+/*function loadZipCode(withSummary) {
 	let selectedProvince = $("#province").val().toLowerCase();
 	let currentCity = $("#city").val();
 	for (c of city[selectedProvince]) {
@@ -355,8 +357,8 @@ function loadZipCode(withSummary) {
 			return;
 		}
 	}
-}
-function loadCity(selectedProvince, withSummary) {
+}*/
+/*function loadCity(selectedProvince, withSummary) {
 	let currentCity = $("#city");
 	$.ajax({
 		type: "GET",
@@ -384,7 +386,7 @@ function loadCity(selectedProvince, withSummary) {
 			showSystemError("header");
 		}
 	});
-}
+}*/
 function handleProvinceOfWorkInput() {
 	try {
 		account_builder.withProvinceOfWork($("#province-of-work").val());
@@ -394,7 +396,7 @@ function handleProvinceOfWorkInput() {
 		appendError("province-of-work", error.message);
 	}
 }
-function handleCityInput() {
+/*function handleCityInput() {
 	let townVal = $("#city").val();
 	try {
 		address_builder.withTown(townVal);
@@ -405,10 +407,10 @@ function handleCityInput() {
 		return false;
 	}
 	return true;
-}
+}*/
 function addProvinceAndCityListeners() {
 	$("#province-of-work").on("input", () => {
-		if ($("#province-of-work").length) {
+		if (accountType == "w") {
 			handleProvinceOfWorkInput();
 		}
 	});
@@ -436,8 +438,7 @@ function addProvinceAndCityListeners() {
 				loadCity(lowerCaseSelected, true);
 			}
 			appendCorrect("province");
-			//Esiste se si sta registrando un lavoratore
-			if ($("#province-of-work").length) {
+			if (accountType == "w") {
 				account_builder.withProvinceOfWork(selectedProvince);
 				$("#province-of-work").val(selectedProvince);
 				appendCorrect("province-of-work");
@@ -452,7 +453,7 @@ function addProvinceAndCityListeners() {
 		}
 	});
 }
-function handleViaInput() {
+/*function handleViaInput() {
 	let viaField = $("#via");
 	let viaValue = viaField.val();
 	try {
@@ -471,7 +472,7 @@ function handleHouseNumberInput() {
 	catch (error) {
 		appendError("house-number-error", error.message);
 	}
-}
+}*/
 function addAddressListeners() {
 	$("#via").on("input", () => {
 		handleViaInput();
@@ -517,5 +518,4 @@ $(document).ready(() => {
 	addAddressListeners();
 	addNextListeners();
 	addPreviousListeners();
-	console.log('${type}');
 });

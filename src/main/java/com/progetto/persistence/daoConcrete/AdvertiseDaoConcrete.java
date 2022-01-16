@@ -1,9 +1,10 @@
-package com.progetto.persistence.daoConcrete;
+	package com.progetto.persistence.daoConcrete;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -108,21 +109,27 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		statement.execute();
 	}
 	private Advertise load(ResultSet result,int mode) throws SQLException {
+		
 		Advertise ann = new Advertise();
+		
 		ann.setId(result.getLong("id"));
-		ann.setDescription(result.getString("descrizione"));
+		String description = result.getString("descrizione") ;
+		if(description != null) {
+			ann.setDescription(description);
+		}
 		ann.setTitle(result.getString("titolo"));
 		ann.setExpiryDate(new DateTime(result.getDate("data_scadenza")));
 		ann.setProvince(result.getString("provincia_annuncio"));
-		if(mode != Utils.BASIC_INFO) {
+		List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
+		ann.setInterestedAreas(areas);				
+		if(mode == Utils.BASIC_INFO) {
+			ann.setAccount(Database.getInstance().getAccountDao().findByPrimaryKey(result.getString("username_cliente"),Utils.BASIC_INFO));
+			ann.setImages(Database.getInstance().getImageDao().findByAdvertise(ann,Utils.BASIC_INFO));
+		}
+		else if(mode != Utils.BASIC_INFO) {
 			int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
-			ann.setAccount(Database.getInstance().getAccountDao().findByPrimaryKey(result.getString("username_cliente"),next));
 			List<Image> images = Database.getInstance().getImageDao().findByAdvertise(ann,next);
 			ann.setImages(images);
-			if(mode == Utils.COMPLETE) {
-				List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
-				ann.setInterestedAreas(areas);				
-			}
 		}				
 		return ann;
 	}
@@ -132,7 +139,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		List<Advertise> ann = new LinkedList<Advertise>();
 		List<Object> parameters = new LinkedList<Object>();
 		List<String> clauses = new LinkedList<String>();
-		StringBuilder queryBuilder = new StringBuilder("select * from annunci");
+		StringBuilder queryBuilder = new StringBuilder("select * from  annunci");
 		if (areas != null) {
 			queryBuilder.append(
 					" inner join annunci_ambiti on annunci.id = annunci_ambiti.id_annuncio inner join ambiti on id_ambito = ambiti.id ");
@@ -156,7 +163,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			clauses.add(" titolo like ? ");
 		}
 		if (clauses.size() != 0) {
-			queryBuilder.append(" where" + StringUtils.join(clauses, " and "));
+			queryBuilder.append(" where "+ StringUtils.join(clauses, " and "));
 		}
 		queryBuilder.append(" limit ? offset ?;");
 		parameters.add(quantity == null ? null : quantity);

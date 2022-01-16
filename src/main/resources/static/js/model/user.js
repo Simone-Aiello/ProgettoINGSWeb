@@ -80,6 +80,7 @@ class User {
 		withDateOfBirth = function(dateOfBirth) {
 			isDate(dateOfBirth)
 			if (isBeforeNow(dateOfBirth)) {
+				let _regex = /^(\d{4})-(\d{2})-(\d{2})$/;
 				var match = dateOfBirth.match(_regex);
 				let age = this.#product.#getAge(match);
 				if (age <= 0) throw new Error("La data inserita è successiva a quella odierna");

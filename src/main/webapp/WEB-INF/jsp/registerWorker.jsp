@@ -22,8 +22,12 @@
 	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 	crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
+<script
+	src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
 <script src="/js/registerWorker/registerWorker.js"></script>
 <script src="/js/registerWorker/registerWorkerSecondSection.js"></script>
+<script src ="/js/utils/utils.js"></script>
+<script>var accountType = "${type}"</script>
 <link rel="stylesheet" href="/css/registerWorker.css">
 </head>
 <body>
@@ -103,7 +107,7 @@
 							<option selected disabled value="">Scegli...</option>
 						</select>
 					</div>
-					<c:if test="${type == w}">
+					<c:if test="${type == 'w'}">
 						<div class="mb-3 col-lg-6 col-md-6 col-xs-12">
 							<label class="form-label">Sede di lavoro</label> <select
 								class="form-select" id="province-of-work">
@@ -151,7 +155,7 @@
 				</div>
 			</div>
 			<hr />
-			<c:if test="${type == w}">
+			<c:if test="${type == 'w'}">
 				<div id="area-div">
 					<div class="row">
 						<c:forEach items="${areas}" var="area" varStatus="loop">
@@ -186,7 +190,7 @@
 						class="image-fluid rounded-photo" id="summary-profile-pic">
 				</figure>
 			</div>
-			<c:if test="${type == w}">
+			<c:if test="${type == 'w'}">
 				<div id="summary-areas-outer" class="centered-div">
 					<div id="summary-areas"></div>
 				</div>
@@ -229,7 +233,7 @@
 			<p>
 				<span class="bold">CAP</span>: <span id="summary-zip-code"></span>
 			</p>
-			<c:if test="${type == w}">
+			<c:if test="${type == 'w'}">
 				<p>
 					<span class="bold">Sede di lavoro</span>: <span
 						id="summary-province-of-work"></span>

@@ -27,6 +27,13 @@ function isDate(date){
 		throw new Error("La data inserita non è valida");
 }
 
+var date_from_db_to_ISO = (value) =>{
+	let regex = /^(\d{4})-(\d{2})-(\d{2}).*$/	
+	let match = value.match(regex);
+	return match[3]+"/"+match[2]+"/"+match[1];
+}
+
+
 function isBeforeNow(date) {
 
     isDate(date);
@@ -197,3 +204,11 @@ function createMessage(data){
 
     return message_container ;
 }
+
+
+
+
+
+
+
+
