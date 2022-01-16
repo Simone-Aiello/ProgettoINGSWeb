@@ -1,5 +1,3 @@
-import { Account } from "./model/account.js";
-
 var loginCredentials = new Account.Builder();
 var account;
 
@@ -65,7 +63,7 @@ function doLogin(){
 				//alert(account);
 				}
 			else
-				window.location.replace("test.html");
+				window.location.replace("/");
 		}, 
 		error : (xhr) =>{
 			alert(xhr)
