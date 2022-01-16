@@ -8,7 +8,6 @@ i{
 	display: inline-block;
 }
 .rounded-photo{
-	
 	height: 210px;
 	clip-path: circle(40%);
 }

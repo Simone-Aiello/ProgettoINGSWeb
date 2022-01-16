@@ -136,7 +136,10 @@
 			</form>
 		</section>
 		<section id="picture-and-areas">
-			<h1 class="">Inserisci una foto e i tuoi ambiti di lavoro</h1>
+		<c:choose>
+			<c:when test="${type == 'w'}"><h1 class="">Inserisci una foto e i tuoi ambiti di lavoro</h1></c:when>
+			<c:otherwise><h1 class="text-center">Inserisci una foto</h1></c:otherwise>
+		</c:choose>
 			<div id="profile-div">
 				<div class="centered-div">
 					<figure class="profile-figure">

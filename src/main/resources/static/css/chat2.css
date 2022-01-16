@@ -1,0 +1,170 @@
+#people-list ul {
+	padding-top: 10px;
+	max-height: 550px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#people-list, #current-chat {
+	height: 580px;
+}
+
+#current-chat {
+	border-left: 1px solid #eaeaea;
+}
+
+#current-person {
+	border-bottom: 1px solid #eaeaea;
+	height: 72px;
+}
+
+#personal-info {
+	position: relative;
+	top: 10px;
+	padding-left: 10px;
+	display: none;
+}
+
+#personal-info span {
+	position: relative;
+	top: 10px;
+	padding-left: 8px;
+	font-weight: 500;
+}
+
+#current-chat {
+	position: relative; padding-left : 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.row {
+	margin-top: 20px;
+	background: #fff;
+	border-radius: 15px;
+	border: 1px solid #eaeaea;
+	height: 590px;
+}
+
+body {
+	background-color: #f4f7f6;
+}
+
+img {
+	clip-path: circle(40%);
+	width: 50px;
+	float: left;
+}
+
+#people-list ul li {
+	padding: 10px 0px 10px 10px;
+	width: 100%;
+	border-radius: 10px;
+}
+
+#people-list ul li:hover {
+	background: #efefef;
+	cursor: pointer
+}
+
+#people-list ul li .name {
+	position: relative;
+	top: 10px;
+	padding-left: 4px;
+}
+
+#messages-list li.my-message-li {
+	float: right;
+	clear: right;
+}
+
+.my-message {
+	position: relative; display : flex;
+	align-items: center;
+	max-width: 420px;
+	min-width: 130px;
+	min-height: 60px;
+	background-color: #f9dcc4;
+	margin-right: 20px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	padding: 10px 10px 0px 10px;
+	border-radius: 10px;
+	display: flex;
+}
+
+.message-content {
+	word-wrap: break-word;
+	hyphens: auto;
+}
+
+.other-message {
+	clear: right;
+	display: flex;
+	position: relative; align-items : center;
+	max-width: 420px;
+	min-width: 130px;
+	min-height: 60px;
+	border-radius: 10px;
+	background-color: #eaeaea;
+	margin-left: 20px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	padding: 10px 10px 0px 10px;
+	align-items: center;
+}
+
+#current-messages {
+	max-height: 465px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#send-message {
+	width: 10%;
+	border-radius: 5px;
+	background-color: #FF9400;
+	color: white;
+	border: none;
+}
+#send-message:hover{
+	background-image: linear-gradient(rgba(0, 0, 0, 0.05) 0 0);
+}
+#new-message-div {
+	position: absolute;
+	bottom: 0;
+	margin-top: 6px;
+	margin-left: 7px;
+	width: 98%;
+	display: none;
+}
+
+#recent-chats-div {
+	display: none;
+	color: #FF9400;
+	padding-top: 5px;
+	padding-right: 20px;
+	float: right;
+	color: #FF9400;
+}
+
+#contact-list-toggle {
+	cursor: pointer;
+}
+
+.message-timestamp {
+	position: absolute;
+	bottom: 2px;
+	right: 20px;
+	font-size: 13px;
+}
+.fa-circle{
+	display: none;
+	color:#FF9400;
+	font-size: 9px;
+	position: relative;
+	left: 10px;
+}
+.name{
+	font-size: 16px;
+}

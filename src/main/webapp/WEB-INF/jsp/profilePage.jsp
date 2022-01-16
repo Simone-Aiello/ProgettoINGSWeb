@@ -23,10 +23,12 @@
 <script src="/js/model/area.js"></script>
 <script src="/js/model/image.js"></script>
 <script src="/js/profilePage/profilePageLogged.js"></script>
-<script src ="/js/utils/utils.js"></script>
+<script src="/js/utils/utils.js"></script>
 <script
 	src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
-<script>var accountType = "${type}"</script>
+<script>
+	var accountType = "${account.accountType}"
+</script>
 </head>
 <body>
 	<div class="container mt-5 shadow">
@@ -67,8 +69,9 @@
 				<c:if test="${!account.valid}">
 					<div class="alert alert-danger alert-dismissible fade show"
 						role="alert">
-						Accedere alla mail e cliccare sul link ricevuto per confermare
-						l'account oppure <a id="send-email" class="alert-link">re-invia
+						L'account non è ancora verificato, non potrà proporsi per nessun
+						annuncio. Accedere alla mail e cliccare sul link ricevuto per
+						confermare l'account oppure <a id="send-email" class="alert-link">re-invia
 							mail</a>.
 						<button id="dismiss-alert" type="button" class="btn-close"
 							data-bs-dismiss="alert" aria-label="Close"></button>
@@ -209,6 +212,36 @@
 							<div class="mt-5 text-center">
 								<button id="next-reviews" class="btn btn-primary" type="button">Mostra
 									altre</button>
+							</div>
+							<!-- Button trigger modal -->
+							<button type="button" class="btn btn-primary"
+								data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+								Launch static backdrop modal</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="staticBackdrop"
+								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+								aria-labelledby="staticBackdropLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="staticBackdropLabel">Contatta
+												${account.username}</h5>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<textarea placeholder="Scrivi qui il tuo messaggio..."
+												style="width: 100%;"></textarea>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">Annulla</button>
+											<button type="button" class="btn btn-primary">Invia
+												messaggio</button>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

@@ -56,7 +56,8 @@ public class AccountDaoConcrete implements AccountDao {
 				int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 				String number = rs.getString("telefono");
 				if(number != null) a.setNumber(number);
-				if(a.getProvinceOfWork() != null) a.setProvinceOfWork(rs.getString("provincia_lavoro"));
+				String provinceOfWork = rs.getString("provincia_lavoro");
+				if(provinceOfWork != null) a.setProvinceOfWork(provinceOfWork);
 				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
 				if(user != null) a.setPersonalInfo(user);
 				if (mode != Utils.LIGHT) {
@@ -168,13 +169,16 @@ public class AccountDaoConcrete implements AccountDao {
 					Database.getInstance().getAreaDao().linkToAccount(area, a);
 				}
 			}
-			String query = "UPDATE account SET " + StringUtils.join(clauses,", ") + " where username = ?";
-			values.add(a.getUsername());
-			PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
-			for(int i = 0; i < values.size();i++) {
-				st.setObject(i+1, values.get(i));
+			//Se non ha parametri di account da aggiornare salta questa query
+			if(clauses.size() > 0) {
+				String query = "UPDATE account SET " + StringUtils.join(clauses,", ") + " where username = ?";
+				values.add(a.getUsername());
+				PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+				for(int i = 0; i < values.size();i++) {
+					st.setObject(i+1, values.get(i));
+				}
+				st.executeUpdate();				
 			}
-			st.executeUpdate();
 		} else {
 			// Salvo l'user associato all'account e mi prendo l'id
 			long userId = Database.getInstance().getUserDao().save(a.getPersonalInfo());

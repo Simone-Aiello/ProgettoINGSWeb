@@ -12,6 +12,6 @@ public interface MessageDao {
 	public void save(Message m, Chat c) throws SQLException;
 	public void delete(Message m) throws SQLException;
 	public boolean exists(Message m)throws SQLException;
-	public List<Message> findMessagesByChat(Chat chat) throws SQLException;
+	public List<Message> findMessagesByChat(long chatId,String username_richiedente) throws SQLException;
 	public void deleteMessagesByChat(Chat chat)throws SQLException;
 }

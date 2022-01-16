@@ -10,8 +10,13 @@ class Area{
 	
 	#addProperty = (property, value)=>{
 		this.#serializer[property] = value;
+		this.#addGetter(property);
 	}
-	
+	#addGetter = (property) => {
+		this[property] = () => {
+			return JSON.parse(JSON.stringify(this.#serializer[property]));
+		}
+	}
 	toJSON(){
 		return this.#serializer;
 	}

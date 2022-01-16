@@ -10,7 +10,8 @@ public class Message {
 	private long id;
 	private String text;
 	private DateTime messageTime;
-	
+	private String sender;
+	private long idChat;
 	public long getId() {
 		return id;
 	}
@@ -31,8 +32,20 @@ public class Message {
 	}
 	public void setMessageTime(DateTime messageTime) {
 		notNull(messageTime);
-		isTrue(messageTime.isBeforeNow());
+		//isTrue(messageTime.isBeforeNow()); Se salvo un messaggio lo salvo con il timestamp di ora, questo torna sempre false 
 		this.messageTime = messageTime;
+	}
+	public String getSender() {
+		return sender;
+	}
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+	public long getIdChat() {
+		return idChat;
+	}
+	public void setIdChat(long idChat) {
+		this.idChat = idChat;
 	}
 	
 }

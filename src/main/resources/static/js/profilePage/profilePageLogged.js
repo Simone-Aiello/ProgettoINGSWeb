@@ -65,19 +65,19 @@ function buildNewAccount() {
 	return account_builder.build();
 }
 function displayAccount(account) {
-	if (account.personalInfo.name != undefined) $("#name").val(account.personalInfo.name);
-	if (account.personalInfo.surname != undefined) $("#surname").val(account.personalInfo.surname);
-	if (account.personalInfo.dateOfBirth != undefined) $("#date-of-birth").val(account.personalInfo.dateOfBirth);
-	if (account.number != undefined) $("#telephone").val(account.number);
-	if (account.personalInfo.address.zipCode != undefined) $("#zip-code").val(account.personalInfo.address.zipCode);
-	if (account.personalInfo.address.province != undefined) $("#province").html(`<option selected>${account.personalInfo.address.province}<option>`);
-	if (account.personalInfo.address.town != undefined) $("#city").html(`<option selected>${account.personalInfo.address.town}<option>`);
-	if (account.profilePic.value != undefined) $("#profile-pic").attr("src", account.profilePic.value == "default" ? defaultPhoto : account.profilePic.value);
+	if (account.personalInfo().name() != undefined) $("#name").val(account.personalInfo().name());
+	if (account.personalInfo().surname() != undefined) $("#surname").val(account.personalInfo().surname());
+	if (account.personalInfo().dateOfBirth() != undefined) $("#date-of-birth").val(account.personalInfo().dateOfBirth());
+	if (account.number() != undefined) $("#telephone").val(account.number());
+	if (account.personalInfo().address().zipCode() != undefined) $("#zip-code").val(account.personalInfo().address().zipCode());
+	if (account.personalInfo().address().province() != undefined) $("#province").html(`<option selected>${account.personalInfo().address.province()}<option>`);
+	if (account.personalInfo().address().town() != undefined) $("#city").html(`<option selected>${account.personalInfo().address.town()}<option>`);
+	if (account.profilePic().value() != undefined) $("#profile-pic").attr("src", account.profilePic().value() == "default" ? defaultPhoto : account.profilePic().value());
 	if(accountType == "w"){
-		if (account.provinceOfWork != undefined) $("#province-of-work").html(`<option selected>${account.provinceOfWork}<option>`);
+		if (account.provinceOfWork() != undefined) $("#province-of-work").html(`<option selected>${account.provinceOfWork()}<option>`);
 		$(".areas").html("");
-		for (area of account.areasOfWork) {
-			$(".areas").append(`<i class="area fas ${area.icon} fa-2x icon mb-3 p-2" id="${area.id}"></i>`);
+		for (area of account.areasOfWork()) {
+			$(".areas").append(`<i class="area fas ${area.icon()} fa-2x icon mb-3 p-2" id="${area.id()}"></i>`);
 		}		
 	}
 }

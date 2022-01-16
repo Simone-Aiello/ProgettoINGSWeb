@@ -33,6 +33,7 @@ public class AddressDaoConcrete implements AddressDao {
 			 ps.setString(4, a.getTown());
 			 ps.setString(5, a.getProvince());
 			 ps.setLong(6, a.getId());
+			 System.out.println(ps);
 			 ps.executeUpdate();
 			 id = a.getId();
 		 }else {

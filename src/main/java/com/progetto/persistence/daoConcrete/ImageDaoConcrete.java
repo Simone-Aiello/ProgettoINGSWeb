@@ -80,6 +80,7 @@ public class ImageDaoConcrete implements ImageDao {
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(update);
 			stmt.setString(1, img.getValue());
 			stmt.setLong(2, img.getId());
+			System.out.println(stmt);
 			stmt.execute();
 		}
 		else if(img.getValue() != null){
