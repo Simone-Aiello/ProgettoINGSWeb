@@ -1,8 +1,31 @@
+
+function sendOffer(offer){
+	
+	checkType(offer,"Offer");
+	
+	let data = JSON.stringify(offer);
+	
+	$.ajax({
+		type: "POST",
+		url: "/registerOffer",
+		contentType: "application/json",
+		data: data,
+		success: (response) => {
+			console.log(response);
+		},
+		error: (xhr) => {
+			console.log(xhr.message);
+		}
+	});
+}
+
+
 function createOfferCardSummary(data){
 	//card
 	let card = document.createElement('div');
 	card.className = 'card shadow rounded';
-	card.style = 'width : 32rem margin: 10px;';
+	card.style.margin = 'margin: 5px'; 
+	card.style.maxWidth = "400px";
 	
 	//card body
 	let card_body = document.createElement('div');
@@ -18,10 +41,21 @@ function createOfferCardSummary(data){
 	
 	let closeButton = document.createElement('button');
 	closeButton.className = 'col-2 btn';
+	closeButton.style = "display: flex; justify-content: center;align-items: center;"
 	let closeIcon = document.createElement('i');
 	closeIcon.className = 'far fa-times-circle';
-	closeIcon.style = 'font-size : 24px; color : #f4a261';
+	closeIcon.style = 'font-size : 24px; color : #f4a261 ;';
 	closeButton.appendChild(closeIcon);
+
+	
+	closeButton.onmouseover = () => {
+        gsap.to(closeButton,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)" , rotate : "-90deg"} );
+    }
+
+    closeButton.onmouseleave = () => {
+        gsap.to(closeButton,{ scale: 1 , ease : "elastic.out(1, 0.3)" , rotate : "0deg"} );
+    }
+	
 	titleRow.appendChild(title);
 	titleRow.appendChild(closeButton);
 
@@ -123,6 +157,9 @@ function createOfferCardSummary(data){
 	//container
 	let priceContainer = document.createElement('div');
 	priceContainer.className = 'col-12 input-group';
+	priceContainer.style.display = "flex";
+	priceContainer.style.justifyContent = "start";
+	priceContainer.style.AlingItems = "center";
 	//price
 	let price = document.createElement('input');
 	price.className = 'card-control';
@@ -130,11 +167,13 @@ function createOfferCardSummary(data){
 	price.readOnly = "readonly";
 	price.id = "amount";
 	price.value = data.quote;
+	price.style.width = "100px";
 	let sideInfo = document.createElement('div');
 	sideInfo.className = 'input-group-append';
 	let sideInfoSpan = document.createElement('span');
 	sideInfoSpan.className = 'input-group-text';
 	sideInfoSpan.innerHTML = '&#128;';
+	sideInfoSpan.style = "width: 20px;height: 100%;padding: 2px;display: flex;justify-content: center; align-items: center; margin: 0; padding: 0;" ;
 	sideInfo.appendChild(sideInfoSpan);
 	priceContainer.appendChild(price);
 	priceContainer.appendChild(sideInfo);
@@ -149,7 +188,8 @@ function createOfferCardSummary(data){
 	
 	//fiveth row : description text area 
 	let textAreaRow = document.createElement('div');
-	textAreaRow.className = 'row mt-2';
+	textAreaRow.className = 'row mt-2 shadown';
+	textAreaRow.style.padding = "15px";
 	
 	let textArea = document.createElement('textarea');
 	textArea.className = 'col input-group rounded';
@@ -187,8 +227,12 @@ function createOfferCardSummary(data){
 	let button_back = document.createElement('button');
 	button_back.className = 'btn btn-primary';
 	button_back.id = 'exit-button';
-	button_back.innerHTML = 'Torna indietro';
-	button_back.style = 'background-color : red ; border:none ; margin-right : 20px ; ';
+	button_back.style = 'background-color : red ; border:none ; margin-right : 20px ; padding: 0 10px; ';
+	
+	let icon_button_back = document.createElement('icon');
+	icon_button_back.className = "fa fa-angle-double-left";
+	
+	button_back.appendChild(icon_button_back);
 	
 	button_back.onmouseover = () => {
 		gsap.to(button_back,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });

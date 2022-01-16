@@ -1,3 +1,27 @@
+
+var requestImagesAdvertise = (id_advertise) =>{
+	
+	let data = JSON.stringify(id_advertise);
+	let res = null ;
+	
+	return new Promise((resolve, reject) => {
+		$.ajax({
+		type: "POST",
+		url: "/imagesFromAdvertise",
+		contentType: "application/json",
+		data: data,
+		async : false ,
+		success: (response) => {
+				res = response
+			},
+		error: (xhr) => {
+				console.log(xhr.message);
+			}
+		})
+	});
+}
+
+
 function createCard(data){
 
     // Cache for detail 
@@ -71,16 +95,22 @@ function createCard(data){
     let card_due_date = document.createElement("p");
     card_due_date.className = "card-text m-0 due-date" ;
     card_due_date.innerHTML = date_from_db_to_ISO(data.expiryDate);
+
      
     card_information.appendChild(label_card_province);
     card_information.appendChild(label_card_due_date);
     card_information.appendChild(card_province);
-    card_information.appendChild(card_due_date);
+	card_information.appendChild(card_due_date);    
     
+	// Card Icon
+	let card_icon = document.createElement('icon');
+	card_icon.className = "icon-card shadow "+data.interestedAreas[0].icon;
+
     // Append each element
     card_body.appendChild(card_header);
     card_body.appendChild(card_username_client);
     card_body.appendChild(card_img);
+	card_body.appendChild(card_icon);
     card_body.appendChild(card_information);
     card.appendChild(card_body);
 
@@ -171,3 +201,5 @@ function createCard(data){
 
     return card ;
 }
+
+

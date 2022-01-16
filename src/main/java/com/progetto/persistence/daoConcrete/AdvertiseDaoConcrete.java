@@ -120,7 +120,8 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		ann.setTitle(result.getString("titolo"));
 		ann.setExpiryDate(new DateTime(result.getDate("data_scadenza")));
 		ann.setProvince(result.getString("provincia_annuncio"));
-		
+		List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
+		ann.setInterestedAreas(areas);				
 		if(mode == Utils.BASIC_INFO) {
 			ann.setAccount(Database.getInstance().getAccountDao().findByPrimaryKey(result.getString("username_cliente"),Utils.BASIC_INFO));
 			ann.setImages(Database.getInstance().getImageDao().findByAdvertise(ann,Utils.BASIC_INFO));
@@ -129,10 +130,6 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 			List<Image> images = Database.getInstance().getImageDao().findByAdvertise(ann,next);
 			ann.setImages(images);
-			if(mode == Utils.COMPLETE) {
-				List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
-				ann.setInterestedAreas(areas);				
-			}
 		}				
 		return ann;
 	}
@@ -142,7 +139,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		List<Advertise> ann = new LinkedList<Advertise>();
 		List<Object> parameters = new LinkedList<Object>();
 		List<String> clauses = new LinkedList<String>();
-		StringBuilder queryBuilder = new StringBuilder("select * from annunci");
+		StringBuilder queryBuilder = new StringBuilder("select * from  annunci");
 		if (areas != null) {
 			queryBuilder.append(
 					" inner join annunci_ambiti on annunci.id = annunci_ambiti.id_annuncio inner join ambiti on id_ambito = ambiti.id ");
@@ -166,7 +163,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			clauses.add(" titolo like ? ");
 		}
 		if (clauses.size() != 0) {
-			queryBuilder.append(" where" + StringUtils.join(clauses, " and "));
+			queryBuilder.append(" where "+ StringUtils.join(clauses, " and "));
 		}
 		queryBuilder.append(" limit ? offset ?;");
 		parameters.add(quantity == null ? null : quantity);

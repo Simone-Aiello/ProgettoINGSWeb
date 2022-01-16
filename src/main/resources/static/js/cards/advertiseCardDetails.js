@@ -34,6 +34,14 @@ function createAdvertiseCardDetails(data){
     card_header.appendChild(card_title);
     card_header.appendChild(exit_button);
 
+	exit_button.onmouseover = () => {
+        gsap.to(exit_button,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)" , rotate : "-90deg"} );
+    }
+
+    exit_button.onmouseleave = () => {
+        gsap.to(exit_button,{ scale: 1 , ease : "elastic.out(1, 0.3)" , rotate : "0deg"} );
+    }
+
 
     // Card information
     let card_information = document.createElement("div");
@@ -41,9 +49,39 @@ function createAdvertiseCardDetails(data){
 
     // Username client advertise
     let card_username_client = document.createElement("a");
-    card_username_client.className = "col-3 text-muted text-decoration-none" ;
+    card_username_client.className = "col-3 text-muted text-decoration-none card-username" ;
     card_username_client.innerHTML = "@"+data.account.username ;
     card_username_client.href = "#";
+
+
+	// Row availabilites
+    let row_card_availabilites = createRow();
+    
+    // Label availabilities
+    let label_card_availabilites = document.createElement("p");
+    label_card_availabilites.className = "card-subtitle text-muted small p-0" ;
+    label_card_availabilites.innerHTML = "Disponbilità";
+
+    // Availabilities
+    let combobox_availabilites = document.createElement("select");
+    combobox_availabilites.className = "combobox-availabilites" ;
+
+    let combobox_option_availabilites_label = document.createElement("option"); 
+    combobox_option_availabilites_label.innerHTML = "Vedi" ;
+    combobox_option_availabilites_label.selected = true;
+
+    combobox_availabilites.append(combobox_option_availabilites_label);
+    
+	if(data.availabilities != null && data.availabilities != undefined ){		
+	    for(let availability of data.availabilities){
+	        let combobox_option_availabilites = document.createElement("option"); 
+	        combobox_option_availabilites.innerHTML = availability ;
+	        combobox_availabilites.append(combobox_option_availabilites);    
+	    }
+	}
+
+    row_card_availabilites.appendChild(label_card_availabilites);
+    row_card_availabilites.appendChild(combobox_availabilites);
 
     // Row province
     let row_card_province = createRow();
@@ -51,7 +89,7 @@ function createAdvertiseCardDetails(data){
     
     // Label province
     let label_card_province = document.createElement("p");
-    label_card_province.className = "card-subtitle text-muted small" ;
+    label_card_province.className = "card-subtitle text-muted small p-0" ;
     label_card_province.innerHTML = "Provincia";
 
     // Province
@@ -67,60 +105,91 @@ function createAdvertiseCardDetails(data){
     
     // Label due date
     let label_card_due_date = document.createElement("p");
-    label_card_due_date.className = "card-subtitle text-muted small" ;
+    label_card_due_date.className = "card-subtitle text-muted small p-0" ;
     label_card_due_date.innerHTML = "Data di scadenza";
 
     // Date
     let card_date = document.createElement("p");
-    card_date.className = "card-text" ;
+    card_date.className = "card-text p-0" ;
     card_date.innerHTML = date_from_db_to_ISO(data.expiryDate) ;
 
     row_card_due_date.appendChild(label_card_due_date);
     row_card_due_date.appendChild(card_date);
 
     card_information.appendChild(card_username_client);
+	card_information.appendChild(row_card_availabilites);
     card_information.appendChild(row_card_province);
     card_information.appendChild(row_card_due_date);
 
     // Card center
     let card_center = document.createElement("div");
-    card_center.className = "row" ;
+    card_center.className = "card-center card-center-carousel" ;
+
+    // Container label_images_outer_carousel
+    let container_label_images_outer_carousel = document.createElement("div");
+    container_label_images_outer_carousel.className = "container-label-images-outer-carousel"
+
+	// Label images
+    let label_images = document.createElement("p");
+    label_images.className = "card-text m-0-p-0 text-muted" ;
+    label_images.innerHTML = "Immagini" ;
 
     // outer carousel
     let outer_carousel = document.createElement("div");
     outer_carousel.id = "carouselExampleControls" ;
-    outer_carousel.className = "carousel slide col-lg-6 col-md-6 col-xs-12" ;
+    outer_carousel.className = "carousel outer-carousel slide shadow" ;
     outer_carousel.setAttribute("data-bs-ride","carousel");
+
+    container_label_images_outer_carousel.appendChild(label_images);
+    container_label_images_outer_carousel.appendChild(outer_carousel);
 
     // Inner carousel
     let inner_carousel = document.createElement("div");
     inner_carousel.className = "carousel-inner" ;
-    inner_carousel.style = "width:100% ;  height:250px !important; max-height: 250px !important;" ; 
     
 
     let first = true ;
 
-    // Filling with images
-    for(let image of data.images){
-
-        let container_img = document.createElement("div");
+	console.log("IMAGES: "+JSON.stringify(data.images))
+	// If no images load default image
+	if(data.images == []){
+		console.log('entered')
+		let container_img = document.createElement("div");
         container_img.className = "carousel-item" ;
 
         let img_carousel = document.createElement("img");
 
-        img_carousel.src = image.value;
-        img_carousel.className = "d-block w-100" ;
+        img_carousel.src = "../../images/no_image_available.jpg";
+        img_carousel.className = "d-block w-100 img-carousel" ;
         img_carousel.alt = "Immagine non trovata" ;
-        img_carousel.style ="object-fit: cover; object-position: center;";
         
-        if(first){
-            container_img.classList.add("active");
-            first = false ;
-        }
+       	container_img.classList.add("active");
 
         container_img.appendChild(img_carousel);
         inner_carousel.appendChild(container_img);
-    }
+	}	
+	else{		
+	    // Else filling with images
+	    for(let image of data.images){
+	
+	        let container_img = document.createElement("div");
+	        container_img.className = "carousel-item" ;
+	
+	        let img_carousel = document.createElement("img");
+	
+	        img_carousel.src = image.value;
+	        img_carousel.className = "d-block w-100 img-carousel" ;
+	        img_carousel.alt = "Immagine non trovata" ;
+	        
+	        if(first){
+	            container_img.classList.add("active");
+	            first = false ;
+	        }
+	
+	        container_img.appendChild(img_carousel);
+	        inner_carousel.appendChild(container_img);
+	    }
+	}
 
     // Button prev
     let button_prev = document.createElement("button");
@@ -152,33 +221,53 @@ function createAdvertiseCardDetails(data){
     outer_carousel.appendChild(button_prev);
     outer_carousel.appendChild(button_next);
 
+    // Container label description and description
+    let container_label_description_description = document.createElement("div");
+    container_label_description_description.className = "container-label-description-description"
+
+	// Label description
+    let label_description = document.createElement("p");
+    label_description.className = "card-text m-0-p-0 text-muted" ;
+    label_description.innerHTML = "Descrizione" ;
+
     // Card description
     let card_description = document.createElement("p");
-    card_description.className = "card-text col-lg-6 col-md-6 col-xs-12" ;
-	card_description.style.maxHeight = "250px"
-	card_description.style.overflowY = "auto" ;
+    card_description.className = "card-text card-description shadow" ;
     card_description.innerHTML = data.description ;
 
-    card_center.appendChild(outer_carousel);
-    card_center.appendChild(card_description);
+    container_label_description_description.appendChild(label_description);
+    container_label_description_description.appendChild(card_description);
 
+	card_center.appendChild(container_label_images_outer_carousel);
+    card_center.appendChild(container_label_description_description);
 
     // Row offer button
-    let row_offer_button = document.createElement("div");
-    row_offer_button.className = "d-flex flex-row-reverse mt-4";
+    let row_areas_offer_button = document.createElement("div");
+    row_areas_offer_button.className = "row-areas-offer-button mt-4";
 
+    // Offer button
     let offer_button = document.createElement("button");
     offer_button.className = "btn p-2" ;
     offer_button.style = "background-color: #f4a261; color: white;";
     offer_button.innerHTML= "Proponiti" ;
 
+    // Container areas
+    let container_areas = document.createElement('div');
+    container_areas.className = "container-areas shadow";
 
-    row_offer_button.appendChild(offer_button);
+    for(let area of data.interestedAreas){
+        let card_icon = document.createElement('icon');
+	    card_icon.className = "icon-card-advertise-details shadow "+area.icon;
+        container_areas.appendChild(card_icon);
+    }
+
+    row_areas_offer_button.appendChild(container_areas);
+    row_areas_offer_button.appendChild(offer_button);
 
     card_body.appendChild(card_header);
     card_body.appendChild(card_information);
     card_body.appendChild(card_center);
-    card_body.appendChild(row_offer_button);
+    card_body.appendChild(row_areas_offer_button);
     card.appendChild(card_body);
 
     modal_bg.appendChild(card);
@@ -186,7 +275,6 @@ function createAdvertiseCardDetails(data){
     let responsive = function(){
         
         if ($(window).width() <= 425) {  
-            card_description.classList.add("mt-3");
             card_province.style = "margin-left: 0;" ;
 			if(data.title.length > 15 )
 			    card_title.style.fontSize = "18px" ;
@@ -203,7 +291,6 @@ function createAdvertiseCardDetails(data){
 			
             card_title.style.fontSize = "22px" ;
             card_information.style.fontSize = "20";
-            card_description.classList.remove("mt-3");
             card_province.style.marginRight = "5px";
         	
         } 
@@ -212,13 +299,15 @@ function createAdvertiseCardDetails(data){
     responsive();
     $(window).resize(responsive);
     
-    offer_button.onmouseover = () => {
-        gsap.to(offer_button,{scale:1.1,duration : 0.3 });
-    }
 
-    offer_button.onmouseleave = () => {
-        gsap.to(offer_button,{scale:1,duration : 0.3 });
-    }
+	offer_button.onmouseover = () => {
+		gsap.to(offer_button,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
+	}
+
+
+	offer_button.onmouseleave = () => {
+		gsap.to(offer_button,{ scale: 1 ,ease : "elastic.out(1, 0.3)"  });
+	}
 
     card.close = () => {
 

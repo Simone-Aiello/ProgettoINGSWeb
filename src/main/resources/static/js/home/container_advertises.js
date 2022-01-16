@@ -5,7 +5,6 @@ class ContainerAdvertises extends HTMLElement{
         this.params = params ;
         this.className = "wrapper inner-container-advertises";
         this.view_advertises = [] ;
-        this.#addSpinners() ;
 		this.index_view = 0 ;
 		this.#show_view(this.index_view);
     }
@@ -32,11 +31,6 @@ class ContainerAdvertises extends HTMLElement{
     #show_view = (index_view) => {
 		if(index_view < 0)
 			return ;
-		console.log('THIS :'+this.index_view);
-		console.log('LET :'+index_view);
-		this.index_view = index_view ;
-		console.log('THIS :'+this.index_view);
-		console.log('LET :'+index_view);
 		if(this.view_advertises[index_view] == null){
 			this.#fill_view(index_view)
 			return ;
@@ -47,13 +41,14 @@ class ContainerAdvertises extends HTMLElement{
             this.appendChild(card_advertise);
             card_advertise.show();
         }
+		this.index_view = index_view;
 		this.#requestAdvertises(index_view + 1);
     }
 
 	// PERFORM A REQUEST TO GET ADVERTISES
     #requestAdvertises = (index_view,show = false) =>{
 		
-		if(this.view_advertises[index_view] != null )
+		if(this.view_advertises[index_view] != null || index_view > this.max_index_view)
 			return ;
 			
         let data = JSON.parse(JSON.stringify(this.params)) ;
@@ -67,12 +62,12 @@ class ContainerAdvertises extends HTMLElement{
                 console.log('{ RESPONSE FOR REQUEST WITH INDEX VIEW : '+index_view+' with '+advertises.length+' advertises }');
                 if(advertises.length > 0){
 					this.view_advertises[index_view] = [] ;
-					if(index_view == this.max_index_view)
-						this.max_index_view = null ;
 				}else{
 					this.max_index_view = index_view - 1; 
+					return ;
 				}
 				for(let advertise of advertises){
+					// console.log(advertise);
                     let card_advertise = createCard(advertise);
                     this.view_advertises[index_view].push(card_advertise);
                 }
@@ -88,6 +83,7 @@ class ContainerAdvertises extends HTMLElement{
 
 	// CALL REQUEST ADVERTISES FOR A SPECIFIC INDEX AND NEXT INDEX
     #fill_view = (index_view) =>{
+        this.#addSpinners() ;
         this.#requestAdvertises(index_view, true);
         this.#requestAdvertises(index_view + 1);
     }
@@ -101,7 +97,6 @@ class ContainerAdvertises extends HTMLElement{
 	
 	// SHOW THE PREV VIEW IF EXIST
 	show_prev_view = () =>{
-		console.log('THIS :'+this.index_view);
 		if (this.index_view - 1 < 0)
 			return ;
 		this.#show_view(this.index_view - 1);

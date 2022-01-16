@@ -206,48 +206,9 @@ function createMessage(data){
 }
 
 
-function sendOffer(offer){
-	
-	checkType(offer,"Offer");
-	
-	let data = JSON.stringify(offer);
-	
-	$.ajax({
-		type: "POST",
-		url: "/registerOffer",
-		contentType: "application/json",
-		data: data,
-		success: (response) => {
-			console.log(response);
-		},
-		error: (xhr) => {
-			console.log(xhr.message);
-		}
-	});
-}
 
 
-var requestImagesAdvertise = (id_advertise) =>{
-	
-	let data = JSON.stringify(id_advertise);
-	let res = null ;
-	
-	return new Promise((resolve, reject) => {
-		$.ajax({
-		type: "POST",
-		url: "/imagesFromAdvertise",
-		contentType: "application/json",
-		data: data,
-		async : false ,
-		success: (response) => {
-				res = response
-			},
-		error: (xhr) => {
-				console.log(xhr.message);
-			}
-		})
-	});
-}
+
 
 
 

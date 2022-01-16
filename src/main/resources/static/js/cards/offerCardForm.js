@@ -388,6 +388,16 @@ function createCardOfferForm(data){
     button_submit.innerHTML = "Invia proposta" ;
     button_submit.style.padding = "7px";
     button_submit.style.textAlign = "center";
+	button_submit.style.color = "white";
+
+	button_submit.onmouseover = () => {
+		gsap.to(button_submit,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
+	}
+
+
+	button_submit.onmouseleave = () => {
+		gsap.to(button_submit,{ scale: 1 ,ease : "elastic.out(1, 0.3)"  });
+	}
 
     let position_message_quote_error ;
     let position_message_duration_job_error ;
