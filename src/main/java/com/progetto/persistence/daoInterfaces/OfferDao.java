@@ -18,6 +18,6 @@ public interface OfferDao {
 	void delete(Offer offer) throws SQLException;
 	void deleteByAdvertise(Advertise a)throws SQLException;
 	List<Offer> findOffersByAccount(Account worker) throws SQLException;
-	
+	int findWorksDoneByAccount(String username) throws SQLException;
 
 }

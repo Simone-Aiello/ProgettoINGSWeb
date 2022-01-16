@@ -7,11 +7,10 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-		<link href = "/css/administratorPageCSS.css" rel = "stylesheet" type = "text/css">
-		<link href = "/css/profileCardCSS.css" rel = "stylesheet" type = "text/css">
+		<link href = "/css/administratorAreasManagerCSS.css" rel = "stylesheet" type = "text/css">
 		<script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 		<script src="/js/model/area.js"></script>
-		<script src = "/js/administratorOperations/administratorOperations.js" type="text/javascript" ></script>
+		<script src = "/js/administratorOperations/administratorAreasOperations.js" type="text/javascript" ></script>
 	</head>
 
 	<body>
@@ -83,75 +82,6 @@
 						</div>
 					</form>
 				</div>
-			</section>
-
-			<section id = "advertiseManagerSection">
-				<div class = "shadow mainDiv">
-					
-				</div>
-			</section>
-			
-			<section id = "profilesManagerSection">
-			
-			<div class = "mainDiv shadow">
-					<div class ="title">
-						<h2>Gestione profili</h2>
-					</div>
-					
-					<div id = "searchBox" class = "row">
-						<div id = "" class = "col">
-							<label class = "form-label searchBarLabel"> Chi cerchi?</label>
-							<input type = "text" placeholder = "username" class = "form-control form-control-sm">					
-						</div>
-						<div id = "" class = "col">
-							<label class = "form-label form-label-sm searchBarLabel">ambito?</label>
-							<select  class = " selectpicker form-control  form-control-sm"  multiple data-live-search = "true" size = "1">	
-								<option>Meccanico</option>
-								<option>Idraulico</option>
-								<option>Idraulico</option>
-								<option>Idraulico</option>
-								<option>Idraulico</option>
-							</select>				
-						</div>
-						<div id = "searchButtonDiv" class = "col">
-							<button id = "searchButton" type = "button" class = "form-control form-control-sm">Cerca</button>			
-						</div>
-					</div>
-					<div class = "profileCards">
-						  <div class="containerCard row mb-3 container-sm">
-								<div class="profileDiv col">
-									<div class="imageDiv">
-										<img src="/images/defaultProfilePic.png" width="70" height="70">
-									</div>
-									
-									<div class="profileName"><p>Ciccio Pasticcio</p></div>
-									
-									<div class="actions">
-										<button class="profileButton">Vedi profilo</button>
-										<button class="profileButton">Avvia chat</button>
-										<button class="profileButton">Banna account</button>
-									</div>
-								</div>
-								
-								<div class="stats col">
-									<div class ="boxes container-fluid">
-										<div class="box">
-											<span class="value">21</span>
-											<span class="parameter">Advertises</span>
-										</div>
-										<div class="box">
-											<span class="value">Meccanico</span>
-											<span class="parameter">Main area</span>
-										</div>
-										<div class="box">
-											<span class="value">4,5</span>
-											<span class="parameter">Rating</span>
-										</div>
-									</div>
-								</div>
-						  </div>
-					</div>
-				</div>				
 			</section>
 		
 		</div>

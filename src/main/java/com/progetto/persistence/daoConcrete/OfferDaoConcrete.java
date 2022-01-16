@@ -1,13 +1,10 @@
 package com.progetto.persistence.daoConcrete;
 
 import java.sql.PreparedStatement;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -186,5 +183,15 @@ public class OfferDaoConcrete implements OfferDao {
 			offers.add(loadOffer(rs, Utils.BASIC_INFO));
 		}
 		return offers;
+	}
+
+	@Override
+	public int findWorksDoneByAccount(String username) throws SQLException {
+		String query = "SELECT COUNT(id) FROM proposte WHERE lavoro_effettuato AND username_lavoratore = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, username);
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
 	}
 }

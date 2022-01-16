@@ -4,7 +4,7 @@ $(document).ready(() => {
 	addEvents();
 	
 });
-
+/*
 function showSection(sectionToShow){
 
 	for(let i = 0; i < sections.length; ++i){
@@ -16,7 +16,7 @@ function showSection(sectionToShow){
 		}
 	}
 }
-
+*/
 function addModifyButtonListener(){
 	//alert("WE");
 	$("button[id$='-AreaModifyButton']").on("click", (event) => {	
@@ -196,7 +196,6 @@ function addCreateNewAreaListener(){
 
 function addEvents(){
 	//showSection("areaManagerSection");
-	showSection("profilesManagerSection");
 	addModifyButtonListener();
 	addDeleteButtonListener();
 	addNewAreaFormListener();

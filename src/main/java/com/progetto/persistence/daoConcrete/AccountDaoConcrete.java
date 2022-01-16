@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import com.progetto.EmailSender;
 import com.progetto.Utils;
@@ -52,6 +51,11 @@ public class AccountDaoConcrete implements AccountDao {
 			a.setUsername(rs.getString("username"));
 			a.setEmail(rs.getString("email"));
 			a.setValid(rs.getBoolean("account_valido"));
+			a.setAccountType(rs.getString("tipo_account"));
+			Image image = Database.getInstance().getImageDao().findByPrimaryKey(rs.getLong("immagine_profilo"));
+			if(image != null) 
+				a.setProfilePic(image);
+			
 			if (mode != Utils.BASIC_INFO) {
 				int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 				String number = rs.getString("telefono");
@@ -61,9 +65,6 @@ public class AccountDaoConcrete implements AccountDao {
 				if(user != null) a.setPersonalInfo(user);
 				if (mode != Utils.LIGHT) {
 					//a.setPassword(rs.getString("password")); La password non la vogliamo mai indietro
-					Image image = Database.getInstance().getImageDao().findByPrimaryKey(rs.getLong("immagine_profilo"));
-					if(image != null) a.setProfilePic(image);
-					a.setAccountType(rs.getString("tipo_account"));
 					// if the account is a worker then he may work for some areas
 					if (a.getAccountType().equals(Account.WORKER)) {
 						List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
@@ -302,5 +303,63 @@ public class AccountDaoConcrete implements AccountDao {
 			return set.getString("codice_validazione_account");
 		}
 		return null;
+	}
+	
+	@Override
+	public List<Account> findWorkersByAreasAndUsername(List<Area> areas, String username) throws SQLException{
+		List<Account> accounts = new ArrayList<>();
+
+		StringBuilder builder = new StringBuilder("");
+		for(Area a: areas) {
+			if(a.getId() != 0)
+				builder.append("?" + ",");
+		}
+		if(areas.size() !=0 )
+			builder.deleteCharAt(builder.length() - 1);
+		String query = "";
+		PreparedStatement stmt;
+		if(username == null)
+			username = "";
+		//this is not the best query
+		if(username.equals("") && areas.size() != 0){//don't search by username
+			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON username_account = username WHERE id_ambito IN(" 
+					+ builder.toString() + ")";
+			
+			stmt = Database.getInstance().getConnection().prepareStatement(query);
+			for(int i = 0; i < areas.size(); ++i)
+				stmt.setLong(i + 1, areas.get(i).getId());
+		}
+		else if(!username.equals("") && areas.size() == 0){	//Search by only username
+			query = "SELECT username FROM account WHERE username LIKE ?";
+			stmt = Database.getInstance().getConnection().prepareStatement(query);
+			stmt.setString(1, "%" + username + "%");
+		}
+		else { //if(!username.equals("") && areas.size() != 0){//search by both username and areas (will only find workers)
+			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON username_account = username WHERE "
+					+ "username LIKE ? AND id_ambito IN(" + builder.toString() + ")";
+			stmt = Database.getInstance().getConnection().prepareStatement(query);
+			stmt.setString(1, "%" + username + "%");
+			for(int i = 0; i < areas.size(); ++i)
+				stmt.setLong(i + 2, areas.get(i).getId());
+		}
+		
+
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			Account a = findByPrimaryKey(rs.getString("username"), Utils.BASIC_INFO);
+			if(a != null)
+				accounts.add(a);
+		}
+		return accounts;
+	}
+
+
+
+	@Override
+	public void banAccount(Account a) throws SQLException {
+		String query = "UPDATE accounts SET bannato = true WHERE username = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, a.getUsername());
+		stmt.execute();
 	}
 }
