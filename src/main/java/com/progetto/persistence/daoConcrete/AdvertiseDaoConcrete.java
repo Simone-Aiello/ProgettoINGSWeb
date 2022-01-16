@@ -185,4 +185,24 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 	 * = Arrays.asList(a); test.findGroup(null, areas, "CS", 30, null); } catch
 	 * (SQLException e) { e.printStackTrace(); } }
 	 */
+
+	@Override
+	public int[] findAdvertisesNumberAndAreasByAccount(String username) throws SQLException {
+		String query1 = "SELECT COUNT(DISTINCT id), COUNT(DISTINCT id_ambito) FROM annunci INNER JOIN annunci_ambiti ON id = id_annuncio WHERE username_cliente = ?";
+		PreparedStatement stmt1 = Database.getInstance().getConnection().prepareStatement(query1);
+		stmt1.setString(1, username);
+		ResultSet rs1= stmt1.executeQuery();
+		rs1.next();
+		int numberOfAdv = rs1.getInt(1);
+		int numberOfAreas = rs1.getInt(2);
+		
+		String query2 = "SELECT count(id) FROM annunci WHERE username_cliente = ? AND proposta_accettata IS NULL AND data_scadenza >= CURRENT_DATE"; 
+		PreparedStatement stmt2 = Database.getInstance().getConnection().prepareStatement(query2);
+		stmt2.setString(1, username);
+		ResultSet rs2 = stmt2.executeQuery();
+		rs2.next();
+		int numberOfOnlineAdv = rs2.getInt(1);
+		int[] v = {numberOfAdv, numberOfAreas, numberOfOnlineAdv};
+		return v;
+	}
 }

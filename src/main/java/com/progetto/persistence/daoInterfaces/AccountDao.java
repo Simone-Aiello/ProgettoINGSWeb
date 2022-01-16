@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.progetto.model.Account;
+import com.progetto.model.Area;
 
 public interface AccountDao {
 	public List<Account> findAll(int mode)throws SQLException;
@@ -19,4 +20,6 @@ public interface AccountDao {
 	public boolean emailAlreadyUsed(String email) throws SQLException;
 	public void changePassword(String email,String password) throws SQLException;
 	public String getVerificationCode(String username) throws SQLException;
+	public List<Account> findWorkersByAreasAndUsername(List<Area> areas, String username) throws SQLException;
+	public void banAccount(Account a) throws SQLException;
 }
