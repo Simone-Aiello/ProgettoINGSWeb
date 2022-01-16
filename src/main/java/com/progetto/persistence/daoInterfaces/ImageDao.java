@@ -17,4 +17,5 @@ public interface ImageDao {
 	boolean alreadyExists(Image img) throws SQLException;
 	void deleteByAdvertise(Advertise a) throws SQLException;
 	void delete(long id) throws SQLException;
+
 }

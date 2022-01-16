@@ -74,6 +74,7 @@ public class NotificationDaoConcrete implements NotificationDao{
 		
 		PreparedStatement preparedStatement = null ;
 		
+		
 		if(exists(notification)) {
 			
 			query = "update notifiche set contenuto = ? , tipologia = ? where id = ? " ;
@@ -86,12 +87,13 @@ public class NotificationDaoConcrete implements NotificationDao{
 			
 		}else {
 			
-			query = "insert into notifiche(contenuto,tipologia) values(?,?) " ;
+			query = "insert into notifiche(contenuto,tipologia,account_username) values(?,?,?) " ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
 			
 			preparedStatement.setString(1, notification.getText());
-			preparedStatement.setString(2, notification.getType()) ;
+			preparedStatement.setString(2, notification.getType());
+			preparedStatement.setString(3, notification.getReceiver().getUsername());
 			
 		}
 		
@@ -134,6 +136,24 @@ public class NotificationDaoConcrete implements NotificationDao{
 	}
 
 	@Override
+	public void saveNotificationByOfferRefuse(Notification notification) throws SQLException {
+		String SAVE_NOTIFICATION = "insert into notifiche(contenuto,tipologia,account_username) values(?,CAST(? AS tipologia_notifica),?) returning id";
+		String SAVE_NOTIFICATION_ACCOUNT_NOTIFICHE = "insert into account_notifiche(id_notifica,username_ricevente) values(?,?)";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(SAVE_NOTIFICATION);
+		
+		ps.setString(1, notification.getText());
+		ps.setString(2, notification.getType());
+		ps.setString(3, notification.getReceiver().getUsername());
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		int id = rs.getInt(1);
+		PreparedStatement ps1 = Database.getInstance().getConnection().prepareStatement(SAVE_NOTIFICATION_ACCOUNT_NOTIFICHE);
+		ps1.setInt(1, id);
+		ps1.setString(2, notification.getReceiver().getUsername());
+		ps1.execute();
+	}
+	
 	public void saveNotificationByAdvertise(Advertise a) throws SQLException {
 		//Insert notification
 		String saveNotificationQuery = "INSERT INTO notifiche(contenuto, tipologia, account_username) values(?, cast(? as tipologia_notifica), ?) RETURNING id";

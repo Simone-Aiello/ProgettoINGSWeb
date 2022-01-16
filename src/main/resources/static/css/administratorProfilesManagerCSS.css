@@ -1,0 +1,128 @@
+body{
+	background-color: #f9dcc4;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mainDiv{
+	background-color: white;
+	margin: auto;
+	width: 60%;
+	padding: 35px;
+	border-radius: 10px;
+	
+}
+
+@media(max-width: 1024px){
+	.mainDiv{
+		width: 85%;
+	}
+}
+
+@media(max-width: 460px){
+	.mainDiv{
+		width: 95%;
+	}
+}
+
+#searchBox{
+	z-index: 10;
+	margin: 20px;
+	padding: 5px;
+	background-color: #FF9400;
+	border-radius: 20px;
+}
+
+#searchButtonDiv{
+	position: relative;	
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: column;
+}
+
+#searchButton{
+	margin-bottom: 7px;
+}
+.searchBarLabel{
+	padding: 0;
+	margin: 0;
+}
+
+
+.selectAreaProfiles{
+	width: max-content;
+	background-color: white;
+}
+.downArrow{
+	font-size: 1.5rem;
+	cursor: pointer;
+
+}
+.areaInput{
+	background-color: white;
+	margin-top: 8px;
+	margin-right: 4px;
+}
+
+
+.icon-figure i{
+	position: relative;
+	left: 5px;
+	color: white;
+	margin-right: 10px;
+}
+
+.icon-figure{
+	display: flex;
+	justify-content: center;
+	border-radius: 6px;
+	transition: transform .3s;
+	background-color: #FF9400;
+	padding: 3px;
+	margin-top: 3px;
+}
+
+.areaInputDiv{
+	background-color: rgb(192, 192, 192);
+	display: flex;
+	padding-left: 5px;
+	padding-top: 2px;
+}
+
+.selectAreaProfiles{
+	position: relative;	
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: column;
+}
+#areasListSelector{
+	overflow: hidden;
+	position: absolute;
+}
+
+.areaLabel{
+	margin-left: 10px;	
+}
+
+.profilePic{
+	width: 70px;
+	height: 70px;
+}
+
+#profileCards{
+	min-height: 800px;
+	border-width: 3px;
+	border-radius: 10px;
+	border-style: solid;
+	border-color:gray;
+	text-align: center;
+	padding: 20px 3px 3px 3px;
+	justify-content: center;
+}
+.profileCardsRow{
+	margin: 0;
+}
+.fullstar, .halfstar, .emptystar{
+		color: #FF9400;
+}

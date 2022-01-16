@@ -13,8 +13,8 @@ import com.progetto.persistence.Database;
 
 @Controller
 public class AdministratorPageController {
-	@GetMapping("/administratorPage")
-	public String getAdministratorPage(HttpServletRequest req) {
+	@GetMapping("/administratorAreasManager")
+	public String getAdministratorAreasPage(HttpServletRequest req) {
 		try {
 			List<Area> areas = Database.getInstance().getAreaDao().findAll();
 			req.setAttribute("areas", areas);
@@ -23,6 +23,18 @@ public class AdministratorPageController {
 			e.printStackTrace();
 		}
 		
-		return "administratorPage";
+		return "administratorAreasManager";
+	}
+	@GetMapping("/administratorProfilesManager")
+	public String getAdministratorProfilesPage(HttpServletRequest req) {
+		try {
+			List<Area> areas = Database.getInstance().getAreaDao().findAll();
+			req.setAttribute("areas", areas);
+		} catch (SQLException e) {
+			 //TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "administratorProfilesManager";
 	}
 }

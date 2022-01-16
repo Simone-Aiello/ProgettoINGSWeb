@@ -13,11 +13,13 @@ public interface OfferDao {
 	
 	boolean exists(Offer offer) throws SQLException;		
 	Offer findByPrimaryKey(long id_offer,int mode) throws SQLException;
+	Offer findByPrimaryKeyForUsers(long id_offer) throws SQLException;
+	List<Offer> findOffersByAdvertise(Advertise a) throws SQLException;
 	List<Offer> offersByAdvertise(Advertise a)throws SQLException;
 	long save(Offer offer) throws SQLException, JsonProcessingException;	
 	void delete(Offer offer) throws SQLException;
 	void deleteByAdvertise(Advertise a)throws SQLException;
 	List<Offer> findOffersByAccount(Account worker) throws SQLException;
-	
+	int findWorksDoneByAccount(String username) throws SQLException;
 
 }

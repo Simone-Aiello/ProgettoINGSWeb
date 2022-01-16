@@ -109,7 +109,7 @@ public class AreaDaoConcrete implements AreaDao{
 	@Override
 	public List<Area> findByAdvertise(Advertise ann) throws SQLException{
 		List<Area> areas = new ArrayList<Area>();
-		String query = "select id_ambito, nome, icona from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
+		String query = "select id, nome, icona from annunci_ambiti inner join ambiti on id_ambito = id where id_annuncio = ?";
 		PreparedStatement statement = Database.getInstance().getConnection().prepareStatement(query);
 		statement.setLong(1, ann.getId());
 		ResultSet set = statement.executeQuery();

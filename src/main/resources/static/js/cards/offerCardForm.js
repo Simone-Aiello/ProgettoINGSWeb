@@ -4,9 +4,11 @@
 function createCardOfferForm(data){
 	
 	let offer_builder = new Offer.Builder();
+    
+   
+    modal_bg = document.createElement("div");
 
-
-    let modal_bg = document.createElement("div");
+        
     modal_bg.className = "modal-bg-offer-form";
 
     let form = document.createElement("div");
@@ -37,12 +39,12 @@ function createCardOfferForm(data){
     first_row_form.appendChild(form_title);
     first_row_form.appendChild(exit_button_form);
 
-    let row_information_user_advertise = createRow();
-    row_information_user_advertise.classList.add("space-between");
+    let row_information_user_advertise = document.createElement('div');
+    row_information_user_advertise.className = "wrapper space-between";
 
     let username_client_advertise = document.createElement("a");
     username_client_advertise.className = "card-subtitle text-muted small col-3 text-decoration-none" ;
-    username_client_advertise.innerHTML = "@"+ data.username_client ;
+    username_client_advertise.innerHTML = "@"+ data.account.username ;
     username_client_advertise.style.padding = 0 ;
 
     let row_province_client_advertise = createRow();
@@ -68,7 +70,7 @@ function createCardOfferForm(data){
 
     let due_date_advertise = document.createElement("p");
     due_date_advertise.className = "card-text" ;
-    due_date_advertise.innerHTML = data.date ;
+    due_date_advertise.innerHTML = date_from_db_to_ISO(data.expiryDate)  ;
 
     row_due_date_advertise.appendChild(label_due_date_advertise);
     row_due_date_advertise.appendChild(due_date_advertise);
@@ -77,7 +79,8 @@ function createCardOfferForm(data){
     row_information_user_advertise.appendChild(row_province_client_advertise);
     row_information_user_advertise.appendChild(row_due_date_advertise);
 
-    let row_availabilities = createRow() ;
+    let row_availabilities = document.createElement("div") ;
+	row_availabilities.className = "wrapper";
     row_availabilities.style.margin = "10px 0";
     row_availabilities.style.position = "relative";
 
@@ -92,10 +95,9 @@ function createCardOfferForm(data){
     container_dropdown_dates.appendChild(label_no_dates_added);
 
     let wrapper_input_availabilities = document.createElement("div");
-    wrapper_input_availabilities.className = "wapper";
+    wrapper_input_availabilities.className = "wrapper";
     wrapper_input_availabilities.style.marginLeft = "10px" ;
     wrapper_input_availabilities.style.position = "relative";
-
     let input_availabilities = document.createElement("input");
     input_availabilities.type = "date" ;
     input_availabilities.className = "date-offer-form";
@@ -122,10 +124,10 @@ function createCardOfferForm(data){
         message_add_availabilities_button.close();
     }
 
-    // CONTINUARE DA QUA
     function createRowDropdownItem(date){
 
-        let row_dropdown_item_date = createRow();
+        let row_dropdown_item_date = document.createElement("div");
+		row_dropdown_item_date.className = "wrapper";
         row_dropdown_item_date.style.width = "100%";
         row_dropdown_item_date.value = date ;
     
@@ -385,10 +387,20 @@ function createCardOfferForm(data){
     button_submit.innerHTML = "Invia proposta" ;
     button_submit.style.padding = "7px";
     button_submit.style.textAlign = "center";
+	button_submit.style.color = "white";
+
+	button_submit.onmouseover = () => {
+		gsap.to(button_submit,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
+	}
+
+
+	button_submit.onmouseleave = () => {
+		gsap.to(button_submit,{ scale: 1 ,ease : "elastic.out(1, 0.3)"  });
+	}
 
     let position_message_quote_error ;
     let position_message_duration_job_error ;
-
+    let card_summary = null ;
 	button_submit.onclick = () => {
 	
 		let flag_error = false ; 	
@@ -397,6 +409,7 @@ function createCardOfferForm(data){
 			offer_builder.withHoursOfWork(job_duration);
 			let unit = combobox_unit.value ;
 		
+            var job_duration_string = job_duration + " " + unit ;
 			if(unit == "minuti"){
 				job_duration = job_duration / 60 ;
 			}else if(unit == "giorni"){
@@ -422,7 +435,7 @@ function createCardOfferForm(data){
 	
 		
 		try{
-			let input_quote_value = input_quote.value ;
+			var input_quote_value = input_quote.value ;
 			if(input_quote_value == "" )
 				input_quote_value = -1 ;
 			
@@ -454,17 +467,35 @@ function createCardOfferForm(data){
 			flag_error = true ;	
 		}
 	
-	
+        let description = card_description.value ;
+        if(!(description == null || description == ""))
+            offer_builder.withDescription(description);
+        		
+        
 		if(!flag_error)
 		{
-			let title = data.title + " <-> " + data.username_client ;
+			let title = data.title + " <-> " + data.account.username ;
 			offer_builder.withTitle(title);
-			offer_builder.withDescription(card_description.value);		
 			worker_builder = new Account.Builder();
 			worker_builder.withUsername(data.username_worker);
 			offer_builder.withWorker(worker_builder.build());
-			let offer = offer_builder.build();
-			sendOffer(offer);
+            data.availabilities = availabilities ;
+            data.offer_builder = offer_builder ;
+            data.description = description ;
+            data.job_duration = job_duration_string ;
+            data.quote = input_quote_value ;
+            data.cardOfferForm = form ;
+            data.modal_bg = modal_bg ;
+            if(card_summary == null ) 
+            {
+                card_summary = createOfferCardSummary(data);
+                card_summary.style.display = "none";
+                modal_bg.appendChild(card_summary);
+                console.log("HERE")
+            }
+            let time_to_close = form.close();
+            setTimeout(card_summary.show,time_to_close*1000);
+			
 		}
 	}
 
@@ -487,7 +518,8 @@ function createCardOfferForm(data){
     
     modal_bg.appendChild(form);
     
-    form.close = () => {
+    // CLOSE ALL
+    form.exit = () => {
 
         const inner_item_timeline = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});
 
@@ -503,10 +535,32 @@ function createCardOfferForm(data){
         modal_timeline.to(form,{ scale : 0.4 });  
         modal_timeline.to(form,{ scale : 0.8 });  
         modal_timeline.to(modal_bg,{ opacity :0 } ,'<');  
-        modal_timeline.to(modal_bg,{ visibility : "hidden" , duration : 0 });  
+        modal_timeline.to(modal_bg,{ visibility : "hidden" , duration : 0 , display : "none"});  
         document.body.style.overflow = "auto" ;
 
+
         return modal_timeline.totalDuration() ;
+    }
+
+    // Just close the pop-up not all the modal
+    form.close = () =>{
+
+        const inner_item_timeline = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});
+
+        inner_item_timeline.to(form_title,{x : -10, opacity : 0});
+        inner_item_timeline.to(exit_button_form,{y : -10, opacity : 0},'<');
+        inner_item_timeline.to(row_quote_duration_job,{x : -20, opacity : 0 });
+        inner_item_timeline.to(card_description,{x : 20, opacity : 0 }, '<');
+        inner_item_timeline.to(button_submit,{y : -10, opacity : 0});
+
+
+        const form_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
+        
+        form_timeline.to(form,{ scale : 0.4 });  
+        form_timeline.to(form,{ scale : 0.8 });  
+        form_timeline.to(form,{ opacity :0 } ,'<'); 
+        form_timeline.to(form,{ visibility : "hidden" , duration : 0  , display : "none"});   
+        return form_timeline.totalDuration() ;
     }
 
     form.show  = () => {
@@ -516,8 +570,10 @@ function createCardOfferForm(data){
             document.body.appendChild(modal_bg);
         }else{
             gsap.to(modal_bg,{opacity : 1 , duration : 1 });  
-            modal_bg.style.visibility = "visible" ;
         }
+
+        modal_bg.style.visibility = "visible" ;
+        modal_bg.style.display = "flex" ;
         
         document.body.style.overflow = "hidden" ;
 
@@ -529,13 +585,12 @@ function createCardOfferForm(data){
         tl.fromTo(card_description,{x : 20, opacity : 0},{x : 0, opacity : 1 }, '<');
         tl.fromTo(button_submit,{y : -10, opacity : 0},{y : 0, opacity : 1});
 
-        gsap.fromTo(form,{scale: 0.4 , opacity : 0} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)"});     
-
+        gsap.fromTo(form,{scale: 0.4 , opacity : 0,  display : "none" , visibility : "hidden"} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)", display : "flex" , visibility : "visible"});     
 
         return tl.duration() ;
     }
     
-    exit_button_form.onclick = form.close ;
+    exit_button_form.onclick = form.exit ;
 
 
 	let responsive = function(){

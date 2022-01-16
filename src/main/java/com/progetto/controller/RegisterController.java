@@ -21,6 +21,7 @@ import com.progetto.persistence.Database;
 public class RegisterController {
 
 	private ObjectMapper mapper = new ObjectMapper();
+
 	@PostMapping("/registerOffer")
 	public Offer registerOffer(@RequestBody Offer offer) {
 		long id;

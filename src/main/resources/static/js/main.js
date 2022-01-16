@@ -22,7 +22,7 @@ try{
 	
 	builder_user.withName("Salvatore");
 	builder_user.withSurname("Fiorentino");
-	builder_user.withDateOfBirth("13/09/2000");
+	builder_user.withDateOfBirth("2000-09-13");
 	builder_user.withAddress(address);
 	var user = builder_user.build(); 
 
@@ -34,7 +34,7 @@ try{
 var builder = new Account.Builder();
 try{
 	
-	builder.withUsername("salvatore fiorentino");
+	builder.withUsername("salvatore_fiorentino");
 	builder.withPassword("password12345!");
 	builder.withEmail("frnsvt00p13i872s@studenti.unical.it");
 	builder.withNumber("3505978018");
@@ -62,9 +62,12 @@ offer.property = "new Property"
 
 console.log(JSON.stringify(offer));
 
-let list = ["ciao"];
+console.log(account.username());
+let username2 = account.username();
+username2 = "ndria";
+console.log(username2);
+console.log(account.username());
 
-console.log(list.constructor.name);
 
 
 

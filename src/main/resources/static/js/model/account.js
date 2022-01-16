@@ -1,20 +1,22 @@
-class Account {
+export class Account {
 
 	static #key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
 	// Private serializer 
-	#serializer = {};
-
-	#addProperty = (property, value) => {
-		this.#serializer[property] = value;
+	#serializer = {} ;
+	
+	#addProperty = (property,value) => {
+		this.#serializer[property] = value ;
 		this.#addGetter(property);
-	}
-	#addGetter = (property) => {
-		this[property] = () => {
+	} 
+
+	#addGetter = (property) =>{
+		this[property] = () =>{
 			return JSON.parse(JSON.stringify(this.#serializer[property]));
 		}
 	}
-	toJSON() { return this.#serializer; }
+
+	toJSON() { return this.#serializer ; }
 
 	constructor(key) {
 		if (key != Account.#key)

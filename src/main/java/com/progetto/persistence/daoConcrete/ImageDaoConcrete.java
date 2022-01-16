@@ -49,6 +49,7 @@ public class ImageDaoConcrete implements ImageDao {
 		}
 		return images;
 	}
+	
 
 	@Override
 	public void deleteByAdvertise(Advertise a) throws SQLException {

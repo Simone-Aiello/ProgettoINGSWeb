@@ -15,5 +15,6 @@ public interface NotificationDao {
 	void saveNotificationByAdvertise(Advertise a) throws SQLException ;
 	void delete(Notification notification) throws SQLException ;
 	List<Notification> findNotificationsByReceiver(Account receiver) throws SQLException ;
+	void saveNotificationByOfferRefuse(Notification notification) throws SQLException;
 	
 }

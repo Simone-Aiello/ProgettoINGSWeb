@@ -1,0 +1,171 @@
+:root{
+    --color-orange-1 : rgba(244, 162, 97, 1);
+    --color-orange-0-9 : rgba(244, 162, 97, 0.9);
+    --color-orange-0-8 : rgba(244, 162, 97, 0.8);
+    --color-orange-0-7 : rgba(244, 162, 97, 0.7);
+    --color-orange-0-6 : rgba(244, 162, 97, 0.6);
+    --color-orange-0-5 : rgba(244, 162, 97, 0.5);
+}
+img{
+	object-fit: scale-down;
+}
+
+
+.modal-bg-advertise-details{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(43, 45, 66,0.4);
+    top: 0 ;
+    left: 0 ;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+
+.card-avertise-details{ max-height: 100vh;}
+
+.card-header-advertise-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.exit-button-advertise-details:hover{
+	color:  #f4a261;
+}
+
+.card-username{
+	text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-decoration: none;
+}
+.combobox-availabilites{
+    width: 80%;
+    margin-right: 5px;
+    border: 0 !important;
+    background-color: var(--color-orange-0-9 );
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.combobox-availabilites option{
+    background-color: #f4a261;
+}
+
+.combobox-availabilites::-ms-expand{
+    display: none;
+}
+.card-center-carousel{
+	margin-top : 10px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) ;
+	grid-gap: 8px;
+	
+}
+.container-label-description-description , .container-label-images-outer-carousel{
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% 90%;
+    grid-gap: 5px;
+}
+.outer-carousel{ 
+	align-self: center;
+	justify-self: center;
+	width: 100%;
+    height: 250px;
+}
+.carousel-inner{
+	height: 100%;
+	width: 100%;
+}
+.img-carousel{
+	object-fit: scale-down;
+	object-position: center;
+	height: 100%;
+}
+.carousel-item{
+	height: 100%;
+	width:100%;
+}
+.card-description{ 	
+	overflow-Y :  auto ;
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	max-height: 250px;
+}
+
+.card_title-advertise-details{ 
+    padding: 0;
+    margin-left: 5px;
+}
+
+.exit-button-advertise-details{ 
+    font-size: 32px;
+    color: #f4a261;
+    text-decoration: none;
+}
+
+.card-header-advertise-details{
+    display: flex; 
+    justify-content: space-between; 
+    width: 100%;
+}
+
+.row-areas-offer-button{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container-areas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: var(--color-orange-0-6);
+    padding: 2px 5px;
+	flex-wrap: wrap;
+}
+
+.icon-card-advertise-details{
+	font-size: 2rem;
+	color: white;
+	background-color: var(--color-orange-1);
+	border-radius : 10px;
+	margin: 1px 3px;
+	padding: 5px;
+	cursor: pointer ;
+}
+.icon-card-advertise-details:hover{
+    transition: 0.4s;
+	scale: 1.1;
+	
+}
+
+
+
+@media screen and (max-width: 730px){
+    
+    .modal-bg-advertise-details{
+        padding: 5px;
+    }
+
+}
+
+@media screen and (max-width: 600px){
+    
+    .card-avertise-details{
+        width: 98%;
+    }
+
+}

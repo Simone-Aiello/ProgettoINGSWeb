@@ -87,12 +87,9 @@ public class Advertise {
 	}
 	public void setExpiryDate(DateTime expiryDate) {
 		notNull(expiryDate);
-		//it doesn't work because when it receives a date
-		//it takes as milliseconds the time of 00:01(kind of)
-		//Solution: write a function in utils that checks the date correctly
-		//isTrue(expiryDate.isAfterNow());
 		this.expiryDate = expiryDate;
 	}
+	
 	public Account getAccount() {
 		return account;
 	}
