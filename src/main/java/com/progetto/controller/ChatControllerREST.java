@@ -65,7 +65,7 @@ public class ChatControllerREST {
 			if (Database.getInstance().getChatDao().isAnUserOfAChat(c, a)) {
 				DateTime t = new DateTime();
 				message.setMessageTime(t);
-				Database.getInstance().getMessageDao().save(message, c);
+				Database.getInstance().getMessageDao().save(message);
 				return message;
 			}
 			return null;
@@ -73,6 +73,20 @@ public class ChatControllerREST {
 			resp.setStatus(500);
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	@PostMapping("/startChat")
+	public void startNewChat(@RequestBody Chat c, HttpServletResponse resp) {
+		try {
+			for(Message m : c.getMessages()) {
+				DateTime t = new DateTime();
+				m.setMessageTime(t);
+			}
+			Database.getInstance().getChatDao().save(c);
+		} catch (SQLException e) {
+			resp.setStatus(500);
+			e.printStackTrace();
 		}
 	}
 }

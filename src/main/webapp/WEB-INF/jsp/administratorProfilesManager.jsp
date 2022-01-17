@@ -8,11 +8,12 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<link href = "/css/profileCardCSS.css" rel = "stylesheet" type = "text/css">
 		<link href = "/css/administratorProfilesManagerCSS.css" rel = "stylesheet" type = "text/css">
-		<script src="https://kit.fontawesome.com/c4665949e9.js"></script>
-		<script src ="/js/model/area.js" type = "text/javascript"></script>
-		<script src ="/js/model/account.js" type = "text/javascript"></script>
-		<script src ="/js/administratorOperations/administratorProfilesOperations.js" type = "text/javascript"></script>
-	
+		<script src = "https://kit.fontawesome.com/c4665949e9.js"></script>
+		<script src = "/js/model/area.js" type = "text/javascript"></script>
+		<script src = "/js/model/account.js" type = "text/javascript"></script>
+		<script src = "/js/administratorOperations/administratorProfilesOperations.js" type = "text/javascript"></script>
+		<script src = "js/model/message.js"></script>
+		<script src = "js/model/chat.js"></script>
 	</head>
 
 	<body>	

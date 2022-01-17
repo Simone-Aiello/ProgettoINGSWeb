@@ -28,6 +28,10 @@ public class AdministratorPageController {
 	@GetMapping("/administratorProfilesManager")
 	public String getAdministratorProfilesPage(HttpServletRequest req) {
 		try {
+			if(req.getSession().getAttribute("username") == null) {
+				req.getSession().setAttribute("message", "Utente non loggatoeee");
+				return "genericInfoPage";
+			}
 			List<Area> areas = Database.getInstance().getAreaDao().findAll();
 			req.setAttribute("areas", areas);
 		} catch (SQLException e) {

@@ -99,8 +99,8 @@ function createProfileCard(a){
 								"</div>"+
 								"<div class=\"profileName\"><p>" + a.username + "</p></div>"+	
 								"<div class=\"actions\">"+
-									"<button id = \" startChat-" + a.username + "\" class=\"profileButton\">Avvia chat</button>"+
-									"<button id = \"viewProfile-"+ a.username + "\" class=\"profileButton\">Vedi profilo</button>"+
+									"<button id = \"startChat-" + a.username + "\" class=\"profileButton\">Avvia chat</button>"+
+									"<button id = \"viewProfile-"+ a.username + " class=\"profileButton\"><a href = \"profilePage?username=" + a.username + "\">Vedi profilo </a></button>"+
 									"<button id = \"banAccount-"+a.username + "\" class=\"profileButton\">Banna account</button>"+
 								"</div>"+
 							"</div>";
@@ -185,28 +185,57 @@ function createProfileCard(a){
 
 function addBanAccountEvent(username){
 	$("#banAccount-" + username).on("click", function(){
+		accountBuilder = new Account.Builder();
+		accountBuilder.withUsername(username);
 		$.ajax({
 			type: "POST",
 			url: "/banAccount",
 			contentType: "application/json",
-			data:  JSON.stringify(username),
+			data:  JSON.stringify(accountBuilder.build()),
 			success: function(){
-				
+				console.log(username + "banned");
 			}
 			
 		});
 	});
 }
 
-function addViewProfileEvent(username){
-	$("#viewProfile-" + username).on("click", function(){
+
+function addChatWithProfileEvent(username){
+	$("#startChat-" + username).on("click", function(){
+		alert(username);
+		
+		let accountBuilder1 = new Account.Builder();
+		let accountBuilder2 = new Account.Builder();
+		accountBuilder1.withUsername("aaaa");
+		accountBuilder2.withUsername(username);
+		let a1 = accountBuilder1.build();
+		let a2 = accountBuilder2.build()
+		let messageBuilder = new Message.Builder();
+		messageBuilder.withText("messaggio di prova");
+		messageBuilder.withSender(username);
+		let messages = [];
+		messages.push(messageBuilder.build());
+
+		let chat = new Chat.Builder();
+		chat.withA1(a1);
+		chat.withA2(a2);
+		chat.withMessages(messages);
 		$.ajax({
 			type: "POST",
-			url: "viewProfile?username=" + username,
+			url: "/startChat",
+			contentType: "application/json",
+			data: JSON.stringify(chat.build()),
 			success: function(){
-				
+				console.log("started chat");
+			},
+			error: function(){
+				//console.log(url);
+				//alert(xhr.message);
 			}
+			
 		});
+		
 	});
 }
 
@@ -269,7 +298,7 @@ function addSearchButtonEvent(){
 								createProfileCard(a);
 								//associate listener to the ban button present in each profile card
 								addBanAccountEvent(a.username);
-								addViewProfileEvent(a.username);
+								addChatWithProfileEvent(a.username);
 							},
 							error: function(){
 								
