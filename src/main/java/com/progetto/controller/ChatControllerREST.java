@@ -88,6 +88,7 @@ public class ChatControllerREST {
 				Account acc = new Account();
 				acc.setUsername(a1);
 				c.setA1(acc);
+				c.getMessages().get(0).setSender(acc.getUsername());
 				for(Message m : c.getMessages()) {
 					DateTime t = new DateTime();
 					m.setMessageTime(t);

@@ -61,34 +61,45 @@ function addNextReviewsButtonListeners() {
 		});
 	});
 }
-function addSendMessageListener(){
-	$("#start-chat").click(() =>{
+function addSendMessageListener() {
+	$("#start-chat").click(() => {
 		let messageValue = $("#message-area").val();
-		if(messageValue != ""){
+		if (messageValue != "") {
 			let initialMessage = new Message.Builder();
-			intialMessage.withText(messageValue);
+			initialMessage.withText(messageValue);
 			let chat = new Chat.Builder();
-			chat.withA2($("#username").text());
-			chat.withMessages(intialMessage.build());
+			let receiver = new Account.Builder();
+			receiver.withUsername($("#username").text());
+			chat.withA2(receiver.build());
+			chat.withMessages([initialMessage.build()]);
+			let chatBuilded = chat.build();
 			$.ajax({
-			type: "POST",
-			url: "/startChat",
-			contentType: "application/json",
-			data: JSON.stringify(chat.build()),
-			success: function(response) {
-				console.log(response);
-			},
-			error: function(xhr) {
-				console.log(xhr);
-				showSystemError();
-			}
-		});
+				type: "POST",
+				url: "/startChat",
+				contentType: "application/json",
+				data: JSON.stringify(chatBuilded),
+				success: function(response) {
+					console.log(response);
+					if (response === "fare login") {
+						let alert = `<div class="alert alert-danger" role="alert" id="need-login">Per contattare un utente devi prima effettuare il <a href="/login.html" class="alert-link">login</a></div>`;
+						$("#need-login").remove();
+						$(".modal-body").prepend(alert);
+					}
+					else if(response === "ok"){
+						$("#close-modal").click();
+					}
+				},
+				error: function(xhr) {
+					console.log(xhr);
+					showSystemError();
+				}
+			});
 		}
 	});
 }
 $(document).ready(() => {
 	addSendMessageListener();
-	if(accountType == "w"){
-		addNextReviewsButtonListeners();		
+	if (accountType == "w") {
+		addNextReviewsButtonListeners();
 	}
 });

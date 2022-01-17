@@ -18,21 +18,22 @@
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <link rel="stylesheet" href="/css/profilePage.css">
 <script src="/js/model/account.js"></script>
-<script src="/js/model/user.js"></script>
-<script src="/js/model/address.js"></script>
-<script src="/js/model/area.js"></script>
-<script src="/js/model/image.js"></script>
 <c:choose>
 	<c:when test="${authorized}">
+		<script src="/js/model/user.js"></script>
+		<script src="/js/model/address.js"></script>
+		<script src="/js/model/area.js"></script>
+		<script src="/js/model/image.js"></script>
 		<script src="/js/profilePage/profilePageLogged.js"></script>
+		<script src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
 	</c:when>
 	<c:otherwise>
+		<script src="/js/model/chat.js"></script>
+		<script src="/js/model/message.js"></script>
 		<script src="/js/profilePage/profilePageGuest.js"></script>
 	</c:otherwise>
 </c:choose>
 <script src="/js/utils/utils.js"></script>
-<script
-	src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
 <script>
 	var accountType = "${account.accountType}"
 </script>
@@ -185,7 +186,7 @@
 												<h5 class="modal-title" id="staticBackdropLabel">Contatta
 													${account.username}</h5>
 												<button type="button" class="btn-close"
-													data-bs-dismiss="modal" aria-label="Close"></button>
+													data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
 											</div>
 											<div class="modal-body">
 												<textarea id="message-area" placeholder="Scrivi qui il tuo messaggio..."
