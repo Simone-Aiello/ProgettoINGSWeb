@@ -22,7 +22,14 @@
 <script src="/js/model/address.js"></script>
 <script src="/js/model/area.js"></script>
 <script src="/js/model/image.js"></script>
-<script src="/js/profilePage/profilePageLogged.js"></script>
+<c:choose>
+	<c:when test="${authorized}">
+		<script src="/js/profilePage/profilePageLogged.js"></script>
+	</c:when>
+	<c:otherwise>
+		<script src="/js/profilePage/profilePageGuest.js"></script>
+	</c:otherwise>
+</c:choose>
 <script src="/js/utils/utils.js"></script>
 <script
 	src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
@@ -181,13 +188,13 @@
 													data-bs-dismiss="modal" aria-label="Close"></button>
 											</div>
 											<div class="modal-body">
-												<textarea placeholder="Scrivi qui il tuo messaggio..."
+												<textarea id="message-area" placeholder="Scrivi qui il tuo messaggio..."
 													style="width: 100%;"></textarea>
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary"
 													data-bs-dismiss="modal">Annulla</button>
-												<button type="button" class="btn custom-button">Invia
+												<button type="button" class="btn custom-button" id="start-chat">Invia
 													messaggio</button>
 											</div>
 										</div>

@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
@@ -77,16 +78,27 @@ public class ChatControllerREST {
 	}
 	
 	@PostMapping("/startChat")
-	public void startNewChat(@RequestBody Chat c, HttpServletResponse resp) {
+	public String startNewChat(@RequestBody Chat c,HttpServletRequest req ,HttpServletResponse resp) {
 		try {
-			for(Message m : c.getMessages()) {
-				DateTime t = new DateTime();
-				m.setMessageTime(t);
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) {
+				return "fare login";
 			}
-			Database.getInstance().getChatDao().save(c);
+			else {
+				String a1 = (String) req.getSession(false).getAttribute("username");
+				Account acc = new Account();
+				acc.setUsername(a1);
+				c.setA1(acc);
+				for(Message m : c.getMessages()) {
+					DateTime t = new DateTime();
+					m.setMessageTime(t);
+				}				
+				Database.getInstance().getChatDao().save(c);
+				return "ok";
+			}
 		} catch (SQLException e) {
 			resp.setStatus(500);
 			e.printStackTrace();
+			return null;
 		}
 	}
 }

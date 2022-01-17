@@ -76,7 +76,6 @@ function displayAccount(account) {
 	if(accountType == "w"){
 		if (account.provinceOfWork() != undefined) $("#province-of-work").html(`<option selected>${account.provinceOfWork()}<option>`);
 		$(".areas").html("");
-		console.log(account.areasOfWork());
 		for (area of account.areasOfWork()) {
 			$(".areas").append(`<i class="area fas ${area.icon} fa-2x icon mb-3 p-2" id="${area.id}"></i>`);
 		}		
@@ -333,7 +332,6 @@ function addProvinceListeners() {
 			}
 		}
 		catch (error) {
-			console.log(error);
 			appendError("province");
 		}
 	});
@@ -344,7 +342,6 @@ function addProvinceListeners() {
 			appendCorrect("province-of-work");
 		}
 		catch (error) {
-			console.log(error);
 			appendError("province-of-work");
 		}
 	});
