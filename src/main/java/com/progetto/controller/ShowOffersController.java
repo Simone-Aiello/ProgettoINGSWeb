@@ -29,7 +29,10 @@ public class ShowOffersController {
 	public String showOffers(HttpServletRequest req, HttpServletResponse resp) {
 		List<Offer> offers = new ArrayList<Offer>();
 		HttpSession session = req.getSession();
-		String username = (String)session.getAttribute("username");
+		String username = null;
+		if(session != null)
+			username = (String)session.getAttribute("username");
+		else username = "";
 		if(req.getSession() != null) {
 			try {
 				Advertise a1 = new Advertise();

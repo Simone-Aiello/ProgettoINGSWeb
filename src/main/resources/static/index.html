@@ -31,8 +31,9 @@
     <!-- Tag relativi ad i model account e annuncio -->
     <script src="./js/model/account.js"></script>
     <!--  <script src="../js/model/advertise.js"></script> -->
+    <script type="text/javascript" src = "/js/footer.js"></script>
 </head>
-<body>
+<body id = "body" class = "d-flex flex-column min-vh-100">
 
     <header class="shadow">
         <div class="wrapper shadow logo"><img src="./images/logoGetJobs.png" alt=""></div>
@@ -77,5 +78,9 @@
             </div>
         </div>
     </section>
+    <script type="text/javascript">
+			let footer = createFooter();
+			$(body).append(footer);
+		</script>
 </body>
 </html>
