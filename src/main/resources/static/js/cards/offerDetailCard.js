@@ -187,7 +187,7 @@ function createOfferDetailCard(data){
 		buttonDiv.appendChild(refuseButton);
 	}
 	//review button
-	if(data.done && data.accepted){
+	if((data.done && data.accepted) && !data.reviewed){
 		let reviewButton = document.createElement('a');
 		reviewButton.className = 'btn btn-warning';
 		reviewButton.innerHTML = 'Recensisci';
@@ -238,16 +238,18 @@ function setAcceptButtonListener(target){
 					let cards = document.getElementsByClassName('card');
 					let eliminatedCards = [];
 					for(let i = 0; i < cards.length; ++i){
-						console.log(cards[i].id + " " + 'c-'+target)
+						//console.log(cards[i].id + " " + 'c-'+target)
 						if(cards[i].id != 'c-'+target){
 							eliminatedCards.push(i);
 						}
 					}
 					console.log(eliminatedCards);
 					for(let i = eliminatedCards.length-1; i >= 0; --i){
-						let worker_username = document.getElementById('username-'+i).innerHTML;
+						let worker_username = document.getElementById('username-'+eliminatedCards[i]).innerHTML;
 						worker_username = worker_username.split('@')[1];
-						let message = [worker_username,'il cliente ha scelto un\'altra offerta'];
+						let offerId = document.getElementById('label-'+eliminatedCards[i]).innerHTML;
+						offerId = offerId.split('#')[1];
+						let message = [worker_username,'il cliente ha scelto un\'altra offerta',offerId];
 						console.log(message);
 						//chiamata ajax per notificare il lavoratore che non è stato scelto
 						$.ajax({
@@ -354,7 +356,9 @@ function createModal(id){
 		let workerUsername = document.getElementById('username-'+modal.getAttribute('cardid')).innerText;
 		workerUsername = workerUsername.split('@')[1];
 		let motivation = document.getElementById('textArea').value;
-		let message = [workerUsername,motivation];
+		let offerId = document.getElementById('label-'+modal.getAttribute('cardid')).innerHTML;
+		offerId = offerId.split('#')[1];
+		let message = [workerUsername,motivation,offerId];
 		console.log(message);
 		//chiamata ajax per notificare il lavoratore che non è stato scelto
 		$.ajax({
@@ -536,7 +540,7 @@ function createReviewModal(id){
 			data : JSON.stringify(message),
 			success : (response) =>{
 				console.log(response);
-			}, 
+				window.location = '/showMyAdvertises';			}, 
 			error : (xhr) =>{
 				console.log(xhr);
 			}		

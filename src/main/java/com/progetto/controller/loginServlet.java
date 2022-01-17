@@ -46,12 +46,8 @@ public class loginServlet{
 			resp.setStatus(204);
 		}else {
 			
-			HttpSession session = req.getSession();
-			req.getSession(true);
+			HttpSession session = req.getSession(true);
 			session.setAttribute("username", a.getUsername());
-			Cookie userName = new Cookie("user", a.getUsername());
-			userName.setMaxAge(30*60);
-			resp.addCookie(userName);
 		}
 		
 		return account;
@@ -61,7 +57,7 @@ public class loginServlet{
 	public void doLogout(HttpServletRequest req) {
 		HttpSession session=req.getSession(false); 
 		if(session != null) {
-			System.out.println(session.getAttribute("user"));
+			System.out.println(session.getAttribute("username"));
 	        session.invalidate();  
 	        System.out.println("logout");
 		}

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,24 +27,30 @@ import com.progetto.persistence.Database;
 public class ShowOffersController {
 	@GetMapping("/showOffers")
 	public String showOffers(HttpServletRequest req, HttpServletResponse resp) {
-		List<Offer> offers = null;
-		
-		try {
-			Advertise a1 = new Advertise();
-			String id = req.getParameter("AdvertiseID");
-			a1.setId(Long.parseLong(id));
-			Long acceptedOfferIndex = Database.getInstance().getAdvertiseDao().alreadyAssigned(a1);
-			if(acceptedOfferIndex == null) 
-				offers = Database.getInstance().getOfferDao().findOffersByAdvertise(a1);
-			else {
-				offers = new ArrayList<Offer>();
-				Offer o = Database.getInstance().getOfferDao().findByPrimaryKeyForUsers(acceptedOfferIndex);
-				o.setAccepted(true);
-				offers.add(o);
+		List<Offer> offers = new ArrayList<Offer>();
+		HttpSession session = req.getSession();
+		String username = (String)session.getAttribute("username");
+		if(req.getSession() != null) {
+			try {
+				Advertise a1 = new Advertise();
+				String id = req.getParameter("AdvertiseID");
+				a1.setId(Long.parseLong(id));
+				Account acc = new Account();
+				acc.setUsername(username);
+				a1.setAccount(acc);
+				Long acceptedOfferIndex = Database.getInstance().getAdvertiseDao().alreadyAssigned(a1);
+				if(acceptedOfferIndex == null) 
+					offers = Database.getInstance().getOfferDao().findOffersByAdvertise(a1);
+				else {
+					Offer o = Database.getInstance().getOfferDao().findByPrimaryKeyForUsers(acceptedOfferIndex);
+					o.setAccepted(true);
+					o.setReviewed(Database.getInstance().getOfferDao().isReviewed(acceptedOfferIndex));
+					offers.add(o);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		req.setAttribute("offers", offers);
 		
@@ -56,12 +63,15 @@ public class ShowOffersController {
 		System.out.println("refused " + message[0]);
 		Notification n = new Notification();
 		Account a = new Account();
+		Long offerId = Long.parseLong(message[2]);
+		System.out.println(offerId);
 		a.setUsername(message[0]);
 		n.setReceiver(a);
-		n.setText("La tua offerta è stata rifiutata perché " + message[1]);
+		n.setText("La tua offerta #"+ offerId + " è stata rifiutata perché " + message[1]);
 		n.setType("r");
 		try {
 			Database.getInstance().getNotificationDao().saveNotificationByOfferRefuse(n);
+			Database.getInstance().getOfferDao().refuseOffer(offerId);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,7 +106,7 @@ public class ShowOffersController {
 	
 	@PostMapping("/reviewOffer")
 	@ResponseBody
-	public String reviewOffer(@RequestBody String[] review) {
+	public String reviewOffer(@RequestBody String[] review, HttpServletRequest req) {
 		String username = review[0];
 		String message = review[1];
 		Long offerId = Long.parseLong(review[2]);
@@ -110,6 +120,9 @@ public class ShowOffersController {
 		Account worker = new Account();
 		Account client = new Account();
 		worker.setUsername(username);
+		HttpSession session = req.getSession(false);
+		if(session != null)
+			client.setUsername((String)session.getAttribute("username"));
 		r.setDescription(message);
 		r.setRating(rating);
 		r.setOffer(o);

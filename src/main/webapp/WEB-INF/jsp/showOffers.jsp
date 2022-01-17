@@ -39,6 +39,7 @@
 					                   	offer_id : ${offer.getId()},
 					                   	done : ${offer.isDone()},
 					                   	accepted : ${offer.isAccepted()},
+					                   	reviewed : ${offer.isReviewed()},
 										index : i
 										}) ;
 						offersContainer.append(card);
