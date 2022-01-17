@@ -34,6 +34,7 @@ public class ProfilePagesController {
 			else {
 				req.setAttribute("account", account);
 				req.setAttribute("date", Utils.convertDate(account.getPersonalInfo().getDateOfBirth()));
+				req.setAttribute("authorized", Utils.authorized(account, req.getSession(false)));
 				if(account.getAccountType().equals(Account.WORKER)) {
 					int[] ratingAndCount = Database.getInstance().getReviewDao().averageRatingWorkerAndCount(account);
 					req.setAttribute("rating", ratingAndCount[0]);

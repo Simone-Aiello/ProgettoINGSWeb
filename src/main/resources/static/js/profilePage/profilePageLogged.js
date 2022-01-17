@@ -17,7 +17,7 @@ function showSuccessAlert(message) {
 	}, 3000);
 }
 function showSystemError() {
-	let errorDiv = `<div id ="system-error" class="alert alert-danger fade show" role="alert">C'è stato un problema intero, ci scusiamo per il disagio e la invitiamo a riprovare più tardi</div>`;
+	let errorDiv = `<div id ="system-error" class="alert alert-danger fade show" role="alert">C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi</div>`;
 	$("#system-error").remove();
 	$("#initial-info").append(errorDiv);
 }
@@ -65,19 +65,20 @@ function buildNewAccount() {
 	return account_builder.build();
 }
 function displayAccount(account) {
-	if (account.personalInfo().name() != undefined) $("#name").val(account.personalInfo().name());
-	if (account.personalInfo().surname() != undefined) $("#surname").val(account.personalInfo().surname());
-	if (account.personalInfo().dateOfBirth() != undefined) $("#date-of-birth").val(account.personalInfo().dateOfBirth());
+	if (account.personalInfo().name != undefined) $("#name").val(account.personalInfo().name);
+	if (account.personalInfo().surname != undefined) $("#surname").val(account.personalInfo().surname);
+	if (account.personalInfo().dateOfBirth != undefined) $("#date-of-birth").val(account.personalInfo().dateOfBirth);
 	if (account.number() != undefined) $("#telephone").val(account.number());
-	if (account.personalInfo().address().zipCode() != undefined) $("#zip-code").val(account.personalInfo().address().zipCode());
-	if (account.personalInfo().address().province() != undefined) $("#province").html(`<option selected>${account.personalInfo().address.province()}<option>`);
-	if (account.personalInfo().address().town() != undefined) $("#city").html(`<option selected>${account.personalInfo().address.town()}<option>`);
-	if (account.profilePic().value() != undefined) $("#profile-pic").attr("src", account.profilePic().value() == "default" ? defaultPhoto : account.profilePic().value());
+	if (account.personalInfo().address.zipCode != undefined) $("#zip-code").val(account.personalInfo().address.zipCode);
+	if (account.personalInfo().address.province != undefined) $("#province").html(`<option selected>${account.personalInfo().address.province}<option>`);
+	if (account.personalInfo().address.town != undefined) $("#city").html(`<option selected>${account.personalInfo().address.town}<option>`);
+	if (account.profilePic().value != undefined) $("#profile-pic").attr("src", account.profilePic().value == "default" ? defaultPhoto : account.profilePic().value);
 	if(accountType == "w"){
 		if (account.provinceOfWork() != undefined) $("#province-of-work").html(`<option selected>${account.provinceOfWork()}<option>`);
 		$(".areas").html("");
+		console.log(account.areasOfWork());
 		for (area of account.areasOfWork()) {
-			$(".areas").append(`<i class="area fas ${area.icon()} fa-2x icon mb-3 p-2" id="${area.id()}"></i>`);
+			$(".areas").append(`<i class="area fas ${area.icon} fa-2x icon mb-3 p-2" id="${area.id}"></i>`);
 		}		
 	}
 }
@@ -275,6 +276,7 @@ function addModifyButtonListener() {
 		user_builder.withName($("#name").val());
 		user_builder.withSurname($("#surname").val());
 		user_builder.withDateOfBirth($("#date-of-birth").val());
+		account_builder.withNumber($("#telephone").val());
 		if (!areaAlreadyLoaded && accountType === "w") {
 			loadAreas();
 			areaAlreadyLoaded = true;

@@ -66,7 +66,7 @@
 					<span id="username">${account.username}</span> <span
 						class="text-black-50">${account.email}</span> <span></span>
 				</div>
-				<c:if test="${!account.valid}">
+				<c:if test="${!account.valid && authorized}">
 					<div class="alert alert-danger alert-dismissible fade show"
 						role="alert">
 						L'account non è ancora verificato, non potrà proporsi per nessun
@@ -153,12 +153,48 @@
 						</div>
 					</c:if>
 					<div class="mt-5 text-center" id="button-div">
-						<button class="btn btn-primary" type="button" id="modify-button">Modifica
-							Profilo</button>
-						<button class="btn btn-secondary" type="button" id="delete-button">Elimina
-							modifiche</button>
-						<button class="btn btn-primary mx-3" type="button"
-							id="save-button">Salva modifiche</button>
+						<c:choose>
+							<c:when test="${authorized}">
+								<button class="custom-button" type="button" id="modify-button">Modifica
+									Profilo</button>
+								<button class="btn btn-secondary" type="button"
+									id="delete-button">Elimina modifiche</button>
+								<button class="custom-button mx-3" type="button"
+									id="save-button">Salva modifiche</button>
+							</c:when>
+							<c:otherwise>
+								<!-- Button trigger modal -->
+								<button type="button" class="btn custom-button"
+									data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+									Contatta</button>
+								<!-- Modal -->
+								<div class="modal fade" id="staticBackdrop"
+									data-bs-backdrop="static" data-bs-keyboard="false"
+									tabindex="-1" aria-labelledby="staticBackdropLabel"
+									aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="staticBackdropLabel">Contatta
+													${account.username}</h5>
+												<button type="button" class="btn-close"
+													data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<textarea placeholder="Scrivi qui il tuo messaggio..."
+													style="width: 100%;"></textarea>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-bs-dismiss="modal">Annulla</button>
+												<button type="button" class="btn custom-button">Invia
+													messaggio</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 				<c:if test="${account.accountType == 'w'}">
@@ -210,38 +246,8 @@
 								</c:forEach>
 							</div>
 							<div class="mt-5 text-center">
-								<button id="next-reviews" class="btn btn-primary" type="button">Mostra
+								<button id="next-reviews" class="custom-button" type="button">Mostra
 									altre</button>
-							</div>
-							<!-- Button trigger modal -->
-							<button type="button" class="btn btn-primary"
-								data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-								Launch static backdrop modal</button>
-
-							<!-- Modal -->
-							<div class="modal fade" id="staticBackdrop"
-								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-								aria-labelledby="staticBackdropLabel" aria-hidden="true">
-								<div class="modal-dialog modal-dialog-centered">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="staticBackdropLabel">Contatta
-												${account.username}</h5>
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body">
-											<textarea placeholder="Scrivi qui il tuo messaggio..."
-												style="width: 100%;"></textarea>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-bs-dismiss="modal">Annulla</button>
-											<button type="button" class="btn btn-primary">Invia
-												messaggio</button>
-										</div>
-									</div>
-								</div>
 							</div>
 						</div>
 					</div>

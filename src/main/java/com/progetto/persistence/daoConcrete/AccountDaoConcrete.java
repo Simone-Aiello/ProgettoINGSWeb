@@ -67,8 +67,6 @@ public class AccountDaoConcrete implements AccountDao {
 				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
 				if(user != null) a.setPersonalInfo(user);
 				if (mode != Utils.LIGHT) {
-					//a.setPassword(rs.getString("password")); La password non la vogliamo mai indietro
-					// if the account is a worker then he may work for some areas
 					if (a.getAccountType().equals(Account.WORKER)) {
 						List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
 						if(areas != null) a.setAreasOfWork(areas);
@@ -201,7 +199,7 @@ public class AccountDaoConcrete implements AccountDao {
 			stmt.setString(8, a.getAccountType());
 			stmt.setString(9,activationCode);
 			stmt.execute();
-			if(a.getAccountType() == Account.WORKER) {
+			if(a.getAccountType().equals(Account.WORKER)) {
 				for (Area area : a.getAreasOfWork()) {
 					Database.getInstance().getAreaDao().linkToAccount(area, a);
 				}				
