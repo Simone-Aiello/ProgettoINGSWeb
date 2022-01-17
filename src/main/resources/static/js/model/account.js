@@ -88,24 +88,23 @@ class Account {
 			return this;
 		}
 		withProfilePic = function(profilePic) {
-			//CHE CHECK TYPE VA MESSO QUA? STRING FALLISCE
 			this.#product.#addProperty("profilePic", profilePic);
 		}
 		withArea = function(area) {
 			checkType(area, "Area");
 			this.areasList.push(area);
+			console.log(this.areasList);
 		}
 		removeArea = function(area) {
 			checkType(area, "Number");
 			this.areasList = this.areasList.filter((elem) => {
-				console.log(elem);
-				return elem["id"] != area;
+				return elem.id() != area;
 			});
 		}
 		build = function() {
 			if (this.built) throw new Error("This builder has already been used");
 			this.built = true;
-			this.#product.#addProperty("areasOfWord", this.areasList);
+			this.#product.#addProperty("areasOfWork", this.areasList);
 			return this.#product;
 		}
 	}
