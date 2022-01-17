@@ -1,19 +1,33 @@
-
-let quantity_advertises = 8 ;
-
-function createSpinner(){
-
-    let spinner = document.createElement('div');
-    spinner.className = "spinner-border text-warning";
-    spinner.setAttribute('role','status');
-
-    let span = document.createElement("span");
-    span.className = "sr-only";
-    span.innerHTML = "Loading...";
-	
-	return spinner ;
+// GETTING WRAPPER SEARCH BAR , SEARCH BAR SMARTPHONE ITEMS , MODAL SEARCH BAR SMARTPHONE
+let search_bar_smartphone = document.getElementsByClassName('search-bar-smartphone')[0];
+let search_bar = document.getElementsByClassName('search-bar')[0] ;
+let modal_search_bar_smartphone = document.getElementsByClassName('modal-search-bar-smartphone')[0];
+close_modal_search_bar_smartphone = () => {
+    modal_search_bar_smartphone.style.setProperty('display', 'none', 'important');
+    document.body.style.overflowY = "auto"; 
 }
 
+// DEFINING CLOSE BUTTON 
+let close_button = document.createElement("button");
+close_button.className = "btn far fa-times-circle close-button-search-bar-smartphone" ;
+
+close_button.onmouseover = () => {
+    gsap.to(close_button,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)" , rotate : "-90deg"} );
+}
+
+close_button.onmouseleave = () => {
+    gsap.to(close_button,{ scale: 1 , ease : "elastic.out(1, 0.3)" , rotate : "0deg"} );
+}
+
+
+close_button.onclick = close_modal_search_bar_smartphone ;
+
+search_bar_smartphone.appendChild(close_button);
+
+// CLONING SEARCH BAR ITEMS
+for(let i = 0 ; i < search_bar.children.length - 1 ; ++i){
+    search_bar_smartphone.appendChild(search_bar.children[i].cloneNode(true));
+}
 
 // Sticky behavior
 $(window).scroll(() =>{
@@ -25,6 +39,12 @@ $(window).scroll(() =>{
     $(".button-search-advertise i").toggleClass("button-search-advertise-sticky",boolean_scroll); 
 });
 
+$(window).resize(() => {
+    bool_size_le_800 = $(window).width() <= 800 ;
+    if(!bool_size_le_800){
+           close_modal_search_bar_smartphone();
+    }
+});
 
 // Container advertise
 customElements.define('container-advertise', ContainerAdvertises);
@@ -42,3 +62,11 @@ let button_next_advertises = document.getElementById('next-button');
 
 button_prev_advertises.onclick = inner_container_advertise.show_prev_view ;
 button_next_advertises.onclick = inner_container_advertise.show_next_view ;
+
+
+// CONNECTING BUTTON SEARCH BAR SMARTPHONE
+let button_search_bar_smartphone = document.getElementsByClassName('button-search-bar-smartphone')[0];
+button_search_bar_smartphone.onclick = () => {
+    modal_search_bar_smartphone.style.setProperty('display', 'flex', 'important');
+    document.body.style.overflowY = "hidden"; 
+}

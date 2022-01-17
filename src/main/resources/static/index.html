@@ -37,21 +37,21 @@
     <header class="shadow">
         <div class="wrapper shadow logo"><img src="./images/logoGetJobs.png" alt=""></div>
         <div class="search-bar shadow">
-            <div class="wrapper-search-bar-items">
+            <div class="wrapper-search-bar-items search-bar-item" id = "search-bar-item-what-area-you-looking-for">
                 <p class="">Cosa cerchi?</p>
                 <div class="wrapper">
                     <i class="fa fa-search" aria-hidden="true"></i>
                     <input type="text" placeholder="Un esempio..." />
                 </div>
             </div>
-            <div class="wrapper-search-bar-items">
+            <div class="wrapper-search-bar-items search-bar-item" id = "search-bar-item-where">
                 <p class="">Dove?</p>
                 <div class="wrapper">
                     <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                     <input type="text" placeholder="Un esempio..." />
                 </div>
             </div>
-            <button class= "btn button-choose-area rounded shadow" ><h5>Ambito</h5></button>
+            <button class= "btn button-choose-area shadow search-bar-item" id = "search-bar-item-area" ><h5>Ambito</h5></button>
             <button class= "btn button-search-advertise" ><i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
         <ul>
@@ -68,6 +68,8 @@
         </ul>
     </header>
     <section class="banner">
+        <button class="btn shadow button-search-advertise button-search-bar-smartphone"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <div class="modal-search-bar-smartphone"><div class="shadow search-bar-smartphone"></div></div>
         <div class="outer-container-advertises shadow">
             <div class="wrapper"><h5 class="information-advertises shadow rounded">Tutti gli annunci</h5></div>
             <!-- CONTAINER -->

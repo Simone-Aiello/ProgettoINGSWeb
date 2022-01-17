@@ -1,4 +1,17 @@
 
+function createSpinner(){
+
+    let spinner = document.createElement('div');
+    spinner.className = "spinner-border text-warning";
+    spinner.setAttribute('role','status');
+
+    let span = document.createElement("span");
+    span.className = "sr-only";
+    span.innerHTML = "Loading...";
+	
+	return spinner ;
+}
+
 class ContainerAdvertises extends HTMLElement{
 
      init = (params) => {
@@ -85,7 +98,6 @@ class ContainerAdvertises extends HTMLElement{
     #fill_view = (index_view) =>{
         this.#addSpinners() ;
         this.#requestAdvertises(index_view, true);
-        this.#requestAdvertises(index_view + 1);
     }
 
 	// SHOW THE NEXT VIEW IF EXIST
