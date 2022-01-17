@@ -36,7 +36,6 @@ public class loginServlet{
 		}else {
 			try {
 				account = Database.getInstance().getAccountDao().findByEmail(a.getEmail());
-				//System.out.println(account);
 			} catch (SQLException e) {
 				resp.setStatus(204);
 			}
@@ -55,7 +54,7 @@ public class loginServlet{
 	
 	@GetMapping("/logout")
 	public void doLogout(HttpServletRequest req) {
-		HttpSession session=req.getSession(false); 
+		HttpSession session = req.getSession(false); 
 		if(session != null) {
 			System.out.println(session.getAttribute("username"));
 	        session.invalidate();  

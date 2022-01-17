@@ -10,7 +10,6 @@ function addToAreaSummary(areaName) {
 	$("#summary-areas").append(`<i id ="${areaName}" class="fas ${areaName} fa-2x icon"></i>`);
 }
 function removeFromAreaSummary(areaName) {
-	console.log("CIAO");
 	$("#" + areaName).remove();
 }
 function addImageToSummary(value) {
@@ -88,7 +87,6 @@ function addAreasIconListener() {
 			selectedAreas[id] = !selectedAreas[id];
 			let areaName = $(id + " i").attr("class").split(/\s+/)[1];
 			if (selectedAreas[id] ){
-				console.log("ENTRO IF");
 				areaBuilder = new Area.Builder();
 				areaBuilder.withId($(id + " i").attr("id"));
 				account_builder.withArea(areaBuilder.build());

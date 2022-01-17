@@ -19,14 +19,14 @@ import com.progetto.persistence.Database;
 public class AdministratorActions {
 	
 	@PostMapping("/deleteArea")
-	public void deleteArea(@RequestBody Area area, HttpServletResponse resp){
+	public void deleteArea(@RequestBody Area area, HttpServletResponse res){
 		//System.out.println(area.getId());
 		//System.out.println(area.getIcon());
 		//System.out.println(area.getName());
 		try {
 			Database.getInstance().getAreaDao().delete(area);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			res.setStatus(500);
 			e.printStackTrace();
 		}
 		
@@ -44,13 +44,13 @@ public class AdministratorActions {
 		}
 	}
 	@PostMapping("/createArea")
-	public void createArea(@RequestBody Area area, HttpServletResponse resp){
+	public void createArea(@RequestBody Area area, HttpServletResponse res){
 		
 		try {
 			Database.getInstance().getAreaDao().save(area);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			res.setStatus(500);
 			e.printStackTrace();
 		}
 		//System.out.println(area.getId());
@@ -59,7 +59,7 @@ public class AdministratorActions {
 	}
 	
 	@PostMapping("/findProfiles")
-	public List<Account>  findProfiles(@RequestBody List<Area> areas, @RequestParam String username) {
+	public List<Account>  findProfiles(@RequestBody List<Area> areas, @RequestParam String username, HttpServletResponse res) {
 		/*
 		for(Area a: areas) {
 			System.out.println(a.getId());
@@ -78,7 +78,7 @@ public class AdministratorActions {
 			//}
 			return l;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			res.setStatus(500);
 			e.printStackTrace();
 		}
 		return null;
@@ -109,13 +109,20 @@ public class AdministratorActions {
 			int[] results = Database.getInstance().getAdvertiseDao().findAdvertisesNumberAndAreasByAccount(username);
 			return results;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			res.setStatus(500);
 			e.printStackTrace();
 		}
 		return null;
 	}
 	@PostMapping("/banAccount")
-	public void banAccount(@RequestBody String username, HttpServletResponse res) {
-		System.out.println("Banning: " + username);
+	public void banAccount(@RequestBody Account a, HttpServletResponse res) {
+
+		try {
+			Database.getInstance().getAccountDao().banAccount(a);
+			System.out.println("Banning: " +a.getUsername());
+		} catch (SQLException e) {
+			res.setStatus(500);
+			e.printStackTrace();
+		}
 	}
 }

@@ -67,8 +67,6 @@ public class AccountDaoConcrete implements AccountDao {
 				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
 				if(user != null) a.setPersonalInfo(user);
 				if (mode != Utils.LIGHT) {
-					//a.setPassword(rs.getString("password")); La password non la vogliamo mai indietro
-					// if the account is a worker then he may work for some areas
 					if (a.getAccountType().equals(Account.WORKER)) {
 						List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
 						if(areas != null) a.setAreasOfWork(areas);
@@ -201,7 +199,7 @@ public class AccountDaoConcrete implements AccountDao {
 			stmt.setString(8, a.getAccountType());
 			stmt.setString(9,activationCode);
 			stmt.execute();
-			if(a.getAccountType() == Account.WORKER) {
+			if(a.getAccountType().equals(Account.WORKER)) {
 				for (Area area : a.getAreasOfWork()) {
 					Database.getInstance().getAreaDao().linkToAccount(area, a);
 				}				
@@ -329,20 +327,20 @@ public class AccountDaoConcrete implements AccountDao {
 		//this is not the best query
 		if(username.equals("") && areas.size() != 0){//don't search by username
 			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON username_account = username WHERE id_ambito IN(" 
-					+ builder.toString() + ")";
+					+ builder.toString() + ") AND NOT bannato";
 			
 			stmt = Database.getInstance().getConnection().prepareStatement(query);
 			for(int i = 0; i < areas.size(); ++i)
 				stmt.setLong(i + 1, areas.get(i).getId());
 		}
 		else if(!username.equals("") && areas.size() == 0){	//Search by only username
-			query = "SELECT username FROM account WHERE username LIKE ?";
+			query = "SELECT username FROM account WHERE username LIKE ? AND NOT bannato ";
 			stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setString(1, "%" + username + "%");
 		}
 		else { //if(!username.equals("") && areas.size() != 0){//search by both username and areas (will only find workers)
 			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON username_account = username WHERE "
-					+ "username LIKE ? AND id_ambito IN(" + builder.toString() + ")";
+					+ "username LIKE ? AND id_ambito IN(" + builder.toString() + ") AND NOT bannato";
 			stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setString(1, "%" + username + "%");
 			for(int i = 0; i < areas.size(); ++i)
@@ -363,7 +361,7 @@ public class AccountDaoConcrete implements AccountDao {
 
 	@Override
 	public void banAccount(Account a) throws SQLException {
-		String query = "UPDATE accounts SET bannato = true WHERE username = ?";
+		String query = "UPDATE account SET bannato = true WHERE username = ?";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setString(1, a.getUsername());
 		stmt.execute();

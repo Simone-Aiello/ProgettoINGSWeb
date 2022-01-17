@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.joda.time.DateTime;
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
@@ -80,7 +81,15 @@ public class Utils {
 		String convertedDate = date.getYear() + "-" + paddedMonth + "-" + paddedDay;
 		return convertedDate;
 	}
-	
+	public static boolean authorized(Account account, HttpSession session) {
+		if (session == null) {
+			return false;
+		}
+		if (session.getAttribute("username") == null || !session.getAttribute("username").equals(account.getUsername())) {
+			return false;
+		}
+		return true;
+	}
 	/*private static String getPathToProfilePictureFolder(HttpServletRequest req) {
 		//Ritorna il path fino a webapp
 		File f = new File(req.getServletContext().getRealPath("/"));
