@@ -81,7 +81,7 @@ function createProfileCard(a){
 	let profileCard = "";
 	let newRowBegin = "<div class =\"row profileCardsRow\">";
 	let newRowEnd = "</div>";
-	let defaultImage= "/images/defaultProfilePic.png";
+	let defaultImage= "/usersImages/profilePictures/defaultIcon.png";
 	
 	let profileImage = defaultImage;
 	if(a.profilePic != null)
@@ -100,7 +100,7 @@ function createProfileCard(a){
 								"<div class=\"profileName\"><p>" + a.username + "</p></div>"+	
 								"<div class=\"actions\">"+
 									"<button id = \"startChat-" + a.username + "\" class=\"profileButton\">Avvia chat</button>"+
-									"<button id = \"viewProfile-"+ a.username + " class=\"profileButton\"><a href = \"profilePage?username=" + a.username + "\">Vedi profilo </a></button>"+
+									"<button id = \"viewProfile-"+ a.username + "\" class=\"profileButton\"><a href = \"profilePage?username=" + a.username + "\">Vedi profilo </a></button>"+
 									"<button id = \"banAccount-"+a.username + "\" class=\"profileButton\">Banna account</button>"+
 								"</div>"+
 							"</div>";
@@ -116,7 +116,6 @@ function createProfileCard(a){
 	let thirdStateContent = "";
 
 	if(a.accountType === "w"){
-		//alert("Worker");
 		firstStatName = "Lavori";
 		firstStateContent = a.acceptedOffers;
 		
@@ -127,8 +126,6 @@ function createProfileCard(a){
 
 		let averageReviews = a.averageReviews;
 		
-		//CHECK
-		//alert(averageReviews);
 		for(i = 1; i <= 5; i++){
 			if(i <= averageReviews ){
 				thirdStateContent += "<i class=\"fas fa-star fullstar\"></i>";
@@ -205,12 +202,9 @@ function addChatWithProfileEvent(username){
 	$("#startChat-" + username).on("click", function(){
 		alert(username);
 		
-		let accountBuilder1 = new Account.Builder();
-		let accountBuilder2 = new Account.Builder();
-		accountBuilder1.withUsername("aaaa");
-		accountBuilder2.withUsername(username);
-		let a1 = accountBuilder1.build();
-		let a2 = accountBuilder2.build()
+		let accountBuilder = new Account.Builder();
+		accountBuilder.withUsername(username);
+		let a = accountBuilder.build()
 		let messageBuilder = new Message.Builder();
 		messageBuilder.withText("messaggio di prova");
 		messageBuilder.withSender(username);
@@ -218,8 +212,7 @@ function addChatWithProfileEvent(username){
 		messages.push(messageBuilder.build());
 
 		let chat = new Chat.Builder();
-		chat.withA1(a1);
-		chat.withA2(a2);
+		chat.withA2(a);
 		chat.withMessages(messages);
 		$.ajax({
 			type: "POST",

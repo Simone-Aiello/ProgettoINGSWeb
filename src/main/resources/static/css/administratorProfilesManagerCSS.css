@@ -108,6 +108,7 @@ body{
 .profilePic{
 	width: 70px;
 	height: 70px;
+	border-width: 0px;
 }
 
 #profileCards{
@@ -125,4 +126,8 @@ body{
 }
 .fullstar, .halfstar, .emptystar{
 		color: #FF9400;
+}
+button>a, button>a:hover{
+	text-decoration: none;
+	color: black;
 }
