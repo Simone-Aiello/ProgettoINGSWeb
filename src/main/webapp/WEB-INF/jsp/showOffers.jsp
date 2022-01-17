@@ -46,6 +46,7 @@
 						setAcceptButtonListener(i);
 						setRefuseButtonListener(i);
 						setReviewActionListener(i);
+						setUsernameActionListener(i);
 						i = i+1;
 						</script>
 					</c:forEach>

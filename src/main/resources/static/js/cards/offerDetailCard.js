@@ -36,7 +36,8 @@ function createOfferDetailCard(data){
 	//username
 	let usernameCol = document.createElement('div');
 	usernameCol.className = 'col';
-	let username = document.createElement('p');
+	let username = document.createElement('a');
+	username.style = 'text-decoration : none;cursor:pointer;';
 	username.className = 'card-subtitle text-muted small';
 	username.id = 'username-'+data.index;
 	username.innerHTML = '@' + data.username;
@@ -416,6 +417,16 @@ function setReviewActionListener(target){
 				modal = $('#reviewModal');
 			$('#reviewModal').attr('cardid', target);
 			$('#reviewModal').modal("show");
+		});
+	}
+}
+
+function setUsernameActionListener(target){
+	let usernameButton = document.getElementById('username-'+target);
+	if(usernameButton != null){
+		usernameButton.addEventListener('click', function(){
+			let usrn = usernameButton.innerHTML.split('@')[1];
+			window.location.href = '/profilePage?username='+usrn;
 		});
 	}
 }
