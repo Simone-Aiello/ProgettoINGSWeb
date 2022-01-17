@@ -57,14 +57,14 @@ public class MessageDaoConcrete implements MessageDao{
 	}
 
 	@Override
-	public void save(Message m, Chat c) throws SQLException{
+	public void save(Message m) throws SQLException{
 		if(exists(m)) {
 			//Non penso modiicheremo mai un messaggio
 			String query = "UPDATE messaggi SET timestamp = ?, contenuto = ? id_chat = ? WHERE id = ?";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setTimestamp(1, new Timestamp(m.getMessageTime().getMillis()));
 			stmt.setString(2, m.getText());
-			stmt.setLong(3, c.getId());
+			stmt.setLong(3, m.getIdChat());
 			stmt.setLong(4, m.getId());
 			stmt.execute();
 		}
@@ -73,7 +73,7 @@ public class MessageDaoConcrete implements MessageDao{
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setTimestamp(1, new Timestamp(m.getMessageTime().getMillis()));
 			stmt.setString(2, m.getText());			
-			stmt.setLong(3, c.getId());
+			stmt.setLong(3, m.getIdChat());
 			stmt.setString(4, m.getSender());
 			stmt.execute();
 		}

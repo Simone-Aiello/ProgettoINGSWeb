@@ -57,16 +57,18 @@ public class ChatDaoConcrete implements ChatDao{
 			stmt.execute();
 		}
 		else {
-			String query = "INSERT INTO chat(id, account_1, account_2) values(?, ?, ?)";
+			String query = "INSERT INTO chat(account_1, account_2) values(?, ?) RETURNING id";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
-			stmt.setLong(1, c.getId());
-			stmt.setString(2, c.getA1().getUsername());
-			stmt.setString(3, c.getA2().getUsername());
-			stmt.execute();
-
+			stmt.setString(1, c.getA1().getUsername());
+			stmt.setString(2, c.getA2().getUsername());
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			c.setId(rs.getInt(1));
+			
 		}
 		for(Message m: c.getMessages()) {
-			Database.getInstance().getMessageDao().save(m, c);
+			m.setIdChat(c.getId());
+			Database.getInstance().getMessageDao().save(m);
 		}
 	}
 
