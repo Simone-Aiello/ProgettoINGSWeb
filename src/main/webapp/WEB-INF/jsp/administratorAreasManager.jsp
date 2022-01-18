@@ -49,8 +49,25 @@
 						  </div>
 						  <div class="card-body cardButtons">
 						    <button id = "${area.id}-AreaModifyButton" class = "btn btn-secondary">Modifica</button>
-							<button id = "${area.id}-AreaDeleteButton" class =  "btn btn-danger">Cancella</button>
+							<button id = "${area.id}-AreaDeleteButtonProva" type = "button" class =  "btn btn-danger" data-bs-toggle = "modal" data-bs-target = "#staticBackdrop-${area.id}">Cancella</button>
 						  </div>
+						  <div class="modal fade" id="staticBackdrop-${area.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="staticBackdropLabel-${area.id}">Modal title</h5>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body">
+							        <p>Sei sicuro di voler cancellare l'area ${area.name}?</p>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+							        <button id = "${area.id}-AreaDeleteButton" type="button" class="btn btn-primary">Si</button>
+							      </div>
+							    </div>
+							  </div>
+							</div> 
 						</div>
 					</c:forEach>
 						

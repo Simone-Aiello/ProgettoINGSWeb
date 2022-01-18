@@ -20,9 +20,6 @@ public class AdministratorActions {
 	
 	@PostMapping("/deleteArea")
 	public void deleteArea(@RequestBody Area area, HttpServletResponse res){
-		//System.out.println(area.getId());
-		//System.out.println(area.getIcon());
-		//System.out.println(area.getName());
 		try {
 			Database.getInstance().getAreaDao().delete(area);
 		} catch (SQLException e) {
@@ -33,13 +30,10 @@ public class AdministratorActions {
 	}
 	@PostMapping("/modifyArea")
 	public void modifyArea(@RequestBody Area area, HttpServletResponse resp){
-		//System.out.println(area.getId());
-		//System.out.println(area.getIcon());
-		//System.out.println(area.getName());
 		try {
 			Database.getInstance().getAreaDao().save(area);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			resp.setStatus(500);
 			e.printStackTrace();
 		}
 	}
@@ -53,29 +47,12 @@ public class AdministratorActions {
 			res.setStatus(500);
 			e.printStackTrace();
 		}
-		//System.out.println(area.getId());
-		//System.out.println(area.getIcon());
-		//System.out.println(area.getName());
 	}
 	
 	@PostMapping("/findProfiles")
 	public List<Account>  findProfiles(@RequestBody List<Area> areas, @RequestParam String username, HttpServletResponse res) {
-		/*
-		for(Area a: areas) {
-			System.out.println(a.getId());
-			System.out.println(a.getIcon());
-			System.out.println(a.getName());
-		}
-	
-		System.out.println(username);
-		*/
 		try {
 			List<Account> l = Database.getInstance().getAccountDao().findWorkersByAreasAndUsername(areas, username);
-			//System.out.println(l.toString());
-
-			//for(int i = 0; i < l.size(); ++i) {
-			//	System.out.println(l.get(i).getUsername());
-			//}
 			return l;
 		} catch (SQLException e) {
 			res.setStatus(500);

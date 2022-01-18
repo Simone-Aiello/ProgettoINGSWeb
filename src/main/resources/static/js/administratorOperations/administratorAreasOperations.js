@@ -4,19 +4,7 @@ $(document).ready(() => {
 	addEvents();
 	
 });
-/*
-function showSection(sectionToShow){
 
-	for(let i = 0; i < sections.length; ++i){
-		if(sections[i] == sectionToShow){
-			$("#" + sectionToShow).show();
-		}
-		else{
-			$("#" + sections[i]).hide();
-		}
-	}
-}
-*/
 function addModifyButtonListener(){
 	//alert("WE");
 	$("button[id$='-AreaModifyButton']").on("click", (event) => {	
@@ -44,7 +32,6 @@ function addModifyButtonListener(){
 			areaBuilder.withId(parseInt(idArea, 10));
 			
 			if($("#" + idAreaNameInput).val() == ""){
-				//$("#" + idArea + "-NameInputActive").addClass("is-invalid");
 				createAlertWithText("Il campo è richiesto", idAreaNameInput)
 				error=true;
 
@@ -55,7 +42,6 @@ function addModifyButtonListener(){
 			}
 			
 			if($("#" + idAreaIconInput).val() == ""){
-				//$("#" + idArea + "-NameInputActive").addClass("is-invalid");
 				createAlertWithText("Il campo è richiesto", idAreaIconInput)
 				error=true;
 
@@ -67,7 +53,6 @@ function addModifyButtonListener(){
 			
 			//no errors found: compilation is ok and the area can be updated
 			if(!error){
-				//alert(JSON.stringify(areaBuilder.build()));
 					
 				$.ajax({
 					type: "POST",
@@ -75,22 +60,16 @@ function addModifyButtonListener(){
 					contentType: "application/json",
 					data: JSON.stringify(areaBuilder.build()),
 					success: function(){
-						console.log("SUCCESS");
 						/*
 						$("#" + idModifyButton).removeClass("btn-warning");
 						$("#" + idModifyButton).addClass("btn-secondary");
 						$("#" + idModifyButton).removeClass("active");
 						$("#" + idModifyButton).html("modifica");
-						$("#" + idIconInput).prop("disabled", true);
-						$("#" + idAreaInput).prop("disabled", true);
+						$("#" + idAreaIconInput).prop("disabled", true);
+						$("#" + idAreaNameInput).prop("disabled", true);
 						*/
-						//$(idNameAreaInput)
 						document.location.reload();
-						//redirect to home page
 					},
-					error: function(xhr){
-						alert(xhr.message);
-					}
 				});	
 			}
 		}
@@ -102,28 +81,8 @@ function addDeleteButtonListener(){
 	$("button[id$='-AreaDeleteButton']").on("click", (event) => {
 		let idCancelButton = event.target.id;
 		let idArea = idCancelButton.split("-")[0];
-		let idAreaNameInput = idArea+ "-NameInput";
-		let message = "Sei sicuro di voler cancellare l\'ambito " + $("#" + idAreaNameInput).val() + "?";
-		if(confirm(message) != true){
-			return;		
-		}
-
-		/*
-		if(!$("#" + idArea+ "-NameInput").prop("disabled")){
-			alert("Can't delete the object'");
-		}
-		*/
-		//let nameArea = $("#" + idArea + "-NameInput").val();
-		//let iconArea = $("#" + idArea + "-IconInput").val();
-		
 		areaBuilder = new Area.Builder();
 		areaBuilder.withId(parseInt(idArea, 10));
-		//areaBuilder.withName(nameArea);
-		//areaBuilder.withIcon(iconArea);
-		
-		//alert(JSON.stringify(areaBuilder.build()));
-		
-		//ASK CONFIRM AND DO AJAX CALL
 		
 		$.ajax({
 			type: "POST",
@@ -131,13 +90,9 @@ function addDeleteButtonListener(){
 			contentType: "application/json",
 			data: JSON.stringify(areaBuilder.build()),
 			success: function(){
-			console.log("SUCCESS");
 				//$("#" + idCancelButton).parent().parent().remove();
 				document.location.reload();
 			},
-			error: function(xhr){
-				alert(xhr.message);
-			}
 		});
 	});
 }

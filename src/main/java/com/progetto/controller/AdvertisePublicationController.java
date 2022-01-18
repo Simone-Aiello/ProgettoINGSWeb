@@ -17,6 +17,10 @@ public class AdvertisePublicationController {
 	@GetMapping("/AdvertisePublication")
 	public String startPublication(HttpServletRequest req) {
 		try {
+			if(req.getSession() == null || req.getSession().getAttribute("username")==null) {
+				req.getSession().setAttribute("message", "Utente non loggato");
+				return "genericInfoPage";
+			}
 			List<Area> areas = Database.getInstance().getAreaDao().findAll();
 			req.setAttribute("areas", areas);
 		} catch (SQLException e) {

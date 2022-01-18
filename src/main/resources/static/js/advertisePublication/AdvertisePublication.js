@@ -249,16 +249,7 @@ function addcheckRequiredInputs(){
 }
 
 function addSubmitListener(){
-	$("#publishAdvertise").on("click", () =>{
-			//alert("Publish clicked");
-					
-			//THIS IS A TEST
-			accountBuilder = new Account.Builder();
-			accountBuilder.withUsername("client");
-			
-			var account = accountBuilder.build();
-			advertiseBuilder.withAccount(account);
-			
+	$("#publishAdvertise").on("click", () =>{			
 			$.ajax({
 				type: "POST",
 				url: "/saveAdvertise",
@@ -271,14 +262,7 @@ function addSubmitListener(){
 				error: function(xhr){
 					console.log(xhr);
 				}
-			});
-			
-			
-			//$("#advertiseTitle").text("");
-			//$("#advertiseDescription").text("");
-			//$("#advertiseExpiryDate").text("");
-			//form.submit();
-			
+			});		
 	});
 	
 }

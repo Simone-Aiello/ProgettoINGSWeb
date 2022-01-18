@@ -47,12 +47,13 @@ function addAreaSelectionEvent(){
 			//alert("checked");
 			numberOfSelectedAreas--;
 			areaCheckbox.prop("checked", false);
-
+			areaCheckbox.parent().css({"background-color": "white"});
 		}
 		else{
 			//alert("not checked");
 			numberOfSelectedAreas++;
-			areaCheckbox.prop("checked", true);	
+			areaCheckbox.prop("checked", true);
+			areaCheckbox.parent().css({"background-color": "rgb(192, 192, 192)"});
 		}
 		if(numberOfSelectedAreas === 1)
 			$("#areaInputLabel").html(numberOfSelectedAreas +" scelta");
@@ -99,7 +100,7 @@ function createProfileCard(a){
 								"</div>"+
 								"<div class=\"profileName\"><p>" + a.username + "</p></div>"+	
 								"<div class=\"actions\">"+
-									"<button id = \"startChat-" + a.username + "\" class=\"profileButton\">Avvia chat</button>"+
+									"<button id = \"startChat-" + a.username + "\" type = \"button\" class=\"profileButton btn\" >Avvia chat</button>"+
 									"<button id = \"viewProfile-"+ a.username + "\" class=\"profileButton\"><a href = \"profilePage?username=" + a.username + "\">Vedi profilo </a></button>"+
 									"<button id = \"banAccount-"+a.username + "\" class=\"profileButton\">Banna account</button>"+
 								"</div>"+
@@ -120,7 +121,7 @@ function createProfileCard(a){
 		firstStateContent = a.acceptedOffers;
 		
 		secondStatName = "Specialità";
-		secondStateContent = "";
+		secondStateContent = "not yet impl";
 		
 		thirdStatName = "Valutazioni";
 
@@ -200,42 +201,70 @@ function addBanAccountEvent(username){
 
 function addChatWithProfileEvent(username){
 	$("#startChat-" + username).on("click", function(){
-		alert(username);
+		//alert(username);
 		
-		let accountBuilder = new Account.Builder();
-		accountBuilder.withUsername(username);
-		let a = accountBuilder.build()
-		let messageBuilder = new Message.Builder();
-		messageBuilder.withText("messaggio di prova");
-		messageBuilder.withSender(username);
-		let messages = [];
-		messages.push(messageBuilder.build());
-
-		let chat = new Chat.Builder();
-		chat.withA2(a);
-		chat.withMessages(messages);
-		$.ajax({
-			type: "POST",
-			url: "/startChat",
-			contentType: "application/json",
-			data: JSON.stringify(chat.build()),
-			success: function(){
-				console.log("started chat");
-			},
-			error: function(){
-				//console.log(url);
-				//alert(xhr.message);
-			}
+		let modal=`<div class="modal fade" id="staticBackdrop-chat"
+								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+								aria-labelledby="staticBackdropLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="staticBackdropLabel">Messaggio
+												</h5>
+											<button id = "closeModal" type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<textarea id = "messageText" placeholder="Scrivi qui il tuo messaggio..."
+												style="width: 100%;"></textarea>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">Annulla</button>
+											<button id = "sendMessageButton" type="button" class="btn btn-primary">Invia
+												messaggio</button>
+										</div>
+									</div>
+								</div>
+							</div>`;
+						
+		$("body").append(modal);
+		$("#staticBackdrop-chat").modal("toggle");
+		$("#sendMessageButton").on("click", () => {
+			let messageText = $("#messageText").val();
+			$("#staticBackdrop-chat").modal("toggle");
+			$(".modal").remove();
 			
+			let accountBuilder = new Account.Builder();
+			accountBuilder.withUsername(username);
+			let a = accountBuilder.build()
+			let messageBuilder = new Message.Builder();
+			messageBuilder.withText("messageText");
+			messageBuilder.withSender(username);
+			let messages = [];
+			messages.push(messageBuilder.build());
+	
+			let chat = new Chat.Builder();
+			chat.withA2(a);
+			chat.withMessages(messages);
+			$.ajax({
+				type: "POST",
+				url: "/startChat",
+				contentType: "application/json",
+				data: JSON.stringify(chat.build()),
+				success: function(){
+					console.log("started chat");
+				},		
+			});
 		});
-		
 	});
+	
 }
 
 function addSearchButtonEvent(){
 	$("#searchButton").on("click", ()=>{
 
-		username = $("#usernameSelector").val().toLowerCase();
+		username = $("#usernameSelector").val();
 		$("#areaslistSelector").hide();
 		$(".areaInput").each( function(){
 			if($(this).is(":checked")){
@@ -246,10 +275,11 @@ function addSearchButtonEvent(){
 		})
 		
 		if(username == "" && selectedAreasList.length == 0){
-			let invalidDiv = "<div id = \"searchAlert\"class=\"alert alert-danger\" role=\"alert\">"+
+			if($("#searchAlert").length == 0){
+				let invalidDiv = "<div id = \"searchAlert\"class=\"alert alert-danger\" role=\"alert\">"+
 							"Selezionare almeno un parametro di ricerca!" + "</div>"
-			$("#searchBox").after(invalidDiv);
-			
+				$("#searchBox").after(invalidDiv);
+			}
 			//block search operation
 			return;
 		}
@@ -314,12 +344,17 @@ function addSearchButtonEvent(){
 								createProfileCard(a);
 								//associate listener to the ban button present in each profile card
 								addBanAccountEvent(a.username);
+								addChatWithProfileEvent(a.username);
 							},
 							error: function(){
 								
 							}
 							
 						});
+					}
+					else if(a.accountType == "a"){
+						createProfileCard(a);
+						addChatWithProfileEvent(a.username);
 					}
 					
 					i++;
@@ -339,6 +374,7 @@ function addSearchButtonEvent(){
 		});
 		$("#searchButton").prop("disabled", false);
 		$(".areaInput").prop("checked", false);
+		$(".areaInput").parent().css({"background-color": "white"});
 	});
 }
 
