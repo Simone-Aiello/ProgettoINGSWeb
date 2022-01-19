@@ -44,9 +44,10 @@ public class loginServlet{
 		if(account == null || !BCrypt.checkpw(a.getPassword(), account.getPassword())) {
 			resp.setStatus(204);
 		}else {
-			
-			HttpSession session = req.getSession(true);
-			session.setAttribute("username", a.getUsername());
+			if(account.getUsername() != null) {
+				HttpSession session = req.getSession(true);
+				session.setAttribute("username", account.getUsername());
+			}
 		}
 		
 		return account;
