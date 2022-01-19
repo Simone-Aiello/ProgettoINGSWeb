@@ -29,13 +29,13 @@ public class loginServlet{
 		
 		if(a.getEmail() == null) {
 			try {
-				account = Database.getInstance().getAccountDao().findByPrimaryKey(a.getUsername(), Utils.COMPLETE);	
+				account = Database.getInstance().getAccountDao().loginCredentialsByUsernameOrEmail(a.getUsername());	
 			} catch (SQLException e) {
 				resp.setStatus(204); // 204 : The server successfully processed the request, and is not returning any content.
 			}
 		}else {
 			try {
-				account = Database.getInstance().getAccountDao().findByEmail(a.getEmail());
+				account = Database.getInstance().getAccountDao().loginCredentialsByUsernameOrEmail(a.getEmail());
 			} catch (SQLException e) {
 				resp.setStatus(204);
 			}

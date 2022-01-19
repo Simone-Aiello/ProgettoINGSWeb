@@ -22,17 +22,10 @@ public class showMyAdvertisesController {
 	
 	@GetMapping("/showMyAdvertises")
 	public String showMyAdvertises(HttpServletRequest req) {
-		//Cookie[] cookies = req.getCookies();
 		HttpSession session = req.getSession(false); 
 		Account a = new Account();
-//		if(cookies != null) {
-//			 for (int i = 0; i < cookies.length; i++) {
-//				 if(cookies[i].getName().equals("user")) 
-//					 a.setUsername(cookies[i].getValue());
-//			 }
-//		}
 		if(session != null)
-			a.setUsername((String)session.getAttribute("username"));
+				a.setUsername((String)session.getAttribute("username"));
 		
 		List<Advertise> advertises = null;
 		

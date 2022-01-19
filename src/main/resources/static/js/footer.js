@@ -78,7 +78,7 @@ function createFooter(){
 	let home = document.createElement('p');
 	let homelink = document.createElement('a');
 	homelink.className = 'text-reset';
-	homelink.href = '#!';
+	homelink.href = '/';
 	homelink.innerHTML = 'Home';
 	home.appendChild(homelink);
 	
@@ -92,7 +92,7 @@ function createFooter(){
 	let login = document.createElement('p');
 	let loginlink = document.createElement('a');
 	loginlink.className = 'text-reset';
-	loginlink.href = '#!';
+	loginlink.href = '../Login.html';
 	loginlink.innerHTML = 'Login';
 	login.appendChild(loginlink);
 	

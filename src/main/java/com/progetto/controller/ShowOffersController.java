@@ -96,7 +96,7 @@ public class ShowOffersController {
 		a.setAcceptedOffer(o);
 		acc.setUsername(message[1]);
 		n.setReceiver(acc);
-		n.setText("La tua offerta è stata accetta!");
+		n.setText("La tua offerta #"+message[2]+" è stata accetta!");
 		n.setType("r");
 		try {
 			Database.getInstance().getAdvertiseDao().updateAdvertise(a);
@@ -114,7 +114,7 @@ public class ShowOffersController {
 		String message = review[1];
 		Long offerId = Long.parseLong(review[2]);
 		int rating = Integer.parseInt(review[3]);
-		System.out.println(username + " " + message + " " + offerId + " " + rating);
+		//System.out.println(username + " " + message + " " + offerId + " " + rating);
 		
 		//1) salvare la recensione
 		Review r = new Review();
@@ -143,7 +143,7 @@ public class ShowOffersController {
 		Account reciver = new Account();
 		reciver.setUsername(username);
 		n.setReceiver(reciver);
-		n.setText("ha appena pubblicato una recensione per l'offerta : #" + offerId);
+		n.setText(client.getUsername() +" ha appena pubblicato una recensione per l'offerta : #" + offerId);
 		n.setType("r");
 		try {
 			Database.getInstance().getNotificationDao().saveNotificationByOfferRefuse(n);
