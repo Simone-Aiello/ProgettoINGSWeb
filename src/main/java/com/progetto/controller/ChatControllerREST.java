@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Chat;
 import com.progetto.model.Message;
@@ -24,11 +25,16 @@ import com.progetto.persistence.Database;
 @RestController
 public class ChatControllerREST {
 	@GetMapping("/getMessages")
-	public List<Message> getMessages(@RequestParam("id") long id,@RequestParam("username") String username, HttpServletResponse resp) {
+	public List<Message> getMessages(@RequestParam("id") long id,HttpServletRequest req,HttpServletResponse resp) {
 		try {
 			System.out.println(
 					"Controllare se l'utente che richiede la chat è loggato ed è uno dei due partecipanti della chat");
-			List<Message> messages = Database.getInstance().getMessageDao().findMessagesByChat(id,username);
+			Chat c = new Chat();
+			c.setId(id);
+			Account a = new Account();
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) return null;
+			a.setUsername((String) req.getSession(false).getAttribute("username"));
+			List<Message> messages = Database.getInstance().getMessageDao().findMessagesByChat(id, a.getUsername());
 			return messages;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -38,11 +44,12 @@ public class ChatControllerREST {
 	}
 
 	@GetMapping("/checkForNewMessages")
-	public List<Chat> checkForNewMessages(@RequestParam String username,HttpServletResponse resp) {
+	public List<Chat> checkForNewMessages(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			List<Chat> outdatedChats = null;
 			Account a = new Account();
-			a.setUsername(username);
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) return null;
+			a.setUsername((String) req.getSession(false).getAttribute("username"));
 			outdatedChats = Database.getInstance().getChatDao().getOutdatedChats(a);
 			DateTime now = new DateTime();
 			Timestamp timestamp = new Timestamp(now.getMillis());
@@ -56,16 +63,17 @@ public class ChatControllerREST {
 	}
 
 	@PostMapping("/sendMessage")
-	public Message sendMessage(@RequestBody Message message, HttpServletResponse resp) {
+	public Message sendMessage(@RequestBody Message message,HttpServletRequest req, HttpServletResponse resp) {
 		try {
-			System.out.println("Fare controllo se il sender è loggato");
 			Chat c = new Chat();
 			Account a = new Account();
-			a.setUsername(message.getSender());
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) return null;
+			a.setUsername((String) req.getSession(false).getAttribute("username"));
 			c.setId(message.getIdChat());
 			if (Database.getInstance().getChatDao().isAnUserOfAChat(c, a)) {
 				DateTime t = new DateTime();
 				message.setMessageTime(t);
+				message.setSender(a.getUsername());
 				Database.getInstance().getMessageDao().save(message);
 				return message;
 			}
@@ -76,23 +84,22 @@ public class ChatControllerREST {
 			return null;
 		}
 	}
-	
+
 	@PostMapping("/startChat")
-	public String startNewChat(@RequestBody Chat c,HttpServletRequest req ,HttpServletResponse resp) {
+	public String startNewChat(@RequestBody Chat c, HttpServletRequest req, HttpServletResponse resp) {
 		try {
-			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) {
+			if (req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) {
 				return "fare login";
-			}
-			else {
+			} else {
 				String a1 = (String) req.getSession(false).getAttribute("username");
 				Account acc = new Account();
 				acc.setUsername(a1);
 				c.setA1(acc);
 				c.getMessages().get(0).setSender(acc.getUsername());
-				for(Message m : c.getMessages()) {
+				for (Message m : c.getMessages()) {
 					DateTime t = new DateTime();
 					m.setMessageTime(t);
-				}				
+				}
 				Database.getInstance().getChatDao().save(c);
 				return "ok";
 			}

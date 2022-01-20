@@ -59,8 +59,7 @@ function doLogin(){
 		success : (response) =>{
 			account = response;
 			if(account == null){
-				window.location.replace("Login.html?error=invalid_password_or_username");
-				//alert(account);
+					window.location.replace("Login.html?error=invalid_password_or_username");
 				}
 			else
 				window.location.replace("/");

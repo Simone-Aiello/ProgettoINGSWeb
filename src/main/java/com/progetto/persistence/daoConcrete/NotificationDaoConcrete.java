@@ -1,11 +1,13 @@
 package com.progetto.persistence.daoConcrete;
 
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Area;
@@ -23,8 +25,12 @@ public class NotificationDaoConcrete implements NotificationDao{
 		notification.setId(resultSet.getLong("id"));
 		notification.setText(resultSet.getString("contenuto"));
 		notification.setType(resultSet.getString("tipologia"));
-		
-		return notification ;
+		notification.setRead(resultSet.getBoolean("letta"));
+		Account a = Database.getInstance().getAccountDao().findByPrimaryKey(resultSet.getString("account_username"), Utils.BASIC_INFO);
+		if(a != null) {
+			notification.setCreatedBy(a);			
+		}
+		return notification;
 		
 	}
 	
@@ -102,36 +108,31 @@ public class NotificationDaoConcrete implements NotificationDao{
 
 	@Override
 	public void delete(Notification notification) throws SQLException {
-		
-		String query = "delete from notifiche where id = ?" ;
-		
-		PreparedStatement preparedStatement = Database.getInstance().getConnection().prepareStatement(query);	
+		String deleteQuery = "delete from account_notifiche where id_notifica = ? and username_ricevente = ? returning id_notifica";
+		PreparedStatement preparedStatement = Database.getInstance().getConnection().prepareStatement(deleteQuery);	
 		preparedStatement.setLong(1, notification.getId());
-	
-		preparedStatement.execute();
-		
-	}
-	//NEEDS REFACTOR
-	@Override
-	public List<Notification> findNotificationsByReceiver(Account receiver) throws SQLException {
-		
-		ArrayList<Notification> notifications = new ArrayList<Notification>() ;
-		
-		String query = "select * from notifiche where account_user = ?" ;
-		
-		PreparedStatement preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
-		preparedStatement.setString(1, receiver.getUsername());
-		
-		ResultSet resultSet = preparedStatement.executeQuery() ;
-		
-
-		while(resultSet.next()) {
-		
-			Notification notification = loadNotification(resultSet) ;
-			notifications.add(notification);
-		
+		preparedStatement.setString(2,notification.getReceiver().getUsername());
+		System.out.println(preparedStatement.toString());
+		ResultSet set = preparedStatement.executeQuery();
+		while(set.next()) {
+			String delete = "delete from notifiche where id = ?";
+			PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(delete);	
+			ps.setLong(1, set.getLong("id_notifica"));
+			ps.execute();
 		}
 		
+	}
+	@Override
+	public List<Notification> findNotificationsByReceiver(Account receiver) throws SQLException {
+		ArrayList<Notification> notifications = new ArrayList<Notification>() ;
+		String query = "select * from account_notifiche inner join notifiche on notifiche.id = account_notifiche.id_notifica where username_ricevente = ?" ;
+		PreparedStatement preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
+		preparedStatement.setString(1, receiver.getUsername());
+		ResultSet resultSet = preparedStatement.executeQuery() ;
+		while(resultSet.next()) {
+			Notification notification = loadNotification(resultSet) ;
+			notifications.add(notification);
+		}
 		return notifications ;
 	}
 
@@ -180,6 +181,51 @@ public class NotificationDaoConcrete implements NotificationDao{
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean hasUnreadNotification(Account a) throws SQLException {
+		String query = "select id from account_notifiche inner join notifiche on notifiche.id = account_notifiche.id_notifica where username_ricevente = ? and letta = false";
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+		st.setString(1,a.getUsername());
+		ResultSet set = st.executeQuery();
+		return set.next();
+	}
+
+	@Override
+	public void markAllAsRead(List<Notification> notification) throws SQLException {
+		StringBuilder query = new StringBuilder("update notifiche set letta = true from account_notifiche where notifiche.id = account_notifiche.id_notifica and notifiche.id in (");
+		for(int i = 0; i < notification.size();i++) {
+			if(i == notification.size() -1 ) {
+				query.append("?");
+			}
+			else query.append("?,");
+		}
+		query.append(") and account_notifiche.username_ricevente = ?");
+		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query.toString());
+		int index = 1;
+		for(Notification n : notification) {
+			st.setLong(index++, n.getId());
+		}
+		st.setString(index, notification.get(0).getReceiver().getUsername());
+		st.executeUpdate();
+	}
+
+	@Override
+	public void saveNewAreaNotification(Notification notification) throws SQLException {
+		String saveNotification = "insert into notifiche(contenuto,tipologia,account_username) values(?,CAST(? AS tipologia_notifica),?) returning id";
+		String linkToAccount = "insert into account_notifiche(id_notifica,username_ricevente) values(?,?)";
+		PreparedStatement st1 = Database.getInstance().getConnection().prepareStatement(saveNotification);
+		st1.setString(1, notification.getText());
+		st1.setString(2, notification.getType());
+		st1.setString(3, "admin");
+		ResultSet set = st1.executeQuery();
+		set.next();
+		long id = set.getLong(1);
+		PreparedStatement st2 = Database.getInstance().getConnection().prepareStatement(linkToAccount);
+		st2.setLong(1, id);
+		st2.setString(2, "admin");
+		st2.execute();
 	}
 
 }
