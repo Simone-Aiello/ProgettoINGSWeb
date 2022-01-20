@@ -1,6 +1,9 @@
 
 function createSpinner(){
 
+    let wrapper_spinner = document.createElement('div');
+    wrapper_spinner.className = "wrapper wrapper-spinner";
+
     let spinner = document.createElement('div');
     spinner.className = "spinner-border text-warning";
     spinner.setAttribute('role','status');
@@ -9,16 +12,31 @@ function createSpinner(){
     span.className = "sr-only";
     span.innerHTML = "Loading...";
 	
-	return spinner ;
+    wrapper_spinner.appendChild(spinner);
+
+	return wrapper_spinner ;
 }
 
 class ContainerAdvertises extends HTMLElement{
 
+    State = class{
+        view = false ;
+        pending = false ;
+    }
+
+    #busy = false ;
+
      init = (params) => {
+        if(!this.#busy)
+            this.#busy = true;
+        else
+            return ;
         this.params = params ;
         this.className = "wrapper inner-container-advertises";
         this.view_advertises = [] ;
+        this.states = [] ;
 		this.index_view = 0 ;
+        this.max_index_view = null ;
 		this.#show_view(this.index_view);
     }
 
@@ -61,9 +79,30 @@ class ContainerAdvertises extends HTMLElement{
 	// PERFORM A REQUEST TO GET ADVERTISES
     #requestAdvertises = (index_view,show = false) =>{
 		
-		if(this.view_advertises[index_view] != null || index_view > this.max_index_view)
+
+		if((this.view_advertises[index_view] != null || index_view > this.max_index_view ) && this.max_index_view != null )
 			return ;
-			
+
+        if(this.states[index_view] == null || this.states[index_view] == undefined )
+            this.states[index_view] = new this.State(); 
+
+        
+
+        if(show){
+            this.states[index_view].show = true ;
+            for(let i = 0 ; i <  this.states.length ; ++i)
+                if(i != index_view)
+                this.states[i].show = false ;
+        }
+
+        if(this.states[index_view].pending){
+            return ;
+        }
+
+
+        this.states[index_view].show = show ;
+        this.states[index_view].pending = true ;
+	
         let data = JSON.parse(JSON.stringify(this.params)) ;
         data.offset = index_view * data.quantity 
         $.ajax({
@@ -72,7 +111,9 @@ class ContainerAdvertises extends HTMLElement{
             contentType: "application/json",
             data: JSON.stringify(data),
             success: (advertises) => {
-                console.log('{ RESPONSE FOR REQUEST WITH INDEX VIEW : '+index_view+' with '+advertises.length+' advertises }');
+                if(this.#busy)
+                    this.#busy = false;
+                this.states[index_view].pending = false ;
                 if(advertises.length > 0){
 					this.view_advertises[index_view] = [] ;
 				}else{
@@ -84,11 +125,13 @@ class ContainerAdvertises extends HTMLElement{
                     let card_advertise = createCard(advertise);
                     this.view_advertises[index_view].push(card_advertise);
                 }
-                if(show){
+                if(this.states[index_view].show){
+                    
                    this.#show_view(index_view);
                 }
             },
             error: (xhr) => {
+                this.states[index_view].pending = false ;
                 console.log(xhr.message);
             }
         });

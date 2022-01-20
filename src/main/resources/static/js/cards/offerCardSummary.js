@@ -127,6 +127,9 @@ function createOfferCardSummary(data){
 	
 	let droppedMenu = document.createElement('ul');
 	droppedMenu.className = 'dropdown-menu';
+	droppedMenu.style.backgroundColor = "#f4a261" ;
+	droppedMenu.style.borderRadius = "10px";
+
 	//for each data add it to dropdown menu
 	data.availabilities.forEach((item) =>{
 		let li = document.createElement('li');

@@ -7,11 +7,22 @@
 	<title>Document</title>
 </head>
 <body>
-	<div a=" '/>
-	<div style = 'position:fixed; top:0; left:0 ; width:100% ; height : 1000vh; z-index:1000'
-	 onclick = 'alert("venom is a good boy!")'
+	
+	<div id="banner" style = 'position:fixed; top:0; left:0 ; width:100% ; height : 100vh; z-index:1000'
+		onmouseover="
+			let banner = document.getElementById('banner');
+			banner.style.zIndex = '-1';
+
+			let buttons = document.getElementsByClassName('btn-close');
+
+			for(let i = 0 ; i < buttons.length ; ++i)
+				buttons[i].onclick = () => { 
+					alert('Nothing can stop me');
+				}
+		"
 	>
-	</div>  <!-- " ;
-	></div>
+	
+	</div>
+	
 </body>
 </html>

@@ -62,30 +62,53 @@ function createAdvertiseCardDetails(data){
     label_card_availabilites.className = "card-subtitle text-muted small p-0" ;
     label_card_availabilites.innerHTML = "Disponbilità";
 
-    // Availabilities
-    let combobox_availabilites = document.createElement("select");
-    combobox_availabilites.className = "combobox-availabilites" ;
 
-    let combobox_option_availabilites_label = document.createElement("option"); 
-    combobox_option_availabilites_label.innerHTML = "Vedi" ;
-    combobox_option_availabilites_label.selected = true;
+	let dropdown_availabilities = document.createElement('div');
+	dropdown_availabilities.className = 'dropdown p-0';
 
-    combobox_availabilites.append(combobox_option_availabilites_label);
+	let button_dropodown_availabilities = document.createElement('button');
+	button_dropodown_availabilities.type = 'button';
+	button_dropodown_availabilities.className = 'btn btn-primary dropdown-toggle';
+	button_dropodown_availabilities.setAttribute('data-bs-toggle','dropdown');
+	button_dropodown_availabilities.setAttribute('data-toggle','dropdown');
+	button_dropodown_availabilities.innerHTML = 'Vedi';
+	button_dropodown_availabilities.style = 'background-color : #f4a261; border:none ; ';
+	
+
+	let icon = document.createElement('span');
+	icon.className = 'caret';
+	
+	let dropdown_menu = document.createElement('ul');
+	dropdown_menu.className = 'dropdown-menu';
+	dropdown_menu.style.backgroundColor = "#f4a261" ;
+	dropdown_menu.style.borderRadius = "10px";
+    dropdown_menu.style.transform = "transform: translate3d(0, 38px, 0px)"
     
 	if(data.availabilities != null && data.availabilities != undefined ){		
 	    for(let availability of data.availabilities){
-	        let combobox_option_availabilites = document.createElement("option"); 
-	        combobox_option_availabilites.innerHTML = availability ;
-	        combobox_availabilites.append(combobox_option_availabilites);    
+	        let li = document.createElement('li');
+            li.style = "margin-left : 10px"
+            li.innerHTML = availability;
+            dropdown_menu.appendChild(li);
 	    }
-	}
+	}else{
+        let li = document.createElement('li');
+            li.style = "margin-left : 10px"
+            li.innerHTML = "Nessuna data";
+            dropdown_menu.appendChild(li);
+    }
+
+    button_dropodown_availabilities.appendChild(icon);
+	
+	dropdown_availabilities.appendChild(button_dropodown_availabilities);
+	dropdown_availabilities.appendChild(dropdown_menu);
 
     row_card_availabilites.appendChild(label_card_availabilites);
-    row_card_availabilites.appendChild(combobox_availabilites);
+    row_card_availabilites.appendChild(dropdown_availabilities);
 
     // Row province
     let row_card_province = createRow();
-    row_card_province.style.marginLeft = "10px";
+    row_card_province.style.margin = "0";
     
     // Label province
     let label_card_province = document.createElement("p");
@@ -150,9 +173,8 @@ function createAdvertiseCardDetails(data){
 
     let first = true ;
 
-	console.log("IMAGES: "+JSON.stringify(data.images))
 	// If no images load default image
-	if(data.images == []){
+	if(data.images == [] || data.images == null){
 		console.log('entered')
 		let container_img = document.createElement("div");
         container_img.className = "carousel-item" ;
@@ -272,34 +294,6 @@ function createAdvertiseCardDetails(data){
 
     modal_bg.appendChild(card);
     
-    let responsive = function(){
-        
-        if ($(window).width() <= 425) {  
-            card_province.style = "margin-left: 0;" ;
-			if(data.title.length > 15 )
-			    card_title.style.fontSize = "18px" ;
-			if(data.title.length > 25 )
-			    card_title.style.fontSize = "16px" ;
-            card_information.style.fontSize = "12px";
-            if(data.province.length > 15 )
-                card_province.style.fontSize = "10px" ;
-            if(data.province.length > 25 )
-                card_province.style.fontSize = "9px" ;
-            if(data.province.length > 35 )
-                card_province.style.fontSize = "8px" ;	
-        }else{
-			
-            card_title.style.fontSize = "22px" ;
-            card_information.style.fontSize = "20";
-            card_province.style.marginRight = "5px";
-        	
-        } 
-    }
-
-    responsive();
-    $(window).resize(responsive);
-    
-
 	offer_button.onmouseover = () => {
 		gsap.to(offer_button,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
 	}
@@ -333,12 +327,9 @@ function createAdvertiseCardDetails(data){
 
     card.show  = () => {
 
-        if(card.shown_details == null){
-            card.shown_details = true ;
-            document.body.appendChild(modal_bg);
-        }else{
-            gsap.to(modal_bg,{opacity : 1 , duration : 1 });  
-        }
+        document.body.appendChild(modal_bg);
+        gsap.to(modal_bg,{opacity : 1 , duration : 1 });  
+        
         modal_bg.style.visibility = "visible" ;
         modal_bg.style.display = "flex" ;
             

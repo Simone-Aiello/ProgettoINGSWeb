@@ -41,6 +41,7 @@ function createCardOfferForm(data){
 
     let row_information_user_advertise = document.createElement('div');
     row_information_user_advertise.className = "wrapper space-between";
+	row_information_user_advertise.style.flexWrap = "wrap";
 
     let username_client_advertise = document.createElement("a");
     username_client_advertise.className = "card-subtitle text-muted small col-3 text-decoration-none" ;

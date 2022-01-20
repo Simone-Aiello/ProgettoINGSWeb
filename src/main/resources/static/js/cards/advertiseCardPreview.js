@@ -12,10 +12,10 @@ var requestImagesAdvertise = (id_advertise) =>{
 		data: data,
 		async : false ,
 		success: (response) => {
-				res = response
+				resolve(response)
 			},
 		error: (xhr) => {
-				console.log(xhr.message);
+				reject(xhr)
 			}
 		})
 	});
@@ -117,17 +117,31 @@ function createCard(data){
     // Methods details button
     button_details.onclick = () => {
         
+        let modals_already_inserted = document.getElementsByClassName('modal-bg-advertise-details');
+
+        for(let modal of modals_already_inserted)
+            document.body.removeChild(modal);
+
 		data.id_advertise = data.id ;
         if(card_details == null && card_img.src != src_no_image_available){
 			let res = requestImagesAdvertise(data.id_advertise) ;
-	        res.then((images) => {
-					data.images = images
+			res.then((images) => {
+					if(images.length > 0)
+						data.images = images ;	
+					else
+						data.images = null ;
 				}).catch((e) => {
-					console.log(e);
+					console.log(e.message);
+					data.images = null ;
+				}).finally(() => {
+					card_details = createAdvertiseCardDetails(data);
+					
+                    card_details.show() ;
 				});
-			card_details = createAdvertiseCardDetails(data);
-        }
-        card_details.show() ;
+        }else{
+			card_details.show() ;
+		}
+        
     } 
     
     
@@ -192,7 +206,7 @@ function createCard(data){
         let boolean_width_screen_600 = $(window).width() < 600 ;
         let boolean_width_screen_800 = $(window).width() < 800 ;
 
-        card_img.classList.toggle('d-none',boolean_width_screen_800);        
+        // card_img.classList.toggle('d-none',boolean_width_screen_800);        
     }
     
     responsive();
