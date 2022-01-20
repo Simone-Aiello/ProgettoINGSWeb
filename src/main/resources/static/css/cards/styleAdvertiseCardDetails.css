@@ -16,7 +16,7 @@ img{
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background-color: rgba(43, 45, 66,0.4);
     top: 0 ;
     left: 0 ;
@@ -26,13 +26,13 @@ img{
 
 
 
-.card-avertise-details{ max-height: 100vh;}
+.card-avertise-details{ max-height: 100vh; width: 51rem;}
 
 .card-header-advertise-details{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+    flex-wrap: wrap;
 }
 .exit-button-advertise-details:hover{
 	color:  #f4a261;

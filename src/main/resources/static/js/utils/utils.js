@@ -1,3 +1,5 @@
+
+
 function createRow(){
     let row = document.createElement("div");
     row.className = "row";
@@ -16,7 +18,7 @@ function checkType(value,type){
 
 function createButtonWithIcon(icon){
     let button = document.createElement("button");
-    button.className = "btn icon-button "+icon ;
+    button.className = "shadow icon-button "+icon ;
     return button ;
 }
 
@@ -206,6 +208,41 @@ function createMessage(data){
 }
 
 
+function getAllAreas(containers){
+    $.ajax({
+        type: "GET",
+        url: "/areas",
+        contentType: "application/json",
+        success: (areas) => {
+          
+            for(container of containers){
+                for(let area of areas){
+                    let button_icon = document.createElement('button')
+                    button_icon.className = "icon-button-areas shadow button-areas-home "+area.icon;
+                    let bool_area = true ;
+                    button_icon.setAttribute('name', area.name);
+                    button_icon.onclick = () => {
+                        button_icon.setAttribute('selected',bool_area);
+                        if(bool_area){
+
+                            button_icon.style.color = "#95CD41" ;
+                            bool_area = false;
+                        }else{
+                            button_icon.style.color = "white" ;
+                            bool_area = true;
+        
+                        }
+                    }
+                    
+                        container.appendChild(button_icon);
+                }
+            }
+        },
+        error: (xhr) => {
+            console.log(xhr.message);
+        }
+    });
+}
 
 
 

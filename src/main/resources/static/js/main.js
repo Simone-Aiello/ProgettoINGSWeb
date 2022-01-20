@@ -67,7 +67,12 @@ let username2 = account.username();
 username2 = "ndria";
 console.log(username2);
 console.log(account.username());
+console.log(account.personalInfo().address.via);
 
+account.personalInfo().name  = "Simone";
+
+console.log(account);
+console.log(JSON.stringify(account));
 
 
 
