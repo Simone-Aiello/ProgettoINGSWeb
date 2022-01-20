@@ -120,7 +120,7 @@ class Advertise{
 			});
 		}
 		withDates(dates){
-			checkType(dates, "String");
+			//checkType(dates, "String");
 			this.#product.#addProperty("availability", dates);
 		}
 		

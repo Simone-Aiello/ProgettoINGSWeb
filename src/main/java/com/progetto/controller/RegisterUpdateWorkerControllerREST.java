@@ -8,7 +8,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,29 +27,27 @@ import com.progetto.persistence.Database;
 @RestController
 public class RegisterUpdateWorkerControllerREST {
 
-	@PostMapping("/registerWorker")
-	public String registerWorker(@RequestBody Account account, HttpServletRequest req,HttpServletResponse resp) {
-		try {
-			throw new SQLException();
-			// Faccio il set del tipo di account che voglio creare e salvo i dati
-			//account.setAccountType("w");
-			//Database.getInstance().getAccountDao().save(account);
-			//return "/profilePage?username=" + account.getUsername();
-		} catch (SQLException e) {
-			resp.setStatus(500);
-			e.printStackTrace();
-		}
-		return null;
-	}
+	/*
+	 * @PostMapping("/registerWorker") public String registerWorker(@RequestBody
+	 * Account account, HttpServletRequest req,HttpServletResponse resp) { try {
+	 * throw new SQLException(); // Faccio il set del tipo di account che voglio
+	 * creare e salvo i dati //account.setAccountType("w");
+	 * //Database.getInstance().getAccountDao().save(account); //return
+	 * "/profilePage?username=" + account.getUsername(); } catch (SQLException e) {
+	 * resp.setStatus(500); e.printStackTrace(); } return null; }
+	 */
+
+
 	@PostMapping("/register")
-	public String register(@RequestBody Account account, HttpServletRequest req,HttpServletResponse resp) {
+	public String register(@RequestBody Account account, HttpServletRequest req, HttpServletResponse resp) {
 		try {
-			if(account.getAccountType() == Account.ADMIN) {
+			if (account.getAccountType().equals(Account.ADMIN)) {
 				resp.setStatus(500);
-			}
-			else {
+			} else {
 				Database.getInstance().getAccountDao().save(account);
-				return "/profilePage?username=" + account.getUsername();				
+				HttpSession session = req.getSession(true);
+				session.setAttribute("username", account.getUsername());
+				return "/profilePage?username=" + account.getUsername();
 			}
 		} catch (SQLException e) {
 			resp.setStatus(500);
@@ -55,6 +55,7 @@ public class RegisterUpdateWorkerControllerREST {
 		}
 		return null;
 	}
+
 	@PostMapping("/usernameUnique")
 	public boolean usernameUnique(@RequestBody String data, HttpServletResponse resp) {
 		try {
@@ -87,10 +88,13 @@ public class RegisterUpdateWorkerControllerREST {
 	}
 
 	@PostMapping("/updateWorker")
-	public void updateWorker(@RequestBody Account account, HttpServletResponse resp) {
-		System.out.println("Fare controllo se è loggato");
+	public void updateWorker(@RequestBody Account account, HttpServletRequest req, HttpServletResponse resp) {
 		try {
-			Database.getInstance().getAccountDao().save(account);
+			if (Utils.authorized(account, req.getSession(false))) {
+				Database.getInstance().getAccountDao().save(account);
+			} else {
+				resp.setStatus(401);
+			}
 		} catch (SQLException e) {
 			resp.setStatus(500);
 			e.printStackTrace();
@@ -98,24 +102,30 @@ public class RegisterUpdateWorkerControllerREST {
 	}
 
 	@PostMapping("/sendVerificationMail")
-	public void resendVerificationMail(@RequestBody String username,HttpServletResponse resp) {
-		System.out.println("Fare controllo se è loggato");
+	public void resendVerificationMail(@RequestBody String username,HttpServletRequest req ,HttpServletResponse resp) {
 		try {
 			Account a = Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.BASIC_INFO);
-			EmailSender.getInstance().sendEmail(a.getEmail(), "Attivazione account GetJobs",
-					"Clicca il seguente link per validare l'account http://localhost:8080/activateAccount?code="
-							+ Database.getInstance().getAccountDao().getVerificationCode(username));
+			if(Utils.authorized(a, req.getSession(false))) {
+				EmailSender.getInstance().sendEmail(a.getEmail(), "Attivazione account GetJobs",
+						"Clicca il seguente link per validare l'account http://localhost:8080/activateAccount?code="
+								+ Database.getInstance().getAccountDao().getVerificationCode(username));				
+			}
+			else {
+				resp.setStatus(401);
+			}
 		} catch (SQLException e) {
 			resp.setStatus(500);
 			e.printStackTrace();
 		}
 	}
+
 	@PostMapping("/newAreaRequest")
-	public void newAreaRequest(@RequestBody NewAreaRequest request,HttpServletResponse resp) {
+	public void newAreaRequest(@RequestBody NewAreaRequest request, HttpServletResponse resp) {
 		try {
 			Notification n = new Notification();
 			n.setType("s");
-			n.setText("Richiesta aggiunta ambito, nome: " + Utils.sanitizeXSS(request.getName()) + "\n descrizione: " + Utils.sanitizeXSS(request.getDescription()));
+			n.setText("Richiesta aggiunta ambito, nome: " + Utils.sanitizeXSS(request.getName()) + "\n descrizione: "
+					+ Utils.sanitizeXSS(request.getDescription()));
 			Database.getInstance().getNotificationDao().save(n);
 		} catch (SQLException e) {
 			resp.setStatus(500);

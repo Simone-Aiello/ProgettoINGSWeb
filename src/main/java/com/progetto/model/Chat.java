@@ -14,7 +14,7 @@ public class Chat {
 		return id;
 	}
 	public void setId(long id) {
-		isTrue(id >0);
+		isTrue(id > 0);
 		this.id = id;
 	}
 	public Account getA1() {

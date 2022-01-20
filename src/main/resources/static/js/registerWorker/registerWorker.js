@@ -14,7 +14,6 @@ function sendAccount() {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "POST",
-			//url: "/registerWorker",
 			url: "/register",
 			contentType: "application/json",
 			data: JSON.stringify(account),

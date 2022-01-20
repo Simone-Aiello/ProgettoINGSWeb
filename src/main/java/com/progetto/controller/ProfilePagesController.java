@@ -31,13 +31,15 @@ public class ProfilePagesController {
 				req.setAttribute("message", "Mi dispiace ma l'utente che stai cercando non esiste");
 				return "genericInfoPage";
 			}
-			req.setAttribute("type", account.getAccountType());
-			req.setAttribute("account", account);
-			req.setAttribute("date", Utils.convertDate(account.getPersonalInfo().getDateOfBirth()));
-			if(account.getAccountType().equals(Account.WORKER)) {
-				int[] ratingAndCount = Database.getInstance().getReviewDao().averageRatingWorkerAndCount(account);
-				req.setAttribute("rating", ratingAndCount[0]);
-				req.setAttribute("count", ratingAndCount[1]);				
+			else {
+				req.setAttribute("account", account);
+				req.setAttribute("date", Utils.convertDate(account.getPersonalInfo().getDateOfBirth()));
+				req.setAttribute("authorized", Utils.authorized(account, req.getSession(false)));
+				if(account.getAccountType().equals(Account.WORKER)) {
+					int[] ratingAndCount = Database.getInstance().getReviewDao().averageRatingWorkerAndCount(account);
+					req.setAttribute("rating", ratingAndCount[0]);
+					req.setAttribute("count", ratingAndCount[1]);				
+				}				
 			}
 		} catch (SQLException e) {
 			resp.setStatus(500);

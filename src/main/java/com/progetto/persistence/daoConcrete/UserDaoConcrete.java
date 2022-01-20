@@ -43,8 +43,9 @@ public class UserDaoConcrete implements UserDao{
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(UPDATE_USER);
 			 ps.setString(1, u.getSurname());
 			 ps.setString(2, u.getName());
-			 ps.setDate(3, new Date(u.getDateOfBirth().toDate().getTime()));
+			 ps.setDate(3, new Date(u.getDateOfBirth().getMillis()));
 			 ps.setLong(4, u.getId());
+			 System.out.println(ps);
 			 ps.executeUpdate();
 			 id = u.getId();
 		 }else {
@@ -55,7 +56,7 @@ public class UserDaoConcrete implements UserDao{
 			 PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(SAVE_USER);
 			 ps.setString(1, u.getSurname());
 			 ps.setString(2, u.getName());
-			 ps.setDate(3, new Date(u.getDateOfBirth().toDate().getTime()));
+			 ps.setDate(3, new Date(u.getDateOfBirth().getMillis()));
 			 ps.setLong(4, addressId);
 			 ResultSet rs = ps.executeQuery();
 			 rs.next();

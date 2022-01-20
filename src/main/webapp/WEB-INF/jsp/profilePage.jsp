@@ -18,15 +18,25 @@
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <link rel="stylesheet" href="/css/profilePage.css">
 <script src="/js/model/account.js"></script>
-<script src="/js/model/user.js"></script>
-<script src="/js/model/address.js"></script>
-<script src="/js/model/area.js"></script>
-<script src="/js/model/image.js"></script>
-<script src="/js/profilePage/profilePageLogged.js"></script>
-<script src ="/js/utils/utils.js"></script>
-<script
-	src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
-<script>var accountType = "${type}"</script>
+<c:choose>
+	<c:when test="${authorized}">
+		<script src="/js/model/user.js"></script>
+		<script src="/js/model/address.js"></script>
+		<script src="/js/model/area.js"></script>
+		<script src="/js/model/image.js"></script>
+		<script src="/js/profilePage/profilePageLogged.js"></script>
+		<script src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
+	</c:when>
+	<c:otherwise>
+		<script src="/js/model/chat.js"></script>
+		<script src="/js/model/message.js"></script>
+		<script src="/js/profilePage/profilePageGuest.js"></script>
+	</c:otherwise>
+</c:choose>
+<script src="/js/utils/utils.js"></script>
+<script>
+	var accountType = "${account.accountType}"
+</script>
 </head>
 <body>
 	<div class="container mt-5 shadow">
@@ -64,11 +74,12 @@
 					<span id="username">${account.username}</span> <span
 						class="text-black-50">${account.email}</span> <span></span>
 				</div>
-				<c:if test="${!account.valid}">
+				<c:if test="${!account.valid && authorized}">
 					<div class="alert alert-danger alert-dismissible fade show"
 						role="alert">
-						Accedere alla mail e cliccare sul link ricevuto per confermare
-						l'account oppure <a id="send-email" class="alert-link">re-invia
+						L'account non è ancora verificato, non potrà proporsi per nessun
+						annuncio. Accedere alla mail e cliccare sul link ricevuto per
+						confermare l'account oppure <a id="send-email" class="alert-link">re-invia
 							mail</a>.
 						<button id="dismiss-alert" type="button" class="btn-close"
 							data-bs-dismiss="alert" aria-label="Close"></button>
@@ -150,12 +161,48 @@
 						</div>
 					</c:if>
 					<div class="mt-5 text-center" id="button-div">
-						<button class="btn btn-primary" type="button" id="modify-button">Modifica
-							Profilo</button>
-						<button class="btn btn-secondary" type="button" id="delete-button">Elimina
-							modifiche</button>
-						<button class="btn btn-primary mx-3" type="button"
-							id="save-button">Salva modifiche</button>
+						<c:choose>
+							<c:when test="${authorized}">
+								<button class="custom-button" type="button" id="modify-button">Modifica
+									Profilo</button>
+								<button class="btn btn-secondary" type="button"
+									id="delete-button">Elimina modifiche</button>
+								<button class="custom-button mx-3" type="button"
+									id="save-button">Salva modifiche</button>
+							</c:when>
+							<c:otherwise>
+								<!-- Button trigger modal -->
+								<button type="button" class="btn custom-button"
+									data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+									Contatta</button>
+								<!-- Modal -->
+								<div class="modal fade" id="staticBackdrop"
+									data-bs-backdrop="static" data-bs-keyboard="false"
+									tabindex="-1" aria-labelledby="staticBackdropLabel"
+									aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="staticBackdropLabel">Contatta
+													${account.username}</h5>
+												<button type="button" class="btn-close"
+													data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+											</div>
+											<div class="modal-body">
+												<textarea id="message-area" placeholder="Scrivi qui il tuo messaggio..."
+													style="width: 100%;"></textarea>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-bs-dismiss="modal">Annulla</button>
+												<button type="button" class="btn custom-button" id="start-chat">Invia
+													messaggio</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 				<c:if test="${account.accountType == 'w'}">
@@ -207,7 +254,7 @@
 								</c:forEach>
 							</div>
 							<div class="mt-5 text-center">
-								<button id="next-reviews" class="btn btn-primary" type="button">Mostra
+								<button id="next-reviews" class="custom-button" type="button">Mostra
 									altre</button>
 							</div>
 						</div>

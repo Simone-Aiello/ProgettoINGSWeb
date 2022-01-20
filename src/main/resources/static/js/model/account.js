@@ -12,7 +12,7 @@ class Account {
 
 	#addGetter = (property) =>{
 		this[property] = () =>{
-			return JSON.parse(JSON.stringify(this.#serializer[property])) ;
+			return JSON.parse(JSON.stringify(this.#serializer[property]));
 		}
 	}
 
@@ -33,83 +33,79 @@ class Account {
 		}
 
 		withUsername = function(username) {
-			checkType(username,"String");
-			var _regex = /^[\w-]+$/;
+			checkType(username, "String");
+			var _regex = /^[\w-]+$/g;
 			if (_regex.test(username)) {
-				this.#product.#addProperty("username",username);
+				this.#product.#addProperty("username", username);
 			}
 			else throw new Error("L'username inserito non è valido");
 		}
 
 		withPassword = function(password) {
-			checkType(password,"String");
+			checkType(password, "String");
 			var _regex = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,16}$/;
 			if (_regex.test(password)) {
-				this.#product.#addProperty("password",password);
+				this.#product.#addProperty("password", password);
 			}
 			else
 				throw new Error("La password non rispetta i requisti di sicurezza");
 		}
 
 		withEmail = function(email) {
-			checkType(email,"String");
+			checkType(email, "String");
 			var _regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 			if (_regex.test(email))
-				this.#product.#addProperty("email",email);
+				this.#product.#addProperty("email", email);
 			else throw new Error("L' email inserita non è valida");
 		}
 
 		withNumber = function(number) {
-			checkType(number,"Number");
+			checkType(number, "Number");
 			var _regex = /^([0-9]{10}|0[0-9]{8})$/
 			if (_regex.test(number) || number == "")
-				this.#product.#addProperty("number",number);
+				this.#product.#addProperty("number", number);
 			else
 				throw new Error("Il numero inserito non è valido");
 		}
 
 		withProvinceOfWork = function(provinceOfWork) {
-			checkType(provinceOfWork,"String");
-			this.#product.#addProperty("provinceOfWork",provinceOfWork);
+			checkType(provinceOfWork, "String");
+			this.#product.#addProperty("provinceOfWork", provinceOfWork);
 			return this;
 		}
 
 		withAccountType = function(accountType) {
-			checkType(accountType,"String");
+			checkType(accountType, "String");
 			var _regex = /^[awu]$/;
-			if  (_regex.test(accountType))
-				this.#product.#addProperty("accountType",accountType);
+			if (_regex.test(accountType))
+				this.#product.#addProperty("accountType", accountType);
 			else throw new Error("The account type is not valid");
 		}
 
 		withUser = function(user) {
-			checkType(user,"User");
+			checkType(user, "User");
 			this.#product.#addProperty("personalInfo", user);
 			return this;
 		}
-		withProfilePic = function(profilePic){
-			if(profilePic.value != null){
-				checkType(profilePic.value,"String");				
-			}
+		withProfilePic = function(profilePic) {
 			this.#product.#addProperty("profilePic", profilePic);
 		}
-		withArea = function(area){
-			checkType(area,"Area");
+		withArea = function(area) {
+			checkType(area, "Area");
 			this.areasList.push(area);
+			console.log(this.areasList);
 		}
-		removeArea = function(area){
-			checkType(area,"Area");
-			this.areasList = this.areasList.filter((elem) =>{
-				return elem["id"] != area;
+		removeArea = function(area) {
+			checkType(area, "Number");
+			this.areasList = this.areasList.filter((elem) => {
+				return elem.id() != area;
 			});
 		}
 		build = function() {
 			if (this.built) throw new Error("This builder has already been used");
 			this.built = true;
-			this.#product.#addProperty("areasOfWord",this.areasList); 
+			this.#product.#addProperty("areasOfWork", this.areasList);
 			return this.#product;
 		}
-
 	}
-
 }

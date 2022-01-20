@@ -8,18 +8,34 @@ import com.progetto.Utils;
 
 public class Offer {
 	
-
 	private long id;
 	private String description;
 	private String title;
 	private double quote;
 	private boolean done = false;
+	private boolean accepted;
 	private Account worker; 
 	private int hoursOfWork;
 	private Advertise advertise;
+	private String dates;
 	private List<String> availabilities ;
 	
 	
+
+	public boolean isAccepted() {
+		return accepted;
+	}
+	public void setAccepted(boolean accepted) {
+		this.accepted = accepted;
+	}
+
+	
+	public String getDates() {
+		return dates;
+	}
+	public void setDates(String dates) {
+		this.dates = dates;
+	}
 	public long getId() {
 		return id;
 	}

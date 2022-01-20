@@ -12,9 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import com.progetto.Utils;
+import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Area;
 import com.progetto.model.Image;
+import com.progetto.model.Offer;
 import com.progetto.persistence.Database;
 import com.progetto.persistence.daoInterfaces.AdvertiseDao;
 
@@ -120,6 +122,9 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		ann.setTitle(result.getString("titolo"));
 		ann.setExpiryDate(new DateTime(result.getDate("data_scadenza")));
 		ann.setProvince(result.getString("provincia_annuncio"));
+		Offer offer = new Offer();
+		offer.setId(result.getLong("proposta_accettata"));
+		ann.setAcceptedOffer(offer);
 		List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
 		ann.setInterestedAreas(areas);				
 		if(mode == Utils.BASIC_INFO) {
@@ -179,10 +184,82 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		}
 		return ann;
 	}
+
+	@Override
+	public void updateAdvertise(Advertise advertise) throws SQLException {
+		String UPDATE_ADVERTISE = "update annunci set proposta_accettata = ? where id = ?;";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(UPDATE_ADVERTISE);
+		ps.setInt(1,(int)advertise.getAcceptedOffer().getId());
+		ps.setInt(2, (int)advertise.getId());
+		
+		ps.executeUpdate();
+	}
+
+	@Override
+	public Long alreadyAssigned(Advertise a) throws SQLException {
+		String query = "select proposta_accettata from annunci where id = ?";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(query);
+		ps.setLong(1, a.getId());
+		ResultSet set = ps.executeQuery();
+		Long assignedOfferIndex = null;
+		if(set.next()) {
+			assignedOfferIndex = set.getLong("proposta_accettata");
+		}
+		assignedOfferIndex = (assignedOfferIndex == 0) ? null : assignedOfferIndex;
+		return assignedOfferIndex;
+	}
+
+	@Override
+	public List<Advertise> findAdvertisesByUsername(String username) throws SQLException {
+		List<Advertise> advertises = new ArrayList<Advertise>();
+		String FIND_ADVERTISES_BY_USERNAME = "select * from annunci where username_cliente = ?";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(FIND_ADVERTISES_BY_USERNAME);
+		ps.setString(1, username);
+		ResultSet set = ps.executeQuery();
+		while(set.next()) {
+			Advertise a = new Advertise();
+			a.setId(set.getLong("id"));
+			if(set.getString("descrizione") != null)
+				a.setDescription(set.getString("descrizione"));
+			a.setTitle(set.getString("titolo"));
+			a.setExpiryDate(DateTime.parse(set.getString("data_scadenza")));
+			Offer o = new Offer();
+			o.setId(set.getLong("proposta_accettata"));
+			a.setAcceptedOffer(o);
+			a.setProvince(set.getString("provincia_annuncio"));
+			Account acc = new Account();
+			acc.setUsername(set.getString("username_cliente"));
+			a.setAccount(acc);
+			advertises.add(a);
+		}
+		return advertises;
+	}
+	
+	
 	/*
 	 * public static void main(String[] args) { AdvertiseDaoConcrete test = new
 	 * AdvertiseDaoConcrete(); try { String[] a = {"meccanico"}; List<String> areas
 	 * = Arrays.asList(a); test.findGroup(null, areas, "CS", 30, null); } catch
 	 * (SQLException e) { e.printStackTrace(); } }
 	 */
+
+	@Override
+	public int[] findAdvertisesNumberAndAreasByAccount(String username) throws SQLException {
+		String query1 = "SELECT COUNT(DISTINCT id), COUNT(DISTINCT id_ambito) FROM annunci INNER JOIN annunci_ambiti ON id = id_annuncio WHERE username_cliente = ?";
+		PreparedStatement stmt1 = Database.getInstance().getConnection().prepareStatement(query1);
+		stmt1.setString(1, username);
+		ResultSet rs1= stmt1.executeQuery();
+		rs1.next();
+		int numberOfAdv = rs1.getInt(1);
+		int numberOfAreas = rs1.getInt(2);
+		
+		String query2 = "SELECT count(id) FROM annunci WHERE username_cliente = ? AND proposta_accettata IS NULL AND data_scadenza >= CURRENT_DATE"; 
+		PreparedStatement stmt2 = Database.getInstance().getConnection().prepareStatement(query2);
+		stmt2.setString(1, username);
+		ResultSet rs2 = stmt2.executeQuery();
+		rs2.next();
+		int numberOfOnlineAdv = rs2.getInt(1);
+		int[] v = {numberOfAdv, numberOfAreas, numberOfOnlineAdv};
+		return v;
+	}
 }

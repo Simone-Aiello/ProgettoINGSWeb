@@ -16,10 +16,12 @@ public class Notification {
 	private long id;
 	private String text;
 	private String type;
+	private Account receiver;
 	private Account createdBy;
 	
 	
 	public Notification() {}
+
 	public long getId() {
 		return id;
 	}
@@ -48,6 +50,12 @@ public class Notification {
 	}
 	public void setCreatedBy(Account createdBy) {
 		this.createdBy = createdBy;
+	}
+	public Account getReceiver() {
+		return receiver;
+	}
+	public void setReceiver(Account receiver) {
+		this.receiver = receiver;
 	}
 	
 }

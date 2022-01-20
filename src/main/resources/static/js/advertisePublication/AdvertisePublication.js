@@ -230,16 +230,13 @@ function addcheckRequiredInputs(){
 				$("#previewAreas").append(areaPreview);
 			}
 			
-			let allDates = "";
+			let allDates = [];
 			for(let i = 0; i < availabilityDates.length; i++){
 				let date = "<tr><td>" + availabilityDates[i] + "</td></tr>";
 				$("#previewAvailabilityDates").append(date);
-				if(i != availabilityDates.length - 1)
-					allDates = allDates + availabilityDates[i] + ",";
-				else
-					allDates = allDates + availabilityDates[i];
+				allDates.push( convertNotation(availabilityDates[i], false));
 			}
-			advertiseBuilder.withDates(allDates);
+			advertiseBuilder.withDates(JSON.stringify(allDates));
 			
 			$("#previewTitle").text(($("#advertiseTitle")).val());
 			$("#previewDescription").text(($("#advertiseDescription")).val());
@@ -257,7 +254,7 @@ function addSubmitListener(){
 					
 			//THIS IS A TEST
 			accountBuilder = new Account.Builder();
-			accountBuilder.withUsername("aaaa");
+			accountBuilder.withUsername("client");
 			
 			var account = accountBuilder.build();
 			advertiseBuilder.withAccount(account);

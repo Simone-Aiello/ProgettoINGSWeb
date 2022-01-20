@@ -86,7 +86,7 @@ function addAreasIconListener() {
 			let id = "#" + $(this).attr("id");
 			selectedAreas[id] = !selectedAreas[id];
 			let areaName = $(id + " i").attr("class").split(/\s+/)[1];
-			if (selectedAreas[id] ){ 
+			if (selectedAreas[id] ){
 				areaBuilder = new Area.Builder();
 				areaBuilder.withId($(id + " i").attr("id"));
 				account_builder.withArea(areaBuilder.build());

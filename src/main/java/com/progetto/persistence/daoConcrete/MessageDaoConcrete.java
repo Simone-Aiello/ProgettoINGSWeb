@@ -32,6 +32,7 @@ public class MessageDaoConcrete implements MessageDao{
 			DateTime dt = new DateTime(t.getTime());
 			m.setMessageTime(dt);
 			m.setText(rs.getString("contenuto"));
+			m.setSender(rs.getString("username_mittente"));
 			messaggi.add(m);
 		}
 		return messaggi;
@@ -46,38 +47,41 @@ public class MessageDaoConcrete implements MessageDao{
 		ResultSet rs = stmt.executeQuery();
 		rs.next();
 		Message m = new Message();
-		m.setId(rs.getInt("id"));
-		m.setText(rs.getString("contenuto"));
 		Timestamp t  = rs.getTimestamp("timestamp");
 		DateTime dt = new DateTime(t.getTime());
+		m.setId(rs.getInt("id"));
+		m.setText(rs.getString("contenuto"));
 		m.setMessageTime(dt);
-		return null;
+		m.setSender(rs.getString("username_mittente"));
+		return m;
 	}
 
 	@Override
-	public void save(Message m, Chat c) throws SQLException{
-		
+	public void save(Message m) throws SQLException{
 		if(exists(m)) {
+			//Non penso modiicheremo mai un messaggio
 			String query = "UPDATE messaggi SET timestamp = ?, contenuto = ? id_chat = ? WHERE id = ?";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setTimestamp(1, new Timestamp(m.getMessageTime().getMillis()));
 			stmt.setString(2, m.getText());
-			stmt.setLong(3, c.getId());
+			stmt.setLong(3, m.getIdChat());
 			stmt.setLong(4, m.getId());
 			stmt.execute();
 		}
 		else {
-			String query = "INSERT INTO messaggi(id, timestamp, contenuto, id_chat) VALUES (null, ?, ?, ?);";
+			String query = "INSERT INTO messaggi(timestamp, contenuto, id_chat, username_mittente) VALUES (?, ?, ?, ?);";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
-			stmt.setTimestamp(2, new Timestamp(m.getMessageTime().getMillis()));
-			stmt.setString(3, m.getText());			
-			stmt.setLong(4, c.getId());
+			stmt.setTimestamp(1, new Timestamp(m.getMessageTime().getMillis()));
+			stmt.setString(2, m.getText());			
+			stmt.setLong(3, m.getIdChat());
+			stmt.setString(4, m.getSender());
 			stmt.execute();
 		}
 	}
 
 	@Override
 	public void delete(Message m) throws SQLException{
+		//Non cancelleremo mai un messaggio
 		String query =  "DELETE FROM messaggi WHERE id = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setLong(1, m.getId());
@@ -93,19 +97,22 @@ public class MessageDaoConcrete implements MessageDao{
 	}
 
 	@Override
-	public List<Message> findMessagesByChat(Chat chat) throws SQLException {
-		String query = "SELECT * FROM messaggi WHERE id_chat = ?;";
+	public List<Message> findMessagesByChat(long chatId,String username) throws SQLException {
+		//String query = "SELECT * FROM messaggi WHERE id_chat = ?;";
+		//String query = "update messaggi set letto = True where id_chat = ? returning *";
+		String query = "select * from leggimessaggi(cast(? as int4),?) order by t";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
-		stmt.setLong(1, chat.getId());
+		stmt.setLong(1, chatId);
+		stmt.setString(2, username);
 		ResultSet rs = stmt.executeQuery();
 		List<Message> messages = new ArrayList<>();
 		while(rs.next()) {
 			Message m = new Message();
-			m.setId(rs.getInt("id"));
-			Timestamp t  = rs.getTimestamp("timestamp");
+			Timestamp t  = rs.getTimestamp("t");
 			DateTime dt = new DateTime(t.getTime());
 			m.setMessageTime(dt);
 			m.setText(rs.getString("contenuto"));
+			m.setSender(rs.getString("username_mittente"));
 			messages.add(m);
 		}
 		return messages;
@@ -113,6 +120,7 @@ public class MessageDaoConcrete implements MessageDao{
 
 	@Override
 	public void deleteMessagesByChat(Chat chat) throws SQLException {
+		//Anche qua, non cancelleremo mai un messaggio
 		String query = "DELETE FROM messaggi where id_chat = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setLong(1, chat.getId());

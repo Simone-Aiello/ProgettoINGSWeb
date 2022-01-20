@@ -4,13 +4,17 @@ import java.io.IOException;
 
 
 import java.sql.PreparedStatement;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import java.util.stream.Collectors;
 
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,7 +87,6 @@ public class OfferDaoConcrete implements OfferDao {
 
 	@Override
 	public Offer findByPrimaryKey(long id_offer,int mode)  throws SQLException{
-		
 		String FIND_BY_PRYMARY_KEY = "select * from proposte where id = ?;";
 		Offer offer = null;
 		
@@ -208,5 +211,61 @@ public class OfferDaoConcrete implements OfferDao {
 			offers.add(loadOffer(rs, Utils.BASIC_INFO));
 		}
 		return offers;
+	}
+
+	@Override
+	public List<Offer> findOffersByAdvertise(Advertise a) throws SQLException {
+		List<Offer> offers = new ArrayList<>();
+		String query = "SELECT * FROM proposte WHERE id_annuncio = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setLong(1, a.getId());
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			Offer o = new Offer();
+			o.setDescription(rs.getString("descrizione"));
+			o.setHoursOfWork(rs.getInt("ore_di_lavoro"));
+			o.setId(rs.getLong("id"));
+			o.setQuote(rs.getDouble("preventivo"));
+			o.setTitle(rs.getString("titolo"));
+			Account acc = new Account();
+			acc.setUsername(rs.getString("username_lavoratore"));
+			o.setWorker(acc);
+			o.setDates(rs.getString("disponibilità"));
+			offers.add(o);
+		}
+		
+		return offers;
+	}
+
+	@Override
+	public Offer findByPrimaryKeyForUsers(long id_offer) throws SQLException {
+		String query = "select * from proposte where id = ?";
+		Offer o = null;
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(query);
+		ps.setLong(1, id_offer);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			o = new Offer();
+			o.setDescription(rs.getString("descrizione"));
+			o.setHoursOfWork(rs.getInt("ore_di_lavoro"));
+			o.setId(rs.getLong("id"));
+			o.setQuote(rs.getDouble("preventivo"));
+			o.setTitle(rs.getString("titolo"));
+			Account acc = new Account();
+			acc.setUsername(rs.getString("username_lavoratore"));
+			o.setWorker(acc);
+			o.setDates(rs.getString("disponibilità"));
+			o.setDone(rs.getBoolean("lavoro_effettuato"));
+		}
+		return o;
+	}
+
+	public int findWorksDoneByAccount(String username) throws SQLException {
+		String query = "SELECT COUNT(id) FROM proposte WHERE lavoro_effettuato AND username_lavoratore = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, username);
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
 	}
 }

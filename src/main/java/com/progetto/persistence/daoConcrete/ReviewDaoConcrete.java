@@ -66,7 +66,8 @@ public class ReviewDaoConcrete implements ReviewDao {
 		statement.setString(5, review.getClient().getUsername());
 		statement.setString(6, review.getWorker().getUsername());
 		statement.execute();
-		saveImages(review);
+		if(review.getImages() != null)
+			saveImages(review);
 	}
 
 	@Override
