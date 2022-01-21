@@ -79,19 +79,22 @@ public class AreaDaoConcrete implements AreaDao{
 			preparedStatement.setString(1, area.getName());
 			preparedStatement.setString(2, area.getIcon());
 			preparedStatement.setLong(3, area.getId());
+			preparedStatement.execute();
 			
 			
 		}else {
 		
-			query = "insert into ambiti(nome, icona) values(?, ?) " ;
+			query = "insert into ambiti(nome, icona) values(?, ?) RETURNING id" ;
 			
 			preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
 			preparedStatement.setString(1, area.getName());
 			preparedStatement.setString(2, area.getIcon());
-			
+			ResultSet rs = preparedStatement.executeQuery();
+			rs.next();
+			area.setId(rs.getInt(1));
 		}
 		
-		preparedStatement.execute();
+
 	}
 
 	@Override

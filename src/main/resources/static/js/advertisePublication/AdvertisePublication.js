@@ -2,7 +2,6 @@ var advertiseBuilder = new Advertise.Builder();
 var availabilityDates = [];
 $(document).ready(() => {
 	addEvents();
-	
 });
 
 //switch from section before to section after
@@ -256,7 +255,35 @@ function addSubmitListener(){
 				contentType: "application/json",
 				data: JSON.stringify(advertiseBuilder.build()),
 				success: function(){
-					console.log("SUCCESS");
+					let modal = `<div class="modal fade" id="publicationModal"
+								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+								aria-labelledby="staticBackdropLabel" aria-hidden="true">
+								<div class="modal-dialog ">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="staticBackdropLabel">Conferma pubblicazione
+												</h5>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<p>Annuncio pubblicato con successo</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary closeModal"
+												data-bs-dismiss="modal">Ok</button>
+										</div>
+									</div>
+								</div>
+							</div>`;
+					$("body").append(modal);
+					$("#publicationModal").modal("toggle");
+					$(".closeModal").on("click", () => {
+						$("#publicationModal").modal("toggle");
+						window.location.href = "/";
+					});
+
+					//$("#confirmPublicationModal").remove();
 					//redirect to home page
 				},
 				error: function(xhr){

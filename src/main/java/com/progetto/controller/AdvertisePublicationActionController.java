@@ -17,17 +17,18 @@ import com.progetto.persistence.Database;
 public class AdvertisePublicationActionController {
 
 	@PostMapping("saveAdvertise")
-	public void saveAdvertise(@RequestBody Advertise advertise, HttpServletRequest req, HttpServletResponse resp) {
+	public String saveAdvertise(@RequestBody Advertise advertise, HttpServletRequest req, HttpServletResponse resp) {
 		String username = (String) req.getSession().getAttribute("username");
 		Account a = new Account();
 		a.setUsername(username);
 		advertise.setAccount(a);
 		try {
 			Database.getInstance().getAdvertiseDao().save(advertise);
+			return "index.html";
 		} catch (SQLException e) {
 			resp.setStatus(500);
 			e.printStackTrace();
 		}
-		
+		return null;
 	}
 }
