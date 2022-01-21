@@ -1,0 +1,28 @@
+body{
+	background-color: #f9dcc4;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mainDiv{
+	background-color: white;
+	margin: auto;
+	width: 60%;
+	padding: 35px;
+	margin-top: 40px;
+	margin-bottom: 40px;
+	border-radius: 10px;
+}
+
+@media(max-width: 1024px){
+	.mainDiv{
+		width: 85%;
+	}
+}
+
+@media(max-width: 460px){
+	.mainDiv{
+		width: 95%;
+	}
+}

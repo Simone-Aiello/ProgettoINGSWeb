@@ -50,11 +50,9 @@ public class ChatDaoConcrete implements ChatDao{
 	@Override
 	public void save(Chat c) throws SQLException {
 		if(exists(c)) {
-			String query = "UPDATE chat SET account_1 = ?, account_2 = ?";
-			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
-			stmt.setString(1, c.getA1().getUsername());
-			stmt.setString(2, c.getA2().getUsername());
-			stmt.execute();
+			for(Message m : c.getMessages()) {
+				Database.getInstance().getMessageDao().save(m);
+			}
 		}
 		else {
 			String query = "INSERT INTO chat(account_1, account_2) values(?, ?) RETURNING id";
@@ -64,11 +62,10 @@ public class ChatDaoConcrete implements ChatDao{
 			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			c.setId(rs.getInt(1));
-			
-		}
-		for(Message m: c.getMessages()) {
-			m.setIdChat(c.getId());
-			Database.getInstance().getMessageDao().save(m);
+			for(Message m: c.getMessages()) {
+				m.setIdChat(c.getId());
+				Database.getInstance().getMessageDao().save(m);
+			}
 		}
 	}
 
@@ -83,10 +80,21 @@ public class ChatDaoConcrete implements ChatDao{
 
 	@Override
 	public boolean exists(Chat c) throws SQLException {
-		String query = "SELECT id FROM chat WHERE id = ?;";
+		String query = "SELECT id FROM chat WHERE (account_1 = ? and account_2 = ?) or (account_1 = ? and account_2 = ?);";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
-		stmt.setLong(1, c.getId());
-		return stmt.executeQuery().next();
+		stmt.setString(1, c.getA1().getUsername());
+		stmt.setString(2, c.getA2().getUsername());
+		stmt.setString(3, c.getA2().getUsername());
+		stmt.setString(4, c.getA1().getUsername());
+		ResultSet set = stmt.executeQuery();
+		if(set.next()) {
+			
+			for(Message m : c.getMessages()) {
+				m.setIdChat(set.getLong("id"));
+			}
+			return true;
+		}
+		return false;
 	}
 
 	@Override

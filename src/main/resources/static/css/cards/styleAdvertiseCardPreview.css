@@ -19,8 +19,14 @@ p h5{
 .card-advertise-preview{
     visibility: hidden;
     display: none;
-    margin: 3px;
-    height: 80%;
+    margin: 15px;
+    height: 20rem;
+    min-height: 18rem;
+    width: 20rem;
+    min-height: 18rem;
+    align-self: center;
+    justify-self: center;
+    padding: 10px;
 }
 
 .card-body-advertise-preview{ height: 100%; }
@@ -35,7 +41,6 @@ p h5{
     overflow: hidden;
     white-space: nowrap;
     text-decoration: none;
-    font-size: 1.0rem;
 }
 
 
@@ -78,7 +83,6 @@ p h5{
     display: grid;
     grid-template-columns: 50% 45%;
     column-gap: 5%;
-    font-size: 13px;
     height: 20%;
     margin-bottom: 2px;
 }
@@ -97,7 +101,7 @@ p h5{
 }
 
 
-@media screen and (max-width:800px){
+/* @media screen and (max-width:800px){
     
     .card-header-advertise-preview{ height: 30%; }
     .card-information-advertise-preview{ height: 50% ; margin: 0; }
@@ -109,4 +113,4 @@ p h5{
     
     .card-title-advertise-preview{ font-size: 1.3rem; }
 
-}
+} */

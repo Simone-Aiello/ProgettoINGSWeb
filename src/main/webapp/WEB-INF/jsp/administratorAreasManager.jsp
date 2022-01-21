@@ -26,6 +26,11 @@
 					<div id ="allAreas">
 					
 					<c:forEach items = "${areas}" var = "area" varStatus = "loop">
+						<!--
+						<c:if test="${loop.index % 2 == 0}">
+							<div class = "row">
+						</c:if>
+						-->
 						<div class="card areaCard">
 							<div class = icon-div>
 						  		<figure class="icon-figure">
@@ -49,9 +54,14 @@
 						  </div>
 						  <div class="card-body cardButtons">
 						    <button id = "${area.id}-AreaModifyButton" class = "btn btn-secondary">Modifica</button>
-							<button id = "${area.id}-AreaDeleteButton" class =  "btn btn-danger">Cancella</button>
+							<button id = "${area.id}-AreaDeleteButton" type = "button" class =  "btn btn-danger">Cancella</button>
 						  </div>
 						</div>
+						<!--
+						<c:if test="${loop.index % 2 == 0}">
+							</div>
+						</c:if>
+						-->
 					</c:forEach>
 						
 					</div>
@@ -83,7 +93,6 @@
 					</form>
 				</div>
 			</section>
-		
 		</div>
 	</body>
 </html>

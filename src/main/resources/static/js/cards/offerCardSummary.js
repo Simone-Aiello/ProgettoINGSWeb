@@ -11,10 +11,17 @@ function sendOffer(offer){
 		contentType: "application/json",
 		data: data,
 		success: (response) => {
-			console.log(response);
+			// DA sostituire con il messaggio del back-end
+			let dialog = createDialog({
+				message : 'La tua proposta è stata presa in carico',
+			});
+			dialog.show();
 		},
 		error: (xhr) => {
-			console.log(xhr.message);
+			let dialog = createDialog({
+				message : 'Si è verificato un problema interno al sistema, la riproviamo a riprovare più tardi',
+			});
+			dialog.show();
 		}
 	});
 }
@@ -127,6 +134,9 @@ function createOfferCardSummary(data){
 	
 	let droppedMenu = document.createElement('ul');
 	droppedMenu.className = 'dropdown-menu';
+	droppedMenu.style.backgroundColor = "#f4a261" ;
+	droppedMenu.style.borderRadius = "10px";
+
 	//for each data add it to dropdown menu
 	data.availabilities.forEach((item) =>{
 		let li = document.createElement('li');
@@ -208,22 +218,7 @@ function createOfferCardSummary(data){
 	button.id = 'accept-button';
 	button.innerHTML = 'Conferma';
 	button.style = 'background-color : #f4a261; border:none';
-
-	button.onmouseover = () => {
-		gsap.to(button,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
-	}
-
-
-	button.onmouseleave = () => {
-		gsap.to(button,{ scale: 1 ,ease : "elastic.out(1, 0.3)"  });
-	}
-
-
-	button.onclick = () => {
-		let offer = data.offer_builder.build();
-		sendOffer(offer);
-	}
-
+	
 	let button_back = document.createElement('button');
 	button_back.className = 'btn btn-primary';
 	button_back.id = 'exit-button';
@@ -237,80 +232,96 @@ function createOfferCardSummary(data){
 	button_back.onmouseover = () => {
 		gsap.to(button_back,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
 	}
-
-
+	
+	
 	button_back.onmouseleave = () => {
 		gsap.to(button_back,{ scale: 1 ,ease : "elastic.out(1, 0.3)"  });
 	}
-
-
+	
+	
 	buttonDiv.appendChild(button);
 	buttonDiv.appendChild(button_back);
-
+	
 	// CLOSE CARD
 	card.close  = () => {
-        
-    	const card_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
+		
+		const card_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
         
         card_timeline.to(card,{ scale : 0.4 });  
         card_timeline.to(card,{ scale : 0.8 });  
         card_timeline.to(card,{ opacity :0 } ,'<');  
         card_timeline.to(card,{ visibility : "hidden" , duration : 0 , display : "none"});  
-    
+		
 		let totalTime = card_timeline.totalDuration() ;
-
+		
 		setTimeout(data.cardOfferForm.show,totalTime*1000)
         return  totalTime ;
     }
 	
 	// CLOSE ALL
     card.exit = () => {
-
-
-        const modal_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
+		
+		
+		const modal_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
         
         modal_timeline.to(card,{ scale : 0.4 });  
         modal_timeline.to(card,{ scale : 0.8 });  
         modal_timeline.to(data.modal_bg,{ opacity :0 } ,'<');  
         modal_timeline.to(data.modal_bg,{ visibility : "hidden" , duration : 0 , display : "none"});  
         document.body.style.overflow = "auto" ;
-
-
+		
+		
         return modal_timeline.totalDuration() ;
     }
-
+	
 	closeButton.onclick = card.exit ;
-
-
-
+	
+	
+	
 	card.close  = () => {
-        
-    	const card_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
+		
+		const card_timeline = gsap.timeline({defaults:{duration:0.65,ease : "elastic.out(1, 0.3)"}});
         
         card_timeline.to(card,{ scale : 0.4 });  
         card_timeline.to(card,{ scale : 0.8 });  
         card_timeline.to(card,{ opacity :0 } ,'<');  
         card_timeline.to(card,{ visibility : "hidden" , duration : 0 , display : "none"});  
-    
+		
 		let totalTime = card_timeline.totalDuration() ;
-
+		
 		setTimeout(data.cardOfferForm.show,totalTime*1000)
         return  totalTime ;
     }
-
+	
 	button_back.onclick = () => {
-
+		
 		let time = card.close();
 		setTimeout(data.cardOfferForm.show,time*1000);
 	}
-
+	
 	card.show  = () => {
-        
-    	gsap.fromTo(card,{scale: 0.4 , opacity : 0 , visibility : "hidden" , display: "none"} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)", display: "flex" , visibility: "visible"});     
-
+		
+		gsap.fromTo(card,{scale: 0.4 , opacity : 0 , visibility : "hidden" , display: "none"} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)", display: "flex" , visibility: "visible"});     
+		
         return 1 ;
     }
+	
+	
+	button.onmouseover = () => {
+		gsap.to(button,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)"  });
+	}
 
+
+	button.onmouseleave = () => {
+		gsap.to(button,{ scale: 1 ,ease : "elastic.out(1, 0.3)"  });
+	}
+
+
+	button.onclick = () => {
+		let offer = data.offer_builder.build();
+		sendOffer(offer);
+		card.exit();
+	}
 	//build the card
 	card_body.appendChild(titleRow);
 	card_body.appendChild(infoRow);

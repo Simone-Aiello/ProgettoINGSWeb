@@ -69,6 +69,7 @@ public class MessageDaoConcrete implements MessageDao{
 			stmt.execute();
 		}
 		else {
+			System.out.println("Entro");
 			String query = "INSERT INTO messaggi(timestamp, contenuto, id_chat, username_mittente) VALUES (?, ?, ?, ?);";
 			PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setTimestamp(1, new Timestamp(m.getMessageTime().getMillis()));

@@ -41,6 +41,7 @@ function createCardOfferForm(data){
 
     let row_information_user_advertise = document.createElement('div');
     row_information_user_advertise.className = "wrapper space-between";
+	row_information_user_advertise.style.flexWrap = "wrap";
 
     let username_client_advertise = document.createElement("a");
     username_client_advertise.className = "card-subtitle text-muted small col-3 text-decoration-none" ;
@@ -486,13 +487,10 @@ function createCardOfferForm(data){
             data.quote = input_quote_value ;
             data.cardOfferForm = form ;
             data.modal_bg = modal_bg ;
-            if(card_summary == null ) 
-            {
-                card_summary = createOfferCardSummary(data);
-                card_summary.style.display = "none";
-                modal_bg.appendChild(card_summary);
-                console.log("HERE")
-            }
+            card_summary = createOfferCardSummary(data);
+            card_summary.style.display = "none";
+            modal_bg.appendChild(card_summary);
+            
             let time_to_close = form.close();
             setTimeout(card_summary.show,time_to_close*1000);
 			

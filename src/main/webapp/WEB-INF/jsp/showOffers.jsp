@@ -15,7 +15,6 @@
 		<script type="text/javascript" src = "/js/cards/offerDetailCard.js"></script>
 		<script type="text/javascript" src = "/js/footer.js"></script>
 		
-		
 		<title>Show offers</title>
 	</head>
 	<body id = "body" style = "margin : 0; padding : 0;" class = "d-flex flex-column min-vh-100">

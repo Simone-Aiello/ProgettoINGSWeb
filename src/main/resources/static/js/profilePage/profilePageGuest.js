@@ -10,7 +10,7 @@ function appendReview(review) {
 					<div id ="review-stars"> </div>
 					<p class="card-text review-description mb-1">${review["description"]}</p>
 					<p class="card-text">
-						<small class="text-muted">Username cliente e data?</small>
+						<small class="text-muted review-client"><a href="profilePage?username=${review["client"]["username"]}">${review["client"]["username"]}</a></small>
 					</p>
 				</div>
 			</div>
@@ -47,6 +47,7 @@ function addNextReviewsButtonListeners() {
 			contentType: "application/json",
 			data: d,
 			success: function(response) {
+				console.log(response);
 				if (response.length > 0) {
 					reviewIndex += reviewStep;
 					clearReviews();

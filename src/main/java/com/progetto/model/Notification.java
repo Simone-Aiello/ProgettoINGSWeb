@@ -18,7 +18,7 @@ public class Notification {
 	private String type;
 	private Account receiver;
 	private Account createdBy;
-	
+	private boolean read;
 	
 	public Notification() {}
 
@@ -56,6 +56,14 @@ public class Notification {
 	}
 	public void setReceiver(Account receiver) {
 		this.receiver = receiver;
+	}
+
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 	
 }

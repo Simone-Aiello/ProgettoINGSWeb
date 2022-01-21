@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,17 +16,19 @@ import com.progetto.persistence.Database;
 public class AdvertisePublicationController {
 
 	@GetMapping("/AdvertisePublication")
-	public String startPublication(HttpServletRequest req) {
+	public String startPublication(HttpServletRequest req, HttpServletResponse resp) {
 		try {
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username")==null) {
+				req.getSession(false).setAttribute("message", "Utente non loggato");
+				return "genericInfoPage";
+			}
 			List<Area> areas = Database.getInstance().getAreaDao().findAll();
 			req.setAttribute("areas", areas);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("ERROR");
+			resp.setStatus(500);
 			e.printStackTrace();
 		}
 		
-		//System.out.println("STARTING PUBLICATION");
 		return "advertisePublication";
 	}
 }
