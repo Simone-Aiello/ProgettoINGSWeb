@@ -16,5 +16,7 @@ public interface NotificationDao {
 	void delete(Notification notification) throws SQLException ;
 	List<Notification> findNotificationsByReceiver(Account receiver) throws SQLException ;
 	void saveNotificationByOfferRefuse(Notification notification) throws SQLException;
-	
+	boolean hasUnreadNotification(Account a) throws SQLException;
+	void markAllAsRead(List<Notification> notification) throws SQLException;
+	void saveNewAreaNotification(Notification notification) throws SQLException;
 }

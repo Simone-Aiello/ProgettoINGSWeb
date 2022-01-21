@@ -1,4 +1,3 @@
-var currentLoggedUser = null;
 var currentChatId = null;
 function addSmallDevicesContactListListeners() {
 	$("#contact-list-toggle").click(() => {
@@ -38,7 +37,6 @@ function appendMessages(messages) {
 	$("#messages-list").html("");
 	for (message of messages) {
 		message["messageTime"] = offsetTimeZone(message["messageTime"]);
-		console.log(message["messageTime"]);
 		if (message["sender"] == guest) {
 			messageli = `<li class="other-message-li">
 			  <div class="other-message">
@@ -64,8 +62,7 @@ function getMessages(idChat) {
 		url: "/getMessages",
 		contentType: "application/json",
 		data: {
-			id : idChat,
-			username : currentLoggedUser, 
+			id: idChat,
 		},
 		success: (response) => {
 			console.log(response);
@@ -77,10 +74,8 @@ function getMessages(idChat) {
 		}
 	});
 }
-function addOnPeopleClickListeners() {
-	$("#people-list ul li").each(function() {
-		$(this).click(() => {
-			//Servono a rendere il sito responsive nel caso in cui lo schermo viene allargato dopo aver cliccato sulla lista dei contatti
+function addClickOnPeople(liElement){
+	//Servono a rendere il sito responsive nel caso in cui lo schermo viene allargato dopo aver cliccato sulla lista dei contatti
 			if ($("#current-chat").css("display") === "none") {
 				$("#current-chat").css("display", "initial");
 				if ($(document).width() <= 995) {
@@ -88,20 +83,25 @@ function addOnPeopleClickListeners() {
 				}
 			}
 			//Mostro i messaggi
-			let imgSrc = ($(this).children("img")).attr("src");
-			let name = ($(this).children("span")).text();
+			let imgSrc = (liElement.children("img")).attr("src");
+			let name = (liElement.children("span")).text();
 
-			if ($(this).attr("id") != currentChatId) {
-				getMessages($(this).attr("id"));
+			if (liElement.attr("id") != currentChatId) {
+				getMessages(liElement.attr("id"));
 				$("#personal-info img").attr("src", imgSrc);
 				$("#personal-info span").text(name);
 				$("#personal-info").css("display", "initial");
 				$("#new-message-div").css("display", "flex");
 				$("#new-message-div").css("flex-direction", "row");
-				currentChatId = $(this).attr("id");
+				currentChatId = liElement.attr("id");
 			}
 			//Tolgo l'icona della notifica se presente
-			($(this).children("span")).children("i").css("display", "none");
+			(liElement.children("span")).children("i").css("display", "none");
+}
+function addOnPeopleClickListeners() {
+	$("#people-list ul li").each(function() {
+		$(this).click(() => {
+			addClickOnPeople($(this));
 		});
 	});
 }
@@ -148,7 +148,6 @@ function appendMessageToCurrentChat(message) {
 function sendMessage(text) {
 	let messageBuilder = new Message.Builder();
 	messageBuilder.withText(text);
-	messageBuilder.withSender(currentLoggedUser);
 	messageBuilder.withIdChat(currentChatId);
 
 	$.ajax({
@@ -178,8 +177,38 @@ function addSendButtonListener() {
 		}
 	});
 }
-function appendNewChat(){
-	
+function getProfilePicture(usr) {
+	$.ajax({
+		type: "GET",
+		url: "/getProfilePic",
+		contentType: "application/json",
+		data: {
+			username: usr,
+		},
+		success: (response) => {
+			let newChat = `<li class="clearfix" id="${d["id"]}"><span class="name" id="${d["a1"]["username"]}">${d["a1"]["username"]}<i class="fas fa-circle"></i></span></li>`;
+			$(".chat-list").append(newChat);
+			if (response != "") {
+				let img = `<img src="${response}">`
+				$(`span#${usr}`).parent().prepend(img);
+			}
+			else {
+				let img = `<img src="/usersImages/profilePictures/defaultIcon.png">`
+				$(`span#${usr}`).parent().prepend(img);
+			}
+			$(`span#${usr} i`).css("display", "initial");
+			$(`span#${usr}`).parent().click(() =>{
+				addClickOnPeople($(`span#${usr}`).parent());				
+			});
+		},
+		error: (xhr) => {
+			console.log(xhr);
+		}
+	});
+}
+function appendNewChat(d) {
+
+	getProfilePicture(d["a1"]["username"]);
 }
 function handleNewMessages(data) {
 	for (d of data) {
@@ -187,11 +216,11 @@ function handleNewMessages(data) {
 		if (username === $("#personal-info span").text()) {
 			getMessages(d["id"]);
 		}
-		else if($(`#${username} i`).length){
-			$(`#${username} i`).css("display", "initial");			
+		else if ($(`#${username} i`).length) {
+			$(`#${username} i`).css("display", "initial");
 		}
 		else {
-			appendNewChat();
+			appendNewChat(d);
 		}
 	}
 }
@@ -200,10 +229,8 @@ function checkForNewMessages() {
 		type: "GET",
 		url: "/checkForNewMessages",
 		contentType: "application/json",
-		data: {
-			username: currentLoggedUser,
-		},
 		success: (response) => {
+			console.log(response);
 			handleNewMessages(response);
 			setTimeout(checkForNewMessages, 10000);
 		},
@@ -213,8 +240,6 @@ function checkForNewMessages() {
 	});
 }
 $(document).ready(() => {
-	let urlObject = new URL(window.location.href);
-	currentLoggedUser = urlObject.searchParams.get("username");
 	makeUIResponsive();
 	addSmallDevicesContactListListeners();
 	addOnPeopleClickListeners();
