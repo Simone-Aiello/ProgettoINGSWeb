@@ -244,6 +244,130 @@ function getAllAreas(containers){
     });
 }
 
+showModal = (modal) => {
+    modal.style.setProperty('display', 'flex', 'important');
+    document.body.style.overflowY = "hidden"; 
+}
+closeModal = (modal) => {
+    modal.style.setProperty('display', 'none', 'important');
+    document.body.style.overflowY = "auto"; 
+}
+
+
+function createDialog(params){
+
+    // Modal bg
+    let modal_bg = document.createElement("div");
+    modal_bg.className = "modal-getjobs";
+	    
+    // Dialog
+    let dialog = document.createElement("div");
+    dialog.className = "dialog shadow rounded container-columns dialog-getjobs";
+    dialog.id = "dialog-getjobs" ;
+    
+    // DEFINING CLOSE BUTTON 
+    let close_button_dialog = document.createElement("button");
+    close_button_dialog.className = "btn far fa-times-circle close-button-container-columns" ;
+
+    close_button_dialog.onmouseover = () => {
+        gsap.to(close_button_dialog,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)" , rotate : "-90deg"} );
+    }
+
+    close_button_dialog.onmouseleave = () => {
+        gsap.to(close_button_dialog,{ scale: 1 , ease : "elastic.out(1, 0.3)" , rotate : "0deg"} );
+    }
+
+    // Message
+    let message_dialog = document.createElement('h1');
+    message_dialog.className = "message-dialog rounded shadow";
+    message_dialog.innerHTML = params.message ;
+
+    // Container buttons
+    let container_buttons_dialog = document.createElement('div');
+    container_buttons_dialog.className = "container-buttons-dialog";
+    
+    // Button ok
+    let ok_button = document.createElement('button');
+    ok_button.className = "btn btn-success";
+    ok_button.innerHTML = "Ok" ;
+
+    // Button cancel
+    let cancel_button = document.createElement('button');
+    cancel_button.className = "btn btn-danger";
+    cancel_button.innerHTML = 'Annulla' ;
+
+    if(params.cancel){
+        container_buttons_dialog.appendChild(cancel_button);
+    }
+    container_buttons_dialog.appendChild(ok_button);
+
+    dialog.appendChild(close_button_dialog);
+    dialog.appendChild(message_dialog);
+    dialog.appendChild(container_buttons_dialog);
+
+    modal_bg.appendChild(dialog);
+
+
+    dialog.close = () => {
+
+        const inner_item_timeline = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});
+
+        inner_item_timeline.to(close_button_dialog,{y : -10, opacity : 0},'<');
+        inner_item_timeline.to(message_dialog,{x : -20, opacity : 0 });
+        inner_item_timeline.to(cancel_button,{x : 20, opacity : 0 }, '<');
+        inner_item_timeline.to(ok_button,{y : -10, opacity : 0});
+
+
+        const modal_timeline = gsap.timeline({defaults:{duration:0.7,ease : "elastic.out(1, 0.3)"}});
+        
+        modal_timeline.to(dialog,{ scale : 0.4 });  
+        modal_timeline.to(dialog,{ scale : 0.8 });  
+        modal_timeline.to(modal_bg,{ opacity :0 } ,'<');  
+        modal_timeline.to(modal_bg,{ visibility : "hidden" , duration : 0 , display: "none"});  
+        document.body.style.overflow = "auto" ;
+        
+        setTimeout(()=> {document.body.removeChild(modal_bg)}, modal_timeline.totalDuration() * 2000);
+
+        return modal_timeline.totalDuration() ;
+    }
+
+    dialog.show  = () => {
+
+        document.body.appendChild(modal_bg);
+        gsap.to(modal_bg,{opacity : 1 , duration : 1 });  
+        
+        modal_bg.style.visibility = "visible" ;
+        modal_bg.style.display = "flex" ;
+            
+        document.body.style.overflow = "hidden" ;
+        const tl = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});
+
+        tl.fromTo(message_dialog,{x : -10, opacity : 0},{x : 0, opacity : 1});
+        tl.fromTo(close_button_dialog,{y : -10, opacity : 0},{y : 0, opacity : 1},'<');
+        tl.fromTo(ok_button,{x : -20, opacity : 0},{x : 0, opacity : 1 });
+        tl.fromTo(cancel_button,{x : 20, opacity : 0},{x : 0, opacity : 1 }, '<');
+
+        gsap.fromTo(dialog,{scale: 0.4 , opacity : 0} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)"});     
+    }
+
+    close_button_dialog.onclick = dialog.close ;
+
+    ok_button.onclick = () => {
+        if(params.ok){
+            params.ok();
+        }
+        dialog.close();
+    }
+
+    cancel_button.onclick = () => {
+        if(params.cancel){
+            params.cancel();
+        }
+        dialog.close();
+    }
+
+    return dialog ;
+}
 
 
 
