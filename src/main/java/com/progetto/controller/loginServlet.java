@@ -30,14 +30,14 @@ public class loginServlet{
 		
 		if(a.getEmail() == null) {
 			try {
-				account = Database.getInstance().getAccountDao().findByPrimaryKey(a.getUsername(), Utils.BASIC_INFO);	
+				account = Database.getInstance().getAccountDao().loginCredentialsByUsernameOrEmail(a.getUsername());	
 			} catch (SQLException e) {
 				resp.setStatus(204); // 204 : The server successfully processed the request, and is not returning any content.
 			}
 		}
 		else {
 			try {
-				account = Database.getInstance().getAccountDao().findByEmail(a.getEmail());
+				account = Database.getInstance().getAccountDao().loginCredentialsByUsernameOrEmail(a.getEmail());
 			} catch (SQLException e) {
 				resp.setStatus(204);
 			}
@@ -46,13 +46,12 @@ public class loginServlet{
 		if(account == null || !BCrypt.checkpw(a.getPassword(), account.getPassword())) {
 			resp.setStatus(204);
 		}else {
-			
-			HttpSession session = req.getSession(true);
-			session.setAttribute("username", account.getUsername());
-			session.setAttribute("loggedAccountType", account.getAccountType());
-			Cookie userName = new Cookie("user", account.getUsername());
-			userName.setMaxAge(30*60);
-			resp.addCookie(userName);
+
+			if(account.getUsername() != null) {
+				HttpSession session = req.getSession(true);
+				session.setAttribute("username", account.getUsername());
+				session.setAttribute("loggedAccountType", account.getAccountType());
+			}
 		}
 		
 		return account;
@@ -63,6 +62,7 @@ public class loginServlet{
 		try {
 			HttpSession session = req.getSession(false); 
 		if(session != null) {
+			System.out.println(session.getAttribute("username"));
 	        session.invalidate();  
 		}
 			resp.sendRedirect("/");

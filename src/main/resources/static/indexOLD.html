@@ -31,8 +31,10 @@
     <!-- Tag relativi ad i model account e annuncio -->
     <script src="./js/model/account.js"></script>
     <!--  <script src="../js/model/advertise.js"></script> -->
+    <script type="text/javascript" src = "/js/footer.js"></script>
 </head>
-<body>
+
+<body id = "body" class = "d-flex flex-column min-vh-100">
     <!-- Modals -->
     <!-- Modal areas -->
     <div id="modal-areas" class="modal-getjobs">
@@ -67,6 +69,28 @@
             </button>
             <button id ="button-search-advertise" class= "btn button-search-advertise" ><i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
+        <ul>
+            <li>
+                <!-- <div style = "position : relative; display: flex; flex-direction: row;background-color: #FFD6A5; border-radius: 8px;padding: 0 8px; align-items: center;">
+                	<div style ="font-size : 32px; margin-right: 5px; color: #F3722C;">
+                		<i class="far fa-plus-square"></i>
+                	</div>
+                	<div style = "color : #F3722C; font-family : sans-serif; font-size: 20px; font-weight: 600;">
+                		Inserisci annuncio
+                	</div>
+                </div>-->
+                 <div class="wrapper account shadow">
+                    Inserisci annuncio
+                </div>
+            </li>
+            <li>
+                <div class="wrapper account shadow">
+                    Login
+                </div>
+            </li>
+        </ul>
+    </header>
+    <section class="banner">
         <div class="wrapper"><h5 class="information-advertises shadow rounded">Tutti gli annunci</h5></div>
         <div class="outer-container-advertises shadow">
             <button class="btn shadow button-search-advertise button-search-bar-smartphone"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -78,5 +102,9 @@
             </div>
         </div>
     </section>
+    <script type="text/javascript">
+			let footer = createFooter();
+			$(body).append(footer);
+		</script>
 </body>
 </html>

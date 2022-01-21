@@ -60,6 +60,25 @@
 							<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
 							<li class="nav-item"><a class="nav-link active"
 								href="/profilePage?username=${sessionScope.username}">Profilo</a></li>
+							<c:choose>
+								<c:when test="${sessionScope.loggedAccountType == 'w'}">
+									<li class="nav-item"><a class="nav-link active" href="#">Le
+											tue offerte</a></li>
+								</c:when>
+								<c:when test="${sessionScope.loggedAccountType == 'u'}">
+									<li class="nav-item"><a class="nav-link active"
+										href="/showMyAdvertises">I tuoi annunci</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="/AdvertisePublication">Inserisci annuncio</a></li>
+								</c:when>
+								<c:when test="${sessionScope.loggedAccountType == 'a'}">
+									<li class="nav-item"><a class="nav-link active"
+										href="/administratorProfilesManager">Gestisci account</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="/administratorAreasManager">Gestisci ambiti di
+											lavoro</a></li>
+								</c:when>
+							</c:choose>
 							<li class="nav-item"><a class="nav-link active"
 								href="/getChats">Messaggi</a></li>
 							<li class="nav-item" id="notification-item"><a
@@ -136,7 +155,8 @@
 						<c:otherwise>
 							<div class="alert alert-danger alert-dismissible fade show"
 								role="alert">
-								L'account non è ancora verificato, non potrà pubblicare nessun annuncio. Accedere alla mail e cliccare sul link ricevuto per
+								L'account non è ancora verificato, non potrà pubblicare nessun
+								annuncio. Accedere alla mail e cliccare sul link ricevuto per
 								confermare l'account oppure <a id="send-email"
 									class="alert-link">re-invia mail</a>.
 								<button id="dismiss-alert" type="button" class="btn-close"

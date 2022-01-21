@@ -14,6 +14,7 @@ public class Offer {
 	private double quote;
 	private boolean done = false;
 	private boolean accepted;
+	private boolean reviewed;
 	private Account worker; 
 	private int hoursOfWork;
 	private Advertise advertise;
@@ -27,6 +28,13 @@ public class Offer {
 	}
 	public void setAccepted(boolean accepted) {
 		this.accepted = accepted;
+	}
+	
+	public boolean isReviewed() {
+		return reviewed;
+	}
+	public void setReviewed(boolean reviewed) {
+		this.reviewed = reviewed;
 	}
 
 	

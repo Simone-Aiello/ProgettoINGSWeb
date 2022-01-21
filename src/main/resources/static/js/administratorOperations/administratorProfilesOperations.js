@@ -47,12 +47,13 @@ function addAreaSelectionEvent(){
 			//alert("checked");
 			numberOfSelectedAreas--;
 			areaCheckbox.prop("checked", false);
-
+			areaCheckbox.parent().css({"background-color": "white"});
 		}
 		else{
 			//alert("not checked");
 			numberOfSelectedAreas++;
-			areaCheckbox.prop("checked", true);	
+			areaCheckbox.prop("checked", true);
+			areaCheckbox.parent().css({"background-color": "rgb(192, 192, 192)"});
 		}
 		if(numberOfSelectedAreas === 1)
 			$("#areaInputLabel").html(numberOfSelectedAreas +" scelta");
@@ -79,9 +80,9 @@ function createProfileCard(a){
 	//alert(newLine);
 
 	let profileCard = "";
-	let newRowBegin = "<div class =\"row profileCardsRow\">";
-	let newRowEnd = "</div>";
-	let defaultImage= "/images/defaultProfilePic.png";
+	let newRowBegin = `<div class ="row profileCardsRow">`;
+	let newRowEnd = `</div>`;
+	let defaultImage= "/usersImages/profilePictures/defaultIcon.png";
 	
 	let profileImage = defaultImage;
 	if(a.profilePic != null)
@@ -91,19 +92,19 @@ function createProfileCard(a){
 		//alert("new line");
 			profileCard += newRowBegin;
 		}
-	let profileCol = "<div class =\"col-lg-6 col-sm-12 col-xs-12\">" +
-						"<div class=\"containerCard row mb-3 container-sm\">"+ 
-							"<div id = \"profileDiv-"+ a.username +"\"class=\"profileDiv col\">"+
-								"<div class=\"imageDiv\">"+
-									"<img class = \"profilePic\" src=\""+ profileImage + "\">"+
-								"</div>"+
-								"<div class=\"profileName\"><p>" + a.username + "</p></div>"+	
-								"<div class=\"actions\">"+
-									"<button id = \"startChat-" + a.username + "\" class=\"profileButton\">Avvia chat</button>"+
-									"<button id = \"viewProfile-"+ a.username + " class=\"profileButton\"><a href = \"profilePage?username=" + a.username + "\">Vedi profilo </a></button>"+
-									"<button id = \"banAccount-"+a.username + "\" class=\"profileButton\">Banna account</button>"+
-								"</div>"+
-							"</div>";
+	let profileCol = `<div class ="col-lg-6 col-sm-12 col-xs-12">
+						<div class="containerCard row mb-3 container-sm"> 
+							<div id = "profileDiv-` + a.username + `" class="profileDiv col">
+								<div class="imageDiv">
+									<img class = "profilePic" src="`+ profileImage + `">
+								</div>
+								<div class="profileName"><p>` + a.username + `</p></div>	
+								<div class="actions">
+									<button id = "startChat-` + a.username + `" type = "button" class="profileButton btn" >Avvia chat</button>
+									<button id = "viewProfile-`+ a.username + `" class="profileButton"><a href = "profilePage?username=` + a.username + `">Vedi profilo </a></button>
+									<button id = "banAccount-`+ a.username + `" class="profileButton">Banna account</button>
+								</div>
+							</div>`;
 								
 							
 				
@@ -115,26 +116,21 @@ function createProfileCard(a){
 	let secondStateContent = "";
 	let thirdStateContent = "";
 
+	let secondStatHTML = "";
+
 	if(a.accountType === "w"){
-		//alert("Worker");
 		firstStatName = "Lavori";
 		firstStateContent = a.acceptedOffers;
-		
-		secondStatName = "Specialità";
-		secondStateContent = "";
-		
 		thirdStatName = "Valutazioni";
 
 		let averageReviews = a.averageReviews;
 		
-		//CHECK
-		//alert(averageReviews);
 		for(i = 1; i <= 5; i++){
 			if(i <= averageReviews ){
-				thirdStateContent += "<i class=\"fas fa-star fullstar\"></i>";
+				thirdStateContent += `<i class="fas fa-star fullstar"></i>`;
 			}
 			else{
-				thirdStateContent += "<i class=\"far fa-star emptystar\"></i>";
+				thirdStateContent += `<i class="far fa-star emptystar"></i>`;
 			}
 		}
 		thirdStateContent += "<span>(" + a.numberOfReviews + ")</span>";
@@ -146,25 +142,29 @@ function createProfileCard(a){
 		secondStateContent = a.advertisesAreas;
 		thirdStatName = "Annunci online";
 		thirdStateContent = a.onlineAdvertises;
+		
+		secondStatHTML = `<div class="box">
+								<span class="parameter">` + secondStatName + `</span>
+								<span class="value">` + secondStateContent + `</span>
+							</div>`;
+		
 	}
-	let statsCol = 	"<div class=\"stats col\">"+
-						"<div class =\"boxes container-fluid\">"+
-							"<div class=\"box\">"+
-								"<span class=\"parameter\">" + firstStatName + "</span>"+
-								"<span class=\"value\">" + firstStateContent + "</span>"+
-							"</div>"+
-							"<div class=\"box\">"+
-								"<span class=\"parameter\">" + secondStatName +"</span>"+
-								"<span class=\"value\">" + secondStateContent + "</span>"+
-							"</div>"+
-							"<div class=\"box\">"+
-								"<span class=\"parameter\">" + thirdStatName + "</span>"+
-								"<span class=\"value\">" + thirdStateContent + "</span>"+
-							"</div>";
-						"</div>"+
-					"</div>"+
-				"</div>"+
-			"</div>";
+	
+	let statsCol = 	`<div class="stats col">
+						<div class ="boxes container-fluid">
+							<div class="box">
+								<span class="parameter">` + firstStatName + `</span>
+								<span class="value">` + firstStateContent + `</span>
+							</div>
+							` + secondStatHTML + `
+							<div class="box">
+								<span class="parameter">` + thirdStatName + `</span>
+								<span class="value">` + thirdStateContent + `</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>`;
 	
 	profileCard += profileCol;
 	profileCard += statsCol;
@@ -185,17 +185,49 @@ function createProfileCard(a){
 
 function addBanAccountEvent(username){
 	$("#banAccount-" + username).on("click", function(){
-		accountBuilder = new Account.Builder();
-		accountBuilder.withUsername(username);
-		$.ajax({
-			type: "POST",
-			url: "/banAccount",
-			contentType: "application/json",
-			data:  JSON.stringify(accountBuilder.build()),
-			success: function(){
-				console.log(username + "banned");
-			}
-			
+		
+		let modal=`<div class="modal fade" id="staticBackdrop-ban"
+								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+								aria-labelledby="staticBackdropLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="staticBackdropLabel">Messaggio
+												</h5>
+											<button id = "closeModal" type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<p id = "messageText" 
+												style="width: 100%;">Sei sicuro di voler bannare l'utente: ` + username + `</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">Annulla</button>
+											<button id = "confirmBan" type="button" class="btn btn-primary">Conferma</button>
+										</div>
+									</div>
+								</div>
+							</div>`;
+		//remove eventual modals that are closed but not removed from the html
+		$(".modal").remove();				
+		$("body").append(modal);
+		$("#staticBackdrop-ban").modal("toggle");
+		$("#confirmBan").on("click", ()=>{
+			$("#staticBackdrop-ban").modal("toggle");
+			$(".modal").remove();
+			accountBuilder = new Account.Builder();
+			accountBuilder.withUsername(username);
+			$.ajax({
+				type: "POST",
+				url: "/banAccount",
+				contentType: "application/json",
+				data:  JSON.stringify(accountBuilder.build()),
+				success: function(){
+					//console.log(username + "banned");
+				}
+				
+			});
 		});
 	});
 }
@@ -203,46 +235,70 @@ function addBanAccountEvent(username){
 
 function addChatWithProfileEvent(username){
 	$("#startChat-" + username).on("click", function(){
-		alert(username);
 		
-		let accountBuilder1 = new Account.Builder();
-		let accountBuilder2 = new Account.Builder();
-		accountBuilder1.withUsername("aaaa");
-		accountBuilder2.withUsername(username);
-		let a1 = accountBuilder1.build();
-		let a2 = accountBuilder2.build()
-		let messageBuilder = new Message.Builder();
-		messageBuilder.withText("messaggio di prova");
-		messageBuilder.withSender(username);
-		let messages = [];
-		messages.push(messageBuilder.build());
-
-		let chat = new Chat.Builder();
-		chat.withA1(a1);
-		chat.withA2(a2);
-		chat.withMessages(messages);
-		$.ajax({
-			type: "POST",
-			url: "/startChat",
-			contentType: "application/json",
-			data: JSON.stringify(chat.build()),
-			success: function(){
-				console.log("started chat");
-			},
-			error: function(){
-				//console.log(url);
-				//alert(xhr.message);
-			}
+		let modal=`<div class="modal fade" id="staticBackdrop-chat"
+								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+								aria-labelledby="staticBackdropLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="staticBackdropLabel">Messaggio
+												</h5>
+											<button id = "closeModal" type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<textarea id = "messageText" placeholder="Scrivi qui il tuo messaggio..."
+												style="width: 100%;"></textarea>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">Annulla</button>
+											<button id = "sendMessageButton" type="button" class="btn btn-primary">Invia
+												messaggio</button>
+										</div>
+									</div>
+								</div>
+							</div>`;
+		//remove eventual modals that are closed but not removed from the html
+		$(".modal").remove();				
+		$("body").append(modal);
+		$("#staticBackdrop-chat").modal("toggle");
+		$("#sendMessageButton").on("click", () => {
+			let messageText = $("#messageText").val();
+			$("#staticBackdrop-chat").modal("toggle");
+			$(".modal").remove();
 			
+			let accountBuilder = new Account.Builder();
+			accountBuilder.withUsername(username);
+			let a = accountBuilder.build()
+			let messageBuilder = new Message.Builder();
+			messageBuilder.withText(messageText);
+			messageBuilder.withSender(username);
+			let messages = [];
+			messages.push(messageBuilder.build());
+	
+			let chat = new Chat.Builder();
+			chat.withA2(a);
+			chat.withMessages(messages);
+			$.ajax({
+				type: "POST",
+				url: "/startChat",
+				contentType: "application/json",
+				data: JSON.stringify(chat.build()),
+				success: function(){
+					console.log("started chat");
+				},		
+			});
 		});
-		
 	});
+	
 }
 
 function addSearchButtonEvent(){
 	$("#searchButton").on("click", ()=>{
 
-		username = $("#usernameSelector").val().toLowerCase();
+		username = $("#usernameSelector").val();
 		$("#areaslistSelector").hide();
 		$(".areaInput").each( function(){
 			if($(this).is(":checked")){
@@ -253,10 +309,11 @@ function addSearchButtonEvent(){
 		})
 		
 		if(username == "" && selectedAreasList.length == 0){
-			let invalidDiv = "<div id = \"searchAlert\"class=\"alert alert-danger\" role=\"alert\">"+
-							"Selezionare almeno un parametro di ricerca!" + "</div>"
-			$("#searchBox").after(invalidDiv);
-			
+			if($("#searchAlert").length == 0){
+				let invalidDiv = `<div id = "searchAlert" class="alert alert-danger" role="alert">
+							Selezionare almeno un parametro di ricerca!</div>`;
+				$("#searchBox").after(invalidDiv);
+			}
 			//block search operation
 			return;
 		}
@@ -268,11 +325,13 @@ function addSearchButtonEvent(){
 	$("#searchButton").prop("disabled", true);
 	$.ajax({
 			type: "POST",
-			url: "/findProfiles?username=" +username,
+			url: "/findProfiles",
+			headers: {
+				'username' : username,		
+			},
 			contentType: "application/json",
 			data:  JSON.stringify(selectedAreasList),
 			success: function(profiles){
-			//alert(JSON.stringify(profiles));
 			console.log("SUCCESS");
 				//reset search bar 
 				numberOfSelectedAreas = 0;
@@ -282,16 +341,17 @@ function addSearchButtonEvent(){
 				$("#profileCards").empty();
 				let i = 0;
 				for(let a of profiles){
-					//alert(JSON.stringify(a));
 					if(a.accountType === "w"){
 						//ajax call for worker stats 
 						//REMEMBER TO ADD MAIN AREA AS SOON AS IT IS READY
 						$.ajax({
-							type: "POST",
-							url: "/reviewsAverageAndOffers?username=" +a.username,
+							type: "GET",
+							url: "/reviewsAverageAndOffers",
+							headers: {
+								'username' : a.username,		
+							},
 							success: function(results){
 								console.log("SUCCESS");
-								//alert("WEEEE" + JSON.stringify(results));
 								a.averageReviews = results[0];
 								a.numberOfReviews = results[1];
 								a.acceptedOffers = results[2];
@@ -310,8 +370,11 @@ function addSearchButtonEvent(){
 					else if(a.accountType === "u"){
 						//ajax call for user stats
 						$.ajax({
-							type: "POST",
-							url: "/advertisesAndAreas?username=" +a.username,
+							type: "GET",
+							url: "/advertisesAndAreas",
+							headers: {
+								'username' : a.username,		
+							},
 							success: function(results){
 								console.log("SUCCESS");
 								//alert("WEEEE" + JSON.stringify(results));
@@ -321,6 +384,7 @@ function addSearchButtonEvent(){
 								createProfileCard(a);
 								//associate listener to the ban button present in each profile card
 								addBanAccountEvent(a.username);
+								addChatWithProfileEvent(a.username);
 							},
 							error: function(){
 								
@@ -328,7 +392,12 @@ function addSearchButtonEvent(){
 							
 						});
 					}
-					
+					/*
+					else if(a.accountType == "a"){
+						createProfileCard(a);
+						addChatWithProfileEvent(a.username);
+					}
+					*/
 					i++;
 					//alert(a.profilePic);
 					//alert(a.accountType);
@@ -339,13 +408,11 @@ function addSearchButtonEvent(){
 
 
 			},
-			error: function(xhr){
-				console.log("ERROR");
-				alert(xhr.message);
-			}
+
 		});
 		$("#searchButton").prop("disabled", false);
 		$(".areaInput").prop("checked", false);
+		$(".areaInput").parent().css({"background-color": "white"});
 	});
 }
 

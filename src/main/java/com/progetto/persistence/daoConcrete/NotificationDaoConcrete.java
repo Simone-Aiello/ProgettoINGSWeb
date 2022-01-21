@@ -159,7 +159,7 @@ public class NotificationDaoConcrete implements NotificationDao{
 		//Insert notification
 		String saveNotificationQuery = "INSERT INTO notifiche(contenuto, tipologia, account_username) values(?, cast(? as tipologia_notifica), ?) RETURNING id";
 		PreparedStatement stmtSaveNotification = Database.getInstance().getConnection().prepareStatement(saveNotificationQuery);
-		stmtSaveNotification.setString(1, "Un annuncio che potrebbe interessarti: " + a.getTitle());
+		stmtSaveNotification.setString(1, "È stato pubblicato un nuovo annuncio nella tua zona ed è inerente alle tue aree di lavoro");
 		stmtSaveNotification.setString(2, Notification.ADVERTISE);
 		stmtSaveNotification.setString(3, a.getAccount().getUsername());
 		ResultSet rs = stmtSaveNotification.executeQuery();

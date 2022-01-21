@@ -35,9 +35,10 @@ public class Review {
 	}
 	
 	public void setTitle(String title) {
-		notNull(title);
-		Utils.sanitizeXSS(title);
+		//notNull(title);
+		//Utils.sanitizeXSS(title);
 		this.title = title;
+		if(this.title == null) this.title = "";
 	}
 	public int getRating() {
 		return rating;

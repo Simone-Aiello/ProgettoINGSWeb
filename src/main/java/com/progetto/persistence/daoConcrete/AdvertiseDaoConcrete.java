@@ -160,12 +160,12 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			clauses.add(areasBuilder.toString());
 		}
 		if (province != null) {
-			parameters.add("%" + province + "%");
-			clauses.add(" provincia_annuncio like ?");
+			parameters.add("%" + province.toLowerCase() + "%");
+			clauses.add(" lower(provincia_annuncio) like ?"); 
 		}
 		if (keyword != null) {
-			parameters.add("%" + keyword + "%");
-			clauses.add(" titolo like %?% ");
+			parameters.add("%" + keyword.toLowerCase() + "%");
+			clauses.add(" lower(titolo) like ? ");
 		}
 		if (clauses.size() != 0) {
 			queryBuilder.append(" where "+ StringUtils.join(clauses, " and "));

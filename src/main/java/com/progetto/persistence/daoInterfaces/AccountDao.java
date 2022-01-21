@@ -22,4 +22,5 @@ public interface AccountDao {
 	public String getVerificationCode(String username) throws SQLException;
 	public List<Account> findWorkersByAreasAndUsername(List<Area> areas, String username) throws SQLException;
 	public void banAccount(Account a) throws SQLException;
+	public Account loginCredentialsByUsernameOrEmail(String username) throws SQLException;
 }
