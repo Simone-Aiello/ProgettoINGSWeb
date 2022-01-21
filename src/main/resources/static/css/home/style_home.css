@@ -16,7 +16,6 @@ header{
     left: 0;
     width: 100%;
     transition: 0.2s;
-    display: grid;
     grid-template-columns: 25% 50% 25%;
     padding: 30px 0px;
     z-index: 10;
