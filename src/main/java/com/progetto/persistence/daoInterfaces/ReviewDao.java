@@ -12,4 +12,5 @@ public interface ReviewDao {
 	public void deleteByWorker(Account a) throws SQLException;
 	public void save(Review review) throws SQLException;
 	public int[] averageRatingWorkerAndCount(Account account) throws SQLException;
+	public boolean reviewByOfferId(Long offerId) throws SQLException;
 }

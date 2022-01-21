@@ -22,11 +22,9 @@
 <script
 	src="/js/administratorOperations/administratorAreasOperations.js"
 	type="text/javascript"></script>
-<link href="/css/notificationCss.css" rel="stylesheet"
-	type="text/css">
 <script src="/js/notifications/notification.js"></script>
+<link rel="stylesheet" href="/css/notificationCss.css">
 </head>
-
 <body>
 	<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
 	</div>
@@ -54,7 +52,7 @@
 								<c:when test="${sessionScope.loggedAccountType == 'u'}">
 									<li class="nav-item"><a class="nav-link active"
 										href="/showMyAdvertises">I tuoi annunci</a></li>
-										<li class="nav-item"><a class="nav-link active"
+									<li class="nav-item"><a class="nav-link active"
 										href="/AdvertisePublication">Inserisci annuncio</a></li>
 								</c:when>
 								<c:when test="${sessionScope.loggedAccountType == 'a'}">
@@ -102,6 +100,11 @@
 				<div id="allAreas">
 
 					<c:forEach items="${areas}" var="area" varStatus="loop">
+						<!--
+						<c:if test="${loop.index % 2 == 0}">
+							<div class = "row">
+						</c:if>
+						-->
 						<div class="card areaCard">
 							<div class=icon-div>
 								<figure class="icon-figure">
@@ -128,9 +131,15 @@
 							<div class="card-body cardButtons">
 								<button id="${area.id}-AreaModifyButton"
 									class="btn btn-secondary">Modifica</button>
-								<button id="${area.id}-AreaDeleteButton" class="btn btn-danger">Cancella</button>
+								<button id="${area.id}-AreaDeleteButton" type="button"
+									class="btn btn-danger">Cancella</button>
 							</div>
 						</div>
+						<!--
+						<c:if test="${loop.index % 2 == 0}">
+							</div>
+						</c:if>
+						-->
 					</c:forEach>
 
 				</div>
@@ -169,7 +178,6 @@
 				</form>
 			</div>
 		</section>
-
 	</div>
 </body>
 </html>

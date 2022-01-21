@@ -15,39 +15,46 @@
 		<script type = "module" src="/js/Login.js"></script>
 		<script src = "/js/model/account.js"></script>
 		<script src = "/js/utils/utils.js"></script>
+		<script type="text/javascript" src = "/js/footer.js"></script>
 	</head>
-	<body class = "h-100 row align-items-center justify-content-center">
+	<body id = "body" class = "d-flex flex-column min-vh-100" style = "width: 100%;" >
 		<!-- Login Widget -->
-		<div class = "container shadow row p-0 m-0" style = "width : 90%" >
-			<div class = "col-sm-12 col-md-6" style = "background-color : #f2fbe0;">
-				<div class = "flex-column text-center p-4">
-					<img alt="logoGetJobs" src="/images/logoGetJobs.png" class = "img-fluid mt-4" style = "margin-bottom: -60px; margin-top : -40px">
-					<div class = "mt-4">
-						<h6 class = "h6 text-muted small">Non sei ancora registrato?</h6>
-						<form action="#">
-							<input type = "submit" class = "btn btn-primary" value = "Registrati" id = "registrationButton">
-						</form>
+		<div class = "container "  style = "margin-bottom: 100px; margin-top:50px;">
+			<div class = "container shadow row p-0 m-0" style = "width : 100%; " >
+				<div class = "col-sm-12 col-md-6" style = "background-color : #f2fbe0;">
+					<div class = "flex-column text-center p-4">
+						<img alt="logoGetJobs" src="/images/logoGetJobs.png" class = "img-fluid mt-4" style = "margin-bottom: -60px; margin-top : -40px">
+						<div class = "mt-4">
+							<h6 class = "h6 text-muted small">Non sei ancora registrato?</h6>
+							<form action="#">
+								<input type = "submit" class = "btn btn-primary" value = "Registrati" id = "registrationButton">
+							</form>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class = "col-sm-12 col-md-6">
-				<div class = "text-center" id = "alert">
-					<h2 class = "h2 mt-4 mb-2">Inserisci le tue credenziali</h2>
-				</div>
-				<div class = "d-flex flex-column p-4 m-4">
-					<label class = "small">Username or email</label>
-					<input type = "text" class = "form-control" id = "emailField" name = "username">
-					<label class = "small mt-4">Password</label>
-					<div class = "input-group">
-						<input type = "password" class = "form-control" id = "passwordField" name = "password"> 
-						<span class="input-group-text" id="basic-addon2"><i class="far fa-eye-slash insert"></i></span>
+				<div class = "col-sm-12 col-md-6">
+					<div class = "text-center" id = "alert">
+						<h2 class = "h2 mt-4 mb-2">Inserisci le tue credenziali</h2>
 					</div>
-					<label><a href ="/passwordRecovery.html" class = "small">Password dimenticata?</a></label>
-					<input class = "btn btn-primary mt-4" value = "Accedi" style = "width : 40%;" id = "accessButton" >
+					<div class = "d-flex flex-column p-4 m-4">
+						<label class = "small">Username or email</label>
+						<input type = "text" class = "form-control" id = "emailField" name = "username">
+						<label class = "small mt-4">Password</label>
+						<div class = "input-group">
+							<input type = "password" class = "form-control" id = "passwordField" name = "password"> 
+							<span class="input-group-text" id="basic-addon2"><i class="far fa-eye-slash insert"></i></span>
+						</div>
+						<label><a href ="/passwordRecovery.html" class = "small">Password dimenticata?</a></label>
+						<input class = "btn btn-primary mt-4" value = "Accedi" style = "width : 40%;" id = "accessButton" >
+					</div>
 				</div>
 			</div>
 		</div>
 		<!-- end Login widget -->
+		<script type="text/javascript">
+			let footer = createFooter();
+			$(body).append(footer);
+		</script>
 	</body>
 	
 	

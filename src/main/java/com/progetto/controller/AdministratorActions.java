@@ -1,14 +1,14 @@
 package com.progetto.controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.progetto.model.Account;
@@ -20,9 +20,6 @@ public class AdministratorActions {
 	
 	@PostMapping("/deleteArea")
 	public void deleteArea(@RequestBody Area area, HttpServletResponse res){
-		//System.out.println(area.getId());
-		//System.out.println(area.getIcon());
-		//System.out.println(area.getName());
 		try {
 			Database.getInstance().getAreaDao().delete(area);
 		} catch (SQLException e) {
@@ -33,49 +30,31 @@ public class AdministratorActions {
 	}
 	@PostMapping("/modifyArea")
 	public void modifyArea(@RequestBody Area area, HttpServletResponse resp){
-		//System.out.println(area.getId());
-		//System.out.println(area.getIcon());
-		//System.out.println(area.getName());
 		try {
 			Database.getInstance().getAreaDao().save(area);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			resp.setStatus(500);
 			e.printStackTrace();
 		}
 	}
 	@PostMapping("/createArea")
-	public void createArea(@RequestBody Area area, HttpServletResponse res){
+	public Area createArea(@RequestBody Area area, HttpServletRequest req, HttpServletResponse res){
 		
 		try {
 			Database.getInstance().getAreaDao().save(area);
-			
+			return area;
 		} catch (SQLException e) {
 			res.setStatus(500);
 			e.printStackTrace();
 		}
-		//System.out.println(area.getId());
-		//System.out.println(area.getIcon());
-		//System.out.println(area.getName());
+		return null;
 	}
 	
 	@PostMapping("/findProfiles")
-	public List<Account>  findProfiles(@RequestBody List<Area> areas, @RequestParam String username, HttpServletResponse res) {
-		/*
-		for(Area a: areas) {
-			System.out.println(a.getId());
-			System.out.println(a.getIcon());
-			System.out.println(a.getName());
-		}
-	
-		System.out.println(username);
-		*/
+	public List<Account>  findProfiles(@RequestBody List<Area> areas, HttpServletRequest req, HttpServletResponse res) {
 		try {
+			String username = req.getHeader("username");
 			List<Account> l = Database.getInstance().getAccountDao().findWorkersByAreasAndUsername(areas, username);
-			//System.out.println(l.toString());
-
-			//for(int i = 0; i < l.size(); ++i) {
-			//	System.out.println(l.get(i).getUsername());
-			//}
 			return l;
 		} catch (SQLException e) {
 			res.setStatus(500);
@@ -84,10 +63,11 @@ public class AdministratorActions {
 		return null;
 	}
 	
-	@PostMapping("/reviewsAverageAndOffers")
-	public int[] findReviewsAverageAndAcceptedOffers(@RequestParam String username, HttpServletResponse res) {
+	@GetMapping("/reviewsAverageAndOffers")
+	public int[] findReviewsAverageAndAcceptedOffers(HttpServletRequest req, HttpServletResponse res) {
 		
 		try {
+			String username = req.getHeader("username");
 			Account a = new Account();
 			a.setUsername(username);
 			
@@ -103,9 +83,10 @@ public class AdministratorActions {
 		return null;
 	}
 	
-	@PostMapping("/advertisesAndAreas")
-	public int[] findNumberOfAdvertisesAndAreas(@RequestParam String username, HttpServletResponse res){
+	@GetMapping("/advertisesAndAreas")
+	public int[] findNumberOfAdvertisesAndAreas(HttpServletRequest req, HttpServletResponse res){
 		try {
+			String username = req.getHeader("username");
 			int[] results = Database.getInstance().getAdvertiseDao().findAdvertisesNumberAndAreasByAccount(username);
 			return results;
 		} catch (SQLException e) {
@@ -119,7 +100,7 @@ public class AdministratorActions {
 
 		try {
 			Database.getInstance().getAccountDao().banAccount(a);
-			System.out.println("Banning: " +a.getUsername());
+			//System.out.println("Banning: " +a.getUsername());
 		} catch (SQLException e) {
 			res.setStatus(500);
 			e.printStackTrace();
