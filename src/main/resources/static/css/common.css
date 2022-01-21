@@ -22,6 +22,66 @@
 .space-between{ display: flex; justify-content: space-between; }
 .m-0-p-0{padding : 0 ; margin : 0 ;}
 
+.modal-getjobs{
+    display: none ;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(43, 45, 66,0.4);
+    transition: 0.6s;
+    justify-content: center ;
+    align-items: center ;
+    z-index: 1000;
+}
+
+.dialog-getjobs{
+
+    display: flex;
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 25rem;
+    margin: 10px;
+}
+
+.close-button-container-columns{
+    color: var(--color-orange-1);
+    align-self: flex-end;
+    font-size: 30px;
+}
+.close-button-container-columns:hover{
+    color: var(--color-orange-1);
+}
+
+.message-dialog{
+    font-weight: 500;
+    padding: 10px;
+    margin: 10px;
+}
+
+.container-buttons-dialog{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+
+}
+
+.container-columns{
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .alert{
     position: absolute;
     visibility: hidden;

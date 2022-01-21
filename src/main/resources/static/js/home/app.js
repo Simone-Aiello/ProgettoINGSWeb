@@ -1,13 +1,3 @@
-showModal = (modal) => {
-    modal.style.setProperty('display', 'flex', 'important');
-    document.body.style.overflowY = "hidden"; 
-}
-closeModal = (modal) => {
-    modal.style.setProperty('display', 'none', 'important');
-    document.body.style.overflowY = "auto"; 
-}
-
-
 // GETTING WRAPPER SEARCH BAR , SEARCH BAR SMARTPHONE ITEMS , MODAL SEARCH BAR SMARTPHONE
 let search_bar_smartphone = document.getElementsByClassName('search-bar-smartphone')[0];
 let search_bar = document.getElementsByClassName('search-bar')[0] ;
@@ -189,3 +179,5 @@ button_search_advertise_smartphone.onclick = () => {
 
     closeModal(modal_search_bar_smartphone);
 }
+
+
