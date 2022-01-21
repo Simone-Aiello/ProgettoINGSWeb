@@ -15,7 +15,6 @@
 		<script type="text/javascript" src = "/js/cards/offerDetailCard.js"></script>
 		
 		
-		
 		<title>Show offers</title>
 	</head>
 	<body id = "body" style = "margin : 0; padding : 0;">

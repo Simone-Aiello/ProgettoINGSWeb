@@ -1,50 +1,60 @@
-let sections = ["areaManagerSection", "advertiseManagerSection", "profilesManagerSection"];
-
+modifyingAreas = new Map();
 $(document).ready(() => {
 	addEvents();
 	
 });
-/*
-function showSection(sectionToShow){
 
-	for(let i = 0; i < sections.length; ++i){
-		if(sections[i] == sectionToShow){
-			$("#" + sectionToShow).show();
-		}
-		else{
-			$("#" + sections[i]).hide();
-		}
-	}
-}
-*/
-function addModifyButtonListener(){
-	//alert("WE");
-	$("button[id$='-AreaModifyButton']").on("click", (event) => {	
+function addModifyButtonListener(id){
+	$("#" + id).on("click", (event) => {	
 		let idModifyButton = event.target.id;
 		let idArea = idModifyButton.split("-")[0];
 		let idAreaNameInput = idArea+ "-NameInput";
 		let idAreaIconInput = idArea+ "-IconInput";
+		
 		//the form is not active and it needs to be activated
 		if(! $("#" + idModifyButton).hasClass("active")){
+			//construct a copy of the area so that it can be restored
+			//if the administrator wants to cancel the modification of that area
+			let copyAreaBuilder = new Area.Builder();
+			copyAreaBuilder.withId(parseInt(idArea, 10));
+			copyAreaBuilder.withName($("#" + idAreaNameInput).val());
+			copyAreaBuilder.withIcon($("#" + idAreaIconInput).val());
+			let area = copyAreaBuilder.build();
+			if(!modifyingAreas.has(idArea))
+				modifyingAreas.set(idArea, area);
+			//alert("Created copy: " + area.id() + " " + area.name() + " " + area.icon());
 			
 			$("#" + idAreaNameInput).prop("disabled", false);
 			$("#" + idAreaNameInput).addClass("active");
 			
 			$("#" + idAreaIconInput).prop("disabled", false);
 			$("#" + idAreaIconInput).addClass("active")
-			
+			let undoButton = `<button id = "` + idArea + `-AreaUndoModifyButton" class = "btn btn-secondary">Annulla</button>`;
+			$("#" + idModifyButton).after(undoButton);
+			$("#" + idArea + "-AreaUndoModifyButton").on("click", function(){
+				$(this).remove();
+				$("#" + idModifyButton).removeClass("btn-warning");
+				$("#" + idModifyButton).addClass("btn-secondary");
+				$("#" + idModifyButton).removeClass("active");
+				$("#" + idModifyButton).html("modifica");
+				$("#" + idAreaIconInput).prop("disabled", true);
+				$("#" + idAreaNameInput).prop("disabled", true);
+				$("#" + idAreaNameInput).val(modifyingAreas.get(idArea).name());
+				$("#" + idAreaIconInput).val(modifyingAreas.get(idArea).icon());
+				$("#" + "area-" + idArea).removeClass();
+				$("#" + "area-" + idArea).addClass( $("#" + idAreaIconInput).val() + " fa-3x icon");
+			});
 			$("#" + idModifyButton).removeClass("btn-secondary");
 			$("#" + idModifyButton).addClass("btn-warning");
 			$("#" + idModifyButton).addClass("active");
-			$("#" + idModifyButton).html("conferma modifiche");
+			$("#" + idModifyButton).html("conferma");
 		}
 		else{//the form has already been activated and the user want to confirm his updates
-			areaBuilder = new Area.Builder();
+			let areaBuilder = new Area.Builder();
 			let error = false;
 			areaBuilder.withId(parseInt(idArea, 10));
 			
 			if($("#" + idAreaNameInput).val() == ""){
-				//$("#" + idArea + "-NameInputActive").addClass("is-invalid");
 				createAlertWithText("Il campo è richiesto", idAreaNameInput)
 				error=true;
 
@@ -55,7 +65,6 @@ function addModifyButtonListener(){
 			}
 			
 			if($("#" + idAreaIconInput).val() == ""){
-				//$("#" + idArea + "-NameInputActive").addClass("is-invalid");
 				createAlertWithText("Il campo è richiesto", idAreaIconInput)
 				error=true;
 
@@ -67,30 +76,23 @@ function addModifyButtonListener(){
 			
 			//no errors found: compilation is ok and the area can be updated
 			if(!error){
-				//alert(JSON.stringify(areaBuilder.build()));
 					
 				$.ajax({
 					type: "POST",
 					url: "/modifyArea",
 					contentType: "application/json",
 					data: JSON.stringify(areaBuilder.build()),
-					success: function(){
-						console.log("SUCCESS");
-						/*
+					success: function(){	
 						$("#" + idModifyButton).removeClass("btn-warning");
 						$("#" + idModifyButton).addClass("btn-secondary");
 						$("#" + idModifyButton).removeClass("active");
 						$("#" + idModifyButton).html("modifica");
-						$("#" + idIconInput).prop("disabled", true);
-						$("#" + idAreaInput).prop("disabled", true);
-						*/
-						//$(idNameAreaInput)
-						document.location.reload();
-						//redirect to home page
+						$("#" + idAreaIconInput).prop("disabled", true);
+						$("#" + idAreaNameInput).prop("disabled", true);
+						$("#" + "area-" + idArea).removeClass();
+						$("#" + "area-" + idArea).addClass( $("#" + idAreaIconInput).val() + " fa-3x icon");
+						$("#" + idArea + "-AreaUndoModifyButton").remove();
 					},
-					error: function(xhr){
-						alert(xhr.message);
-					}
 				});	
 			}
 		}
@@ -98,46 +100,47 @@ function addModifyButtonListener(){
 	});
 }
 
-function addDeleteButtonListener(){
-	$("button[id$='-AreaDeleteButton']").on("click", (event) => {
+function addDeleteButtonListener(id){
+	$("#" + id).on("click", (event) => {
 		let idCancelButton = event.target.id;
 		let idArea = idCancelButton.split("-")[0];
-		let idAreaNameInput = idArea+ "-NameInput";
-		let message = "Sei sicuro di voler cancellare l\'ambito " + $("#" + idAreaNameInput).val() + "?";
-		if(confirm(message) != true){
-			return;		
-		}
-
-		/*
-		if(!$("#" + idArea+ "-NameInput").prop("disabled")){
-			alert("Can't delete the object'");
-		}
-		*/
-		//let nameArea = $("#" + idArea + "-NameInput").val();
-		//let iconArea = $("#" + idArea + "-IconInput").val();
 		
-		areaBuilder = new Area.Builder();
-		areaBuilder.withId(parseInt(idArea, 10));
-		//areaBuilder.withName(nameArea);
-		//areaBuilder.withIcon(iconArea);
+		let modal = `<div class="modal fade" id="staticBackdrop-delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+							    	<h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							    </div>
+							    <div class="modal-body">
+							    	<p>Sei sicuro di voler cancellare l'ambito?</p>
+							    </div>
+							    <div class="modal-footer">
+							    	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+							        <button id = "confirmDelete" type="button" class="btn btn-primary">Conferma</button>
+							    </div>
+							</div>
+						</div>
+					 </div> `;
+		//remove eventual modals that are closed but not removed from the html
+		$(".modal").remove();	
+		$("body").append(modal);
+		$("#staticBackdrop-delete").modal("toggle");
 		
-		//alert(JSON.stringify(areaBuilder.build()));
-		
-		//ASK CONFIRM AND DO AJAX CALL
-		
-		$.ajax({
-			type: "POST",
-			url: "/deleteArea",
-			contentType: "application/json",
-			data: JSON.stringify(areaBuilder.build()),
-			success: function(){
-			console.log("SUCCESS");
-				//$("#" + idCancelButton).parent().parent().remove();
-				document.location.reload();
-			},
-			error: function(xhr){
-				alert(xhr.message);
-			}
+		$("#confirmDelete").on("click", () => {
+			areaBuilder = new Area.Builder();
+			areaBuilder.withId(parseInt(idArea, 10));
+			$("#staticBackdrop-delete").modal("toggle");
+			$(".modal").remove();	
+			$.ajax({
+				type: "POST",
+				url: "/deleteArea",
+				contentType: "application/json",
+				data: JSON.stringify(areaBuilder.build()),
+				success: function(){
+					$("#" + idCancelButton).parent().parent().remove();
+				},
+			});
 		});
 	});
 }
@@ -171,7 +174,6 @@ function addCreateNewAreaListener(){
 		
 		if(!error){
 			let areaBuilder = new Area.Builder();
-			//areaBuilder.withId(0);
 			areaBuilder.withName($("#addAreaNameInput").val());
 			areaBuilder.withIcon($("#addAreaIconInput").val());
 			$.ajax({
@@ -179,11 +181,40 @@ function addCreateNewAreaListener(){
 			url: "/createArea",
 			contentType: "application/json",
 			data: JSON.stringify(areaBuilder.build()),
-			success: function(){
-			console.log("SUCCESS");
-				document.location.reload();
-				//$("#addAreaForm").addClass("hidden");
-				//$("#" + idCancelButton).parent().parent().remove();
+			success: function(area){
+				
+				newAreaCard  = `<div class="card areaCard">
+									<div class = icon-div>
+								  		<figure class="icon-figure">
+											<i class= "`+ area.icon+` fa-3x icon" id="area-` + area.id + `"></i>
+										</figure>
+									</div>
+									
+								  <div class="card-body">
+								  	<div class = "areaTitle row">
+								  		<div class ="col-lg-6 col-md-8 col-xs-12">
+								    		<label class="card-title form-label">Nome:</label>
+								    		<input  id = "` + area.id+ `-NameInput" class="form-control" value = "` + area.name +`" disabled></input>
+								   		</div>
+								   	</div>
+								    <div class = "areaIconText row">
+								    	<div class = "col-lg-6 col-md-8 col-xs-12">
+								    	<label class="card-title form-label">Icona: </label>
+								    	<input id = "` + area.id + `-IconInput" class=" form-control" value = "` + area.icon + `" disabled></input>
+								  		</div>
+								  	</div>
+								  </div>
+								  <div class="card-body cardButtons">
+								    <button id = "` + area.id + `-AreaModifyButton" class = "btn btn-secondary">Modifica</button>
+									<button id = "` + area.id + `-AreaDeleteButton" type = "button" class =  "btn btn-danger" ">Cancella</button>
+								  </div>
+							</div>`
+				
+				$("#addAreaForm").addClass("hidden");
+				$("#allAreas").append(newAreaCard);
+				//add listeners to new buttons
+				addModifyButtonListener(area.id + "-AreaModifyButton"); 
+				addDeleteButtonListener(area.id + "-AreaDeleteButton");
 			},
 			error: function(xhr){
 				alert(xhr.message);
@@ -195,9 +226,14 @@ function addCreateNewAreaListener(){
 }
 
 function addEvents(){
-	//showSection("areaManagerSection");
-	addModifyButtonListener();
-	addDeleteButtonListener();
+	$("button[id$='-AreaModifyButton']").each(function(){
+			addModifyButtonListener($(this).attr("id"));
+	});
+
+
+	$("button[id$='-AreaDeleteButton']").each(function(){
+			addDeleteButtonListener($(this).attr("id"));
+	});
 	addNewAreaFormListener();
 	addCreateNewAreaListener();
 	

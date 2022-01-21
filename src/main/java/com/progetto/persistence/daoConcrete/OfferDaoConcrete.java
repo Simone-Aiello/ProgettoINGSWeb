@@ -173,22 +173,23 @@ public class OfferDaoConcrete implements OfferDao {
 
 	@Override
 	public List<Offer> findOffersByAccount(Account worker)  throws SQLException{
-		
-		ArrayList<Offer> offers = new ArrayList<Offer>() ;
-		
-		String query = "select * from proposte where username_lavoratore = ?;" ;
-		
-		PreparedStatement preparedStatement = Database.getInstance().getConnection().prepareStatement(query);
-		preparedStatement.setString(1, worker.getUsername());
-		
-		ResultSet resultSet = preparedStatement.executeQuery() ;
-		
-
-		while(resultSet.next()) {
-			Offer offer = loadOffer(resultSet,Utils.BASIC_INFO) ;
-			offers.add(offer);
+		List<Offer> offers = new ArrayList<>();
+		String query = "SELECT * FROM proposte WHERE username_lavoratore = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, worker.getUsername());
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			Offer o = new Offer();
+			o.setDescription(rs.getString("descrizione"));
+			o.setHoursOfWork(rs.getInt("ore_di_lavoro"));
+			o.setId(rs.getLong("id"));
+			o.setQuote(rs.getDouble("preventivo"));
+			o.setTitle(rs.getString("titolo"));
+			//RIMUOVERE SE SI PUO FARE
+			o.setWorker(worker);
+			o.setDates(rs.getString("disponibilità"));
+			offers.add(o);
 		}
-		
 		return offers ;
 	}
 

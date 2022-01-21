@@ -138,4 +138,27 @@ public class ShowOffersController {
 		
 		return review[0];
 	}
+	
+	@GetMapping("allOffersWorker")
+	public String allOffers(HttpServletRequest req, HttpServletResponse resp) {
+
+		try {
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) {
+				req.getSession(false).setAttribute("message", "utente non loggato");
+				return "genericInfoPage";
+			}
+			Account a = new Account();
+			a.setUsername((String)req.getSession(false).getAttribute("username"));
+			List<Offer> offers = Database.getInstance().getOfferDao().findOffersByAccount(a);
+			req.setAttribute("offers", offers);
+			System.out.println("Offerte pubblicate da: " + a.getUsername() + " " + offers.size());
+			for(Offer o: offers) {
+				System.out.println("DISP: " + o.getDates());
+			}
+		} catch (SQLException e) {
+			resp.setStatus(500);
+			e.printStackTrace();
+		}
+		return "allOffersWorker";
+	}
 }

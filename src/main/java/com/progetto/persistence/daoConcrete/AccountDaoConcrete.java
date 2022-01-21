@@ -326,7 +326,7 @@ public class AccountDaoConcrete implements AccountDao {
 			username = "";
 		//this is not the best query
 		if(username.equals("") && areas.size() != 0){//don't search by username
-			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON username_account = username WHERE id_ambito IN(" 
+			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON lower(username_account) = username WHERE id_ambito IN(" 
 					+ builder.toString() + ") AND NOT bannato";
 			
 			stmt = Database.getInstance().getConnection().prepareStatement(query);
@@ -334,12 +334,12 @@ public class AccountDaoConcrete implements AccountDao {
 				stmt.setLong(i + 1, areas.get(i).getId());
 		}
 		else if(!username.equals("") && areas.size() == 0){	//Search by only username
-			query = "SELECT username FROM account WHERE username LIKE ? AND NOT bannato ";
+			query = "SELECT username FROM account WHERE lower(username) LIKE ? AND NOT bannato ";
 			stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setString(1, "%" + username + "%");
 		}
 		else { //if(!username.equals("") && areas.size() != 0){//search by both username and areas (will only find workers)
-			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON username_account = username WHERE "
+			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON lower(username_account) = username WHERE "
 					+ "username LIKE ? AND id_ambito IN(" + builder.toString() + ") AND NOT bannato";
 			stmt = Database.getInstance().getConnection().prepareStatement(query);
 			stmt.setString(1, "%" + username + "%");
