@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Area;
 import com.progetto.model.Review;
@@ -41,5 +42,19 @@ public class DataSenderRestController {
 			e.printStackTrace();
 		}
 		return reviews;
+	}
+	
+	@GetMapping("/getProfilePic")
+	public String getProfilePic(@RequestParam String username){
+		try {
+			Account a = Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.LIGHT);
+			if(a.getProfilePic() != null) {
+				return a.getProfilePic().getValue();	
+			}
+			else return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

@@ -2,6 +2,7 @@ package com.progetto.controller;
 
 
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.servlet.http.Cookie;
@@ -29,11 +30,12 @@ public class loginServlet{
 		
 		if(a.getEmail() == null) {
 			try {
-				account = Database.getInstance().getAccountDao().findByPrimaryKey(a.getUsername(), Utils.COMPLETE);	
+				account = Database.getInstance().getAccountDao().findByPrimaryKey(a.getUsername(), Utils.BASIC_INFO);	
 			} catch (SQLException e) {
 				resp.setStatus(204); // 204 : The server successfully processed the request, and is not returning any content.
 			}
-		}else {
+		}
+		else {
 			try {
 				account = Database.getInstance().getAccountDao().findByEmail(a.getEmail());
 			} catch (SQLException e) {
@@ -46,8 +48,9 @@ public class loginServlet{
 		}else {
 			
 			HttpSession session = req.getSession(true);
-			session.setAttribute("username", a.getUsername());
-			Cookie userName = new Cookie("user", a.getUsername());
+			session.setAttribute("username", account.getUsername());
+			session.setAttribute("loggedAccountType", account.getAccountType());
+			Cookie userName = new Cookie("user", account.getUsername());
 			userName.setMaxAge(30*60);
 			resp.addCookie(userName);
 		}
@@ -56,12 +59,16 @@ public class loginServlet{
 	}
 	
 	@GetMapping("/logout")
-	public void doLogout(HttpServletRequest req) {
-		HttpSession session = req.getSession(false); 
+	public void doLogout(HttpServletRequest req,HttpServletResponse resp) {
+		try {
+			HttpSession session = req.getSession(false); 
 		if(session != null) {
-			System.out.println(session.getAttribute("user"));
 	        session.invalidate();  
-	        System.out.println("logout");
+		}
+			resp.sendRedirect("/");
+		} catch (IOException e) {
+			resp.setStatus(500);
+			e.printStackTrace();
 		}
 	}
 	

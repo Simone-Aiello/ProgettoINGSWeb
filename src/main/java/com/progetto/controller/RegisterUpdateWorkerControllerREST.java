@@ -122,11 +122,11 @@ public class RegisterUpdateWorkerControllerREST {
 	@PostMapping("/newAreaRequest")
 	public void newAreaRequest(@RequestBody NewAreaRequest request, HttpServletResponse resp) {
 		try {
+			System.out.println("SI");
 			Notification n = new Notification();
 			n.setType("s");
-			n.setText("Richiesta aggiunta ambito, nome: " + Utils.sanitizeXSS(request.getName()) + "\n descrizione: "
-					+ Utils.sanitizeXSS(request.getDescription()));
-			Database.getInstance().getNotificationDao().save(n);
+			n.setText("Richiesta aggiunta ambito, nome: " + request.getName()+ " descrizione: " + request.getDescription());
+			Database.getInstance().getNotificationDao().saveNewAreaNotification(n);
 		} catch (SQLException e) {
 			resp.setStatus(500);
 			e.printStackTrace();

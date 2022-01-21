@@ -18,6 +18,8 @@
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <link rel="stylesheet" href="/css/profilePage.css">
 <script src="/js/model/account.js"></script>
+<script src="/js/notifications/notification.js"></script>
+<link rel="stylesheet" href="/css/notificationCss.css">
 <c:choose>
 	<c:when test="${authorized}">
 		<script src="/js/model/user.js"></script>
@@ -25,7 +27,8 @@
 		<script src="/js/model/area.js"></script>
 		<script src="/js/model/image.js"></script>
 		<script src="/js/profilePage/profilePageLogged.js"></script>
-		<script src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
+		<script
+			src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
 	</c:when>
 	<c:otherwise>
 		<script src="/js/model/chat.js"></script>
@@ -39,6 +42,49 @@
 </script>
 </head>
 <body>
+	<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
+	</div>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">Get Jobs</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<c:choose>
+					<c:when test="${sessionScope.username != null}">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/profilePage?username=${sessionScope.username}">Profilo</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/getChats">Messaggi</a></li>
+							<li class="nav-item" id="notification-item"><a
+								class="nav-link active" id="notification-bell">Notifiche <i
+									class="fas fa-circle fa-xs" id="new-notification"></i></a></li>
+						</ul>
+						<ul class="navbar-nav mb-2 mb-lg-0">
+							<li class="nav-item"><a class="nav-link active"
+								href="/logout">Logout</a></li>
+						</ul>
+					</c:when>
+					<c:otherwise>
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+						<ul class="navbar-nav mb-2 mb-lg-0 pe-5 me-5">
+
+							<li class="nav-item"><a class="nav-link active"
+								aria-current="page" href="#">Registrati</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/login.html">Accedi</a></li>
+						</ul>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
+	</nav>
 	<div class="container mt-5 shadow">
 		<div class="row">
 			<div class="col-12" id="initial-info">
@@ -75,15 +121,29 @@
 						class="text-black-50">${account.email}</span> <span></span>
 				</div>
 				<c:if test="${!account.valid && authorized}">
-					<div class="alert alert-danger alert-dismissible fade show"
-						role="alert">
-						L'account non è ancora verificato, non potrà proporsi per nessun
-						annuncio. Accedere alla mail e cliccare sul link ricevuto per
-						confermare l'account oppure <a id="send-email" class="alert-link">re-invia
-							mail</a>.
-						<button id="dismiss-alert" type="button" class="btn-close"
-							data-bs-dismiss="alert" aria-label="Close"></button>
-					</div>
+					<c:choose>
+						<c:when test="${account.accountType == 'w'}">
+							<div class="alert alert-danger alert-dismissible fade show"
+								role="alert">
+								L'account non è ancora verificato, non potrà proporsi per nessun
+								annuncio. Accedere alla mail e cliccare sul link ricevuto per
+								confermare l'account oppure <a id="send-email"
+									class="alert-link">re-invia mail</a>.
+								<button id="dismiss-alert" type="button" class="btn-close"
+									data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="alert alert-danger alert-dismissible fade show"
+								role="alert">
+								L'account non è ancora verificato, non potrà pubblicare nessun annuncio. Accedere alla mail e cliccare sul link ricevuto per
+								confermare l'account oppure <a id="send-email"
+									class="alert-link">re-invia mail</a>.
+								<button id="dismiss-alert" type="button" class="btn-close"
+									data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</c:if>
 			</div>
 			<div class="col-12">
@@ -189,14 +249,15 @@
 													data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
 											</div>
 											<div class="modal-body">
-												<textarea id="message-area" placeholder="Scrivi qui il tuo messaggio..."
+												<textarea id="message-area"
+													placeholder="Scrivi qui il tuo messaggio..."
 													style="width: 100%;"></textarea>
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary"
 													data-bs-dismiss="modal">Annulla</button>
-												<button type="button" class="btn custom-button" id="start-chat">Invia
-													messaggio</button>
+												<button type="button" class="btn custom-button"
+													id="start-chat">Invia messaggio</button>
 											</div>
 										</div>
 									</div>
@@ -245,7 +306,8 @@
 													</div>
 													<p class="card-text review-description mb-1">${review.description}</p>
 													<p class="card-text">
-														<small class="text-muted">${review.client.username}</small>
+														<small class="text-muted review-client"><a
+															href="profilePage?username=${review.client.username}">${review.client.username}</a></small>
 													</p>
 												</div>
 											</div>

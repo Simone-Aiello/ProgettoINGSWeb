@@ -24,17 +24,19 @@ public class AdvertiseController {
 		JSONObject parms = new JSONObject(parmsString);
 		List<Advertise> advertises;
 		try {
-			
+			System.out.println(parms);
 			String keyword = null; 
 			try { keyword = parms.getString("keyword"); }catch (JSONException e) {}
 			List<String> areas = null; 
-			try { areas =  parms.getJSONArray("areas").toList().stream().map( availabilitiesObject -> availabilitiesObject.toString()).collect(Collectors.toList());}catch (JSONException e) {}
+			try { areas =  parms.getJSONArray("areas").toList().stream().map( areas_json -> areas_json.toString()).collect(Collectors.toList());}catch (JSONException e) {}
 			String province = null; 
-			try { province = parms.getString("province"); }catch (JSONException e) {}
+			try {  province = parms.getString("province"); }catch (JSONException e) {}
 			Integer quantity = null; 
 			try { quantity = parms.getInt("quantity"); }catch (JSONException e) {}
 			Integer offset = null;
 			try { offset = parms.getInt("offset"); }catch (JSONException e) {}
+			
+			System.out.println(province);
 			
 			advertises = Database.getInstance().getAdvertiseDao().findGroup(keyword,areas ,province, 
 					quantity, offset);

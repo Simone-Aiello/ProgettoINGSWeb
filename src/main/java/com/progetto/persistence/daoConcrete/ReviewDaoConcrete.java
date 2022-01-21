@@ -33,6 +33,11 @@ public class ReviewDaoConcrete implements ReviewDao {
 			r.setDescription(set.getString("descrizione"));
 			r.setRating(set.getInt("valutazione"));
 			r.setTitle(set.getString("titolo"));
+			if(set.getString("username_cliente") != null) {
+					Account a = new Account();
+					a.setUsername(set.getString("username_cliente"));	
+					r.setClient(a);
+			}
 			reviews.add(r);
 		}
 		return reviews;
