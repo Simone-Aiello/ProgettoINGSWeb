@@ -19,6 +19,8 @@ public interface OfferDao {
 	long save(Offer offer) throws SQLException, JsonProcessingException;	
 	void delete(Offer offer) throws SQLException;
 	void deleteByAdvertise(Advertise a)throws SQLException;
+	void refuseOffer(Long offerId) throws SQLException;
+	boolean isReviewed(Long offerId) throws SQLException;
 	List<Offer> findOffersByAccount(Account worker) throws SQLException;
 	int findWorksDoneByAccount(String username) throws SQLException;
 

@@ -96,4 +96,13 @@ public class ReviewDaoConcrete implements ReviewDao {
 		}
 		return data;
 	}
+
+	@Override
+	public boolean reviewByOfferId(Long offerId) throws SQLException {
+		String query = "select * from recensioni where id_proposta = ?";
+		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(query);
+		ps.setLong(1, offerId);
+		ResultSet set = ps.executeQuery();
+		return set.next();
+	}
 }

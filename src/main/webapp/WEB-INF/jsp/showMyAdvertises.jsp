@@ -13,15 +13,15 @@
 		<script src="/js/cards/advertiseCardForUser.js"></script>
 		<link rel="stylesheet" href="/css/common.css">
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   		
+   		<script type="text/javascript" src = "/js/footer.js"></script>
    
 		<title>Show advertises</title>
 	</head>
 	
-	<body id = "body" style = "margin : 0; padding : 0;">
+	<body id = "body" style = "margin : 0; padding : 0;" class = "d-flex flex-column min-vh-100">
 	
 		
-			<div class = "align-items-center justify-content-center mt-5 row" id = "advertises">
+			<div class = "align-items-center justify-content-center mt-5 row" id = "advertises" style = "margin-bottom : 100px;">
 				<script type="text/javascript">
 					ads = document.getElementById('advertises');
 					var i = 0;
@@ -44,5 +44,10 @@
 						</script>
 				</c:forEach>
 			</div>
+			
+			<script type="text/javascript">
+			let footer = createFooter();
+			$(body).append(footer);
+		</script>
 	</body>
 </html>
