@@ -26,11 +26,77 @@
 	src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
 <script src="/js/registerWorker/registerWorker.js"></script>
 <script src="/js/registerWorker/registerWorkerSecondSection.js"></script>
-<script src ="/js/utils/utils.js"></script>
-<script>var accountType = "${type}"</script>
+<script src="/js/utils/utils.js"></script>
+<script>
+	var accountType = "${type}"
+</script>
 <link rel="stylesheet" href="/css/registerWorker.css">
+<link href="/css/notificationCss.css" rel="stylesheet" type="text/css">
+<script src="/js/notifications/notification.js"></script>
 </head>
 <body>
+	<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
+	</div>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">Get Jobs</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<c:choose>
+					<c:when test="${sessionScope.username != null}">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/profilePage?username=${sessionScope.username}">Profilo</a></li>
+							<c:choose>
+								<c:when test="${sessionScope.loggedAccountType == 'w'}">
+									<li class="nav-item"><a class="nav-link active" href="#">Le
+											tue offerte</a></li>
+								</c:when>
+								<c:when test="${sessionScope.loggedAccountType == 'u'}">
+									<li class="nav-item"><a class="nav-link active"
+										href="/showMyAdvertises">I tuoi annunci</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="/AdvertisePublication">Inserisci annuncio</a></li>
+								</c:when>
+								<c:when test="${sessionScope.loggedAccountType == 'a'}">
+									<li class="nav-item"><a class="nav-link active"
+										href="/administratorProfilesManager">Gestisci account</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="/administratorAreasManager">Gestisci ambiti di
+											lavoro</a></li>
+								</c:when>
+							</c:choose>
+							<li class="nav-item"><a class="nav-link active"
+								href="/getChats">Messaggi</a></li>
+							<li class="nav-item" id="notification-item"><a
+								class="nav-link active" id="notification-bell">Notifiche <i
+									class="fas fa-circle fa-xs" id="new-notification"></i></a></li>
+						</ul>
+						<ul class="navbar-nav mb-2 mb-lg-0">
+							<li class="nav-item"><a class="nav-link active"
+								href="/logout">Logout</a></li>
+						</ul>
+					</c:when>
+					<c:otherwise>
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+						<ul class="navbar-nav mb-2 mb-lg-0 pe-5 me-5">
+
+							<li class="nav-item"><a class="nav-link active"
+								aria-current="page" href="#">Registrati</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/login.html">Accedi</a></li>
+						</ul>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
+	</nav>
 	<div id="form" class="shadow">
 		<section id="personal-information">
 			<h1 class="header">Inserisci le tue informazioni personali</h1>
@@ -136,10 +202,14 @@
 			</form>
 		</section>
 		<section id="picture-and-areas">
-		<c:choose>
-			<c:when test="${type == 'w'}"><h1 class="">Inserisci una foto e i tuoi ambiti di lavoro</h1></c:when>
-			<c:otherwise><h1 class="text-center">Inserisci una foto</h1></c:otherwise>
-		</c:choose>
+			<c:choose>
+				<c:when test="${type == 'w'}">
+					<h1 class="">Inserisci una foto e i tuoi ambiti di lavoro</h1>
+				</c:when>
+				<c:otherwise>
+					<h1 class="text-center">Inserisci una foto</h1>
+				</c:otherwise>
+			</c:choose>
 			<div id="profile-div">
 				<div class="centered-div">
 					<figure class="profile-figure">

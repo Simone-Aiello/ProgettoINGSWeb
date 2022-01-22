@@ -288,13 +288,13 @@ function createDialog(params){
     
     // Button ok
     let ok_button = document.createElement('button');
-    ok_button.className = "btn btn-success";
-    ok_button.innerHTML = "Ok" ;
+    ok_button.className =  params.color_ok ? 'btn rounded '+ params.color_ok : 'btn btn-success',
+    ok_button.innerHTML = params.message_ok_button ? params.message_ok_button : 'Ok'  ;
 
     // Button cancel
     let cancel_button = document.createElement('button');
-    cancel_button.className = "btn btn-danger";
-    cancel_button.innerHTML = 'Annulla' ;
+    cancel_button.className = params.color_cancel ? 'btn rounded '+ params.color_cancel : 'btn btn-danger',
+    cancel_button.innerHTML = params.message_cancel_button ? params.message_cancel_button : 'Annulla' ;
 
     if(params.cancel){
         container_buttons_dialog.appendChild(cancel_button);
@@ -353,17 +353,17 @@ function createDialog(params){
     close_button_dialog.onclick = dialog.close ;
 
     ok_button.onclick = () => {
+        let totalTime = dialog.close();
         if(params.ok){
-            params.ok();
+            setTimeout(params.ok,totalTime*1000);
         }
-        dialog.close();
     }
 
     cancel_button.onclick = () => {
+        let totalTime = dialog.close();
         if(params.cancel){
-            params.cancel();
+            setTimeout(params.cancel,totalTime*1000);
         }
-        dialog.close();
     }
 
     return dialog ;

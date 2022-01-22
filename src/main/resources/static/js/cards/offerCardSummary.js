@@ -1,27 +1,31 @@
 
-function sendOffer(offer){
-	
+function sendOffer(offer, card){
+
 	checkType(offer,"Offer");
-	
-	let data = JSON.stringify(offer);
 	
 	$.ajax({
 		type: "POST",
 		url: "/registerOffer",
 		contentType: "application/json",
-		data: data,
+		data: JSON.stringify(offer),
 		success: (response) => {
-			// DA sostituire con il messaggio del back-end
 			let dialog = createDialog({
 				message : 'La tua proposta è stata presa in carico',
 			});
 			dialog.show();
 		},
 		error: (xhr) => {
-			let dialog = createDialog({
-				message : 'Si è verificato un problema interno al sistema, la riproviamo a riprovare più tardi',
-			});
-			dialog.show();
+			response = JSON.parse(xhr.responseText) ;
+			if(response.status == 401){
+				let dialog = createDialog({
+					message : JSON.parse(xhr.responseText).message,
+					message_ok_button : 'Login',
+					message_cancel_button : 'Chiudi',
+					cancel : () =>{},
+					ok : card.show,
+				});
+				dialog.show();
+			}
 		}
 	});
 }
@@ -266,6 +270,7 @@ function createOfferCardSummary(data){
         
         modal_timeline.to(card,{ scale : 0.4 });  
         modal_timeline.to(card,{ scale : 0.8 });  
+		modal_timeline.to(card,{ visibility : "hidden" , duration : 0 , display : "none"});  
         modal_timeline.to(data.modal_bg,{ opacity :0 } ,'<');  
         modal_timeline.to(data.modal_bg,{ visibility : "hidden" , duration : 0 , display : "none"});  
         document.body.style.overflow = "auto" ;
@@ -300,7 +305,10 @@ function createOfferCardSummary(data){
 	}
 	
 	card.show  = () => {
-		
+		modal_bg.style.visibility = "visible" ;
+        modal_bg.style.display = "flex" ;
+        modal_bg.style.opacity = '1' ;
+        document.body.style.overflow = "hidden" ;
 		gsap.fromTo(card,{scale: 0.4 , opacity : 0 , visibility : "hidden" , display: "none"} , {scale : 1 , opacity :1 , duration : 1 , ease : "elastic.out(1, 0.3)", display: "flex" , visibility: "visible"});     
 		
         return 1 ;
@@ -318,9 +326,9 @@ function createOfferCardSummary(data){
 
 
 	button.onclick = () => {
-		let offer = data.offer_builder.build();
-		sendOffer(offer);
 		card.exit();
+		let offer = data.offer_builder.build();
+		sendOffer(offer,card);
 	}
 	//build the card
 	card_body.appendChild(titleRow);

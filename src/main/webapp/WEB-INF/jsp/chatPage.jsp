@@ -20,8 +20,72 @@
 <link rel="stylesheet" href="/css/chat2.css">
 <script src="/js/chat/chat.js"></script>
 <script src="/js/model/message.js"></script>
+<link href="/css/notificationCss.css" rel="stylesheet" type="text/css">
+<script src="/js/notifications/notification.js"></script>
 </head>
 <body>
+	<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
+	</div>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">Get Jobs</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<c:choose>
+					<c:when test="${sessionScope.username != null}">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/profilePage?username=${sessionScope.username}">Profilo</a></li>
+							<c:choose>
+								<c:when test="${sessionScope.loggedAccountType == 'w'}">
+									<li class="nav-item"><a class="nav-link active" href="#">Le
+											tue offerte</a></li>
+								</c:when>
+								<c:when test="${sessionScope.loggedAccountType == 'u'}">
+									<li class="nav-item"><a class="nav-link active"
+										href="/showMyAdvertises">I tuoi annunci</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="/AdvertisePublication">Inserisci annuncio</a></li>
+								</c:when>
+								<c:when test="${sessionScope.loggedAccountType == 'a'}">
+									<li class="nav-item"><a class="nav-link active"
+										href="/administratorProfilesManager">Gestisci account</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="/administratorAreasManager">Gestisci ambiti di
+											lavoro</a></li>
+								</c:when>
+							</c:choose>
+							<li class="nav-item"><a class="nav-link active"
+								href="/getChats">Messaggi</a></li>
+							<li class="nav-item" id="notification-item"><a
+								class="nav-link active" id="notification-bell">Notifiche <i
+									class="fas fa-circle fa-xs" id="new-notification"></i></a></li>
+						</ul>
+						<ul class="navbar-nav mb-2 mb-lg-0">
+							<li class="nav-item"><a class="nav-link active"
+								href="/logout">Logout</a></li>
+						</ul>
+					</c:when>
+					<c:otherwise>
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+						<ul class="navbar-nav mb-2 mb-lg-0 pe-5 me-5">
+
+							<li class="nav-item"><a class="nav-link active"
+								aria-current="page" href="#">Registrati</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/login.html">Accedi</a></li>
+						</ul>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
+	</nav>
 	<div class="container">
 		<div class="row">
 			<div class="col-3" id="people-list">
@@ -34,9 +98,8 @@
 								<c:otherwise>
 									<img src="${chat.a2.profilePic.value}">
 								</c:otherwise>
-							</c:choose> 
-							<span class="name" id="${chat.a2.username}">${chat.a2.username}<i class="fas fa-circle"></i></span>
-						</li>
+							</c:choose> <span class="name" id="${chat.a2.username}">${chat.a2.username}<i
+								class="fas fa-circle"></i></span></li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -60,7 +123,7 @@
 				<div id="new-message-div">
 					<input type="text" class="form-control"
 						placeholder="Scrivi il tuo messaggio..." id="new-message-text">
-						<button id="send-message">Invia</button>
+					<button id="send-message">Invia</button>
 				</div>
 			</div>
 		</div>

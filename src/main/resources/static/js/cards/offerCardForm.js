@@ -490,7 +490,6 @@ function createCardOfferForm(data){
             card_summary = createOfferCardSummary(data);
             card_summary.style.display = "none";
             modal_bg.appendChild(card_summary);
-            
             let time_to_close = form.close();
             setTimeout(card_summary.show,time_to_close*1000);
 			
@@ -572,6 +571,7 @@ function createCardOfferForm(data){
 
         modal_bg.style.visibility = "visible" ;
         modal_bg.style.display = "flex" ;
+        modal_bg.style.opacity = '1' ;
         
         document.body.style.overflow = "hidden" ;
 

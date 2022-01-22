@@ -2,13 +2,21 @@ var loginCredentials = new Account.Builder();
 var account;
 
 function createAlert(message){
-	var div = document.createElement('div');
-	div.className = "alert alert-danger";
-	div.role = "alert";
-	var innerp = document.createElement('p');
-	innerp.innerHTML = message;
-	div.appendChild(innerp);
-	return div
+	if(document.getElementById('error') == null){
+		var div = document.createElement('div');
+		div.className = "alert alert-danger";
+		div.role = "alert";
+		div.id = "error";
+		var innerp = document.createElement('p');
+		innerp.id = 'error_message';
+		innerp.innerHTML = message;
+		div.appendChild(innerp);
+		return div;
+	}else if(document.getElementById('error').innerHTML != message){
+		let p = document.getElementById('error_message');
+		p.innerHTML = message;
+	}
+	
 }
 
 function pageListener(){
@@ -35,16 +43,18 @@ function doLogin(){
 		try{
 			loginCredentials.withEmail(username);
 		}catch(e1){
-			var div = createAlert('Invalid username or email');
-			document.getElementById('alert').appendChild(div);
+			var div = createAlert('Username o password errati');
+			if(div != null)
+				document.getElementById('alert').appendChild(div);
 			return;
 		}
 	}
 	try{
 		loginCredentials.withPassword(password);
 	}catch(e){
-		var div = createAlert('Invalid password');
-		document.getElementById('alert').appendChild(div);
+		var div = createAlert('Username o Password errati ');
+		if(div != null)
+			document.getElementById('alert').appendChild(div);
 		return;
 	}
 	
@@ -59,8 +69,8 @@ function doLogin(){
 		success : (response) =>{
 			account = response;
 			if(account == null){
-					window.location.replace("Login.html?error=invalid_password_or_username");
-				}
+				window.location.href = 'Login.html?error=invalid_password_or_username';
+			}
 			else
 				window.location.replace("/");
 		}, 

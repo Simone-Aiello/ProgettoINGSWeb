@@ -217,9 +217,11 @@ public class OfferDaoConcrete implements OfferDao {
 	@Override
 	public List<Offer> findOffersByAdvertise(Advertise a) throws SQLException {
 		List<Offer> offers = new ArrayList<>();
-		String query = "SELECT * FROM proposte WHERE id_annuncio = ?";
+		String query = "SELECT proposte.descrizione, proposte.ore_di_lavoro, proposte.id, proposte.preventivo, proposte.titolo, proposte.username_lavoratore, proposte.disponibilità  FROM proposte INNER JOIN annunci ON proposte.id_annuncio = annunci.id WHERE proposte.id_annuncio = ? and proposte.rifiutata = false and annunci.username_cliente = ?";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
 		stmt.setLong(1, a.getId());
+		if(a.getAccount().getUsername() != null)
+			stmt.setString(2, a.getAccount().getUsername());
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
 			Offer o = new Offer();
@@ -260,6 +262,7 @@ public class OfferDaoConcrete implements OfferDao {
 		}
 		return o;
 	}
+	
 
 	public int findWorksDoneByAccount(String username) throws SQLException {
 		String query = "SELECT COUNT(id) FROM proposte WHERE lavoro_effettuato AND username_lavoratore = ?";
@@ -268,5 +271,18 @@ public class OfferDaoConcrete implements OfferDao {
 		ResultSet rs = stmt.executeQuery();
 		rs.next();
 		return rs.getInt(1);
+	}
+
+	@Override
+	public void refuseOffer(Long offerId) throws SQLException {
+		String query = "update proposte set rifiutata = true where id = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setLong(1, offerId);
+		stmt.executeUpdate();
+	}
+
+	@Override
+	public boolean isReviewed(Long offerId) throws SQLException {
+		return Database.getInstance().getReviewDao().reviewByOfferId(offerId);
 	}
 }
