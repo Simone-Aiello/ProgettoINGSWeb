@@ -23,7 +23,7 @@
 	src="/js/administratorOperations/administratorAreasOperations.js"
 	type="text/javascript"></script>
 <script src="/js/notifications/notification.js"></script>
-<link rel="stylesheet" href="/css/notificationCss.css">
+<link rel="stylesheet" href="/css/notificationCSS.css">
 </head>
 <body>
 	<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
