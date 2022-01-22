@@ -40,6 +40,7 @@
 <script>
 	var accountType = "${account.accountType}"
 </script>
+
 </head>
 <body>
 	<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">

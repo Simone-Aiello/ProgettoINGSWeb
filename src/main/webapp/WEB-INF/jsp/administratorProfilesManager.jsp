@@ -25,7 +25,7 @@
 	type="text/javascript"></script>
 <script src="js/model/message.js"></script>
 <script src="js/model/chat.js"></script>
-<link href="/css/notificationCss.css" rel="stylesheet" type="text/css">
+<link href="/css/notificationCSS.css" rel="stylesheet" type="text/css">
 <script src="/js/notifications/notification.js"></script>
 </head>
 
