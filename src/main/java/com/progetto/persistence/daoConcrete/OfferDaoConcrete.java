@@ -67,7 +67,7 @@ public class OfferDaoConcrete implements OfferDao {
 		int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 		Offer offer = new Offer() ;
 		offer.setId(resultSet.getLong("id"));
-		offer.setDescription(resultSet.getString("descrizione"));
+		if(resultSet.getString("descrizione") != null) offer.setDescription(resultSet.getString("descrizione"));
 		offer.setTitle(resultSet.getString("titolo"));
 		if(mode != Utils.BASIC_INFO) {
 			offer.setDone(resultSet.getBoolean("lavoro_effettuato"));
