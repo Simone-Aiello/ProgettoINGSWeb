@@ -372,17 +372,18 @@ public class AccountDaoConcrete implements AccountDao {
 	@Override
 	public Account loginCredentialsByUsernameOrEmail(String username) throws SQLException {
 		Account a = new Account();
-		String query = "select username, password from account where username = ?";
+		String query = "select username, password,tipo_account from account where username = ?";
 		PreparedStatement ps = Database.getInstance().getConnection().prepareStatement(query);
 		ps.setString(1, username);
 		ResultSet set = ps.executeQuery();
 		if(set.next()) {
 			a.setUsername(set.getString("username"));
 			a.setPassword(set.getString("password"));
+			a.setAccountType(set.getString("tipo_account"));
 		}else {
 			ps.close();
 			set.close();
-			String query_1 = "select username, password from account where email = ?";
+			String query_1 = "select username, password,tipo_account from account where email = ?";
 			ps = Database.getInstance().getConnection().prepareStatement(query_1);
 			String email = username;
 			ps.setString(1, email);
@@ -390,6 +391,7 @@ public class AccountDaoConcrete implements AccountDao {
 			if(set.next()) {
 				a.setUsername(set.getString("username"));
 				a.setPassword(set.getString("password"));
+				a.setAccountType(set.getString("tipo_account"));
 			}
 		}
 		return a;

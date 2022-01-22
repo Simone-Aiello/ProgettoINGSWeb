@@ -36,7 +36,6 @@
 <link rel="stylesheet" href="./css/cards/styleAdvertiseCardDetails.css">
 <script defer src="./js/cards/advertiseCardPreview.js"></script>
 <link rel="stylesheet" href="./css/cards/styleAdvertiseCardPreview.css">
-<link rel="stylesheet" href="./css/notificationCSS.css">
 <!-- Tag relativi alla card offerForm -->
 <link rel="stylesheet" href="./css/cards/styleOfferCardForm.css">
 <script defer src="./js/cards/offerCardForm.js"></script>
@@ -44,8 +43,9 @@
 <script src="./js/model/offer.js"></script>
 <!-- Tag relativi ad i model account e annuncio -->
 <script src="./js/model/account.js"></script>
-<script defer src="./js/notifications/notification.js"></script>
 <!--  <script src="../js/model/advertise.js"></script> -->
+<script defer src="./js/notifications/notification.js"></script>
+<link rel="stylesheet" href="./css/notificationCSS.css">
 </head>
 <body>
 	<!-- Modals -->
