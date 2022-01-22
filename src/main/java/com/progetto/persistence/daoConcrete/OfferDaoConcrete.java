@@ -125,8 +125,7 @@ public class OfferDaoConcrete implements OfferDao {
 			preparedStatement.setBoolean(4, offer.isDone());
 			preparedStatement.setString(5, offer.getWorker().getUsername());
 			preparedStatement.setInt(6, offer.getHoursOfWork());
-			//preparedStatement.setLong(7,offer.getAdvertise().getId());
-			preparedStatement.setLong(7,4);
+			preparedStatement.setLong(7,offer.getAdvertise().getId());
 			preparedStatement.setString(8,mapper.writeValueAsString(offer.getAvailabilities()));
 			
 			ResultSet rs = preparedStatement.executeQuery();
@@ -225,7 +224,7 @@ public class OfferDaoConcrete implements OfferDao {
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
 			Offer o = new Offer();
-			o.setDescription(rs.getString("descrizione"));
+			if(rs.getString("descrizione") != null) o.setDescription(rs.getString("descrizione"));
 			o.setHoursOfWork(rs.getInt("ore_di_lavoro"));
 			o.setId(rs.getLong("id"));
 			o.setQuote(rs.getDouble("preventivo"));
