@@ -26,8 +26,6 @@ public class loginServlet{
 	@PostMapping("/login")
 	public Account login(@RequestBody Account a, HttpServletResponse resp, HttpServletRequest req) {
 		Account account = null;
-		
-		
 		if(a.getEmail() == null) {
 			try {
 				account = Database.getInstance().getAccountDao().loginCredentialsByUsernameOrEmail(a.getUsername());	
