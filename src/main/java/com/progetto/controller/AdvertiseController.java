@@ -24,7 +24,6 @@ public class AdvertiseController {
 		JSONObject parms = new JSONObject(parmsString);
 		List<Advertise> advertises;
 		try {
-			System.out.println(parms);
 			String keyword = null; 
 			try { keyword = parms.getString("keyword"); }catch (JSONException e) {}
 			List<String> areas = null; 
@@ -35,9 +34,7 @@ public class AdvertiseController {
 			try { quantity = parms.getInt("quantity"); }catch (JSONException e) {}
 			Integer offset = null;
 			try { offset = parms.getInt("offset"); }catch (JSONException e) {}
-			
-			System.out.println(province);
-			
+
 			advertises = Database.getInstance().getAdvertiseDao().findGroup(keyword,areas ,province, 
 					quantity, offset);
 		} catch (SQLException e) {
