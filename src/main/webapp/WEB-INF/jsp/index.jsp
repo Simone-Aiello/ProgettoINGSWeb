@@ -48,7 +48,11 @@
 <script src="./js/model/offer.js"></script>
 <!-- Tag relativi ad i model account e annuncio -->
 <script src="./js/model/account.js"></script>
+<<<<<<< HEAD
 <script src="./js/model/advertise.js"></script> 
+=======
+<script src="./js/model/advertise.js"></script>
+>>>>>>> 632923ba5dce98ca75e047f783f6d39d3d7367b3
 <script defer src="./js/notifications/notification.js"></script>
 <link rel="stylesheet" href="./css/notificationCSS.css">
 
@@ -87,8 +91,8 @@
 									href="/profilePage?username=${sessionScope.username}">Profilo</a></li>
 								<c:choose>
 									<c:when test="${sessionScope.loggedAccountType == 'w'}">
-										<li class="nav-item"><a class="nav-link active" href="#">Le
-												tue offerte</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/showMyOffers">Le tue offerte</a></li>
 									</c:when>
 									<c:when test="${sessionScope.loggedAccountType == 'u'}">
 										<li class="nav-item"><a class="nav-link active"
@@ -123,6 +127,8 @@
 									aria-current="page" href="#">Registrati</a></li>
 								<li class="nav-item"><a class="nav-link active"
 									href="/login.html">Accedi</a></li>
+								<li class="nav-item"><a class="nav-link active"
+									href="/AdvertisePublication">Inserisci annuncio</a></li>
 							</ul>
 						</c:otherwise>
 					</c:choose>
