@@ -80,9 +80,18 @@ $(window).resize(() => {
 // Container advertise
 customElements.define('container-advertise', ContainerAdvertises);
 let inner_container_advertise = document.createElement('container-advertise');
-inner_container_advertise.init({
-		quantity : 6 ,
-	});
+let params = { 
+    quantity : 6
+}
+try{
+    if(provinceOfWork){
+        params.province = provinceOfWork ;
+    }
+}catch(e){
+    var provinceOfWork = null ;
+}
+
+inner_container_advertise.init(params);
 let outer_container_advertise = document.querySelector('.outer-container-advertises');
 outer_container_advertise.insertBefore(inner_container_advertise, outer_container_advertise.children[1]);
 
@@ -148,7 +157,7 @@ button_search_advertise.onclick = () => {
 		quantity : 6 ,
         areas : areas.length > 0 ? areas : null ,
         keyword : keyword != '' && keyword != null ? keyword : null ,
-        province : province != '' && province != null ? province : null ,
+        province : province != '' && province != null ? province : provinceOfWork ,
 	});
 }
 
@@ -179,5 +188,9 @@ button_search_advertise_smartphone.onclick = () => {
 
     closeModal(modal_search_bar_smartphone);
 }
+
+
+
+
 
 

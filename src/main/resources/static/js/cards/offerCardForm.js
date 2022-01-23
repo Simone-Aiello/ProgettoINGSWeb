@@ -3,8 +3,8 @@
 
 function createCardOfferForm(data){
 	
-	let offer_builder = new Offer.Builder();
     
+	let offer_builder = new Offer.Builder();
    
     modal_bg = document.createElement("div");
 
@@ -407,6 +407,7 @@ function createCardOfferForm(data){
 		let flag_error = false ; 	
 		try{
 			let job_duration = input_job_duration.value ;
+            console.log(job_duration);
 			offer_builder.withHoursOfWork(job_duration);
 			let unit = combobox_unit.value ;
 		
@@ -420,7 +421,6 @@ function createCardOfferForm(data){
 			}else if(unit == "mesi"){
 				job_duration = job_duration * 24 * 30 ;
 			}
-			offer_builder.withHoursOfWork(job_duration);
 		}catch(e){
 			createMessage({
 		        element: inner_container_job_duration,
@@ -439,9 +439,10 @@ function createCardOfferForm(data){
 			var input_quote_value = input_quote.value ;
 			if(input_quote_value == "" )
 				input_quote_value = -1 ;
-			
+			console.log(input_quote_value);
 			offer_builder.withQuote(input_quote_value);
 		}catch(e){
+            console.log(e.message);
 			createMessage({
 		        element: input_quote_container,
 		        message: e.message ,
@@ -478,8 +479,9 @@ function createCardOfferForm(data){
 			let title = data.title + " <-> " + data.account.username ;
 			offer_builder.withTitle(title);
 			worker_builder = new Account.Builder();
-			worker_builder.withUsername(data.username_worker);
-			offer_builder.withWorker(worker_builder.build());
+            advertise_builder = new Advertise.Builder();
+            advertise_builder.withId(data.id_advertise);
+            offer_builder.withAdvertise(advertise_builder.build());
             data.availabilities = availabilities ;
             data.offer_builder = offer_builder ;
             data.description = description ;
@@ -492,7 +494,6 @@ function createCardOfferForm(data){
             modal_bg.appendChild(card_summary);
             let time_to_close = form.close();
             setTimeout(card_summary.show,time_to_close*1000);
-			
 		}
 	}
 

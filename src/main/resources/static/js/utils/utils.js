@@ -22,9 +22,10 @@ function createButtonWithIcon(icon){
     return button ;
 }
 
-var _regex_date = /^(\d{4})-(\d{2})-(\d{2})$/;
+var _regex_date = /^(\d{4})-(\d{2})-(\d{2}).*$/;
 
 function isDate(date){
+    console.log(date);
 	if (!_regex_date.test(date))
 		throw new Error("La data inserita non è valida");
 }
@@ -72,6 +73,24 @@ function isBeforeNow(date) {
     }
 
     return false ;
+}
+
+function isToday(date){
+    
+    isDate(date);
+    var match = date.match(_regex_date);
+
+    let day_date = parseInt(match[3]);
+    let month_date = parseInt(match[2]);
+    let year_date = parseInt(match[1]);
+
+    let today = new Date();
+
+    let today_day = today.getDate();
+    let today_month = today.getMonth() + 1;
+    let today_year = today.getFullYear();
+
+    return day_date == today_day && month_date == today_month && today_year == year_date ;
 }
 
 function isAfterNowOrToday(date) {

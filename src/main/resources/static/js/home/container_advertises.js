@@ -24,6 +24,12 @@ class ContainerAdvertises extends HTMLElement{
         pending = false ;
     }
 
+    #messageCenterAbsolute = () => {
+        let message = document.createElement('h2');
+        message.className = "message-center-container-advertises rounded shadow" ;
+        return message ;
+    }
+
     #busy = false ;
 
      init = (params) => {
@@ -38,6 +44,7 @@ class ContainerAdvertises extends HTMLElement{
 		this.index_view = 0 ;
         this.max_index_view = null ;
 		this.#show_view(this.index_view);
+        this.message_center = this.#messageCenterAbsolute() ;
     }
 
 	// ADD SPINNERS 
@@ -47,6 +54,11 @@ class ContainerAdvertises extends HTMLElement{
             let spinner = createSpinner();
             this.appendChild(spinner);
         }    
+    }
+
+    #show_message_center = (message) => {
+        this.message_center.innerHTML = message;
+        this.appendChild(this.message_center);
     }
 
 	// REMOVES ALL CHILDREN
@@ -116,12 +128,27 @@ class ContainerAdvertises extends HTMLElement{
                 this.states[index_view].pending = false ;
                 if(advertises.length > 0){
 					this.view_advertises[index_view] = [] ;
-				}else{
+				}else if(show || index_view == 0){
+                    this.#removeAllChildren();
+                    if(index_view > 0){
+                        this.#show_view(index_view - 1);
+                        return ;
+                    }
+                    if(this.params.province){
+                        this.#show_message_center('Non ci sono annunci relativi alla provincia '+this.params.province+", riprovare con una provincia differente");
+                    }else if(this.params.keyword){
+                        this.#show_message_center('Non ci sono annunci relativi a:  '+this.params.keyword);
+                    }else{
+                        this.#show_message_center('Non ci sono annunci :(');
+                    }
+					this.max_index_view = index_view - 1; 
+                    return ;
+                }else{
 					this.max_index_view = index_view - 1; 
 					return ;
 				}
 				for(let advertise of advertises){
-					// console.log(advertise);
+					console.log(advertise);
                     let card_advertise = createCard(advertise);
                     this.view_advertises[index_view].push(card_advertise);
                 }

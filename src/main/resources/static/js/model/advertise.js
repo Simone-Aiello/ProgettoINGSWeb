@@ -1,10 +1,3 @@
-//checks that the passed vaule is of the type that has been passsed
-function checkType(value, type){
-	if(value.constructor.name  != type){
-		throw new Error("The value: "+value+" is not of type "+type);
-	}
-}
-
 class Advertise{
 	static #key = Math.floor(Math.random()*Number.MAX_SAFE_INTEGER);
 	static #title_max_length = 100;
