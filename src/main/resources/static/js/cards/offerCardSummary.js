@@ -2,12 +2,13 @@
 function sendOffer(offer, card){
 
 	checkType(offer,"Offer");
-	
+	let data = JSON.stringify(offer) ;
+	console.log(data);
 	$.ajax({
 		type: "POST",
 		url: "/registerOffer",
 		contentType: "application/json",
-		data: JSON.stringify(offer),
+		data: data,
 		success: (response) => {
 			let dialog = createDialog({
 				message : 'La tua proposta è stata presa in carico',
@@ -23,6 +24,26 @@ function sendOffer(offer, card){
 					message_cancel_button : 'Chiudi',
 					cancel : () =>{},
 					ok : card.show,
+				});
+				dialog.show();
+			}
+			if(response.status == 405){
+				let dialog = createDialog({
+					message : JSON.parse(xhr.responseText).message,
+					message_ok_button : 'Re-invia email',
+					message_cancel_button : 'Indietro',
+					cancel : card.show,
+					// ok : ()=> {	
+					// 	$.ajax({
+					// 		type : 'POST',
+					// 		url: "/sendVerificationMail",
+					// 		data: null ,
+							
+					// 	});
+					//  },
+					ok : card.show,
+					color_ok : 'btn-light',
+					color_cancel : 'btn-light',
 				});
 				dialog.show();
 			}
@@ -145,7 +166,7 @@ function createOfferCardSummary(data){
 	data.availabilities.forEach((item) =>{
 		let li = document.createElement('li');
 		li.style = "margin-left : 10px"
-		li.innerHTML = item;
+		li.innerHTML = date_from_db_to_ISO(item);
 		droppedMenu.appendChild(li);
 	});
 	datesButton.appendChild(icon);

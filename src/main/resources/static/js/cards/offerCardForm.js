@@ -1,46 +1,47 @@
 
 
 
-function createCardOfferForm(data) {
-
+function createCardOfferForm(data){
+	
+    
 	let offer_builder = new Offer.Builder();
+   
+    modal_bg = document.createElement("div");
 
+        
+    modal_bg.className = "modal-bg-offer-form";
 
-	modal_bg = document.createElement("div");
+    let form = document.createElement("div");
+    form.className = "card shadow rounded card-offer-form" ;
 
+    let inner_form = document.createElement("div");
+    inner_form.className = "card-body" ;
 
-	modal_bg.className = "modal-bg-offer-form";
+    let first_row_form = createRow();
+    first_row_form.classList.add("space-between");
+    
+    let form_title = document.createElement("h5");
+    form_title.className = "col-10 card-title";
+    form_title.innerHTML = "Compila proposta per: " + data.title ;
+    form_title.style.padding = 0 ;    
 
-	let form = document.createElement("div");
-	form.className = "card shadow rounded card-offer-form";
+    let exit_button_form = document.createElement("button");
+    exit_button_form.className = "btn  far fa-times-circle close-button-offer-form" ;
+    
+    exit_button_form.onmouseover = () => {
+        gsap.to(exit_button_form,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)" , rotate : "-90deg"} );
+    }
 
-	let inner_form = document.createElement("div");
-	inner_form.className = "card-body";
+    exit_button_form.onmouseleave = () => {
+        gsap.to(exit_button_form,{ scale: 1 , ease : "elastic.out(1, 0.3)" , rotate : "0deg"} );
+    }
 
-	let first_row_form = createRow();
-	first_row_form.classList.add("space-between");
+    first_row_form.appendChild(form_title);
+    first_row_form.appendChild(exit_button_form);
 
-	let form_title = document.createElement("h5");
-	form_title.className = "col-10 card-title";
-	form_title.innerHTML = "Compila proposta per: " + data.title;
-	form_title.style.padding = 0;
+    let row_information_user_advertise = document.createElement('div');
+    row_information_user_advertise.className = "wrapper space-between";
 
-	let exit_button_form = document.createElement("button");
-	exit_button_form.className = "btn  far fa-times-circle close-button-offer-form";
-
-	exit_button_form.onmouseover = () => {
-		gsap.to(exit_button_form, { scale: 1.1, ease: "elastic.out(1, 0.3)", rotate: "-90deg" });
-	}
-
-	exit_button_form.onmouseleave = () => {
-		gsap.to(exit_button_form, { scale: 1, ease: "elastic.out(1, 0.3)", rotate: "0deg" });
-	}
-
-	first_row_form.appendChild(form_title);
-	first_row_form.appendChild(exit_button_form);
-
-	let row_information_user_advertise = document.createElement('div');
-	row_information_user_advertise.className = "wrapper space-between";
 	row_information_user_advertise.style.flexWrap = "wrap";
 
 	let username_client_advertise = document.createElement("a");
@@ -402,12 +403,14 @@ function createCardOfferForm(data) {
 	let card_summary = null;
 	button_submit.onclick = () => {
 
+
 		let flag_error = false;
 		try {
 			let job_duration = input_job_duration.value;
-			offer_builder.withHoursOfWork(job_duration);
-			let unit = combobox_unit.value;
 
+			
+			let unit = combobox_unit.value;
+			console.log(unit);
 			var job_duration_string = job_duration + " " + unit;
 			if (unit == "minuti") {
 				job_duration = job_duration / 60;
@@ -418,8 +421,10 @@ function createCardOfferForm(data) {
 			} else if (unit == "mesi") {
 				job_duration = job_duration * 24 * 30;
 			}
+			console.log(job_duration);
 			offer_builder.withHoursOfWork(job_duration);
 		} catch (e) {
+
 			createMessage({
 				element: inner_container_job_duration,
 				message: e.message,
@@ -440,6 +445,7 @@ function createCardOfferForm(data) {
 
 			offer_builder.withQuote(input_quote_value);
 		} catch (e) {
+
 			createMessage({
 				element: input_quote_container,
 				message: e.message,
@@ -475,24 +481,21 @@ function createCardOfferForm(data) {
 			let title = data.title + " <-> " + data.account.username;
 			offer_builder.withTitle(title);
 			worker_builder = new Account.Builder();
-			worker_builder.withUsername(data.username_worker);
-			offer_builder.withWorker(worker_builder.build());
-			data.availabilities = availabilities;
-			data.offer_builder = offer_builder;
-			data.description = description;
-			data.job_duration = job_duration_string;
-			data.quote = input_quote_value;
-			data.cardOfferForm = form;
-			data.modal_bg = modal_bg;
-			advertise_builder = new Advertise.Builder();
-			advertise_builder.withId(data.id_advertise);
-			offer_builder.withAdvertise(advertise_builder.build());
-			card_summary = createOfferCardSummary(data);
-			card_summary.style.display = "none";
-			modal_bg.appendChild(card_summary);
-			let time_to_close = form.close();
-			setTimeout(card_summary.show, time_to_close * 1000);
-
+            advertise_builder = new Advertise.Builder();
+            advertise_builder.withId(data.id_advertise);
+            offer_builder.withAdvertise(advertise_builder.build());
+            data.availabilities = availabilities ;
+            data.offer_builder = offer_builder ;
+            data.description = description ;
+            data.job_duration = job_duration_string ;
+            data.quote = input_quote_value ;
+            data.cardOfferForm = form ;
+            data.modal_bg = modal_bg ;
+            card_summary = createOfferCardSummary(data);
+            card_summary.style.display = "none";
+            modal_bg.appendChild(card_summary);
+            let time_to_close = form.close();
+            setTimeout(card_summary.show,time_to_close*1000);
 		}
 	}
 

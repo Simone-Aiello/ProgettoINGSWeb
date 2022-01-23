@@ -60,8 +60,7 @@ public class OfferDaoConcrete implements OfferDao {
 			offer.setDone(resultSet.getBoolean("lavoro_effettuato"));
 			offer.setHoursOfWork(resultSet.getInt("ore_di_lavoro"));
 			JSONArray object = new JSONArray(resultSet.getString("disponibilità"));
-			List<String> availabilities = object.toList().stream()
-					.map(availabilitiesObject -> availabilitiesObject.toString()).collect(Collectors.toList());
+			List<String> availabilities = object.toList().stream().map(availabilitiesObject -> availabilitiesObject.toString()).toList();
 			offer.setAvailabilities(availabilities);
 			Account account = Database.getInstance().getAccountDao()
 					.findByPrimaryKey(resultSet.getString("username_lavoratore"), next);
@@ -114,9 +113,8 @@ public class OfferDaoConcrete implements OfferDao {
 			preparedStatement.setBoolean(4, offer.isDone());
 			preparedStatement.setString(5, offer.getWorker().getUsername());
 			preparedStatement.setInt(6, offer.getHoursOfWork());
-			preparedStatement.setLong(7, offer.getAdvertise().getId());
-			preparedStatement.setString(8, mapper.writeValueAsString(offer.getAvailabilities()));
-
+			preparedStatement.setLong(7,offer.getAdvertise().getId());
+			preparedStatement.setString(8,mapper.writeValueAsString(offer.getAvailabilities()));
 			ResultSet rs = preparedStatement.executeQuery();
 			rs.next();
 			id = rs.getLong("id");

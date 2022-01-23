@@ -102,8 +102,6 @@ class Offer{
 		}
 
 		build = function() {
-			if (this.#built) throw new Error("This builder has already been used");
-			this.#built = true;
 			return this.#product;
 		}
     }

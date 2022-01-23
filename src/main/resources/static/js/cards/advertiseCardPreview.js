@@ -94,7 +94,16 @@ function createCard(data){
     // Card due date
     let card_due_date = document.createElement("p");
     card_due_date.className = "card-text m-0 due-date" ;
+    console.log(data.expiryDate);
+    console.log(date_from_db_to_ISO(data.expiryDate));
     card_due_date.innerHTML = date_from_db_to_ISO(data.expiryDate);
+
+    if(isToday(data.expiryDate)){
+        let expiring = document.createElement('p');
+        expiring.className = "expiring-advertise-p";
+        expiring.innerHTML = "In scadenza!";
+        card.appendChild(expiring);
+    }
 
      
     card_information.appendChild(label_card_province);

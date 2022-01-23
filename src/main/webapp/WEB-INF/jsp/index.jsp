@@ -7,6 +7,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GetJobs | Home</title>
+<c:if test="${provinceOfWork != null}">
+<script>
+	var provinceOfWork = "${provinceOfWork}" ;
+</script>
+</c:if>
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
@@ -43,9 +48,12 @@
 <script src="./js/model/offer.js"></script>
 <!-- Tag relativi ad i model account e annuncio -->
 <script src="./js/model/account.js"></script>
-<script src="./js/model/advertise.js"></script>
+
+<script src="./js/model/advertise.js"></script> 
+
 <script defer src="./js/notifications/notification.js"></script>
 <link rel="stylesheet" href="./css/notificationCSS.css">
+
 </head>
 <body>
 	<!-- Modals -->
