@@ -97,7 +97,7 @@ public class ShowOffersController {
 		acc.setUsername(message[1]);
 		n.setReceiver(acc);
 		n.setText("La tua offerta #"+message[2]+" è stata accetta!");
-		n.setType("r");
+		n.setType("o");
 		try {
 			Database.getInstance().getAdvertiseDao().updateAdvertise(a);
 			Database.getInstance().getNotificationDao().saveNotificationByOfferRefuse(n);
