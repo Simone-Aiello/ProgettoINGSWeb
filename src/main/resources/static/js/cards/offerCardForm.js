@@ -1,7 +1,6 @@
 
 
 
-<<<<<<< HEAD
 function createCardOfferForm(data){
 	
     
@@ -42,48 +41,7 @@ function createCardOfferForm(data){
 
     let row_information_user_advertise = document.createElement('div');
     row_information_user_advertise.className = "wrapper space-between";
-=======
-function createCardOfferForm(data) {
 
-	let offer_builder = new Offer.Builder();
-
-
-	modal_bg = document.createElement("div");
-
-
-	modal_bg.className = "modal-bg-offer-form";
-
-	let form = document.createElement("div");
-	form.className = "card shadow rounded card-offer-form";
-
-	let inner_form = document.createElement("div");
-	inner_form.className = "card-body";
-
-	let first_row_form = createRow();
-	first_row_form.classList.add("space-between");
-
-	let form_title = document.createElement("h5");
-	form_title.className = "col-10 card-title";
-	form_title.innerHTML = "Compila proposta per: " + data.title;
-	form_title.style.padding = 0;
-
-	let exit_button_form = document.createElement("button");
-	exit_button_form.className = "btn  far fa-times-circle close-button-offer-form";
-
-	exit_button_form.onmouseover = () => {
-		gsap.to(exit_button_form, { scale: 1.1, ease: "elastic.out(1, 0.3)", rotate: "-90deg" });
-	}
-
-	exit_button_form.onmouseleave = () => {
-		gsap.to(exit_button_form, { scale: 1, ease: "elastic.out(1, 0.3)", rotate: "0deg" });
-	}
-
-	first_row_form.appendChild(form_title);
-	first_row_form.appendChild(exit_button_form);
-
-	let row_information_user_advertise = document.createElement('div');
-	row_information_user_advertise.className = "wrapper space-between";
->>>>>>> 632923ba5dce98ca75e047f783f6d39d3d7367b3
 	row_information_user_advertise.style.flexWrap = "wrap";
 
 	let username_client_advertise = document.createElement("a");
@@ -450,9 +408,9 @@ function createCardOfferForm(data) {
 		try {
 			let job_duration = input_job_duration.value;
 
-			offer_builder.withHoursOfWork(job_duration);
+			
 			let unit = combobox_unit.value;
-
+			console.log(unit);
 			var job_duration_string = job_duration + " " + unit;
 			if (unit == "minuti") {
 				job_duration = job_duration / 60;
@@ -463,6 +421,8 @@ function createCardOfferForm(data) {
 			} else if (unit == "mesi") {
 				job_duration = job_duration * 24 * 30;
 			}
+			console.log(job_duration);
+			offer_builder.withHoursOfWork(job_duration);
 		} catch (e) {
 
 			createMessage({

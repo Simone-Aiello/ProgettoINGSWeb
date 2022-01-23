@@ -33,6 +33,14 @@ function sendOffer(offer, card){
 					message_ok_button : 'Re-invia email',
 					message_cancel_button : 'Indietro',
 					cancel : card.show,
+					// ok : ()=> {	
+					// 	$.ajax({
+					// 		type : 'POST',
+					// 		url: "/sendVerificationMail",
+					// 		data: null ,
+							
+					// 	});
+					//  },
 					ok : card.show,
 					color_ok : 'btn-light',
 					color_cancel : 'btn-light',

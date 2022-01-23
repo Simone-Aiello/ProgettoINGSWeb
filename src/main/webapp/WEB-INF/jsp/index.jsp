@@ -48,11 +48,9 @@
 <script src="./js/model/offer.js"></script>
 <!-- Tag relativi ad i model account e annuncio -->
 <script src="./js/model/account.js"></script>
-<<<<<<< HEAD
+
 <script src="./js/model/advertise.js"></script> 
-=======
-<script src="./js/model/advertise.js"></script>
->>>>>>> 632923ba5dce98ca75e047f783f6d39d3d7367b3
+
 <script defer src="./js/notifications/notification.js"></script>
 <link rel="stylesheet" href="./css/notificationCSS.css">
 
