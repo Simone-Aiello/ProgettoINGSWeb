@@ -3,7 +3,9 @@ package com.progetto.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +24,8 @@ import com.progetto.model.Notification;
 import com.progetto.model.Offer;
 import com.progetto.model.Review;
 import com.progetto.persistence.Database;
+
+import java.util.regex.Matcher;
 
 @Controller
 public class ShowOffersController {
@@ -81,7 +85,6 @@ public class ShowOffersController {
 		}
 		
 	}
-	
 	
 	@PostMapping("/acceptOffer")
 	@ResponseBody
@@ -176,5 +179,27 @@ public class ShowOffersController {
 			e.printStackTrace();
 		}
 		return "allOffersWorker";
+	}
+	@GetMapping("/showMyOffers")
+	public String showMyOffers(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) {
+				req.setAttribute("message", "Devi aver effettuato il login per vedere le proprie proposte");
+				return "genericInfoPage";
+			}
+			Account a = new Account();
+			a.setUsername((String) req.getSession(false).getAttribute("username"));
+			List<Offer> offers = Database.getInstance().getOfferDao().findDetailedOffersByAccount(a);
+			for(Offer f : offers) {
+				String[] splitted = f.getDates().split("([^\\w-])+");
+				List<String> myAv = Arrays.asList(splitted);
+				f.setAvailabilities(myAv);
+			}
+			req.setAttribute("offers", offers);
+		} catch (SQLException e) {
+			resp.setStatus(500);
+			e.printStackTrace();
+		}
+		return "showMyOffers";
 	}
 }

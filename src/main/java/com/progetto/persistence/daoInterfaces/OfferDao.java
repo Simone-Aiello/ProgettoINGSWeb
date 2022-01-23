@@ -23,5 +23,6 @@ public interface OfferDao {
 	boolean isReviewed(Long offerId) throws SQLException;
 	List<Offer> findOffersByAccount(Account worker) throws SQLException;
 	int findWorksDoneByAccount(String username) throws SQLException;
-
+	List<Offer> findDetailedOffersByAccount(Account worker) throws SQLException;
+	void markOfferAsDone(Offer offer) throws SQLException;
 }
