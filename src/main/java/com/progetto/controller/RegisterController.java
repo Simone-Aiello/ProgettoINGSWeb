@@ -58,6 +58,23 @@ public class RegisterController {
 			return null ;
 		}
 		
+		
+		try {
+			if(Database.getInstance().getAdvertiseDao().alreadyAccepted(offer.getAdvertise())) {
+				resp.sendError(406, "Durante la compilazione della proposta l'annuncio il cliente ha accettato un'altra proposta");
+				return null ;
+			}
+		} catch (SQLException | IOException e2) {
+			e2.printStackTrace();
+			try {
+				resp.sendError(500, "Errore interno al sistema, provi fra qualche minuto");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null ;
+		}
+		
 		offer.setWorker(a);
 	
 		long id;

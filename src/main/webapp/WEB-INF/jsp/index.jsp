@@ -149,7 +149,7 @@
 				<p class="">Dove?</p>
 				<div class="wrapper">
 					<i class="fas fa-map-marker-alt" aria-hidden="true"></i> <input
-						type="text" placeholder="Un esempio..." />
+						type="text" placeholder="Un esempio..." value = "${provinceOfWork}"/>
 				</div>
 			</div>
 			<button id="button-areas-search-bar"

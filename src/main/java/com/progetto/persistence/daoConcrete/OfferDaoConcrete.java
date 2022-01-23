@@ -91,6 +91,7 @@ public class OfferDaoConcrete implements OfferDao {
 
 		return offer;
 	}
+	
 
 	@Override
 	public long save(Offer offer) throws SQLException, JsonProcessingException {
