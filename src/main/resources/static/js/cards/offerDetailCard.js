@@ -227,8 +227,11 @@ function setAcceptButtonListener(target){
 			let advertiseID = params.get("AdvertiseID");
 			
 			let message = [title, worker_username, offerId, advertiseID];
-			
-			$.ajax({
+			let dialog = createDialog(
+				{
+					message : "Sicuro di voler accettare la proposta?",
+					ok : () => {
+						$.ajax({
 			    type : 'POST',
 			    contentType: "application/json",
 			    url : '/acceptOffer',
@@ -273,6 +276,15 @@ function setAcceptButtonListener(target){
 			        console.log('error occured');
 			    }
 			});
+					},
+					cancel : () =>{}
+				}
+			);
+			
+			dialog.show();
+			
+			
+			/**/
 			
 		});
 	}
@@ -339,6 +351,7 @@ function createModal(id){
 	
 	let modal_body = document.createElement('div');
 	modal_body.className = 'modal-body';
+
 	let text_area = document.createElement('textarea');
 	text_area.id = 'textArea';
 	text_area.className = 'form-control';
@@ -382,6 +395,7 @@ function createModal(id){
 	
 	
 	modal_footer.appendChild(modal_button);
+	
 	
 	modal_body.appendChild(text_area);
 	
@@ -467,7 +481,7 @@ function createReviewModal(id){
 		for(let j = 0; j < 5; ++j)
 			document.getElementById('s-'+j).style = 'margin : 5px;';
 		let error = document.getElementById('error');
-		error.hidden = true;
+		error.style.visibility = 'hidden';
 	});
 	
 	let span = document.createElement('span');
@@ -481,15 +495,25 @@ function createReviewModal(id){
 	
 	let modal_body = document.createElement('div');
 	modal_body.className = 'modal-body';
+	
 	let text_area = document.createElement('textarea');
 	text_area.id = 'revtextArea';
 	text_area.className = 'form-control';
 	text_area.placeholder = 'es. Il lavoro è stato svolto correttamente e senza problemi ...'
 	text_area.rows = 4;
 	
+	let titlediv = document.createElement('div');
+	titlediv.className = 'input-group';
+	let title = document.createElement('input');
+	title.id = 'titolo';
+	title.placeholder = 'Inserisci un titolo';
+	titlediv.appendChild(title);
+	
 	let errorContainer = document.createElement('div');
 	errorContainer.id = 'error';
-	errorContainer.hidden = true;
+	//errorContainer.hidden = 'true';
+	//errorContainer.setAttribute('hidden',true);
+	errorContainer.style.visibility = 'hidden';
 	errorContainer.className = 'alert alert-danger';
 	errorContainer.innerHTML = '<strong>Attenzione!</strong> Inserisci una valutazione.';
 	
@@ -532,7 +556,9 @@ function createReviewModal(id){
 	modal_button.addEventListener('click',function(){
 		if(offset == 0){
 			let error = document.getElementById('error');
-			error.hidden = false;
+			//error.setAttribute('hidden','false');
+			//error.hidden = 'false';
+			error.style.visibility = 'visible';
 			console.log("ERROR");
 			return;
 		}
@@ -540,9 +566,10 @@ function createReviewModal(id){
 		workerUsername = workerUsername.split('@')[1];
 		let motivation = document.getElementById('revtextArea').value;
 		let offerId = document.getElementById('label-'+modal.getAttribute('cardid')).innerHTML;
+		let offerTitle = document.getElementById('titolo').value;
 		let rating = parseInt(offset)+1;
 		offerId = offerId.split('#')[1];
-		let message = [workerUsername,motivation,offerId,rating];
+		let message = [workerUsername,motivation,offerId,rating, offerTitle];
 		console.log(message);
 		$.ajax({
 			type : "POST",
@@ -561,13 +588,16 @@ function createReviewModal(id){
 		for(let j = 0; j < 5; ++j)
 			document.getElementById('s-'+j).style = 'margin : 5px;';
 		let error = document.getElementById('error');
-			error.hidden = true;
+		//error.hidden = 'true';
+		//error.setAttribute('hidden',true);
+		error.style.visibility = 'hidden';
 	});
 	
 	
 	modal_footer.appendChild(modal_button);
 	
 	modal_body.appendChild(errorContainer);
+	modal_body.appendChild(titlediv);
 	modal_body.appendChild(star_rating_row);
 	modal_body.appendChild(text_area);
 	

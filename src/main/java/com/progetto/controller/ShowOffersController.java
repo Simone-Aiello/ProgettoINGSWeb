@@ -112,6 +112,7 @@ public class ShowOffersController {
 	public String reviewOffer(@RequestBody String[] review, HttpServletRequest req) {
 		String username = review[0];
 		String message = review[1];
+		String title = review[4];
 		Long offerId = Long.parseLong(review[2]);
 		int rating = Integer.parseInt(review[3]);
 		//System.out.println(username + " " + message + " " + offerId + " " + rating);
@@ -127,6 +128,7 @@ public class ShowOffersController {
 		if(session != null)
 			client.setUsername((String)session.getAttribute("username"));
 		r.setDescription(message);
+		r.setTitle(title);
 		r.setRating(rating);
 		r.setOffer(o);
 		r.setWorker(worker);
