@@ -91,9 +91,11 @@ public class loginServlet{
 		if((req.getSession(false).getAttribute("username") == null))
 				return false;
 		else {
+			Account a = new Account();
 			String username = (String)req.getSession(false).getAttribute("username");
+			a.setUsername(username);
 			try {
-				if(Database.getInstance().getAccountDao().isValid(username))
+				if(Database.getInstance().getAccountDao().isValid(a))
 					return true;
 				return false;
 				
