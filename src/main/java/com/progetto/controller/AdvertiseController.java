@@ -27,14 +27,17 @@ public class AdvertiseController {
 			String keyword = null; 
 			try { keyword = parms.getString("keyword"); }catch (JSONException e) {}
 			List<String> areas = null; 
-			try { areas =  parms.getJSONArray("areas").toList().stream().map( areas_json -> areas_json.toString()).collect(Collectors.toList());}catch (JSONException e) {}
+			try {
+				System.out.println("diooo" +parms.getJSONArray("areas"));
+				areas =  parms.getJSONArray("areas").toList().stream().map( areas_json -> areas_json.toString()).collect(Collectors.toList());}catch (JSONException e) {}
+				System.out.println("diooo" +areas);
 			String province = null; 
 			try {  province = parms.getString("province"); }catch (JSONException e) {}
 			Integer quantity = null; 
 			try { quantity = parms.getInt("quantity"); }catch (JSONException e) {}
 			Integer offset = null;
 			try { offset = parms.getInt("offset"); }catch (JSONException e) {}
-
+			System.out.println("AREAS ADVERTSE CONTAINER "+areas);
 			advertises = Database.getInstance().getAdvertiseDao().findGroup(keyword,areas ,province, 
 					quantity, offset);
 		} catch (SQLException e) {

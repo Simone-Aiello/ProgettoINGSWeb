@@ -45,6 +45,7 @@ class ContainerAdvertises extends HTMLElement{
         this.max_index_view = null ;
 		this.#show_view(this.index_view);
         this.message_center = this.#messageCenterAbsolute() ;
+        this.id = "container-advertises" ;
     }
 
 	// ADD SPINNERS 
@@ -115,6 +116,7 @@ class ContainerAdvertises extends HTMLElement{
         this.states[index_view].show = show ;
         this.states[index_view].pending = true ;
 	
+		console.log(this.params);
         let data = JSON.parse(JSON.stringify(this.params)) ;
         data.offset = index_view * data.quantity 
         $.ajax({
@@ -183,6 +185,10 @@ class ContainerAdvertises extends HTMLElement{
 			return ;
 		this.#show_view(this.index_view - 1);
 	}
+
+    refresh = () => {
+        this.init(this.params);
+    }
 
   
 }

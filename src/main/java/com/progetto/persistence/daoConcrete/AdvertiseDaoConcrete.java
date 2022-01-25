@@ -141,6 +141,21 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		}				
 		return ann;
 	}
+	
+	@Override
+	public boolean alreadyAccepted(Advertise a) throws SQLException {
+	
+		String query = "select proposta_accettata is not null as accettata from annunci where id = ?";
+		PreparedStatement statement;
+	
+		statement = Database.getInstance().getConnection().prepareStatement(query);
+		
+		statement.setLong(1, a.getId());
+		ResultSet res = statement.executeQuery() ;
+		res.next();
+		return res.getBoolean("accettata");
+	}
+	
 	@Override
 	public List<Advertise> findGroup(String keyword, List<String> areas, String province, Integer quantity,
 			Integer offset) throws SQLException {

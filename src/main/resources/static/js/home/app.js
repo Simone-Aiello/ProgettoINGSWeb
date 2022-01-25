@@ -88,7 +88,15 @@ try{
         params.province = provinceOfWork ;
     }
 }catch(e){
-    var provinceOfWork = null ;
+    params.province = null ;
+}
+
+try{
+    if(areasOfWork){
+        params.areas = areasOfWork ;
+    }
+}catch(e){
+    params.areas = null ;
 }
 
 inner_container_advertise.init(params);
@@ -181,7 +189,7 @@ button_search_advertise_smartphone.onclick = () => {
 
     inner_container_advertise.init({
 		quantity : 6 ,
-        areas : areas.length > 0 ? areas : null ,
+        areas : areas.length > 0 ? areas : params.areas ,
         keyword : keyword != '' && keyword != null ? keyword : null ,
         province : province != '' && province != null ? province : null ,
 	});
