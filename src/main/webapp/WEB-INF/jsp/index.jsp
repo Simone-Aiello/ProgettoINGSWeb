@@ -12,6 +12,18 @@
 	var provinceOfWork = "${provinceOfWork}" ;
 </script>
 </c:if>
+<c:if test="${areasOfWork != null}">
+<script>
+	var areasOfWork = ${areasOfWork} ;
+	console.log(areasOfWork)
+</script>
+</c:if>
+<c:if test="${areasOfWork == null}">
+<script>
+	console.log("È null");
+	
+</script>
+</c:if>
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
@@ -102,8 +114,7 @@
 										<li class="nav-item"><a class="nav-link active"
 											href="/administratorProfilesManager">Gestisci account</a></li>
 										<li class="nav-item"><a class="nav-link active"
-											href="/administratorAreasManager">Gestisci ambiti di
-												lavoro</a></li>
+											href="/administratorAreasManager">Gestisci ambiti di lavoro</a></li>
 									</c:when>
 								</c:choose>
 								<li class="nav-item"><a class="nav-link active"

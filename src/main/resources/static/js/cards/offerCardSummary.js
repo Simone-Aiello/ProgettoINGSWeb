@@ -27,7 +27,7 @@ function sendOffer(offer, card){
 				});
 				dialog.show();
 			}
-			if(response.status == 405){
+			else if(response.status == 405){
 				let dialog = createDialog({
 					message : JSON.parse(xhr.responseText).message,
 					message_ok_button : 'Re-invia email',
@@ -59,7 +59,7 @@ function sendOffer(offer, card){
 				});
 				dialog.show();
 			}
-			if(response.status == 406){
+			else if(response.status == 406){
 				let dialog = createDialog({
 					message : JSON.parse(xhr.responseText).message,
 					ok : () => {
@@ -68,9 +68,14 @@ function sendOffer(offer, card){
 				});
 				dialog.show();
 			}
-			if(response.status == 500){
+			else if(response.status == 500){
 				let dialog = createDialog({
 					message : 'Errore nel sistema, riprovare in un secondo momento',
+				});
+				dialog.show();
+			}else{
+				let dialog = createDialog({
+					message : 'Errore anomalo nel sistema, riprovare in un secondo momento',
 				});
 				dialog.show();
 			}

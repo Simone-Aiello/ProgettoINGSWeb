@@ -66,10 +66,11 @@ public class AccountDaoConcrete implements AccountDao {
 				if(number != null) a.setNumber(number);
 				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
 				if(user != null) a.setPersonalInfo(user);
+				List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
+				if(areas != null) a.setAreasOfWork(areas);
 				if (mode != Utils.LIGHT) {
 					if (a.getAccountType().equals(Account.WORKER)) {
-						List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
-						if(areas != null) a.setAreasOfWork(areas);
+						
 						List<Review> reviews = Database.getInstance().getReviewDao().findByWorker(a,Utils.INITIAL_REVIEW_NUMBER,0);
 						if(reviews != null) {
 							a.setReviews(reviews);

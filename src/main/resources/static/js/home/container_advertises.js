@@ -116,6 +116,7 @@ class ContainerAdvertises extends HTMLElement{
         this.states[index_view].show = show ;
         this.states[index_view].pending = true ;
 	
+		console.log(this.params);
         let data = JSON.parse(JSON.stringify(this.params)) ;
         data.offset = index_view * data.quantity 
         $.ajax({
