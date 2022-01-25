@@ -120,7 +120,10 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			ann.setDescription(description);
 		}
 		ann.setTitle(result.getString("titolo"));
-		ann.setExpiryDate(new DateTime(result.getDate("data_scadenza")));
+		DateTime expiryDate = new DateTime(result.getDate("data_scadenza")) ;
+		expiryDate = expiryDate.plusDays(1);
+		ann.setExpiryDate(expiryDate);
+		System.out.println(expiryDate);
 		ann.setProvince(result.getString("provincia_annuncio"));
 		Offer offer = new Offer();
 		offer.setId(result.getLong("proposta_accettata"));
@@ -138,12 +141,28 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		}				
 		return ann;
 	}
+	
+	@Override
+	public boolean alreadyAccepted(Advertise a) throws SQLException {
+	
+		String query = "select proposta_accettata is not null as accettata from annunci where id = ?";
+		PreparedStatement statement;
+	
+		statement = Database.getInstance().getConnection().prepareStatement(query);
+		
+		statement.setLong(1, a.getId());
+		ResultSet res = statement.executeQuery() ;
+		res.next();
+		return res.getBoolean("accettata");
+	}
+	
 	@Override
 	public List<Advertise> findGroup(String keyword, List<String> areas, String province, Integer quantity,
 			Integer offset) throws SQLException {
 		List<Advertise> ann = new LinkedList<Advertise>();
 		List<Object> parameters = new LinkedList<Object>();
 		List<String> clauses = new LinkedList<String>();
+		clauses.add(" EXTRACT(DAY FROM now()- data_scadenza) <= 0 and proposta_accettata is null ");
 		StringBuilder queryBuilder = new StringBuilder("select * from  annunci");
 		if (areas != null) {
 			queryBuilder.append(
@@ -173,6 +192,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		queryBuilder.append(" limit ? offset ?;");
 		parameters.add(quantity == null ? null : quantity);
 		parameters.add(offset == null ? 0 : offset);
+		System.out.println(queryBuilder.toString());
 		PreparedStatement query = Database.getInstance().getConnection().prepareStatement(queryBuilder.toString());
 		for (int i = 0; i < parameters.size(); i++) {
 			query.setObject(i + 1, parameters.get(i));

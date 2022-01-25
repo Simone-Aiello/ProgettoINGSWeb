@@ -7,6 +7,23 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GetJobs | Home</title>
+<c:if test="${provinceOfWork != null}">
+<script>
+	var provinceOfWork = "${provinceOfWork}" ;
+</script>
+</c:if>
+<c:if test="${areasOfWork != null}">
+<script>
+	var areasOfWork = ${areasOfWork} ;
+	console.log(areasOfWork)
+</script>
+</c:if>
+<c:if test="${areasOfWork == null}">
+<script>
+	console.log("È null");
+	
+</script>
+</c:if>
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
@@ -43,9 +60,12 @@
 <script src="./js/model/offer.js"></script>
 <!-- Tag relativi ad i model account e annuncio -->
 <script src="./js/model/account.js"></script>
-<script src="./js/model/advertise.js"></script>
+
+<script src="./js/model/advertise.js"></script> 
+
 <script defer src="./js/notifications/notification.js"></script>
 <link rel="stylesheet" href="./css/notificationCSS.css">
+
 </head>
 <body>
 	<!-- Modals -->
@@ -81,8 +101,8 @@
 									href="/profilePage?username=${sessionScope.username}">Profilo</a></li>
 								<c:choose>
 									<c:when test="${sessionScope.loggedAccountType == 'w'}">
-										<li class="nav-item"><a class="nav-link active" href="#">Le
-												tue offerte</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/showMyOffers">Le tue offerte</a></li>
 									</c:when>
 									<c:when test="${sessionScope.loggedAccountType == 'u'}">
 										<li class="nav-item"><a class="nav-link active"
@@ -94,8 +114,7 @@
 										<li class="nav-item"><a class="nav-link active"
 											href="/administratorProfilesManager">Gestisci account</a></li>
 										<li class="nav-item"><a class="nav-link active"
-											href="/administratorAreasManager">Gestisci ambiti di
-												lavoro</a></li>
+											href="/administratorAreasManager">Gestisci ambiti di lavoro</a></li>
 									</c:when>
 								</c:choose>
 								<li class="nav-item"><a class="nav-link active"
@@ -117,6 +136,8 @@
 									aria-current="page" href="#">Registrati</a></li>
 								<li class="nav-item"><a class="nav-link active"
 									href="/login.html">Accedi</a></li>
+								<li class="nav-item"><a class="nav-link active"
+									href="/AdvertisePublication">Inserisci annuncio</a></li>
 							</ul>
 						</c:otherwise>
 					</c:choose>
@@ -139,7 +160,7 @@
 				<p class="">Dove?</p>
 				<div class="wrapper">
 					<i class="fas fa-map-marker-alt" aria-hidden="true"></i> <input
-						type="text" placeholder="Un esempio..." />
+						type="text" placeholder="Un esempio..." value = "${provinceOfWork}"/>
 				</div>
 			</div>
 			<button id="button-areas-search-bar"

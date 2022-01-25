@@ -54,21 +54,22 @@ public class AccountDaoConcrete implements AccountDao {
 			//Rimuovere sostituire con n metodo apposta
 			a.setPassword(rs.getString("password")); 
 			a.setAccountType(rs.getString("tipo_account"));
+			String provinceOfWork = rs.getString("provincia_lavoro");
+			if(provinceOfWork != null) a.setProvinceOfWork(provinceOfWork);
 			Image image = Database.getInstance().getImageDao().findByPrimaryKey(rs.getLong("immagine_profilo"));
 			if(image != null) 
 				a.setProfilePic(image);
-				if (mode != Utils.BASIC_INFO) {
+			if (mode != Utils.BASIC_INFO) {
 				int next = mode == Utils.LIGHT ? Utils.BASIC_INFO : Utils.COMPLETE;
 				String number = rs.getString("telefono");
 				if(number != null) a.setNumber(number);
-				String provinceOfWork = rs.getString("provincia_lavoro");
-				if(provinceOfWork != null) a.setProvinceOfWork(provinceOfWork);
 				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
 				if(user != null) a.setPersonalInfo(user);
+				List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
+				if(areas != null) a.setAreasOfWork(areas);
 				if (mode != Utils.LIGHT) {
 					if (a.getAccountType().equals(Account.WORKER)) {
-						List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
-						if(areas != null) a.setAreasOfWork(areas);
+						
 						List<Review> reviews = Database.getInstance().getReviewDao().findByWorker(a,Utils.INITIAL_REVIEW_NUMBER,0);
 						if(reviews != null) {
 							a.setReviews(reviews);
@@ -247,6 +248,7 @@ public class AccountDaoConcrete implements AccountDao {
 		ResultSet rs = stmt.executeQuery();
 		rs.next();
 		return rs.getBoolean("account_valido");
+
 	}
 
 	@Override
@@ -399,4 +401,6 @@ public class AccountDaoConcrete implements AccountDao {
 		}
 		return a;
 	}
+
+
 }

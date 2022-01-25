@@ -23,4 +23,5 @@ public interface AccountDao {
 	public List<Account> findWorkersByAreasAndUsername(List<Area> areas, String username) throws SQLException;
 	public void banAccount(Account a) throws SQLException;
 	public Account loginCredentialsByUsernameOrEmail(String username) throws SQLException;
+	boolean isValid(Account a) throws SQLException;
 }

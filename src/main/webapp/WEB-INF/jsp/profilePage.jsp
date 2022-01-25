@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="/css/profilePage.css">
 <script src="/js/model/account.js"></script>
 <script src="/js/notifications/notification.js"></script>
-<link rel="stylesheet" href="/css/notificationCss.css">
+<link rel="stylesheet" href="/css/notificationCSS.css">
 <c:choose>
 	<c:when test="${authorized}">
 		<script src="/js/model/user.js"></script>
@@ -63,8 +63,8 @@
 								href="/profilePage?username=${sessionScope.username}">Profilo</a></li>
 							<c:choose>
 								<c:when test="${sessionScope.loggedAccountType == 'w'}">
-									<li class="nav-item"><a class="nav-link active" href="#">Le
-											tue offerte</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="/showMyOffers">Le tue offerte</a></li>
 								</c:when>
 								<c:when test="${sessionScope.loggedAccountType == 'u'}">
 									<li class="nav-item"><a class="nav-link active"
@@ -99,6 +99,8 @@
 								aria-current="page" href="#">Registrati</a></li>
 							<li class="nav-item"><a class="nav-link active"
 								href="/login.html">Accedi</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/AdvertisePublication">Inserisci annuncio</a></li>
 						</ul>
 					</c:otherwise>
 				</c:choose>

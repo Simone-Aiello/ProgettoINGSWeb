@@ -1,0 +1,17 @@
+.card-body {
+	width: 400px;
+	max-width: 400px;
+	float: left;
+	margin-bottom: 25px;
+	margin-top: 25px;
+}
+
+.delete-button {
+	background-color: red;
+	border: none;
+	transform: translate(0px, 0px);
+}
+.card-title{
+	overflow-x:auto;
+	overflow-y:hidden;
+}
