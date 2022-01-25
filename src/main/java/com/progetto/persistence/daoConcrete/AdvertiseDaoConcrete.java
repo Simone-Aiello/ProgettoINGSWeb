@@ -131,7 +131,9 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
 		ann.setInterestedAreas(areas);				
 		if(mode == Utils.BASIC_INFO) {
-			ann.setAccount(Database.getInstance().getAccountDao().findByPrimaryKey(result.getString("username_cliente"),Utils.BASIC_INFO));
+			Account a = new Account();
+			a.setUsername(result.getString("username_cliente"));
+			ann.setAccount(a);
 			ann.setImages(Database.getInstance().getImageDao().findByAdvertise(ann,Utils.BASIC_INFO));
 		}
 		else if(mode != Utils.BASIC_INFO) {
