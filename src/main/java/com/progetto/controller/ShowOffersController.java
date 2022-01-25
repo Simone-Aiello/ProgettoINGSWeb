@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,15 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Notification;
 import com.progetto.model.Offer;
 import com.progetto.model.Review;
 import com.progetto.persistence.Database;
-
-import java.util.regex.Matcher;
 
 @Controller
 public class ShowOffersController {
@@ -158,6 +154,7 @@ public class ShowOffersController {
 		return review[0];
 	}
 	
+
 	@GetMapping("allOffersWorker")
 	public String allOffers(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -170,7 +167,7 @@ public class ShowOffersController {
 			a.setUsername((String)req.getSession(false).getAttribute("username"));
 			List<Offer> offers = Database.getInstance().getOfferDao().findOffersByAccount(a);
 			req.setAttribute("offers", offers);
-			System.out.println("Offerte pubblicate da: " + a.getUsername() + " " + offers.size());
+			//System.out.println("Offerte pubblicate da: " + a.getUsername() + " " + offers.size());
 			for(Offer o: offers) {
 				System.out.println("DISP: " + o.getDates());
 			}
@@ -180,6 +177,7 @@ public class ShowOffersController {
 		}
 		return "allOffersWorker";
 	}
+	
 	@GetMapping("/showMyOffers")
 	public String showMyOffers(HttpServletRequest req, HttpServletResponse resp) {
 		try {

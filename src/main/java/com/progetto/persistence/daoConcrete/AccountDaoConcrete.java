@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.progetto.EmailSender;
@@ -66,10 +65,11 @@ public class AccountDaoConcrete implements AccountDao {
 				if(number != null) a.setNumber(number);
 				User user = Database.getInstance().getUserDao().findByPrimarykey(rs.getLong("id_utente"), next);
 				if(user != null) a.setPersonalInfo(user);
+				List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
+				if(areas != null) a.setAreasOfWork(areas);
 				if (mode != Utils.LIGHT) {
 					if (a.getAccountType().equals(Account.WORKER)) {
-						List<Area> areas = Database.getInstance().getAreaDao().findByWorker(a);
-						if(areas != null) a.setAreasOfWork(areas);
+						
 						List<Review> reviews = Database.getInstance().getReviewDao().findByWorker(a,Utils.INITIAL_REVIEW_NUMBER,0);
 						if(reviews != null) {
 							a.setReviews(reviews);
@@ -239,16 +239,16 @@ public class AccountDaoConcrete implements AccountDao {
 		stmt.setString(1, a.getUsername());
 		stmt.execute();
 	}
-
+	
 	@Override
-	public boolean isValid(Account a) throws SQLException {
-		String query = "select account_valido from account where username = ?;";
-		PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
-		st.setString(1, a.getUsername());
-		ResultSet res = st.executeQuery();
-		res.next();
-		return res.getBoolean("account_valido");
-	}
+    public boolean isValid(Account a) throws SQLException {
+        String query = "select account_valido from account where username = ?;";
+        PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+        st.setString(1, a.getUsername());
+        ResultSet res = st.executeQuery();
+        res.next();
+        return res.getBoolean("account_valido");
+    }
 
 	@Override
 	public void validate(String code) throws SQLException {

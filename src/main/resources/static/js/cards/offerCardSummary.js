@@ -27,23 +27,55 @@ function sendOffer(offer, card){
 				});
 				dialog.show();
 			}
-			if(response.status == 405){
+			else if(response.status == 405){
 				let dialog = createDialog({
 					message : JSON.parse(xhr.responseText).message,
 					message_ok_button : 'Re-invia email',
 					message_cancel_button : 'Indietro',
 					cancel : card.show,
-					// ok : ()=> {	
-					// 	$.ajax({
-					// 		type : 'POST',
-					// 		url: "/sendVerificationMail",
-					// 		data: null ,
-							
-					// 	});
-					//  },
-					ok : card.show,
+					ok : ()=> {	
+						$.ajax({
+							type : 'POST',
+							url: "/sendVerificationMail",
+							contentType : 'application/json' ,
+							data : ' ' ,
+							success : (response) =>{
+								let dialog = createDialog({
+									message : 'Email inviata ',
+									ok : card.show,
+								});
+								dialog.show();
+							},
+							error : (xhr) => {
+								let dialog = createDialog({
+									message : 'Errore nel sistema, riprovare in un secondo momento',
+								});
+								dialog.show();
+							}
+						});
+					 },
 					color_ok : 'btn-light',
 					color_cancel : 'btn-light',
+				});
+				dialog.show();
+			}
+			else if(response.status == 406){
+				let dialog = createDialog({
+					message : JSON.parse(xhr.responseText).message,
+					ok : () => {
+						document.getElementById('container-advertises').refresh();
+					}
+				});
+				dialog.show();
+			}
+			else if(response.status == 500){
+				let dialog = createDialog({
+					message : 'Errore nel sistema, riprovare in un secondo momento',
+				});
+				dialog.show();
+			}else{
+				let dialog = createDialog({
+					message : 'Errore anomalo nel sistema, riprovare in un secondo momento',
 				});
 				dialog.show();
 			}

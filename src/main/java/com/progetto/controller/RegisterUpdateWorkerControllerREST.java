@@ -1,6 +1,7 @@
 package com.progetto.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -104,6 +105,17 @@ public class RegisterUpdateWorkerControllerREST {
 	@PostMapping("/sendVerificationMail")
 	public void resendVerificationMail(@RequestBody String username,HttpServletRequest req ,HttpServletResponse resp) {
 		try {
+			System.out.println("**->"+username);
+			if(username.equals(" ")) {
+				if(req.getSession(false) != null && req.getSession(false).getAttribute("username") != null ) {
+					username = (String) req.getSession(false).getAttribute("username");
+					System.out.println();
+				}else {
+					resp.sendError(401, "Non hai effettuato il login");
+					return ;
+				}
+			}
+			System.out.println(username);
 			Account a = Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.BASIC_INFO);
 			if(Utils.authorized(a, req.getSession(false))) {
 				EmailSender.getInstance().sendEmail(a.getEmail(), "Attivazione account GetJobs",
@@ -113,7 +125,7 @@ public class RegisterUpdateWorkerControllerREST {
 			else {
 				resp.setStatus(401);
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | IOException e) {
 			resp.setStatus(500);
 			e.printStackTrace();
 		}
