@@ -70,6 +70,41 @@ public class loginServlet{
 		}
 	}
 	
+	@GetMapping("/accountLoggedIn")
+	public String[] accountLoggedIn(HttpServletRequest req) {
+		String[] v = new String[3];
+		if(req.getSession(false).getAttribute("username") != null) {
+
+			String accountType = (String)req.getSession(false).getAttribute("loggedAccountType");
+			v[0] = "t";
+			v[1] = accountType;
+			v[2] = (String)req.getSession(false).getAttribute("username");
+			return v;
+		}
+		v[0] = "f";
+		v[1] = null;
+		return v;
+	}
+	
+	@GetMapping("/accountValid")
+	public boolean isAccountLoggedValid(HttpServletRequest req) {
+		if((req.getSession(false).getAttribute("username") == null))
+				return false;
+		else {
+			String username = (String)req.getSession(false).getAttribute("username");
+			try {
+				if(Database.getInstance().getAccountDao().isValid(username))
+					return true;
+				return false;
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
 	
 	
 }
