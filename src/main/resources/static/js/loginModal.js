@@ -64,15 +64,10 @@ function createLoginModal(){
 								contentType: "application/json",
 								data: JSON.stringify(account),
 								success: function(acc){
-									try{
-										if(acc == null)
-											throw "error";
-									}catch(error){
-										//check it ouf if the login will be fixed one day
-										//alert("I am in the hand made error");
-										showLoginError();
-										return;
-									}
+										if(acc == null){
+											showLoginError()
+											return;	
+										}
 									accountType = acc.accountType;
 									if(acc != null)
 										accountLogged = account;
@@ -83,7 +78,6 @@ function createLoginModal(){
 								}
 							});
 					}catch(error){
-						alert(error);
 						showLoginError();
 					}
 					
