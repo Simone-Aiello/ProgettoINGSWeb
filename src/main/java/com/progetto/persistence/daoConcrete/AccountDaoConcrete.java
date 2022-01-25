@@ -239,17 +239,16 @@ public class AccountDaoConcrete implements AccountDao {
 		stmt.setString(1, a.getUsername());
 		stmt.execute();
 	}
-
+	
 	@Override
-	public boolean isValid(String username) throws SQLException {
-		String query = "SELECT account_valido FROM account WHERE username = ?";
-		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
-		stmt.setString(1, username);
-		ResultSet rs = stmt.executeQuery();
-		rs.next();
-		return rs.getBoolean("account_valido");
-
-	}
+    public boolean isValid(Account a) throws SQLException {
+        String query = "select account_valido from account where username = ?;";
+        PreparedStatement st = Database.getInstance().getConnection().prepareStatement(query);
+        st.setString(1, a.getUsername());
+        ResultSet res = st.executeQuery();
+        res.next();
+        return res.getBoolean("account_valido");
+    }
 
 	@Override
 	public void validate(String code) throws SQLException {
