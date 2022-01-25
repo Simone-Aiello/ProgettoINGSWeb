@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.progetto.EmailSender;
@@ -241,9 +240,13 @@ public class AccountDaoConcrete implements AccountDao {
 	}
 
 	@Override
-	public boolean isValid() throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isValid(String username) throws SQLException {
+		String query = "SELECT account_valido FROM account WHERE username = ?";
+		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(query);
+		stmt.setString(1, username);
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		return rs.getBoolean("account_valido");
 	}
 
 	@Override

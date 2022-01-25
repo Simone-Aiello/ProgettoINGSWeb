@@ -12,14 +12,14 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 		<link href = "css/aggiungiAnnuncio.css" rel  = "stylesheet" type = "text/css">
-		<script src="/js/model/image.js"></script>
+		<script src ="/js/model/image.js"></script>
 		<script src = "js/DragAndDrop.js"></script>
-		
-		<script src="https://kit.fontawesome.com/c4665949e9.js"></script>	
+		<script src = "/js/model/account.js"></script>
+		<script src = "js/loginModal.js"></script>
+		<script src = "https://kit.fontawesome.com/c4665949e9.js"></script>	
 		<script src = "js/advertisePublication/areaSelector.js"></script>
-		<script src="/js/model/account.js"></script>
-		<script src="/js/model/area.js"></script>
-		<script src="/js/model/advertise.js"></script>
+		<script src = "/js/model/area.js"></script>
+		<script src = "/js/model/advertise.js"></script>
 		<script src = "js/advertisePublication/AdvertisePublication.js"></script>
 <link href="/css/notificationCss.css" rel="stylesheet" type="text/css">
 <script src="/js/notifications/notification.js"></script>
@@ -191,69 +191,69 @@
 				</form>
 			</div>
 		</div>
-		
-		<div id ="preview" class ="shadow formSection">
-			<div class = "row previewDiv" >
-				<label><b>Titolo:</b></label>
-				<label id ="previewTitle" class = "previewData"></label>	
-			</div>
-			<hr class = "solid">
-			<div class = "row previewDiv" >
-				<label><b>Descrizione:</b></label>
-				<label id ="previewDescription" class = "previewData"></label>	
-			</div>
-			<hr class = "solid">
-			<div class = "row previewDiv">
-				<label><b>Data di scadenza:</b></label>
-				<label id = "previewExpiryDate" class = "previewData"></label>
-			</div>
-			<hr class = "solid">
-			<div class = "row previewDiv">
-				<label><b>Provincia del lavoro:</b></label>
-				<label id = "previewProvince" class = "previewData"></label>
-			</div>
-			<hr class = "solid">
-			<div class = "row previewDiv advertiseImages">
-				<label><b>Immagini allegate:</b></label>
-				<br>
-				
-				<div id = "previewImages" class ="row overflow-scroll">
+		<div class = "mainDiv">
+			<div id ="preview" class ="shadow formSection">
+				<div class = "row previewDiv" >
+					<label><b>Titolo:</b></label>
+					<label id ="previewTitle" class = "previewData"></label>	
+				</div>
+				<hr class = "solid">
+				<div class = "row previewDiv" >
+					<label><b>Descrizione:</b></label>
+					<label id ="previewDescription" class = "previewData"></label>	
+				</div>
+				<hr class = "solid">
+				<div class = "row previewDiv">
+					<label><b>Data di scadenza:</b></label>
+					<label id = "previewExpiryDate" class = "previewData"></label>
+				</div>
+				<hr class = "solid">
+				<div class = "row previewDiv">
+					<label><b>Provincia del lavoro:</b></label>
+					<label id = "previewProvince" class = "previewData"></label>
+				</div>
+				<hr class = "solid">
+				<div class = "row previewDiv advertiseImages">
+					<label><b>Immagini allegate:</b></label>
+					<br>
+					
+					<div id = "previewImages" class ="row">
+					</div>
+					
+				</div>
+				<hr class = "solid">
+				<div class = "row previewDiv advertiseAreas">
+					<label><b>Aree di riferimento:</b></label>
+					<br>	
+					
+					<div id = "previewAreas" class  = "row">
+					</div>
 				</div>
 				
-			</div>
-			<hr class = "solid">
-			<div class = "row previewDiv advertiseAreas">
-				<label><b>Aree di riferimento:</b></label>
-				<br>	
+				<div class = "row">
+					<label>Disponibilità: </label>
+					<div class = "col-lg-4 col-md-4 col-sm-8 col-xs-8">
+						<table  class="table table-striped">
+							<thead>
+								<tr>
+								 <th>Date selezionate</th>
+								</tr>
+							</thead>
+							<tbody id ="previewAvailabilityDates">
+							</tbody>
+	
+						</table>
+					</div>
 				
-				<div id = "previewAreas" class  = "row">
 				</div>
-			</div>
-			
-			<div class = "row">
-				<label>Disponibilità: </label>
-				<div class = "col-lg-4 col-md-4 col-sm-8 col-xs-8">
-					<table  class="table table-striped">
-						<thead>
-							<tr>
-							 <th>Date selezionate</th>
-							</tr>
-						</thead>
-						<tbody id ="previewAvailabilityDates">
-						</tbody>
-
-					</table>
-				</div>
-			
-			</div>
-			<div class = "row" >
-				<div class ="col previewButtons">
-				<button class = "btn btn-secondary" id = "modifyData">modifica dati</button>
-				<button class = "btn btn-primary" id = "publishAdvertise">Pubblica</button>
+				<div class = "row" >
+					<div class ="col previewButtons">
+					<button class = "btn btn-secondary" id = "modifyData">modifica dati</button>
+					<button class = "btn btn-primary" id = "publishAdvertise">Pubblica</button>
+					</div>
 				</div>
 			</div>
 		</div>
-
 	</body>
 </html>
 

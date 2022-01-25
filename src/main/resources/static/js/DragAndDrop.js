@@ -14,7 +14,7 @@ function addDragAndDropListener() {
 		ev.preventDefault();
 	});
 	area.addEventListener("drop", (ev) => {
-		console.log('File(s) dropped');
+		//console.log('File(s) dropped');
 		// Prevent default behavior (Prevent file from being opened)
 		ev.preventDefault();
 
@@ -81,7 +81,6 @@ var handleFile = function(file){
 			//imageElement.classList.add("shadow-lg");
 			imageElement.setAttribute("src", fileReader.result);
 			imageElement.setAttribute("id", "uploaded-image" + numberOfImages);
-			
 			let deleteButton = document.createElement("button");
 			deleteButton.classList.add("carousel-control-delete");
 			deleteButton.classList.add("delete-button");
@@ -101,8 +100,19 @@ var handleFile = function(file){
 				listOfImages.delete(carouselItemId);
 				//console.log(listOfImages);
 				carouselIndicator.remove();
+				let carouselIndicatoSlideTo = parseInt(carouselIndicator.getAttribute("data-bs-slide-to"), 10);
+				//alert(carouselIndicatoSlideTo);
 				this.parentNode.remove();
-				numberOfImages = numberOfImages-1;
+				//numberOfImages = numberOfImages-1;
+				//correct data-bs-slide-to numbers
+
+				$('button[id^="sliderTo"]').each(function(){
+					let slideTo = parseInt($(this).attr("data-bs-slide-to"), 10);
+					if(slideTo > carouselIndicatoSlideTo){
+						$(this).attr("data-bs-slide-to", slideTo-1)
+					}
+				});
+
 
 			});
 			

@@ -1,6 +1,24 @@
 var advertiseBuilder = new Advertise.Builder();
 var availabilityDates = [];
+let accountLogged;
+
 $(document).ready(() => {
+		$.ajax({
+			type: "GET",
+			url: "/accountLoggedIn",
+			success: function(resp){
+				if(resp[0] == "t"){
+					accountBuilder = new Account.Builder();
+					accountBuilder.withUsername(resp[2]);
+					accountBuilder.withAccountType(resp[1]);
+					accountLogged = accountBuilder.build();
+				}
+			},
+			error: function(){
+				showSystemError("form");
+			}			
+		});
+	
 	addEvents();
 });
 
@@ -163,7 +181,7 @@ function addAvailabilityDateListener(){
 		removeAlert("availabilityDateSection");
 		
 		if(!availabilityDates.includes(selectedDate) && !isBeforeToday(new Date($("#availabilityDateSelector").val()))){
-			selectedDatesContent.append("<tr> <td>" + selectedDate+ "</td> <td><button id = \"" + selectedDateYMD+"\" class = \"selectedAvailabilityDate\">" + "rimuovi" + "</button></td></tr>")
+			selectedDatesContent.append("<tr> <td>" + selectedDate+ "</td> <td><button id = \"" + selectedDateYMD+"\" class = \"selectedAvailabilityDate btn\">" + "rimuovi" + "</button></td></tr>")
 			availabilityDates.push(selectedDate);
 			
 			$("#" + selectedDateYMD).on("click", () =>{
@@ -192,6 +210,9 @@ function addcheckRequiredInputs(){
 		}	
 		if($("#advertiseExpiryDate").val() === "" ){
 			createAlertWithText("Selezionare una data di scadenza", "advertiseExpiryDate");
+			error = true;
+		}
+		else if(isBeforeToday(new Date($("#advertiseExpiryDate").val()))){
 			error = true;
 		}
 		if($("#advertiseProvince").val() === null){
@@ -242,56 +263,232 @@ function addcheckRequiredInputs(){
 			$("#previewExpiryDate").text(($("#advertiseExpiryDate")).val());
 			$("#previewProvince").text(($("#advertiseProvince")).val());
 			
-			switchSection("#form", "#preview");
+			if(accountLogged ==null){
+				createLoginModal();
+			}
+			else if(accountLogged.accountType() == "u"){
+				switchSection("#form", "#preview");
+			}
+			else /*(accountLogged.accountType() == "w" || accountLogged.accountType() == "a")*/{
+				alert("Sei collegato con un account che non è un utente. Verrai reindirizzato alla Home");
+				window.location.href = "/";
+			}
+			
+			/*$.ajax({
+				type: "GET",
+				url: "/accountLoggedIn",
+				success: function(resp){
+					//alert(resp[0] + " " + resp[1]);
+					if(resp[0] == "t"){
+						if(resp[1] == "u"){
+							switchSection("#form", "#preview");
+						}
+						else{
+							alert("Sei collegato con un account che non è un utente. Verrai reindirizzato alla Home");
+							window.location.href = "/";
+						}
+					}
+					else{
+						createLoginModal();
+					}
+				},
+				error: function(){
+					showSystemError("form");
+				}
+				
+			});
+			*/
 		}
 	});
 }
 
-function addSubmitListener(){
-	$("#publishAdvertise").on("click", () =>{			
-			$.ajax({
-				type: "POST",
-				url: "/saveAdvertise",
-				contentType: "application/json",
-				data: JSON.stringify(advertiseBuilder.build()),
-				success: function(){
-					let modal = `<div class="modal fade" id="publicationModal"
-								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-								aria-labelledby="staticBackdropLabel" aria-hidden="true">
-								<div class="modal-dialog ">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="staticBackdropLabel">Conferma pubblicazione
-												</h5>
-											<button type="button" class="btn-close"
-												data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body">
-											<p>Annuncio pubblicato con successo</p>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-primary closeModal"
-												data-bs-dismiss="modal">Ok</button>
-										</div>
+//Call this function once the user has logged in
+function accountLoggedIn(){
+	//alert(accountType + " In advP");
+	if(!checkAccountType(accountType, "u")){
+		alert("Hai effettuato l\'accesso con un account che non è un utente. Verrai reindirizzato alla Home");
+		window.location.href = "/";
+	}
+	else{
+		$("#staticBackdropLogin").modal("toggle");
+		$("#staticBackdropLogin").remove();
+		switchSection("#form", "#preview");
+		
+		//CHANGE NAVBAR TO LOGGED NAVBAR
+		$(".navbar").remove();
+		$("dropdown-notification").remove();
+		
+		let navbarLogged = `<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
+							</div>
+							<nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+								<div class="container-fluid">
+									<a class="navbar-brand" href="/">Get Jobs</a>
+									<button class="navbar-toggler" type="button"
+										data-bs-toggle="collapse" data-bs-target="#navbarNav"
+										aria-controls="navbarNav" aria-expanded="false"
+										aria-label="Toggle navigation">
+										<span class="navbar-toggler-icon"></span>
+									</button>
+									<div class="collapse navbar-collapse" id="navbarNav">
+										<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+										<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/profilePage?username=` + accountLogged.username() + `">Profilo</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/showMyAdvertises">I tuoi annunci</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/AdvertisePublication">Inserisci annuncio</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/getChats">Messaggi</a></li>
+										<li class="nav-item" id="notification-item"><a
+											class="nav-link active" id="notification-bell">Notifiche <i
+												class="fas fa-circle fa-xs" id="new-notification"></i></a></li>
+										</ul>
+										<ul class="navbar-nav mb-2 mb-lg-0">
+											<li class="nav-item"><a class="nav-link active"
+												href="/logout">Logout</a></li>
+										</ul>
 									</div>
 								</div>
-							</div>`;
-					$("body").append(modal);
-					$("#publicationModal").modal("toggle");
-					$(".closeModal").on("click", () => {
-						$("#publicationModal").modal("toggle");
-						window.location.href = "/";
-					});
+							</nav>`;
+		
+		$("body").prepend(navbarLogged);
+	}
+}
 
-					//$("#confirmPublicationModal").remove();
-					//redirect to home page
-				},
-				error: function(xhr){
-					console.log(xhr);
+function addSubmitListener(){
+	$("#publishAdvertise").on("click", () =>{
+		$.ajax({
+			type: "GET",
+			url: "/accountValid",
+			contentType: "application/json",
+			data: JSON.stringify(accountLogged.username()),
+			success: function(isValid){
+				if(isValid){
+					//Te account is valid... Publish the advertise
+					publishAdvertise();
 				}
-			});		
+				else{
+					//The account is not valid. Require validation
+					let validationModal = `<div class="modal fade" id="accountValidationModal"
+						data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+						aria-labelledby="accountValidationLabel" aria-hidden="true">
+						<div class="modal-dialog ">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="accountValidationLabel">Account non validato
+										</h5>
+									<button type="button" class="btn-close"
+										data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<p>Per completare la pubblicazione è necessario che l\'account sia validato.
+									Puoi validare il tuo account con il codice che ti è stato inviato sulla mail indicata al momento della registrazione oppure richiedere il reinvio del codice</p>
+								</div>
+								<div class="modal-footer">
+									<button id = "accountValidationRequestMail" type="button" class="btn btn-primary closeModal"
+										data-bs-dismiss="modal">Invia codice</button>
+								</div>
+							</div>
+						</div>
+					</div>`;
+				
+					$("body").append(validationModal);
+					$("#accountValidationModal").modal("toggle");
+					$("#accountValidationRequestMail").on("click", () => {
+						$("#accountValidationModal").remove();
+						//alert(accountLogged.username());
+						$.ajax({
+							type: "POST",
+							url: "/sendVerificationMail",
+							contentType: "application/json",
+							data: accountLogged.username(),
+							success: () => {
+								let confirmEmailModal = `<div id = "confirmEmailModal" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog">
+								  <div class="modal-dialog" role="document">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <h5 class="modal-title">Conferma invio email</h5>
+								        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+								          <span aria-hidden="true">&times;</span>
+								        </button>
+								      </div>
+								      <div class="modal-body">
+								        <p>Controlla la tua email per trovare il link di validazione dell\'account</p>
+								      </div>
+								      <div class="modal-footer">
+								        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+								      </div>
+								    </div>
+								  </div>
+								</div>`;
+								$(".modal").remove();
+								$("body").append(confirmEmailModal);
+								$("#confirmEmailModal").modal("toggle");
+								
+							},
+							error: () => {
+								showSystemError("preview");
+							}
+						});
+					})
+				}
+			},
+			error: function(){
+				showSystemError("preview");
+			}
+		});
+			
 	});
 	
+}
+
+function publishAdvertise(){
+	$.ajax({
+		type: "POST",
+		url: "/saveAdvertise",
+		contentType: "application/json",
+		data: JSON.stringify(advertiseBuilder.build()),
+		success: function(){
+			let modal = `<div class="modal fade" id="publicationModal"
+						data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+						aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						<div class="modal-dialog ">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="staticBackdropLabel">Conferma pubblicazione
+										</h5>
+									<button type="button" class="btn-close"
+										data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<p>Annuncio pubblicato con successo</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary closeModal"
+										data-bs-dismiss="modal">Ok</button>
+								</div>
+							</div>
+						</div>
+					</div>`;
+			$("body").append(modal);
+			$("#publicationModal").modal("toggle");
+			$(".closeModal").on("click", () => {
+				$("#publicationModal").modal("toggle");
+				window.location.href = "/";
+			});
+
+			//$("#confirmPublicationModal").remove();
+			//redirect to home page
+		},
+		error: function(xhr){
+			//alert("I am in error");
+			//window.location.href = "/genericInfoPage";
+			//if(xhr.message == "Utente non autorizzato")
+			//alert("Non autorizzato");
+			showSystemError("preview");
+		}
+	});		
 }
 
 function addModifyDataListener(){
@@ -321,14 +518,13 @@ function getProvince() {
 			}
 		},
 		error: function(xhr) {
-			showSystemError();
+			showSystemError("form");
 		}
 	});
 }
 		
 function addEvents(){
 	var form = document.getElementById("advertisePublicationForm");
-	//alert("WE");
 	switchSection("#preview","#form");
 	getProvince();
 	addProvinceListener();
@@ -347,6 +543,15 @@ function addEvents(){
 	};
 }
 
+function showSystemError(section){
+	if($("#systemAlert").length != 0)
+		return;
+	
+	let systemError = 	`<div id = "systemAlert" class="alert alert-danger" role="alert">
+ 					 		C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi
+						</div>`;
+	$("#" + section).prepend(systemError);
+}
 
 var createAlertWithText = function(text, idInput){
 	removeAlert(idInput);
@@ -358,5 +563,4 @@ var createAlertWithText = function(text, idInput){
 var removeAlert = function(id){
 	$("#" + id + "feedback").remove();
 	document.getElementById(id).classList.remove("is-invalid");
-	//alert("WE");
 }

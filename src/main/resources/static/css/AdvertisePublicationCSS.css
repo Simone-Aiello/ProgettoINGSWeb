@@ -75,7 +75,7 @@ body{
 
 
 .previewData{
-	margin-left: 20px;
+	margin-left: 20px;	
 }
 .imgPreview{
 	padding: 5px;
@@ -105,5 +105,14 @@ body{
 
 #addAvailabilityDate{
 	margin-left: 10px;	
+}
+
+.selectedAvailabilityDate{
+	color: 	white;
+	background-color: #FF9400;
+}
+
+#previewImages{
+	overflow-y: scroll;	
 }
 
