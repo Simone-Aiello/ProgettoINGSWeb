@@ -28,6 +28,7 @@ public class loginServlet{
 		Account account = null;
 		if(a.getEmail() == null) {
 			try {
+				
 				account = Database.getInstance().getAccountDao().loginCredentialsByUsernameOrEmail(a.getUsername());	
 			} catch (SQLException e) {
 				resp.setStatus(204); // 204 : The server successfully processed the request, and is not returning any content.
@@ -40,7 +41,6 @@ public class loginServlet{
 				resp.setStatus(204);
 			}
 		}
-		
 		if(account == null || !BCrypt.checkpw(a.getPassword(), account.getPassword())) {
 			resp.setStatus(204);
 		}else {
