@@ -83,7 +83,7 @@
     align-items: center;
 }
 
-/*.alert{
+.alert{
     position: absolute;
     visibility: hidden;
     min-width: 70px;
@@ -100,7 +100,7 @@
     color: white;
     border-radius: 7px;
     z-index: 100 !important;
-}*/
+}
 
 .alert-top{
     bottom: 103%;

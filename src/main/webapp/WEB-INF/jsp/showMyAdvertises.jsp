@@ -29,6 +29,7 @@
 	integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
 	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript" src="/js/footer.js"></script>
+<script type="text/javascript" src="/js/utils/utils.js"></script>
 
 <title>Show advertises</title>
 <link href="/css/notificationCss.css" rel="stylesheet" type="text/css">

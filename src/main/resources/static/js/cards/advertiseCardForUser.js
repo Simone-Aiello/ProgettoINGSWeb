@@ -69,7 +69,7 @@ function createOfferDetailCard(data){
 	let date = document.createElement('p');
 	date.className = 'small';
 	date.id = 'due-date-'+data.index;
-	date.innerHTML = data.dueDate;
+	date.innerHTML = date_from_db_to_ISO(data.dueDate);
 	
 	dueDateCol.appendChild(dueDateLabel);
 	dueDateCol.appendChild(date);

@@ -46,8 +46,9 @@
 <!--  <script src="../js/model/advertise.js"></script> -->
 <script defer src="./js/notifications/notification.js"></script>
 <link rel="stylesheet" href="./css/notificationCSS.css">
+<script type="text/javascript" src = "/js/footer.js"></script>
 </head>
-<body>
+<body id = "body" class = "d-flex flex-column min-vh-100">
 	<!-- Modals -->
 	<!-- Modal areas -->
 	<div id="modal-areas" class="modal-getjobs">
@@ -174,5 +175,9 @@
 			</div>
 		</div>
 	</section>
+	<script type="text/javascript">
+			let footer = createFooter();
+			$(body).append(footer);
+		</script>
 </body>
 </html>
