@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.progetto.model.Account;
+import com.progetto.model.Advertise;
 import com.progetto.model.Area;
 import com.progetto.persistence.Database;
 
@@ -101,6 +102,17 @@ public class AdministratorActions {
 		try {
 			Database.getInstance().getAccountDao().banAccount(a);
 			//System.out.println("Banning: " +a.getUsername());
+		} catch (SQLException e) {
+			res.setStatus(500);
+			e.printStackTrace();
+		}
+	}
+	
+	@PostMapping("/deleteAdvertise")
+	public void deleteAdvertise(@RequestBody Advertise a, HttpServletResponse res) {
+
+		try {
+			Database.getInstance().getAdvertiseDao().delete(a);
 		} catch (SQLException e) {
 			res.setStatus(500);
 			e.printStackTrace();

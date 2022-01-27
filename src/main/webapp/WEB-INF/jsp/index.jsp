@@ -12,6 +12,11 @@
 	var provinceOfWork = "${provinceOfWork}" ;
 </script>
 </c:if>
+<c:if test="${provinceOfWork == null}">
+<script>
+	var provinceOfWork = null ;
+</script>
+</c:if>
 <c:if test="${areasOfWork != null}">
 <script>
 	var areasOfWork = ${areasOfWork} ;
@@ -60,8 +65,9 @@
 <script src="./js/model/offer.js"></script>
 <!-- Tag relativi ad i model account e annuncio -->
 <script src="./js/model/account.js"></script>
-
-<script src="./js/model/advertise.js"></script> 
+<script src="./js/model/advertise.js"></script>
+<!-- Tag relativi al modal login -->
+<script src="./js/loginModal.js/"></script> 
 
 <script defer src="./js/notifications/notification.js"></script>
 <link rel="stylesheet" href="./css/notificationCSS.css">
