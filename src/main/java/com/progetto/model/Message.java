@@ -24,7 +24,7 @@ public class Message {
 	}
 	public void setText(String text) {
 		notNull(text);
-		Utils.sanitizeXSS(text);
+		text = Utils.sanitizeXSS(text);
 		this.text = text;
 	}
 	public DateTime getMessageTime() {
@@ -32,7 +32,6 @@ public class Message {
 	}
 	public void setMessageTime(DateTime messageTime) {
 		notNull(messageTime);
-		//isTrue(messageTime.isBeforeNow()); Se salvo un messaggio lo salvo con il timestamp di ora, questo torna sempre false 
 		this.messageTime = messageTime;
 	}
 	public String getSender() {

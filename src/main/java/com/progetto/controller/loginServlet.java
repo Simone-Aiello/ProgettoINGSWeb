@@ -28,6 +28,7 @@ public class loginServlet{
 		Account account = null;
 		if(a.getEmail() == null) {
 			try {
+				
 				account = Database.getInstance().getAccountDao().loginCredentialsByUsernameOrEmail(a.getUsername());	
 			} catch (SQLException e) {
 				resp.setStatus(204); // 204 : The server successfully processed the request, and is not returning any content.
@@ -40,7 +41,6 @@ public class loginServlet{
 				resp.setStatus(204);
 			}
 		}
-		
 		if(account == null || !BCrypt.checkpw(a.getPassword(), account.getPassword())) {
 			resp.setStatus(204);
 		}else {
@@ -68,6 +68,43 @@ public class loginServlet{
 			resp.setStatus(500);
 			e.printStackTrace();
 		}
+	}
+	
+	@GetMapping("/accountLoggedIn")
+	public String[] accountLoggedIn(HttpServletRequest req) {
+		String[] v = new String[3];
+		if(req.getSession(false).getAttribute("username") != null) {
+
+			String accountType = (String)req.getSession(false).getAttribute("loggedAccountType");
+			v[0] = "t";
+			v[1] = accountType;
+			v[2] = (String)req.getSession(false).getAttribute("username");
+			return v;
+		}
+		v[0] = "f";
+		v[1] = null;
+		return v;
+	}
+	
+	@GetMapping("/accountValid")
+	public boolean isAccountLoggedValid(HttpServletRequest req) {
+		if((req.getSession(false).getAttribute("username") == null))
+				return false;
+		else {
+			Account a = new Account();
+			String username = (String)req.getSession(false).getAttribute("username");
+			a.setUsername(username);
+			try {
+				if(Database.getInstance().getAccountDao().isValid(a))
+					return true;
+				return false;
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 	
 	

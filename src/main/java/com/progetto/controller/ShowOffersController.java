@@ -3,6 +3,7 @@ package com.progetto.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.progetto.Utils;
 import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.model.Notification;
@@ -81,7 +81,6 @@ public class ShowOffersController {
 		}
 		
 	}
-	
 	
 	@PostMapping("/acceptOffer")
 	@ResponseBody
@@ -157,6 +156,7 @@ public class ShowOffersController {
 		return review[0];
 	}
 	
+
 	@GetMapping("allOffersWorker")
 	public String allOffers(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -169,7 +169,7 @@ public class ShowOffersController {
 			a.setUsername((String)req.getSession(false).getAttribute("username"));
 			List<Offer> offers = Database.getInstance().getOfferDao().findOffersByAccount(a);
 			req.setAttribute("offers", offers);
-			System.out.println("Offerte pubblicate da: " + a.getUsername() + " " + offers.size());
+			//System.out.println("Offerte pubblicate da: " + a.getUsername() + " " + offers.size());
 			for(Offer o: offers) {
 				System.out.println("DISP: " + o.getDates());
 			}
@@ -178,5 +178,28 @@ public class ShowOffersController {
 			e.printStackTrace();
 		}
 		return "allOffersWorker";
+	}
+	
+	@GetMapping("/showMyOffers")
+	public String showMyOffers(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) {
+				req.setAttribute("message", "Devi aver effettuato il login per vedere le proprie proposte");
+				return "genericInfoPage";
+			}
+			Account a = new Account();
+			a.setUsername((String) req.getSession(false).getAttribute("username"));
+			List<Offer> offers = Database.getInstance().getOfferDao().findDetailedOffersByAccount(a);
+			for(Offer f : offers) {
+				String[] splitted = f.getDates().split("([^\\w-])+");
+				List<String> myAv = Arrays.asList(splitted);
+				f.setAvailabilities(myAv);
+			}
+			req.setAttribute("offers", offers);
+		} catch (SQLException e) {
+			resp.setStatus(500);
+			e.printStackTrace();
+		}
+		return "showMyOffers";
 	}
 }

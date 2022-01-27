@@ -68,7 +68,10 @@ function displayAccount(account) {
 	if (account.personalInfo().name != undefined) $("#name").val(account.personalInfo().name);
 	if (account.personalInfo().surname != undefined) $("#surname").val(account.personalInfo().surname);
 	if (account.personalInfo().dateOfBirth != undefined) $("#date-of-birth").val(account.personalInfo().dateOfBirth);
-	if (account.number() != undefined) $("#telephone").val(account.number());
+	try{
+		if (account.number() != undefined) $("#telephone").val(account.number());		
+	}
+	catch(error){}
 	if (account.personalInfo().address.zipCode != undefined) $("#zip-code").val(account.personalInfo().address.zipCode);
 	if (account.personalInfo().address.province != undefined) $("#province").html(`<option selected>${account.personalInfo().address.province}<option>`);
 	if (account.personalInfo().address.town != undefined) $("#city").html(`<option selected>${account.personalInfo().address.town}<option>`);
@@ -133,7 +136,7 @@ function changeToViewMode() {
 function formValid() {
 	let ok = true;
 	$("input").each(function() {
-		if (!($(this).hasClass("is-valid")) && $(this).attr("id") !== "zip-code" && $(this).attr("id") !== "telephone") {
+		if (!($(this).hasClass("is-valid")) && $(this).attr("id") !== "zip-code") {
 			ok = false;
 		}
 	});

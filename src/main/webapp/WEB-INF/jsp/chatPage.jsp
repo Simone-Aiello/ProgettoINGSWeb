@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/css/chat2.css">
 <script src="/js/chat/chat.js"></script>
 <script src="/js/model/message.js"></script>
-<link href="/css/notificationCss.css" rel="stylesheet" type="text/css">
+<link href="/css/notificationCSS.css" rel="stylesheet" type="text/css">
 <script src="/js/notifications/notification.js"></script>
 </head>
 <body>
@@ -44,8 +44,8 @@
 								href="/profilePage?username=${sessionScope.username}">Profilo</a></li>
 							<c:choose>
 								<c:when test="${sessionScope.loggedAccountType == 'w'}">
-									<li class="nav-item"><a class="nav-link active" href="#">Le
-											tue offerte</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										href="/showMyOffers">Le tue offerte</a></li>
 								</c:when>
 								<c:when test="${sessionScope.loggedAccountType == 'u'}">
 									<li class="nav-item"><a class="nav-link active"
@@ -80,6 +80,8 @@
 								aria-current="page" href="#">Registrati</a></li>
 							<li class="nav-item"><a class="nav-link active"
 								href="/login.html">Accedi</a></li>
+							<li class="nav-item"><a class="nav-link active"
+								href="/AdvertisePublication">Inserisci annuncio</a></li>
 						</ul>
 					</c:otherwise>
 				</c:choose>

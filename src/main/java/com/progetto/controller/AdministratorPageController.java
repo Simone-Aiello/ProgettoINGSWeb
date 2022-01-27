@@ -16,10 +16,12 @@ public class AdministratorPageController {
 	@GetMapping("/administratorAreasManager")
 	public String getAdministratorAreasPage(HttpServletRequest req) {
 		try {
-			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null /*|| !req.getSession().getAttribute("accountType").equals("a")*/) {
+			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) {
 				req.getSession(false).setAttribute("message", "Utente non loggato");
+				//System.out.println(req.getSession(false).getAttribute("message"));
 				return "genericInfoPage";
 			}
+
 			List<Area> areas = Database.getInstance().getAreaDao().findAll();
 			req.setAttribute("areas", areas);
 		} catch (SQLException e) {

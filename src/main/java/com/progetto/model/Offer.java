@@ -13,7 +13,7 @@ public class Offer {
 	private String title;
 	private double quote;
 	private boolean done = false;
-	private boolean accepted;
+	private boolean accepted = false;
 	private boolean reviewed;
 	private Account worker; 
 	private int hoursOfWork;

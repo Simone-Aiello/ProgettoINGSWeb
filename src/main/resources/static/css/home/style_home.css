@@ -209,11 +209,22 @@ header ul li { list-style: none ; transition: 0.6; margin: 10px; }
     font-weight: 700;
 }
 .inner-container-advertises{
+    position: relative;
     height: 85%;
     display: grid !important;
     grid-template-columns: repeat(3, minmax(20rem,1fr));
     grid-gap: 20px;
     width: 100%;
+    padding: 20px;
+    min-height: 250px;
+}
+.message-center-container-advertises{
+    text-align: center;
+    font-weight: 800;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     padding: 20px;
 }
 .control-container-advertises{

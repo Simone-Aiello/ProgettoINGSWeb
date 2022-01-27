@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,4 +58,34 @@ public class DataSenderRestController {
 			return null;
 		}
 	}
+	
+	@GetMapping("/getProvince")
+	public String getProfilePic(HttpServletRequest req){
+		if(req.getSession(false) != null || req.getSession(false).getAttribute("username") != null) {
+			String username = (String) req.getSession(false).getAttribute("username");
+			try {
+				Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.BASIC_INFO).getProvinceOfWork();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null ;
+			}
+		}
+		return null ;
+	}
+	
+	
+	@GetMapping("typeOfAccount")
+	public String getTypeOfAccount(HttpServletRequest req) {
+		
+		if(req.getSession(false) != null && req.getSession(false).getAttribute("username") != null) {
+			String username = (String) req.getSession(false).getAttribute("username") ;
+			try {
+				return Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.BASIC_INFO).getAccountType() ;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return "none";
+	}
+	
 }

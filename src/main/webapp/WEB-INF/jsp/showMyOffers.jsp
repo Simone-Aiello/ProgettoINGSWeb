@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -12,18 +14,12 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 	crossorigin="anonymous"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<link href="/css/administratorAreasManagerCSS.css" rel="stylesheet"
-	type="text/css">
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
-<script src="/js/model/area.js"></script>
-<script
-	src="/js/administratorOperations/administratorAreasOperations.js"
-	type="text/javascript"></script>
 <script src="/js/notifications/notification.js"></script>
-<link rel="stylesheet" href="/css/notificationCSS.css">
+<link rel="stylesheet" href="/css/notificationCss.css">
+<link rel="stylesheet" href="/css/showmyoffers.css">
+<script src="/js/utils/utils.js"></script>
+<script src="/js/showmyoffers.js"></script>
 </head>
 <body>
 	<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
@@ -90,96 +86,81 @@
 			</div>
 		</div>
 	</nav>
-	<div id="pageContent" class="container fluid">
-		<div class="title">
-			<h1>Pagina amministratore</h1>
-		</div>
-		<section id="areaManagerSection">
-			<div class=" shadow mainDiv">
-				<div class="title">
-					<h2>Gestione ambiti</h2>
+	<div id="outer-div" class="d-flex justify-content-center flex-wrap">
+		<c:forEach items="${offers}" var="offer">
+			<div class="card-body shadow me-md-3" id="offer-${offer.id}">
+				<div class="row">
+					<h5 class="col-10 card-title">Proposta compilata per:
+						${offer.advertise.title}</h5>
 				</div>
-				<div id="allAreas">
-
-					<c:forEach items="${areas}" var="area" varStatus="loop">
-						<!--
-						<c:if test="${loop.index % 2 == 0}">
-							<div class = "row">
-						</c:if>
-						-->
-						<div class="card areaCard">
-							<div class=icon-div>
-								<figure class="icon-figure">
-									<i class="${area.icon} fa-3x icon" id="area-${area.id}"></i>
-								</figure>
-							</div>
-
-							<div class="card-body">
-								<div class="areaTitle row">
-									<div class="col-lg-6 col-md-8 col-xs-12">
-										<label class="card-title form-label">Nome:</label> <input
-											id="${area.id}-NameInput" class="form-control"
-											value="${area.name}" disabled></input>
-									</div>
-								</div>
-								<div class="areaIconText row">
-									<div class="col-lg-6 col-md-8 col-xs-12">
-										<label class="card-title form-label">Icona: </label> <input
-											id="${area.id}-IconInput" class=" form-control"
-											value="${area.icon}" disabled></input>
-									</div>
-								</div>
-							</div>
-							<div class="card-body cardButtons">
-								<button id="${area.id}-AreaModifyButton"
-									class="btn btn-secondary">Modifica</button>
-								<button id="${area.id}-AreaDeleteButton" type="button"
-									class="btn btn-danger">Cancella</button>
-							</div>
-						</div>
-						<!--
-						<c:if test="${loop.index % 2 == 0}">
-							</div>
-						</c:if>
-						-->
-					</c:forEach>
-
-				</div>
-				<div id="addAreaDiv">
-					<button id="requestAddAreaForm" class="btn btn-secondary">
-						<h1>
-							<b>+</b>
-						</h1>
-					</button>
-				</div>
-				<form id="addAreaForm" class="needs-validation hidden">
-					<div id="title">
-						<h2>Aggiunta nuovo ambito</h2>
+				<div class="row mt-2">
+					<div class="col">
+						<p class="card-subtitle text-muted small mb-1"
+							id="username_client">Cliente:</p>
+						<p class="card-subtitle text-muted small" id="username_client">
+							<a
+								href="/profilePage?username=${offer.advertise.account.username}">@${offer.advertise.account.username}</a>
+						</p>
 					</div>
-					<div id="addAreaFormContent">
-						<div class="row mb-3">
-							<div class=" mb-3 col-lg-6 col-md-6 col-xs-12">
-								<label class="form-label">Nome*</label> <input
-									id="addAreaNameInput" class="form-control" type="text"
-									placeholder="Nome ambito"></input>
-							</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col-lg-6 col-md-6 col-xs-12">
-								<label for="addAreaIconInput" class="form-label">Icona*</label>
-								<input id="addAreaIconInput" class="form-control" type="text"
-									placeholder="Codice icona fontawesome"></input> <a
-									href="https://fontawesome.com/" target="_blank"> cerca
-									icona</a>
-							</div>
+					<div class="col">
+						<p class="card-subtitle text-muted small">Provincia annuncio</p>
+						<p class="small">${offer.advertise.province}</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col dropdown">
+						<button type="button" class="btn btn-primary dropdown-toggle"
+							data-bs-toggle="dropdown" data-toggle="dropdown"
+							style="background-color: rgb(244, 162, 97); border: none;"
+							aria-expanded="false">
+							Vedi tue disponibilità<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu"
+							style="background-color: rgb(244, 162, 97); border-radius: 10px;">
+							<c:forEach items="${offer.availabilities}" var="av">
+								<li class="ps-2">${av}</li>
+							</c:forEach>
+						</ul>
+					</div>
+					<div class="col mt-2">
+						<label class="card-subtitle text-muted small">Durata
+							lavoro : ${offer.hoursOfWork} ore</label>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col-12 input-group"
+						style="display: flex; justify-content: start;">
+						<input class="card-control" type="text" readonly id="amount"
+							style="width: 100px;" value="${offer.quote}">
+						<div class="input-group-append">
+							<span class="input-group-text"
+								style="width: 20px; height: 100%; display: flex; justify-content: center; align-items: center; margin: 0px; padding: 0px;">€</span>
 						</div>
 					</div>
-					<div id="addAreaButtonDiv">
-						<button id="addAreaButton" class="btn btn-primary">Conferma</button>
-					</div>
-				</form>
+					<div class="col"></div>
+				</div>
+				<div class="row mt-2 shadown" style="padding: 15px;">
+					<textarea class="col input-group rounded" rows="5" readonly
+						style="border-color: rgb(227, 227, 227);">${offer.description}</textarea>
+				</div>
+				<c:choose>
+					<c:when test="${offer.done}">
+						<div class="d-flex flex-row-reverse mt-3">
+							<button class="btn btn-primary" id="delete-button">Sostituire con tag e crocetta per togliere proposte con lavoro finito finiti</button>
+						</div>
+					</c:when>
+					<c:when test="${offer.accepted && !offer.done}">
+						<div class="d-flex flex-row-reverse mt-3">
+							<button class="btn btn-primary end-work-button">Ho finito il lavoro</button>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="d-flex flex-row-reverse mt-3">
+							<button class="btn btn-primary delete-button">Elimina</button>
+						</div>
+					</c:otherwise>
+				</c:choose>
 			</div>
-		</section>
+		</c:forEach>
 	</div>
 </body>
-</html>

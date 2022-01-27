@@ -136,6 +136,13 @@ function createAdvertiseCardDetails(data){
     card_date.className = "card-text p-0" ;
     card_date.innerHTML = date_from_db_to_ISO(data.expiryDate) ;
 
+    if(isToday(data.expiryDate)){
+        let expiring = document.createElement('p');
+        expiring.className = "expiring-advertise-p";
+        expiring.innerHTML = "In scadenza!";
+        card.appendChild(expiring);
+    }
+
     row_card_due_date.appendChild(label_card_due_date);
     row_card_due_date.appendChild(card_date);
 
@@ -284,7 +291,24 @@ function createAdvertiseCardDetails(data){
     }
 
     row_areas_offer_button.appendChild(container_areas);
-    row_areas_offer_button.appendChild(offer_button);
+    
+    let typeAccount = null ;
+
+    $.ajax({
+		type: "GET",
+		url: "/typeOfAccount",
+		success: (response) => {
+				console.log(response);
+                typeAccount = response ;
+                if(typeAccount == 'w' || typeAccount == 'none')
+                    row_areas_offer_button.appendChild(offer_button);
+			},
+		error: (xhr) => {
+				console.log(xhr)
+			}
+		});
+    
+    
 
     card_body.appendChild(card_header);
     card_body.appendChild(card_information);
@@ -357,11 +381,6 @@ function createAdvertiseCardDetails(data){
 
     let card_offer = null ;
     offer_button.onclick = () => {
-
-        // Take id worker
-        username_worker = "adasdas",
-        data.username_worker= username_worker;
-        
 
         data.modal_bg = modal_bg ;
 
