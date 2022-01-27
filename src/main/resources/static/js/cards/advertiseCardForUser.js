@@ -101,20 +101,22 @@ function createOfferDetailCard(data){
 	button.id = data.index;
 	button.style = 'background-color:#f4a261; color : #fff;';
 	button.innerHTML = 'Mostra offerte ricevute';
-	
-	
-	let refuseButton = document.createElement('a');
-	refuseButton.className = "col-5 btn btn-danger";
-	refuseButton.innerHTML = 'Elimina annuncio';
-	refuseButton.id = 'del-'+data.index;
-	refuseButton.style = 'margin-right : 50px;'
-	refuseButton.setAttribute('data-toggle','modal');
-	refuseButton.setAttribute('data-target','#reviewModal');
-	
-	
-	
 	buttonDiv.appendChild(button);
-	buttonDiv.appendChild(refuseButton);
+	
+	if(!data.hasOffers){
+		let refuseButton = document.createElement('a');
+		refuseButton.className = "col-5 btn btn-danger";
+		refuseButton.innerHTML = 'Elimina annuncio';
+		refuseButton.id = 'del-'+data.index;
+		refuseButton.style = 'margin-right : 50px;'
+		refuseButton.setAttribute('data-toggle','modal');
+		refuseButton.setAttribute('data-target','#reviewModal');
+		buttonDiv.appendChild(refuseButton);
+	}
+	
+	
+	
+	
 
 	//build the card
 	card_body.appendChild(titleRow);

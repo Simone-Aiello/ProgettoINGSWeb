@@ -253,6 +253,10 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			Account acc = new Account();
 			acc.setUsername(set.getString("username_cliente"));
 			a.setAccount(acc);
+			if(Database.getInstance().getOfferDao().offersByAdvertise(a).size() > 0)
+				a.setHasOffers(true);
+			else 
+				a.setHasOffers(false);
 			advertises.add(a);
 		}
 		return advertises;

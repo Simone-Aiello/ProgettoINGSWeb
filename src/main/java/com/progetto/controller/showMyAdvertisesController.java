@@ -50,6 +50,7 @@ public class showMyAdvertisesController {
 			Advertise add = new Advertise();
 			add.setId(advertiseID);
 			try {
+			if(Database.getInstance().getOfferDao().offersByAdvertise(add).size() > 0)
 				Database.getInstance().getAdvertiseDao().delete(add);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
