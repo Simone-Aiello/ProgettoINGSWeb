@@ -120,6 +120,7 @@
 								}) ;
 							ads.append(card);
 							setShowOffersActionListener(i);
+							setDeleteAdvertiseActionListener(i);
 							i = i+1;
 						</script>
 		</c:forEach>

@@ -103,18 +103,18 @@ function createOfferDetailCard(data){
 	button.innerHTML = 'Mostra offerte ricevute';
 	
 	
-	/*let refuseButton = document.createElement('a');
-	refuseButton.className = "col-5 btn";
-	refuseButton.innerHTML = 'Recensisci';
-	refuseButton.id = 'r-'+data.index;
-	refuseButton.style = 'background-color:#f4a261;margin-right : 50px;'
+	let refuseButton = document.createElement('a');
+	refuseButton.className = "col-5 btn btn-danger";
+	refuseButton.innerHTML = 'Elimina annuncio';
+	refuseButton.id = 'del-'+data.index;
+	refuseButton.style = 'margin-right : 50px;'
 	refuseButton.setAttribute('data-toggle','modal');
-	refuseButton.setAttribute('data-target','#reviewModal');*/
+	refuseButton.setAttribute('data-target','#reviewModal');
 	
 	
 	
 	buttonDiv.appendChild(button);
-	//buttonDiv.appendChild(refuseButton);
+	buttonDiv.appendChild(refuseButton);
 
 	//build the card
 	card_body.appendChild(titleRow);
@@ -150,9 +150,29 @@ function setShowOffersActionListener(target){
 		},		
 		});
 
+	});	
+}
+
+function setDeleteAdvertiseActionListener(target){
+	let button = document.getElementById("del-"+target);
+	button.addEventListener('click', function(){
+		let adsID = document.getElementById('label-'+target).innerHTML;
+			adsID = adsID.split('#')[1];
+			console.log('deleted '+ adsID);
+			$.ajax({
+			type : "POST",
+			url : '/deleteAdvertise',
+			contentType: "application/json",
+			data : JSON.stringify(adsID),
+				success : (response) =>{
+					console.log(response);
+					window.location.reload();
+				}, 
+				error : (xhr) =>{
+					alert(xhr);
+				},		
+			});
 	});
-	
-		
 }
 
 
