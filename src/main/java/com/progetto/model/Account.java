@@ -75,7 +75,7 @@ public class Account {
 	public void setUsername(String username) {
 		notNull(username);
 		matchesPattern(username, USERNAME_PATTERN);
-		Utils.sanitizeXSS(username);
+		username = Utils.sanitizeXSS(username);
 		this.username = username;
 	}
 	
@@ -92,7 +92,7 @@ public class Account {
 	public void setEmail(String email) {
 		notNull(email);
 		matchesPattern(email, EMAIL_PATTERN);
-		Utils.sanitizeXSS(email);
+		email = Utils.sanitizeXSS(email);
 		this.email = email;
 	}
 	public String getNumber() {
@@ -101,7 +101,7 @@ public class Account {
 	public void setNumber(String number) {
 		notNull(number);
 		matchesPattern(number, NUMBER_PATTERN);
-		Utils.sanitizeXSS(number);
+		number = Utils.sanitizeXSS(number);
 		this.number = number;
 	}
 	
@@ -118,7 +118,7 @@ public class Account {
 	}
 	public void setProvinceOfWork(String provinceOfWork) {
 		notNull(provinceOfWork);
-		Utils.sanitizeXSS(provinceOfWork);
+		provinceOfWork = Utils.sanitizeXSS(provinceOfWork);
 		this.provinceOfWork = provinceOfWork;
 	}
 	public String getAccountType() {

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.progetto.Utils;
+import com.progetto.model.Account;
 import com.progetto.model.Advertise;
 import com.progetto.persistence.Database;
 
@@ -20,7 +24,7 @@ import com.progetto.persistence.Database;
 public class AdvertiseController {
 
 	@PostMapping("/advertises")
-	public List<Advertise> getAdvertises(@RequestBody String parmsString){
+	public List<Advertise> getAdvertises(@RequestBody String parmsString, HttpServletRequest request){
 		JSONObject parms = new JSONObject(parmsString);
 		List<Advertise> advertises;
 		try {
@@ -38,6 +42,7 @@ public class AdvertiseController {
 			Integer offset = null;
 			try { offset = parms.getInt("offset"); }catch (JSONException e) {}
 			System.out.println("AREAS ADVERTSE CONTAINER "+areas);
+			
 			advertises = Database.getInstance().getAdvertiseDao().findGroup(keyword,areas ,province, 
 					quantity, offset);
 		} catch (SQLException e) {

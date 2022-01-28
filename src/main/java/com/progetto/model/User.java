@@ -27,7 +27,7 @@ public class User {
 	public void setName(String name) {
 		notNull(name);
 		matchesPattern(name, NAME_SURNAME_PATTERN);
-		Utils.sanitizeXSS(name);
+		name = Utils.sanitizeXSS(name);
 		this.name = name;
 	}
 	public String getSurname() {
@@ -36,7 +36,7 @@ public class User {
 	public void setSurname(String surname) {
 		notNull(surname);
 		matchesPattern(surname, NAME_SURNAME_PATTERN);
-		Utils.sanitizeXSS(surname);
+		surname = Utils.sanitizeXSS(surname);
 		this.surname = surname;
 	}
 	public DateTime getDateOfBirth() {

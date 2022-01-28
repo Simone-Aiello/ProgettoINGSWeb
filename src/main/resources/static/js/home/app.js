@@ -163,7 +163,7 @@ button_search_advertise.onclick = () => {
 
     inner_container_advertise.init({
 		quantity : 6 ,
-        areas : areas.length > 0 ? areas : null ,
+        areas : areas.length > 0 ? areas : params.areas  ,
         keyword : keyword != '' && keyword != null ? keyword : null ,
         province : province != '' && province != null ? province : provinceOfWork ,
 	});
@@ -191,7 +191,7 @@ button_search_advertise_smartphone.onclick = () => {
 		quantity : 6 ,
         areas : areas.length > 0 ? areas : params.areas ,
         keyword : keyword != '' && keyword != null ? keyword : null ,
-        province : province != '' && province != null ? province : null ,
+        province : province != '' && province != null ? province : provinceOfWork ,
 	});
 
     closeModal(modal_search_bar_smartphone);

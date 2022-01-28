@@ -55,7 +55,7 @@ public class Offer {
 	}
 	public void setDescription(String description) {
 		notNull(description);
-		Utils.sanitizeXSS(description);
+		description = Utils.sanitizeXSS(description);
 		this.description = description;
 	}
 	public String getTitle() {
@@ -63,7 +63,7 @@ public class Offer {
 	}
 	public void setTitle(String title) {
 		notNull(title);
-		Utils.sanitizeXSS(title);
+		title = Utils.sanitizeXSS(title);
 		this.title = title;
 	}
 	public double getQuote() {
