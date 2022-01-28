@@ -118,13 +118,13 @@
 								dueDate : "${advertise.getExpiryDate()}",
 								description : "${advertise.getDescription()}",
 						        offer_id : ${advertise.getId()},
-						        hasOffers : ${advertise.getHasOffers()},
+						       // hasOffers : ${advertise.getHasOffers()},
 								index : i
 								}) ;
 							ads.append(card);
 							setShowOffersActionListener(i);
-							if(!${advertise.getHasOffers()})
-								setDeleteAdvertiseActionListener(i);
+							//if(!${advertise.getHasOffers()})
+							//	setDeleteAdvertiseActionListener(i);
 							i = i+1;
 						</script>
 		</c:forEach>

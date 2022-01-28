@@ -103,7 +103,7 @@ function createOfferDetailCard(data){
 	button.innerHTML = 'Mostra offerte ricevute';
 	buttonDiv.appendChild(button);
 	
-	if(!data.hasOffers){
+	/*if(!data.hasOffers){
 		let refuseButton = document.createElement('a');
 		refuseButton.className = "col-5 btn btn-danger";
 		refuseButton.innerHTML = 'Elimina annuncio';
@@ -112,7 +112,7 @@ function createOfferDetailCard(data){
 		refuseButton.setAttribute('data-toggle','modal');
 		refuseButton.setAttribute('data-target','#reviewModal');
 		buttonDiv.appendChild(refuseButton);
-	}
+	}*/
 	
 	
 	
