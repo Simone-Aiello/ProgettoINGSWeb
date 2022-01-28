@@ -92,7 +92,7 @@ function createProfileCard(a){
 		//alert("new line");
 			profileCard += newRowBegin;
 		}
-	let profileCol = `<div class ="col-lg-6 col-sm-12 col-xs-12">
+	let profileCol = `<div id = "` + a.username + `ProfileCard" class ="col-lg-6 col-sm-12 col-xs-12">
 						<div class="containerCard row mb-3 container-sm"> 
 							<div id = "profileDiv-` + a.username + `" class="profileDiv col">
 								<div class="imageDiv">
@@ -192,7 +192,7 @@ function addBanAccountEvent(username){
 								<div class="modal-dialog modal-dialog-centered">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="staticBackdropLabel">Messaggio
+											<h5 class="modal-title" id="staticBackdropLabel">Richiesta conferma ban
 												</h5>
 											<button id = "closeModal" type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
@@ -224,7 +224,40 @@ function addBanAccountEvent(username){
 				contentType: "application/json",
 				data:  JSON.stringify(accountBuilder.build()),
 				success: function(){
+					let banSuccessModal=`<div class="modal fade" id="staticBackdrop-banConfirm"
+								data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+								aria-labelledby="staticBackdropLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="staticBackdropLabel">Conferma ban
+												</h5>
+											<button id = "closeModal" type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<p id = "messageText" 
+												style="width: 100%;">Ban dell'utente: ` + username + ` avvenuto con successo</p>
+										</div>
+										<div class="modal-footer">
+											<button id = "confirmBan" type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+										</div>
+									</div>
+								</div>
+							</div>`;
+					//remove eventual modals that are closed but not removed from the html
+					$(".modal").remove();				
+					$("body").append(banSuccessModal);
+					$("#staticBackdrop-banConfirm").modal("toggle");
+					
+					//remove the account card from the list
+					//and replace it with the last profile card in the search results
+					$("#"+ username + "ProfileCard").replaceWith($("#profileCards").children().last().children().last());
 					//console.log(username + "banned");
+					
+				},
+				error: function(){
+					showSystemError("systemErrors");
 				}
 				
 			});
@@ -288,7 +321,10 @@ function addChatWithProfileEvent(username){
 				data: JSON.stringify(chat.build()),
 				success: function(){
 					console.log("started chat");
-				},		
+				},	
+				error: function(){
+					showSystemError("systemErrors")
+				}	
 			});
 		});
 	});
@@ -332,7 +368,7 @@ function addSearchButtonEvent(){
 			contentType: "application/json",
 			data:  JSON.stringify(selectedAreasList),
 			success: function(profiles){
-			console.log("SUCCESS");
+			//console.log("SUCCESS");
 				//reset search bar 
 				numberOfSelectedAreas = 0;
 				selectedAreasList = [];
@@ -351,7 +387,7 @@ function addSearchButtonEvent(){
 								'username' : a.username,		
 							},
 							success: function(results){
-								console.log("SUCCESS");
+								//console.log("SUCCESS");
 								a.averageReviews = results[0];
 								a.numberOfReviews = results[1];
 								a.acceptedOffers = results[2];
@@ -361,7 +397,7 @@ function addSearchButtonEvent(){
 								addChatWithProfileEvent(a.username);
 							},
 							error: function(){
-								
+								showSystemError("systemErrors");
 							}
 							
 						});
@@ -376,7 +412,7 @@ function addSearchButtonEvent(){
 								'username' : a.username,		
 							},
 							success: function(results){
-								console.log("SUCCESS");
+								//console.log("SUCCESS");
 								//alert("WEEEE" + JSON.stringify(results));
 								a.publishedAdvertises = results[0];
 								a.advertisesAreas = results[1];
@@ -387,7 +423,7 @@ function addSearchButtonEvent(){
 								addChatWithProfileEvent(a.username);
 							},
 							error: function(){
-								
+								showSystemError("systemErrors");
 							}
 							
 						});
@@ -403,11 +439,14 @@ function addSearchButtonEvent(){
 					//alert(a.accountType);
 				}
 				if(i == 0){
-					$("#profileCards").append("<h1>La ricerca non ha prodotto risultati...</h1>")
+					$("#profileCards").append("<h2>La ricerca non ha prodotto risultati...</h2>")
 				}
 
 
 			},
+			error: function(){
+				showSystemError("systemErrors");
+			}
 
 		});
 		$("#searchButton").prop("disabled", false);
@@ -431,3 +470,13 @@ $(document).ready(() =>{
 
 	
 })
+
+function showSystemError(section){
+	if($("#systemAlert").length != 0)
+		return;
+	
+	let systemError = 	`<div id = "systemAlert" class="alert alert-danger" role="alert">
+ 					 		C'è stato un problema interno, ci scusiamo per il disagio e la invitiamo a riprovare più tardi
+						</div>`;
+	$("#" + section).prepend(systemError);
+}
