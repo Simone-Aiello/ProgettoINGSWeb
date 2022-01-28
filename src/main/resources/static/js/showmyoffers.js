@@ -35,7 +35,8 @@ function addEndWorkButtonListener(){
 					id: id_offer,
 				}),
 				success: function() {
-					console.log("OK");
+					$(`#${fullId} button.end-work-button`).parent().attr("class","job-done");
+					$(`#${fullId} button.end-work-button`).parent().html(`<span>Lavoro completato!</span>`);
 					$(`#${fullId} button.end-work-button`).remove();
 				},
 				error: function(xhr) {

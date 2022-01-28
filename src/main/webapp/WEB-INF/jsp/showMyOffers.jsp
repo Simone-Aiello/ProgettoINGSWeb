@@ -95,9 +95,8 @@
 				</div>
 				<div class="row mt-2">
 					<div class="col">
-						<p class="card-subtitle text-muted small mb-1"
-							id="username_client">Cliente:</p>
-						<p class="card-subtitle text-muted small" id="username_client">
+						<p class="card-subtitle text-muted small mb-1">Cliente:</p>
+						<p class="card-subtitle text-muted small username_client">
 							<a
 								href="/profilePage?username=${offer.advertise.account.username}">@${offer.advertise.account.username}</a>
 						</p>
@@ -145,13 +144,13 @@
 				</div>
 				<c:choose>
 					<c:when test="${offer.done}">
-						<div class="d-flex flex-row-reverse mt-3">
-							<button class="btn btn-primary" id="delete-button">Sostituire con tag e crocetta per togliere proposte con lavoro finito finiti</button>
+						<div class="job-done">
+							<span>Lavoro completato!</span>
 						</div>
 					</c:when>
 					<c:when test="${offer.accepted && !offer.done}">
 						<div class="d-flex flex-row-reverse mt-3">
-							<button class="btn btn-primary end-work-button">Ho finito il lavoro</button>
+							<button class="btn btn-success end-work-button">Ho finito il lavoro</button>
 						</div>
 					</c:when>
 					<c:otherwise>
