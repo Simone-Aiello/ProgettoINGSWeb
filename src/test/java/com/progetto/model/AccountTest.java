@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
+import com.progetto.Utils;
+
 class AccountTest {
 
 	private Account account = new Account();
@@ -38,14 +40,16 @@ class AccountTest {
 		account.setAreasOfWork(areas);
 		account.setReviews(reviews);
 
-		assertEquals(username, account.getUsername());
+		
+
+		assertEquals(Utils.sanitizeXSS(username), account.getUsername());
 		assertEquals(password, account.getPassword());
-		assertEquals(email, account.getEmail());
+		assertEquals(Utils.sanitizeXSS(email), account.getEmail());
 		assertEquals(accountType, account.getAccountType());
-		assertEquals(number, account.getNumber());
-		assertEquals(user, account.getPersonalInfo());
+		assertEquals(Utils.sanitizeXSS(number), account.getNumber());
+		assertEquals(user , account.getPersonalInfo());
 		assertEquals(image, account.getProfilePic());
-		assertEquals(provinceOfWork, account.getProvinceOfWork());
+		assertEquals(Utils.sanitizeXSS(provinceOfWork), account.getProvinceOfWork());
 		assertEquals(areas, account.getAreasOfWork());
 		assertEquals(reviews, account.getReviews());
 

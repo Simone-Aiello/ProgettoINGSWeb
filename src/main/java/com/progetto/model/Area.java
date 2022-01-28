@@ -44,7 +44,7 @@ public class Area {
 	}
 	public void setName(String name) {
 		notNull(name);
-		Utils.sanitizeXSS(name);
+		name = Utils.sanitizeXSS(name);
 		this.name = name;
 	}
 	public String getIcon() {
