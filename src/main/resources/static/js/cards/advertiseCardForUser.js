@@ -163,7 +163,7 @@ function setDeleteAdvertiseActionListener(target){
 			console.log('deleted '+ adsID);
 			$.ajax({
 			type : "POST",
-			url : '/deleteAdvertise',
+			url : '/deleteAdvertiseForClient',
 			contentType: "application/json",
 			data : JSON.stringify(adsID),
 				success : (response) =>{

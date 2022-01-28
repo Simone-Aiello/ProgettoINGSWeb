@@ -39,7 +39,7 @@ public class showMyAdvertisesController {
 		return "showMyAdvertises";
 	}
 	
-	@PostMapping("/deleteAdvertise")
+	@PostMapping("/deleteAdvertiseForClient")
 	@ResponseBody
 	public void deleteAdvertise(HttpServletRequest req, @RequestBody Long advertiseID){
 		HttpSession session = req.getSession(false); 
