@@ -362,7 +362,7 @@ function addSubmitListener(){
 			type: "GET",
 			url: "/accountValid",
 			contentType: "application/json",
-			data: JSON.stringify(accountLogged),
+			data: accountLogged,
 			success: function(isValid){
 				if(isValid){
 					//Te account is valid... Publish the advertise
