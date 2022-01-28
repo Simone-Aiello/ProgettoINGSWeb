@@ -8,6 +8,8 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 
+import com.progetto.Utils;
+
 public class AdvertiseTest {
 	//check that valid data are correctly inserted by setter methods
 	@Test
@@ -36,12 +38,12 @@ public class AdvertiseTest {
 		a.setOffers(offers);
 		
 		assertEquals(id, a.getId());
-		assertEquals(description, a.getDescription());
-		assertEquals(expiryDate, a.getExpiryDate());
+		assertEquals(Utils.sanitizeXSS(description), a.getDescription());
+		assertEquals(expiryDate , a.getExpiryDate());
 		assertEquals(acc, a.getAccount());
 		assertEquals(o, a.getAcceptedOffer());
 		assertEquals(r, a.getReviewReceived());
-		assertEquals(province, a.getProvince());
+		assertEquals(Utils.sanitizeXSS(province), a.getProvince());
 		assertEquals(areas, a.getInterestedAreas());
 		assertEquals(images, a.getImages());
 		assertEquals(offers, a.getOffers());

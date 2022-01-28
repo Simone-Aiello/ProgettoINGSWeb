@@ -280,6 +280,48 @@ function createAdvertiseCardDetails(data){
     offer_button.style = "background-color: #f4a261; color: white;";
     offer_button.innerHTML= "Proponiti" ;
 
+    // Deletebutton
+    let delete_advertise_button = document.createElement("button");
+    delete_advertise_button.className = "btn p-2 btn-danger" ;
+    delete_advertise_button.style = "color: white;";
+    delete_advertise_button.innerHTML= "Elimina" ;
+
+    
+    delete_advertise = (id) => {
+
+        advertise_builder = new Advertise.Builder();
+        advertise_builder.withId(id);
+        $.ajax({
+            type : 'POST',
+            url: "/deleteAdvertise",
+            contentType : 'application/json' ,
+            data : JSON.stringify(advertise_builder.build()) ,
+            success : (response) =>{
+                let dialog = createDialog({
+                    message : 'Annuncio eliminato con successo',
+                });
+                document.getElementById('container-advertises').refresh();
+                dialog.show();
+            },
+            error : (xhr) => {
+                let dialog = createDialog({
+                    message : 'Errore nel sistema, riprovare in un secondo momento',
+                });
+                dialog.show();
+            }
+        });
+    }
+
+    delete_advertise_button.onclick = () => {
+        let dialog = createDialog({
+            message: "Sei sicuro di voler eliminare questo annuncio?",
+            ok : () => { delete_advertise(data.id) },
+            cancel : card.show,
+        })
+        dialog.show();
+        card.close();
+    }
+
     // Container areas
     let container_areas = document.createElement('div');
     container_areas.className = "container-areas shadow";
@@ -302,6 +344,9 @@ function createAdvertiseCardDetails(data){
                 typeAccount = response ;
                 if(typeAccount == 'w' || typeAccount == 'none')
                     row_areas_offer_button.appendChild(offer_button);
+                else if(typeAccount == 'a'){
+                    row_areas_offer_button.appendChild(delete_advertise_button);
+                }
 			},
 		error: (xhr) => {
 				console.log(xhr)

@@ -150,7 +150,7 @@ function createMessage(data){
 
     let message_container = document.createElement("div");
     message_container.style.zIndex = "1";
-    message_container.className = "alert shadow"
+    message_container.className = "alert-getjobs shadow"
     message_container.showing = false ;
     
     const timeline = gsap.timeline({defaults:{duration:0.25,ease:"power1.out"}});

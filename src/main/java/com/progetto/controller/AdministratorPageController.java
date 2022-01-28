@@ -16,9 +16,16 @@ public class AdministratorPageController {
 	@GetMapping("/administratorAreasManager")
 	public String getAdministratorAreasPage(HttpServletRequest req) {
 		try {
-			if(req.getSession(false) == null || req.getSession(false).getAttribute("username") == null) {
+			if(req.getSession(false) == null) {
+				req.getSession().setAttribute("message", "Utente non loggato");
+			}
+			
+			if(req.getSession(false).getAttribute("username") == null ) {
 				req.getSession(false).setAttribute("message", "Utente non loggato");
-				//System.out.println(req.getSession(false).getAttribute("message"));
+				return "genericInfoPage";
+			}
+			if(!req.getSession(false).getAttribute("loggedAccountType").equals("a")) {
+				req.getSession(false).setAttribute("message", "Utente non autorizzato");
 				return "genericInfoPage";
 			}
 
@@ -34,10 +41,19 @@ public class AdministratorPageController {
 	@GetMapping("/administratorProfilesManager")
 	public String getAdministratorProfilesPage(HttpServletRequest req) {
 		try {
-			if( req.getSession(false) == null || req.getSession(false).getAttribute("username") == null /*|| !req.getSession().getAttribute("accountType").equals("a")*/) {
+			if(req.getSession(false) == null) {
+				req.getSession().setAttribute("message", "Utente non loggato");
+			}
+			
+			if(req.getSession(false).getAttribute("username") == null ) {
 				req.getSession(false).setAttribute("message", "Utente non loggato");
 				return "genericInfoPage";
 			}
+			if(!req.getSession(false).getAttribute("loggedAccountType").equals("a")) {
+				req.getSession(false).setAttribute("message", "Utente non autorizzato");
+				return "genericInfoPage";
+			}
+			
 			List<Area> areas = Database.getInstance().getAreaDao().findAll();
 			req.setAttribute("areas", areas);
 		} catch (SQLException e) {

@@ -98,3 +98,14 @@ i{
 	padding-right: 8px;
 	color: #FF9400
 }
+.custom-button {
+	border-radius: 5px;
+	height: 38px;
+	background-color: #FF9400;
+	color: white;
+	border: none;
+	width: 105px;
+}
+.custom-button:hover{
+	background-image: linear-gradient(rgba(0, 0, 0, 0.05) 0 0);
+}

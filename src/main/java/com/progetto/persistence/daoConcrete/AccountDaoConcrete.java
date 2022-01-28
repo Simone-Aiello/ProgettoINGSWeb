@@ -328,6 +328,7 @@ public class AccountDaoConcrete implements AccountDao {
 		PreparedStatement stmt;
 		if(username == null)
 			username = "";
+		username = username.toLowerCase();
 		//this is not the best query
 		if(username.equals("") && areas.size() != 0){//don't search by username
 			query = "SELECT DISTINCT username FROM account INNER JOIN account_ambiti ON lower(username_account) = username WHERE id_ambito IN(" 

@@ -1,6 +1,8 @@
 
-function sendOffer(offer, card){
+var card_summary = null ;
 
+function sendOffer(offer, card){
+	card_summary = card ;
 	checkType(offer,"Offer");
 	let data = JSON.stringify(offer) ;
 	console.log(data);
@@ -23,7 +25,7 @@ function sendOffer(offer, card){
 					message_ok_button : 'Login',
 					message_cancel_button : 'Chiudi',
 					cancel : () =>{},
-					ok : card.show,
+					ok : createLoginModal,
 				});
 				dialog.show();
 			}
@@ -83,6 +85,111 @@ function sendOffer(offer, card){
 	});
 }
 
+//Call this function once the user has logged in
+function accountLoggedIn(){
+	$(".navbar").remove();
+	$("dropdown-notification").remove();
+	$("#staticBackdropLogin").modal("toggle");
+	$("#staticBackdropLogin").remove();
+	document.getElementById('container-advertises').refresh();
+	if(!checkAccountType(accountType, "w")){
+
+        let dialog = createDialog({
+            message : "Hai effettuato l\'accesso con un account che non è un lavoratore. Solo i lavoratori possono proporsi per un annuncio." ,
+        });
+        dialog.show();
+
+		let navUser = `<li class="nav-item"><a class="nav-link active"
+							href="/showMyAdvertises">I tuoi annunci</a></li>
+						<li class="nav-item"><a class="nav-link active"
+							href="/AdvertisePublication">Inserisci annuncio</a></li>` ;
+		
+		let navAdmin = `<li class="nav-item"><a class="nav-link active"
+							href="/administratorProfilesManager">Gestisci account</a></li>
+						<li class="nav-item"><a class="nav-link active"
+							href="/administratorAreasManager">Gestisci ambiti di lavoro</a></li>` ;	
+							
+		let navBarFinal = checkAccountType(accountType, "u") ? navUser : navAdmin ; 
+
+		console.log(navBarFinal);
+		
+
+		let navbarLogged = `<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
+							</div>
+							<nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+								<div class="container-fluid">
+									<a class="navbar-brand" href="/">Get Jobs</a>
+									<button class="navbar-toggler" type="button"
+										data-bs-toggle="collapse" data-bs-target="#navbarNav"
+										aria-controls="navbarNav" aria-expanded="false"
+										aria-label="Toggle navigation">
+										<span class="navbar-toggler-icon"></span>
+									</button>
+									<div class="collapse navbar-collapse" id="navbarNav">
+										<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+										<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/profilePage?username=` + accountLogged.username() + `">Profilo</a></li>
+										`
+										 + navBarFinal + 
+										`
+										<li class="nav-item"><a class="nav-link active"
+											href="/getChats">Messaggi</a></li>
+										<li class="nav-item" id="notification-item"><a
+											class="nav-link active" id="notification-bell">Notifiche <i
+												class="fas fa-circle fa-xs" id="new-notification"></i></a></li>
+										</ul>
+										<ul class="navbar-nav mb-2 mb-lg-0">
+											<li class="nav-item"><a class="nav-link active"
+												href="/logout">Logout</a></li>
+										</ul>
+									</div>
+								</div>
+							</nav>`;
+		
+		console.log(navbarLogged);
+		$("header").append(navbarLogged);
+	}
+	else{
+	
+        card_summary.show();
+
+		//CHANGE NAVBAR TO LOGGED NAVBAR
+		let navbarLogged = `<div class="dropdown-notification shadow-lg p-3 mb-5 bg-light rounded">
+							</div>
+							<nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+								<div class="container-fluid">
+									<a class="navbar-brand" href="/">Get Jobs</a>
+									<button class="navbar-toggler" type="button"
+										data-bs-toggle="collapse" data-bs-target="#navbarNav"
+										aria-controls="navbarNav" aria-expanded="false"
+										aria-label="Toggle navigation">
+										<span class="navbar-toggler-icon"></span>
+									</button>
+									<div class="collapse navbar-collapse" id="navbarNav">
+										<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+										<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/profilePage?username=` + accountLogged.username() + `">Profilo</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/showMyOffers">Le tue offerte</a></li>
+										<li class="nav-item"><a class="nav-link active"
+											href="/getChats">Messaggi</a></li>
+										<li class="nav-item" id="notification-item"><a
+											class="nav-link active" id="notification-bell">Notifiche <i
+												class="fas fa-circle fa-xs" id="new-notification"></i></a></li>
+										</ul>
+										<ul class="navbar-nav mb-2 mb-lg-0">
+											<li class="nav-item"><a class="nav-link active"
+												href="/logout">Logout</a></li>
+										</ul>
+									</div>
+								</div>
+							</nav>`;
+		
+		$("header").append(navbarLogged);
+	}
+}
 
 function createOfferCardSummary(data){
 	//card

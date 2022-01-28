@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 
+import com.progetto.Utils;
+
 class UserTest {
 
 	private User user = new User();
@@ -25,8 +27,8 @@ class UserTest {
 		user.setAddress(address);
 
 		assertEquals(id, user.getId());
-		assertEquals(name, user.getName());
-		assertEquals(surname, user.getSurname());
+		assertEquals(Utils.sanitizeXSS(name), user.getName());
+		assertEquals(Utils.sanitizeXSS(surname), user.getSurname());
 		assertEquals(dateOfBirth, user.getDateOfBirth());
 		assertEquals(address, user.getAddress());
 
