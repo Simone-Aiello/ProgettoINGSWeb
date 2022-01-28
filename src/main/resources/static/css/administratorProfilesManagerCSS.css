@@ -131,3 +131,7 @@ button>a, button>a:hover{
 	text-decoration: none;
 	color: black;
 }
+
+.title{
+	text-align: center;	
+}

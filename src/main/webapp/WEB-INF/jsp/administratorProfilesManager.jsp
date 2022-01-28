@@ -96,7 +96,7 @@
 	</nav>
 	<div class="mainDiv shadow">
 		<div class="title">
-			<h2>Gestione profili</h2>
+			<h1>Gestione profili</h1>
 		</div>
 
 		<div id="searchBox" class="row">
@@ -119,8 +119,11 @@
 				<button id="searchButton" type="button" class="form-control">Cerca</button>
 			</div>
 		</div>
+		<div id ="systemErrors">
+		
+		</div>
 		<div id="profileCards">
-			<h1>Comincia a cercare dei profili</h1>
+			<h2>Comincia a cercare dei profili</h2>
 		</div>
 		<div id="areaslistSelector">
 			<c:forEach items="${areas}" var="area">

@@ -92,7 +92,6 @@
 	</nav>
 	<div id="pageContent" class="container fluid">
 		<div class="title">
-			<h1>Pagina amministratore</h1>
 		</div>
 		<section id="areaManagerSection">
 			<div class=" shadow mainDiv">
