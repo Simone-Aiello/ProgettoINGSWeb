@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import com.progetto.Utils;
+
 class AddressTest {
 
 	private Address address = new Address();
@@ -26,11 +28,11 @@ class AddressTest {
 		address.setProvince(province);
 
 		assertEquals(id, address.getId());
-		assertEquals(via, address.getVia());
-		assertEquals(houseNumber, address.getHouseNumber());
-		assertEquals(zipCode, address.getZipCode());
-		assertEquals(town, address.getTown());
-		assertEquals(province, address.getProvince());
+		assertEquals(Utils.sanitizeXSS(via), address.getVia());
+		assertEquals(Utils.sanitizeXSS(houseNumber), address.getHouseNumber());
+		assertEquals(Utils.sanitizeXSS(zipCode), address.getZipCode());
+		assertEquals(Utils.sanitizeXSS(town), address.getTown());
+		assertEquals(Utils.sanitizeXSS(province), address.getProvince());
 
 	}
 	

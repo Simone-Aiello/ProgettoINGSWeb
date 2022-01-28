@@ -6,8 +6,7 @@ function createLoginModal(){
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <h5 class="modal-title" id="staticBackdropLabel">Ops sembra che tu non abbia effettuato login</h5>
-				        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
+				        <button id = "close-modal" type="button" class="close btn far fa-times-circle close-button-container-columns" data-bs-dismiss="modal" aria-label="Close">
 				        </button>
 				      </div>
 				      <div class="modal-body">
@@ -29,7 +28,7 @@ function createLoginModal(){
 						<div class = "row">
 							<div style = "	display: flex; justify-content: space-between; white-space:nowrap; margin-bottom: 15px;">
 				       			<button id = "homeButtonLoginModal" type="button" class="btn btn-secondary" data-dismiss="modal" style= "margin-left: 20px;">Home</button>
-								<button id = "loginButtonLoginModal" type="button" class="btn btn-primary" style= "margin-right: 20px;">Login</button>
+								<button id = "loginButtonLoginModal" type="button" class="btn btn-success" style= "margin-right: 20px;">Login</button>
 							</div>
 						</div>						
 				      </div>
@@ -38,11 +37,23 @@ function createLoginModal(){
 				    </div>
 				  </div>
 				</div>`;
-				
-				
+
+
 				$("#staticBackdropLogin").remove();
 				$("body").append(modal);
 				$("#staticBackdropLogin").modal("toggle");
+
+				let close_button_modal = document.getElementById('close-modal');
+
+				console.log(close_button_modal);
+				close_button_modal.onmouseover = () => {
+					gsap.to(close_button_modal,{ scale: 1.1 ,ease : "elastic.out(1, 0.3)" , rotate : "-90deg"} );
+				}
+			
+				close_button_modal.onmouseleave = () => {
+					gsap.to(close_button_modal,{ scale: 1 , ease : "elastic.out(1, 0.3)" , rotate : "0deg"} );
+				}
+			
 				
 				$("#homeButtonLoginModal").on("click", () => {
 					window.location.href = "/";
@@ -52,7 +63,7 @@ function createLoginModal(){
 					let username = $("#usernameLoginModal").val();
 					let password = $("#passwordLoginModal").val();
 					let accountBuilder = new Account.Builder();
-					
+	
 
 					try{
 						accountBuilder.withUsername(username);
@@ -65,7 +76,7 @@ function createLoginModal(){
 								data: JSON.stringify(account),
 								success: function(acc){
 										if(acc == null){
-											showLoginError()
+											showLoginError();
 											return;	
 										}
 									accountType = acc.accountType;
@@ -74,7 +85,8 @@ function createLoginModal(){
 										accountLoggedIn();
 								},
 								error: function(){
-									//alert("loginError");
+									showLoginError();
+									return;	
 								}
 							});
 					}catch(error){
@@ -85,13 +97,17 @@ function createLoginModal(){
 }
 
 function showLoginError(){
+	console.log("QUA1");
 	if($("#systemAlertLogin").length != 0)
 		return;
+	
+	console.log("QUA2");
 	
 	let systemError = 	`<div id = "systemAlertLogin" class="alert alert-danger" role="alert">
  					 		Username o password errati
 						</div>`;
 	$("#modalLoginForm").prepend(systemError);
+	console.log($("#modalLoginForm"));
 }
 
 function checkAccountType(accountType, desideredAccountType){

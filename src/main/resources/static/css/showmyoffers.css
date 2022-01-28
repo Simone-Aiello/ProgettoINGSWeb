@@ -1,4 +1,5 @@
 .card-body {
+	position: relative;
 	width: 400px;
 	max-width: 400px;
 	float: left;
@@ -14,4 +15,22 @@
 .card-title{
 	overflow-x:auto;
 	overflow-y:hidden;
+}
+p.username_client a, p.username_client a:hover, p.username_client a:focus, p.username_client a:active {
+      text-decoration: none;
+      color: inherit;
+}
+input{
+	border-width:1px;
+}
+.job-done{
+	display: flex;
+	position: absolute;
+	bottom: 0px;
+	left: 28%;
+	width: 170px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	justify-content: center;
+	background-color: #FFAE42;
 }

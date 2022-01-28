@@ -34,7 +34,7 @@ public class Notification {
 	}
 	public void setText(String text) {
 		notNull(text);
-		Utils.sanitizeXSS(text);
+		text = Utils.sanitizeXSS(text);
 		this.text = text;
 	}
 	public String getType() {

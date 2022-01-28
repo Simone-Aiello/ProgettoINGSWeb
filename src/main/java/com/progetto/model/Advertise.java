@@ -71,7 +71,7 @@ public class Advertise {
 	}
 	public void setDescription(String description) {
 		notNull(description);
-		Utils.sanitizeXSS(description);
+		description = Utils.sanitizeXSS(description);
 		this.description = description;
 	}
 	public String getTitle() {
@@ -79,7 +79,7 @@ public class Advertise {
 	}
 	public void setTitle(String title) {
 		notNull(title);
-		Utils.sanitizeXSS(title);
+		title = Utils.sanitizeXSS(title);
 		this.title = title;
 	}
 	public DateTime getExpiryDate() {
@@ -103,7 +103,7 @@ public class Advertise {
 	}
 	public void setProvince(String province) {
 		notNull(province);
-		Utils.sanitizeXSS(province);
+		province = Utils.sanitizeXSS(province);
 		this.province = province;
 	}
 

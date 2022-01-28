@@ -33,7 +33,7 @@ public class Address {
 	public void setVia(String via) {
 		notNull(via);
 		matchesPattern(via, PATTERN_ONLY_LETTERS);
-		Utils.sanitizeXSS(via);
+		via = Utils.sanitizeXSS(via);
 		this.via = via;
 	}
 	public String getHouseNumber() {
@@ -42,7 +42,7 @@ public class Address {
 	public void setHouseNumber(String houseNumber) {
 		notNull(houseNumber);
 		matchesPattern(houseNumber, PATTERN_ONLY_NUMBERS);
-		Utils.sanitizeXSS(houseNumber);
+		houseNumber = Utils.sanitizeXSS(houseNumber);
 		this.houseNumber = houseNumber;
 	}
 	public String getZipCode() {
@@ -51,7 +51,7 @@ public class Address {
 	public void setZipCode(String zipCode) {
 		notNull(zipCode);
 		matchesPattern(zipCode, PATTERN_ONLY_NUMBERS);
-		Utils.sanitizeXSS(zipCode);
+		zipCode = Utils.sanitizeXSS(zipCode);
 		this.zipCode = zipCode;
 	}
 	public String getTown() {
@@ -60,7 +60,7 @@ public class Address {
 	public void setTown(String town) {
 		notNull(town);
 		matchesPattern(town, PATTERN_ONLY_LETTERS);
-		Utils.sanitizeXSS(town);
+		town = Utils.sanitizeXSS(town);
 		this.town = town;
 	}
 	public String getProvince() {
@@ -69,7 +69,7 @@ public class Address {
 	public void setProvince(String province) {
 		notNull(province);
 		matchesPattern(province, PATTERN_ONLY_LETTERS);
-		Utils.sanitizeXSS(province);
+		province = Utils.sanitizeXSS(province);
 		this.province = province;
 	}
 }

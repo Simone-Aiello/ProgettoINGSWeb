@@ -317,7 +317,7 @@
 		</section>
 		<div class="button-div">
 			<button class="btn btn-secondary" id="previous">Precedente</button>
-			<button class="btn btn-primary" id="next">Successivo</button>
+			<button class="custom-button" id="next">Successivo</button>
 		</div>
 		<footer class="mt-4 form-text">* : I campi contrassegnati
 			sono obbligatori</footer>

@@ -27,7 +27,7 @@ public class Review {
 	}
 	public void setDescription(String description) {
 		notNull(description);
-		Utils.sanitizeXSS(description);
+		description = Utils.sanitizeXSS(description);
 		this.description = description;
 	}
 	public String getTitle() {
@@ -36,9 +36,12 @@ public class Review {
 	
 	public void setTitle(String title) {
 		//notNull(title);
-		//Utils.sanitizeXSS(title);
+		
 		this.title = title;
-		if(this.title == null) this.title = "";
+		if(this.title == null)
+			this.title = "";
+		else 
+			title = Utils.sanitizeXSS(title);
 	}
 	public int getRating() {
 		return rating;
