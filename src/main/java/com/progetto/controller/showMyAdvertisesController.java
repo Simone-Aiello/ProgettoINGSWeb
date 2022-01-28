@@ -39,6 +39,25 @@ public class showMyAdvertisesController {
 		return "showMyAdvertises";
 	}
 	
+	@PostMapping("/deleteAdvertise")
+	@ResponseBody
+	public void deleteAdvertise(HttpServletRequest req, @RequestBody Long advertiseID){
+		HttpSession session = req.getSession(false); 
+		Account a = new Account();
+		if(session != null) {
+			a.setUsername((String)session.getAttribute("username"));
+			System.out.println(a.getUsername()+ " ha cancellato #" + advertiseID);
+			Advertise add = new Advertise();
+			add.setId(advertiseID);
+			try {
+			if(Database.getInstance().getOfferDao().offersByAdvertise(add).size() > 0)
+				Database.getInstance().getAdvertiseDao().delete(add);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	
 }

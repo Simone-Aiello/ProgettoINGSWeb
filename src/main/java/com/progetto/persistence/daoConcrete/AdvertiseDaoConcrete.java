@@ -102,7 +102,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		//delete associations with areas
 		String deleteAssociatedAreas = "DELETE FROM annunci_ambiti WHERE id_annuncio = ?;";
 		PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(deleteAssociatedAreas);
-		stmt.setLong(1,a.getId());
+		stmt.setLong(1, a.getId());
 		stmt.execute();
 		
 		
@@ -253,6 +253,10 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 			Account acc = new Account();
 			acc.setUsername(set.getString("username_cliente"));
 			a.setAccount(acc);
+			if(Database.getInstance().getOfferDao().offersByAdvertise(a).size() > 0)
+				a.setHasOffers(true);
+			else 
+				a.setHasOffers(false);
 			advertises.add(a);
 		}
 		return advertises;

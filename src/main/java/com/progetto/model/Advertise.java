@@ -20,7 +20,16 @@ public class Advertise {
 	private String province;
 	private List<Offer> offers;
 	private String availability;
+	private boolean hasOffers;
 	
+	public boolean getHasOffers() {
+		return hasOffers;
+	}
+
+	public void setHasOffers(boolean hasOffers) {
+		this.hasOffers = hasOffers;
+	}
+
 	public Advertise() {}
 	
 	public Review getReviewReceived() {
