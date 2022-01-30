@@ -238,10 +238,12 @@ function createOfferCardSummary(data){
 	//username_client
 	let username_clientCol = document.createElement('div');
 	username_clientCol.className = 'col';
-	let username_client = document.createElement('p');
+	let username_client = document.createElement('a');
 	username_client.className = 'card-subtitle text-muted small';
 	username_client.id = 'username_client';
 	username_client.innerHTML = '@' + data.account.username;
+	username_client.href = "/profilePage?username="+data.account.username ;
+	username_client.style = "text-decoration: none; cursor: pointer; ";
 	username_clientCol.appendChild(username_client);
 	infoRow.appendChild(username_clientCol);
 	
