@@ -80,9 +80,10 @@ function createLoginModal(){
 											return;	
 										}
 									accountType = acc.accountType;
-									if(acc != null)
+									if(acc != null){
 										accountLogged = account;
 										accountLoggedIn();
+									}
 								},
 								error: function(){
 									showLoginError();
