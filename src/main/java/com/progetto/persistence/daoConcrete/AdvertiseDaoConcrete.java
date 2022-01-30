@@ -124,7 +124,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		DateTime expiryDate = new DateTime(result.getDate("data_scadenza")) ;
 		expiryDate = expiryDate.plusDays(1);
 		ann.setExpiryDate(expiryDate);
-		System.out.println(expiryDate);
+
 		ann.setProvince(result.getString("provincia_annuncio"));
 		Offer offer = new Offer();
 		offer.setId(result.getLong("proposta_accettata"));
@@ -195,7 +195,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		queryBuilder.append(" limit ? offset ?;");
 		parameters.add(quantity == null ? null : quantity);
 		parameters.add(offset == null ? 0 : offset);
-		System.out.println(queryBuilder.toString());
+		
 		PreparedStatement query = Database.getInstance().getConnection().prepareStatement(queryBuilder.toString());
 		for (int i = 0; i < parameters.size(); i++) {
 			query.setObject(i + 1, parameters.get(i));
