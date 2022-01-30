@@ -129,6 +129,7 @@ public class AdvertiseDaoConcrete implements AdvertiseDao {
 		Offer offer = new Offer();
 		offer.setId(result.getLong("proposta_accettata"));
 		ann.setAcceptedOffer(offer);
+		ann.setAvailability(result.getString("disponibilita") != null ? result.getString("disponibilita") : "");
 		List<Area> areas = Database.getInstance().getAreaDao().findByAdvertise(ann);
 		ann.setInterestedAreas(areas);				
 		if(mode == Utils.BASIC_INFO) {
