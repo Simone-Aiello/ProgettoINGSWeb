@@ -266,7 +266,7 @@ function addcheckRequiredInputs(){
 			if(accountLogged ==null){
 				createLoginModal();
 			}
-			else if(accountLogged.accountType() == "u"){
+			else if(accountType == "u" || accountLogged.accountType() == "u" ){
 				switchSection("#form", "#preview");
 			}
 			else /*(accountLogged.accountType() == "w" || accountLogged.accountType() == "a")*/{
@@ -304,7 +304,7 @@ function addcheckRequiredInputs(){
 
 //Call this function once the user has logged in
 function accountLoggedIn(){
-	//alert(accountType + " In advP");
+	//alert(accountType + " In advP" + JSON.stringify(accountLogged));
 	if(!checkAccountType(accountType, "u")){
 		alert("Hai effettuato l\'accesso con un account che non è un utente. Verrai reindirizzato alla Home");
 		window.location.href = "/";

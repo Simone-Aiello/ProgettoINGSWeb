@@ -253,6 +253,7 @@ function addBanAccountEvent(username){
 					//remove the account card from the list
 					//and replace it with the last profile card in the search results
 					$("#"+ username + "ProfileCard").replaceWith($("#profileCards").children().last().children().last());
+					$("#"+ username + "ProfileCard").remove();
 					//console.log(username + "banned");
 					
 				},

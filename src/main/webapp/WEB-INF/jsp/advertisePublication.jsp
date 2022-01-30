@@ -13,7 +13,10 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 	crossorigin="anonymous"></script>
-
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+	integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link href="css/AdvertisePublicationCSS.css" rel="stylesheet" type="text/css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -237,7 +240,7 @@
 		<div class="row previewDiv advertiseImages">
 			<label><b>Immagini allegate:</b></label> <br>
 
-			<div id="previewImages" class="row overflow-scroll"></div>
+			<div id="previewImages" class="row"></div>
 
 		</div>
 		<hr class="solid">
