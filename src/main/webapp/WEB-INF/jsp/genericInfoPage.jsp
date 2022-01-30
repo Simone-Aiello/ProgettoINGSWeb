@@ -72,7 +72,7 @@
 						<ul class="navbar-nav mb-2 mb-lg-0 pe-5 me-5">
 
 							<li class="nav-item"><a class="nav-link active"
-								aria-current="page" href="#">Registrati</a></li>
+								aria-current="page" href="/register.html">Registrati</a></li>
 							<li class="nav-item"><a class="nav-link active"
 								href="/login.html">Accedi</a></li>
 							<li class="nav-item"><a class="nav-link active"

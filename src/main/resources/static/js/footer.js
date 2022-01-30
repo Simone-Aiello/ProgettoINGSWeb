@@ -85,8 +85,8 @@ function createFooter(){
 	let addAds = document.createElement('p');
 	let addAdslink = document.createElement('a');
 	addAdslink.className = 'text-reset';
-	addAdslink.href = '#!';
-	addAdslink.innerHTML = 'Carica annuncio';
+	addAdslink.href = '/register.html';
+	addAdslink.innerHTML = 'Registrati';
 	addAds.appendChild(addAdslink);
 	
 	let login = document.createElement('p');
