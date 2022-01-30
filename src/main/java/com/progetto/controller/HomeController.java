@@ -27,7 +27,7 @@ public class HomeController {
 				String provinceOfWork = account.getProvinceOfWork();
 				req.setAttribute("provinceOfWork",provinceOfWork);
 				List<String> areasOfWork = account.getAreasOfWork().stream().map(areaofWork -> areaofWork.getName()).toList();
-				System.out.println("ARRAY: "+areasOfWork);
+				
 				JSONArray areasOfWorkJSON = new JSONArray(areasOfWork);
 				req.setAttribute("areasOfWork",areasOfWorkJSON);
 			} catch (SQLException e) {

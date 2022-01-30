@@ -97,11 +97,10 @@ function createLoginModal(){
 }
 
 function showLoginError(){
-	console.log("QUA1");
+	
 	if($("#systemAlertLogin").length != 0)
 		return;
 	
-	console.log("QUA2");
 	
 	let systemError = 	`<div id = "systemAlertLogin" class="alert alert-danger" role="alert">
  					 		Username o password errati
