@@ -92,7 +92,7 @@ public class Account {
 	public void setEmail(String email) {
 		notNull(email);
 		matchesPattern(email, EMAIL_PATTERN);
-		email = Utils.sanitizeXSS(email);
+		//email = Utils.sanitizeXSS(email);
 		this.email = email;
 	}
 	public String getNumber() {

@@ -41,6 +41,7 @@ function createOfferDetailCard(data){
 	username.className = 'card-subtitle text-muted small';
 	username.id = 'username-'+data.index;
 	username.innerHTML = '@' + data.username;
+	username.href = "/profilePage?username="+data.username ;
 	usernameCol.appendChild(username);
 	infoRow.appendChild(usernameCol);
 	

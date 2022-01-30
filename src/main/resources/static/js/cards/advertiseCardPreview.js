@@ -59,9 +59,12 @@ function createCard(data){
     card_header.appendChild(button_details);
 
     // Username client
-    let card_username_client = document.createElement("p");
+    let card_username_client = document.createElement("a");
     card_username_client.className = "card-subtitle text-muted small" ;
     card_username_client.innerHTML = "@"+data.account.username ;
+	card_username_client.style = 'text-decoration : none;cursor:pointer;';
+	card_username_client.href = "/profilePage?username="+data.account.username ;
+
 
     // Card image
     let card_img = document.createElement("img");

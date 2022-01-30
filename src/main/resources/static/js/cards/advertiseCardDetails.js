@@ -51,7 +51,7 @@ function createAdvertiseCardDetails(data){
     let card_username_client = document.createElement("a");
     card_username_client.className = "col-3 text-muted text-decoration-none card-username" ;
     card_username_client.innerHTML = "@"+data.account.username ;
-    card_username_client.href = "#";
+    card_username_client.href = "/profilePage?username="+data.account.username ;
 
 
 	// Row availabilites
