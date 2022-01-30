@@ -48,6 +48,7 @@ function createCardOfferForm(data){
 	username_client_advertise.className = "card-subtitle text-muted small col-3 text-decoration-none";
 	username_client_advertise.innerHTML = "@" + data.account.username;
 	username_client_advertise.style.padding = 0;
+	username_client_advertise.href = "/profilePage?username="+data.account.username ;
 
 	let row_province_client_advertise = createRow();
 

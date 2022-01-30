@@ -51,7 +51,7 @@ function createAdvertiseCardDetails(data){
     let card_username_client = document.createElement("a");
     card_username_client.className = "col-3 text-muted text-decoration-none card-username" ;
     card_username_client.innerHTML = "@"+data.account.username ;
-    card_username_client.href = "#";
+    card_username_client.href = "/profilePage?username="+data.account.username ;
 
 
 	// Row availabilites
@@ -84,11 +84,13 @@ function createAdvertiseCardDetails(data){
 	dropdown_menu.style.borderRadius = "10px";
     dropdown_menu.style.transform = "transform: translate3d(0, 38px, 0px)"
     
-	if(data.availabilities != null && data.availabilities != undefined ){		
+    data.availabilities = JSON.parse(data.availability);
+    console.log(data.availabilities+" MANNAIA");
+	if(data.availabilities != null && data.availabilities != undefined && data.availabilities != ''){		
 	    for(let availability of data.availabilities){
 	        let li = document.createElement('li');
             li.style = "margin-left : 10px"
-            li.innerHTML = availability;
+            li.innerHTML = date_from_db_to_ISO(availability);
             dropdown_menu.appendChild(li);
 	    }
 	}else{
