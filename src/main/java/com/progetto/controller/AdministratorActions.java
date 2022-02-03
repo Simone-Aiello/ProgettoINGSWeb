@@ -112,10 +112,13 @@ public class AdministratorActions {
 	public void deleteAdvertise(@RequestBody Advertise a, HttpServletResponse res) {
 
 		try {
+			System.out.println(a.getId());
 			Database.getInstance().getAdvertiseDao().delete(a);
 		} catch (SQLException e) {
 			res.setStatus(500);
 			e.printStackTrace();
 		}
 	}
+	
+	
 }

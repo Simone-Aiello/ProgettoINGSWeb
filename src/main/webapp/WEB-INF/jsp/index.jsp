@@ -20,15 +20,10 @@
 <c:if test="${areasOfWork != null}">
 <script>
 	var areasOfWork = ${areasOfWork} ;
-	console.log(areasOfWork)
 </script>
 </c:if>
-<c:if test="${areasOfWork == null}">
-<script>
-	console.log("È null");
-	
-</script>
-</c:if>
+<script src="./js/model/account.js"></script>
+<script src="./js/model/advertise.js"></script>
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
@@ -64,8 +59,7 @@
 <script defer src="./js/cards/offerCardSummary.js"></script>
 <script src="./js/model/offer.js"></script>
 <!-- Tag relativi ad i model account e annuncio -->
-<script src="./js/model/account.js"></script>
-<script src="./js/model/advertise.js"></script>
+
 <!-- Tag relativi al modal login -->
 <script src="./js/loginModal.js/"></script> 
 

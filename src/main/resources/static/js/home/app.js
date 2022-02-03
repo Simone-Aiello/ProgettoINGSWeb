@@ -104,6 +104,10 @@ let outer_container_advertise = document.querySelector('.outer-container-adverti
 outer_container_advertise.insertBefore(inner_container_advertise, outer_container_advertise.children[1]);
 
 
+
+
+
+
 // CONNECTING BUTTONS PREV NEXT
 let button_prev_advertises = document.getElementById('prev-button');
 let button_next_advertises = document.getElementById('next-button');
@@ -196,6 +200,7 @@ button_search_advertise_smartphone.onclick = () => {
 
     closeModal(modal_search_bar_smartphone);
 }
+
 
 
 

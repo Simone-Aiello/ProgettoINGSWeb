@@ -1,4 +1,7 @@
 
+
+
+
 function createSpinner(){
 
     let wrapper_spinner = document.createElement('div');
@@ -16,6 +19,9 @@ function createSpinner(){
 
 	return wrapper_spinner ;
 }
+
+
+
 
 class ContainerAdvertises extends HTMLElement{
 
@@ -70,6 +76,11 @@ class ContainerAdvertises extends HTMLElement{
             child = this.lastElementChild;
         }
     }
+
+   refresh = () => {
+        this.init(this.params);
+    }
+
 
 	// SHOW VIEW
     #show_view = (index_view) => {
@@ -186,9 +197,7 @@ class ContainerAdvertises extends HTMLElement{
 		this.#show_view(this.index_view - 1);
 	}
 
-    refresh = () => {
-        this.init(this.params);
-    }
+ 
 
   
 }
