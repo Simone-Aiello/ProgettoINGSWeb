@@ -28,7 +28,7 @@
 		<script src="/js/model/image.js"></script>
 		<script src="/js/profilePage/profilePageLogged.js"></script>
 		<script
-			src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
+			src="/js/registerAndUpdateCommon/registerAndUpdateCommon.js"></script>
 	</c:when>
 	<c:otherwise>
 		<script src="/js/model/chat.js"></script>

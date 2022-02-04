@@ -25,11 +25,11 @@ public class RegisterPagesController {
 			//Pagina generica di errore
 			e.printStackTrace();
 		}
-		return "registerWorker";
+		return "register";
 	}
 	@GetMapping("/registerClient")
 	public String registerClient(HttpServletRequest req) {
 		req.setAttribute("type", Account.USER);
-		return "registerWorker";
+		return "register";
 	}
 }

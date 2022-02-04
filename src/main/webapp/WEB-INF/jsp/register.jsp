@@ -23,14 +23,14 @@
 	crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/c4665949e9.js"></script>
 <script
-	src="/js/registerAndUpdateWorkerCommon/registerAndUpdateWorkerCommon.js"></script>
-<script src="/js/registerWorker/registerWorker.js"></script>
-<script src="/js/registerWorker/registerWorkerSecondSection.js"></script>
+	src="/js/registerAndUpdateCommon/registerAndUpdateCommon.js"></script>
+<script src="/js/register/register.js"></script>
+<script src="/js/register/registerSecondSection.js"></script>
 <script src="/js/utils/utils.js"></script>
 <script>
 	var accountType = "${type}"
 </script>
-<link rel="stylesheet" href="/css/registerWorker.css">
+<link rel="stylesheet" href="/css/register.css">
 <link href="/css/notificationCSS.css" rel="stylesheet" type="text/css">
 <script src="/js/notifications/notification.js"></script>
 </head>
