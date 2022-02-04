@@ -20,7 +20,7 @@ public class HomeController {
 	@GetMapping("/")
 	public String home(HttpServletRequest req) {
 		
-		if(req.getSession(false) != null && req.getSession(false).getAttribute("username") != null  && req.getSession(false).getAttribute("loggedAccountType").equals(Account.WORKER)) {
+		if(req.getSession(false) != null && req.getSession(false).getAttribute("username") != null && req.getSession(false).getAttribute("loggedAccountType") != null && req.getSession(false).getAttribute("loggedAccountType").equals(Account.WORKER)) {
 			try {
 				String username = (String)req.getSession(false).getAttribute("username") ;
 				Account account = Database.getInstance().getAccountDao().findByPrimaryKey(username, Utils.LIGHT);
