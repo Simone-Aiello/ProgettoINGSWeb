@@ -137,6 +137,8 @@
 				</div>
 			</c:forEach>
 		</div>
+<button id = "banAllButton" class ="btn btn-danged">Banna tutti</button>
 	</div>
+						
 </body>
 </html>
