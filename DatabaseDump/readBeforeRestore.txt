@@ -1,0 +1,1 @@
+Il database è hostato su heroku, il dump è solo in caso di un improbabile (si spera) crash del sito il giorno dell'esame
