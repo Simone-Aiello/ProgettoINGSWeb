@@ -140,7 +140,12 @@
 						</button>
 					</div>
 					<span id="username">${account.username}</span> <span
-						class="text-black-50">${account.email}</span> <span></span>
+						class="text-black-50">${account.email}</span>
+					<c:if test="${authorized && account.accountType == 'w'}">
+						<span style="margin: 7px;">
+							<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-size ="large">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+						</span>
+					</c:if>
 				</div>
 				<c:if test="${!account.valid && authorized}">
 					<c:choose>
