@@ -1,5 +1,5 @@
 # ProgettoINGSWeb
-La versione della JDK utilizzata per lo sviluppo del progetto è la JSK 16.
+La versione della JDK utilizzata per lo sviluppo del progetto è la JDK 16.
 
 Il database usato dal sito è un database online creato tramite la piattaforma heroku.
 Il progetto dovrebbe essere funzionante senza creare il database dal dump, ma qualora ci fossero problemi nella cartella DatabaseDump è presente un dump del database.
@@ -15,9 +15,11 @@ Le funzionalità aggiuntive rispetto ai requisiti sono:
   La modifica dei dati del profilo
   
   Per la fase di test del progetto usare i seguenti account:
+  
     Tipologia utente con account validato
       username: ndria00
       password: test@@
+   
    Tipologia lavoratore:
     username: aaa
     password: test@@
