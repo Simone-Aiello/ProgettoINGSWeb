@@ -14,3 +14,16 @@ Le funzionalità aggiuntive rispetto ai requisiti sono:
   La validazione dell'account tramite un link inviato alla mail di registrazione
   La modifica dei dati del profilo
   
+  Per la fase di test del progetto usare i seguenti account:
+    Tipologia utente con account validato
+      username: ndria00
+      password: test@@
+   Tipologia lavoratore:
+    username: aaa
+    password: test@@
+  
+  Tipologia admin: 
+    username: admin
+    password: admin@@
+    
+Per provare altri account generalmente basta prendere un username ed usare come password test@@
